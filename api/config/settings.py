@@ -40,7 +40,14 @@ DJANGO_APPS = [
     "django.contrib.admin",
 ]
 
-THIRD_PARTY_APPS = ["mptt", "debug_toolbar", "imagekit", "crispy_forms", "django_admin_listfilter_dropdown"]
+THIRD_PARTY_APPS = [
+    "mptt",
+    "debug_toolbar",
+    "imagekit",
+    "crispy_forms",
+    "django_admin_listfilter_dropdown",
+    "bootstrap3",
+]
 
 LOCAL_APPS = [
     "controllers.part",
@@ -77,6 +84,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "controllers.part.views.common.add_common_context",
+                "dealer.contrib.django.context_processor",
             ]
         },
     }

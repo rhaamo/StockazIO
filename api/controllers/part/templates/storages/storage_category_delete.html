@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Deleting Storage Category {{ object.name }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <h3>Deleting Storage Category <i>{{ object.name }}</i></h3>
+
+            <form action="" method="post">{% csrf_token %}
+                <p>Are you sure you want to do that?</p>
+                <input type="submit" value="Confirm" class="btn btn-primary"/>
+                <a href="{% url 'storage_category_list' %}" class="btn btn-default">Cancel</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

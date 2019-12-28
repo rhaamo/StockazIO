@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}View Distributor{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            <ol class="breadcrumb">
+                <li><a href="{% url "distributor_list" %}">Distributors</a></li>
+                <li class="active">{{ object.name }}</li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+            <a href="{% url "distributor_update" pk=object.id %}" class="btn btn-info">edit</a>
+            &nbsp;
+            <a href="{% url "distributor_delete" pk=object.id %}" class="btn btn-danger">delete</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <ul>
+                <li>Name: {{ object.name }}</li>
+                <li>Address: {{ object.address }}</li>
+                <li>URL: {{ object.url }}</li>
+                <li>Email: {{ object.email }}</li>
+                <li>Comment: {{ object.comment }}</li>
+                <li>Phone: {{ object.phone }}</li>
+                <li>FAX: {{ object.fax }}</li>
+            </ul>
+        </div>
+    </div>
+    </div>
+{% endblock %}

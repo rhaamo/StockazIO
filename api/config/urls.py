@@ -14,11 +14,214 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 from django.conf import settings
 from django.conf.urls import static, url, include
+import controllers.footprints.views as mbv_footprint
+import controllers.storage.views as mbv_storage
+import controllers.part.views.part_unit as mbv_part_unit
+import controllers.part.views.parameters_unit as mbv_parameters_unit
+import controllers.part.views.other as mbv_other
+import controllers.part.views.part as mbv_part
+import controllers.distributor.views as mbv_distributor
+import controllers.manufacturer.views as mbv_manufacturer
+from django.views.generic import RedirectView
+from django.contrib.auth import views as auth_views
+from controllers.part.views.common import CBVDeleteView, CBVDetailView
+from django.urls import reverse_lazy
+from controllers.footprints.models import FootprintCategory, Footprint
+from controllers.storage.models import StorageCategory, StorageLocation
+from controllers.part.models import PartUnit, ParametersUnit
+from controllers.manufacturer.models import Manufacturer
+from controllers.distributor.models import Distributor
 
-urlpatterns = [path("admin/", admin.site.urls)]
+
+urlpatterns = [
+    url(r"^admin/", admin.site.urls),
+    url(r"^$", RedirectView.as_view(pattern_name="part_list", permanent=True)),
+    url(r"^login/$", auth_views.LoginView.as_view(template_name="auth/login.html"), name="auth_login"),
+    url(r"^logout/$", auth_views.LogoutView.as_view(template_name="auth/logged_out.html"), name="auth_logout"),
+    url(
+        r"^password/reset/$",
+        auth_views.PasswordResetView.as_view(template_name="auth/password_reset_form.html"),
+        name="password_reset",
+    ),
+    url(
+        r"^password/reset/done/$",
+        auth_views.PasswordResetDoneView.as_view(template_name="auth/password_reset_done.html"),
+        name="password_reset_done",
+    ),
+    url(
+        r"^password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+        auth_views.PasswordResetConfirmView.as_view(template_name="auth/password_reset_confirm.html"),
+        name="password_reset_confirm",
+    ),
+    url(
+        r"^password/reset/complete/$",
+        auth_views.PasswordResetCompleteView.as_view(template_name="auth/password_reset_complete.html"),
+        name="password_reset_complete",
+    ),
+    url(
+        r"^password/change/$",
+        auth_views.PasswordChangeView.as_view(template_name="auth/password_change.html"),
+        name="password_change",
+    ),
+    url(
+        r"^password/change/done$",
+        auth_views.PasswordChangeDoneView.as_view(template_name="auth/password_change_done.html"),
+        name="password_change_done",
+    ),
+    # Footprint Categories
+    url(r"^footprints/$", mbv_footprint.footprint_category_list, name="footprint_category_list"),
+    url(r"^footprints/create/$", mbv_footprint.footprint_category_create, name="footprint_category_create"),
+    url(
+        r"^footprints/(?P<pk>[0-9]+)/update/$",
+        mbv_footprint.footprint_category_update,
+        name="footprint_category_update",
+    ),
+    url(
+        r"^footprints/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=FootprintCategory,
+            success_url=reverse_lazy("footprint_category_list"),
+            template_name="footprints/footprint_category_delete.html",
+            success_message="Footprint Category deleted successfully",
+        ),
+        name="footprint_category_delete",
+    ),
+    # Footprints
+    url(r"^footprints/(?P<pk_category>[0-9]+)/$", mbv_footprint.footprint_list, name="footprint_list"),
+    url(r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/$", mbv_footprint.footprint_list, name="footprint_list"),
+    url(
+        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/create/$",
+        mbv_footprint.footprint_create,
+        name="footprint_create",
+    ),
+    url(
+        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/(?P<pk>[0-9]+)/update/$",
+        mbv_footprint.footprint_update,
+        name="footprint_update",
+    ),
+    url(
+        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=Footprint,
+            success_url=reverse_lazy("footprint_category_list"),
+            template_name="footprints/footprint_delete.html",
+            success_message="Footprint deleted successfully",
+        ),
+        name="footprint_delete",
+    ),
+    # Distributors
+    url(r"^distributors/$", mbv_distributor.distributor_list, name="distributor_list"),
+    url(
+        r"^distributors/(?P<pk>[0-9]+)/$",
+        CBVDetailView.as_view(model=Distributor, template_name="distributors/distributor_detail.html",),
+        name="distributor_detail",
+    ),
+    url(r"^distributors/create/$", mbv_distributor.distributor_create, name="distributor_create"),
+    url(r"^distributors/(?P<pk>[0-9]+)/update/$", mbv_distributor.distributor_update, name="distributor_update"),
+    url(
+        r"^distributors/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=Distributor,
+            success_url=reverse_lazy("distributor_list"),
+            template_name="distributors/distributor_delete.html",
+            success_message="Distributor deleted successfully",
+        ),
+        name="distributor_delete",
+    ),
+    # Manufacturers
+    url(r"^manufacturers/$", mbv_manufacturer.manufacturer_list, name="manufacturer_list"),
+    url(
+        r"^manufacturers/(?P<pk>[0-9]+)/$",
+        CBVDetailView.as_view(model=Manufacturer, template_name="manufacturers/manufacturer_detail.html",),
+        name="manufacturer_detail",
+    ),
+    url(r"^manufacturers/create/$", mbv_manufacturer.manufacturer_create, name="manufacturer_create"),
+    url(r"^manufacturers/(?P<pk>[0-9]+)/update/$", mbv_manufacturer.manufacturer_update, name="manufacturer_update"),
+    url(
+        r"^manufacturers/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=Manufacturer,
+            success_url=reverse_lazy("manufacturer_list"),
+            template_name="manufacturers/manufacturer_delete.html",
+            success_message="Manufacturer deleted successfully",
+        ),
+        name="manufacturer_delete",
+    ),
+    # Storages Categories
+    url(r"^storages/$", mbv_storage.storage_category_list, name="storage_category_list"),
+    url(r"^storages/create/$", mbv_storage.storage_category_create, name="storage_category_create"),
+    url(r"^storages/(?P<pk>[0-9]+)/update/$", mbv_storage.storage_category_update, name="storage_category_update"),
+    url(
+        r"^storages/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=StorageCategory,
+            success_url=reverse_lazy("storage_category_list"),
+            template_name="storages/storage_category_delete.html",
+            success_message="Storage Category deleted successfully",
+        ),
+        name="storage_category_delete",
+    ),
+    # Storages
+    url(r"^storages/(?P<pk_category>[0-9]+)/$", mbv_storage.storage_list, name="storage_list"),
+    url(r"^storages/(?P<pk_category>[0-9]+)/sub_storages/$", mbv_storage.storage_list, name="storage_list"),
+    url(r"^storages/(?P<pk_category>[0-9]+)/sub_storages/create/$", mbv_storage.storage_create, name="storage_create"),
+    url(
+        r"^storages/(?P<pk_category>[0-9]+)/sub_storages/(?P<pk>[0-9]+)/update/$",
+        mbv_storage.storage_update,
+        name="storage_update",
+    ),
+    url(
+        r"^storages/(?P<pk_category>[0-9]+)/sub_storages/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=StorageLocation,
+            success_url=reverse_lazy("storage_category_list"),
+            template_name="storages/storage_delete.html",
+            success_message="Storage deleted successfully",
+        ),
+        name="storage_delete",
+    ),
+    # Part Units
+    url(r"^part_units/$", mbv_part_unit.part_unit_list, name="part_unit_list"),
+    url(r"^part_units/create/$", mbv_part_unit.part_unit_create, name="part_unit_create"),
+    url(r"^part_units/(?P<pk>[0-9]+)/update/$", mbv_part_unit.part_unit_update, name="part_unit_update"),
+    url(
+        r"^part_units/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=PartUnit,
+            success_url=reverse_lazy("part_unit_list"),
+            template_name="part_units/part_unit_delete.html",
+            success_message="Part Unit deleted successfully",
+        ),
+        name="part_unit_delete",
+    ),
+    # Parameters Units
+    url(r"^parameters_units/$", mbv_parameters_unit.parameters_unit_list, name="parameters_unit_list"),
+    url(r"^parameters_units/create/$", mbv_parameters_unit.parameters_unit_create, name="parameters_unit_create"),
+    url(
+        r"^parameters_units/(?P<pk>[0-9]+)/update/$",
+        mbv_parameters_unit.parameters_unit_update,
+        name="parameters_unit_update",
+    ),
+    url(
+        r"^parameters_units/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=ParametersUnit,
+            success_url=reverse_lazy("parameters_unit_list"),
+            template_name="parameters_units/parameters_unit_delete.html",
+            success_message="Parameters Unit deleted successfully",
+        ),
+        name="parameters_unit_delete",
+    ),
+    # Views
+    url(r"^views/infos/$", mbv_other.other_informations, name="other_informations"),
+    # Parts
+    url(r"^parts/$", mbv_part.part_list, name="part_list"),
+    url(r"^parts/create/$", mbv_part.part_create, name="part_create"),
+    url(r"^parts/(?P<pk>[0-9]+)/update/$", mbv_part.part_update, name="part_update"),
+]
+
 
 admin.site.site_header = "StockazIO Inventory"
 admin.site.site_title = "StockazIO Admin Portal"

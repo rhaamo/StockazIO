@@ -1,0 +1,167 @@
+{% load static %}{% load bootstrap3 %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>
+        {% block title %}Other{% endblock %} - StockazIO
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    {% bootstrap_css %}
+    <!-- Custom CSS -->
+    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'jtable/themes/lightcolor/gray/jtable.min.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'jtable/Scripts/validationEngine/validationEngine.jquery.css' %}"
+          type="text/css"/>
+    <link rel="stylesheet" href="{% static 'datatables/media/css/dataTables.bootstrap.min.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<div id="dialogs" class="hidden">
+    <div id="dialog-master" title="Dialog master"></div>
+</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'part_list' %}">StockazIO
+                <small>- {{ VERSION }}</small>
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+
+                {% if user.is_authenticated %}
+
+                    <li><a href="{% url "part_create" %}">Add part</a></li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i> {{ user.username }} <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="{% url 'password_change' %}"><i class="fa fa-key fa-fw"></i> Change
+                                password</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'auth_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-cogs fa-fw"></i> Edit <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-edit">
+                            <li><a href="{% url 'footprint_category_list' %}"><i class="fa fa-paw fa-fw"></i> Footprints</a>
+                            </li>
+                            <li><a href="{% url 'manufacturer_list' %}"><i class="fa fa-home fa-fw"></i>
+                                Manufacturers</a></li>
+                            <li><a href="{% url 'distributor_list' %}"><i class="fa fa-car fa-fw"></i> Distributors</a>
+                            </li>
+                            <li><a href="{% url 'storage_category_list' %}"><i class="fa fa-archive fa-fw"></i> Storage</a>
+                            </li>
+                            <li><a href="{% url 'part_unit_list' %}"><i class="fa fa-cogs fa-fw"></i> Parts units</a>
+                            </li>
+                            <li><a href="{% url 'parameters_unit_list' %}"><i class="fa fa-cogs fa-fw"></i> Parameters
+                                Units</a></li>
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-list fa-fw"></i> View <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-view">
+                            <li><a href="{% url "other_informations" %}"><i class="fa fa-cogs fa-fw"></i>
+                                Informations</a></li>
+                            <li><a href="{# url #}"><i class="fa fa-list-alt fa-fw"></i> Storage map</a></li>
+                            <li><a href="{# url #}"><i class="fa fa-money fa-fw"></i> Parts to sold</a></li>
+                            <li><a href="{# url #}"><i class="fa fa-list-alt fa-fw"></i> Public parts</a></li>
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+
+                {% endif %}
+
+                <li><a href="{# url #}">Help</a></li>
+            </ul>
+
+            {% if user.is_authenticated %}
+                <form class="navbar-form navbar-right" action="{# url #}" method="get">
+                    <input type="text" class="form-control" placeholder="Search..." id="q" name="q">
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+{% include 'parts/_modal_viewer.html' %}
+
+<div class="container-fluid" id="contentBody">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">{% bootstrap_messages %}</div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.min.js' %}"></script>
+<!-- Bootstrap Core JavaScript -->
+{% bootstrap_javascript %}
+<!-- Custom Theme JavaScript -->
+<script src="{% static 'jtable/jquery.jtable.min.js' %}"></script>
+<script src="{% static 'jtable/Scripts/validationEngine/jquery.validationEngine.js' %}"></script>
+<script src="{% static 'jtable/Scripts/validationEngine/jquery.validationEngine-en.js' %}"></script>
+<script src="{% static 'datatables/media/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'datatables/media/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'webcamjs/webcam.min.js' %}"></script>
+<script src="{% static 'js/alert.js' %}"></script>
+
+<script src="{% static 'js/global.js' %}"></script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+
+</html>

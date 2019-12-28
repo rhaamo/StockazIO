@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            <ol class="breadcrumb">
+                <li>Auth</li>
+                <li class="active">Logged out</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <p>You have been successfully logged out.</p>
+            <p><a href="{% url 'auth_login' %}">Log in</a> again.</p>
+        </div>
+    </div>
+{% endblock %}

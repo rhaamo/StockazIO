@@ -1,0 +1,128 @@
+/*
+#page-wrapper {
+  padding-top: 2em;
+}
+*/
+
+.vakata-context { z-index: 9000; }
+input.jstree-rename-input {
+    color: black;
+    height: 22px;
+}
+
+label.fixinline {
+    margin: 0;
+}
+
+.ui-autocomplete-loading {
+    background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+}
+
+div.sc_name {
+    font: 12px "Century Gothic", arial, sans-serif;
+    font-weight: bold;
+}
+
+div.sc_value {
+}
+
+ul.cat-list {
+    text-align: center;
+}
+
+ul.cat-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px dashed #f2f2f2;
+}
+
+ul.cat-list li {
+    list-style: none;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+ul.cat-list li a {
+    display: inline-block;
+    font-size: 13px;
+    padding: 4px 10px 4px 10px;
+    background-color: #DAF5C5;
+    color: #fff;
+    margin: 0;
+    text-decoration: none;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-color: #BEEE9B;
+}
+
+ul.cat-list li a.selected {
+    background-color: #4a8d18;
+}
+
+ul.cat-list li a:hover {
+    background-color: #4a8d18;
+}
+
+ul.cat-list li a.isComponents {
+    border: 1px solid #4F971A;
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 8px 3px 8px;
+    background-color: #5FB61F;
+    color: #FFF;
+    margin: 0;
+    text-decoration: none;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+ul.cat-list li a.isComponents:hover {
+    cursor: pointer;
+    background-color: #4a8d18;
+}
+
+.sidebar {
+    font-size: 12px;
+    overflow-x: scroll;
+}
+
+#ContentTableParts.withSidebar {
+    overflow-x: scroll;
+}
+
+#ContentPartSidebar.opened {
+    border-left: 1px dotted silver;
+}
+
+#TableParts td {
+    font-size: 12px;
+}
+
+#TableParts th {
+    font-size: 12px;
+}
+
+td.partNeedsReview {
+    color: red;
+}
+
+table.tablePartsSidebar {
+    font-size: 12px;
+}
+
+#ContentPartSidebar h3 {
+    /* reset *in-top */
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+td.tableStorageName {
+    background-color: #f5f5f5;
+}
+
+#cloudOfTags .btn {
+    margin: 5px;
+}
