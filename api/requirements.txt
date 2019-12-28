@@ -26,3 +26,4 @@ six==1.13.0
 sqlparse==0.3.0
 toml==0.10.0
 typed-ast==1.4.0
+django-admin-list-filter-dropdown==1.0.3
