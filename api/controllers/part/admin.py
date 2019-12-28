@@ -12,16 +12,11 @@ class PartAdmin(CommonAdmin):
     list_display = (
         "name",
         "description",
-        "stock_qty_min",
-        "stock_qty",
-        "part_unit",
-        # "category",
         # "storage",
+        "category",
+        "stock_qty",
+        "stock_qty_min",
         "footprint",
-        "comment",
-        "production_remarks",
-        "status",
-        "condition",
         "internal_part_number",
     )
     search_fields = ("name",)

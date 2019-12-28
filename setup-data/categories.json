@@ -1,892 +1,1491 @@
 {
-    "status": "ok",
-    "success": true,
-    "response": {
-        "id": 1,
-        "name": "Root Category",
-        "description": "",
-        "children": [{
-            "id": 2,
-            "name": "1 Active Components",
-            "description": "",
-            "children": [{
-                "id": 3,
-                "name": "1 Semiconductors",
-                "description": "",
-                "children": [{
-                    "id": 4,
-                    "name": "2 Integrated Circuits",
-                    "description": "",
-                    "children": [{
-                        "id": 5,
-                        "name": "1 Logic Gates",
-                        "description": "",
-                        "children": [{
-                            "id": 6,
-                            "name": "2 TTL",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 10,
-                            "name": "1 CMOS",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }
-                        ],
-                        "expanded": true
-                    }, {
-                        "id": 7,
-                        "name": "9 MOSFET Drivers",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 8,
-                        "name": "Z Others",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 9,
-                        "name": "4 OpAmps",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 11,
-                        "name": "2 ADC, DAC",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 36,
-                        "name": "3 Microcontrollers",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 79,
-                        "name": "5 Timers",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 122,
-                        "name": "6 EPROM",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 126,
-                        "name": "7 Comparators",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 132,
-                        "name": "8 Memory",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 81,
-                        "name": "A Voltage Regulators \/ Controllers",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 32,
-                    "name": "1 Transistors",
-                    "description": "",
-                    "children": [{
-                        "id": 33,
-                        "name": "NPN",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 74,
-                        "name": "PNP",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 114,
-                        "name": "MOSFET",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 56,
-                    "name": "3 Diodes",
-                    "description": "",
-                    "children": [{
-                        "id": 57,
-                        "name": "3 Z Diodes",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 58,
-                        "name": "1 Universal",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 59,
-                        "name": "Other",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 67,
-                        "name": "4 Rectifiers and Rectifier Diodes",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 85,
-                        "name": "2 Schottky",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 62,
-                    "name": "Thyristor",
-                    "description": "",
-                    "children": [{
-                        "id": 111,
-                        "name": "1 TRIACs",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 136,
-                        "name": "2 SCR",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 89,
-                    "name": "5 Voltage References",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 110,
-                    "name": "4 Triacs",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
+  "@context": "/api/contexts/PartCategory",
+  "@id": "/api/part_categories/1",
+  "@type": "PartCategory",
+  "parent": null,
+  "children": [
+    {
+      "@id": "/api/part_categories/2",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ # Free Space",
+      "expanded": true,
+      "name": "# Free Space",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/3",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [
+        {
+          "@id": "/api/part_categories/14",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/3",
+          "children": [
+            {
+              "@id": "/api/part_categories/17",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/14",
+              "children": [
+                {
+                  "@id": "/api/part_categories/23",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/17",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 1 Transistors ➤ MOSFET",
+                  "expanded": true,
+                  "name": "MOSFET",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/24",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/17",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 1 Transistors ➤ NPN",
+                  "expanded": true,
+                  "name": "NPN",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/25",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/17",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 1 Transistors ➤ PNP",
+                  "expanded": true,
+                  "name": "PNP",
+                  "description": ""
                 }
-                ],
-                "expanded": true
-            }, {
-                "id": 21,
-                "name": "2 Optoelectronics",
-                "description": "",
-                "children": [{
-                    "id": 22,
-                    "name": "4 Others",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 23,
-                    "name": "1 LED",
-                    "description": "",
-                    "children": [{
-                        "id": 30,
-                        "name": "Standard",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 31,
-                        "name": "Module",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 95,
-                        "name": "SMD",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
+              ],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 1 Transistors",
+              "expanded": true,
+              "name": "1 Transistors",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/18",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/14",
+              "children": [
+                {
+                  "@id": "/api/part_categories/26",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [
+                    {
+                      "@id": "/api/part_categories/146",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/26",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 1 7400 series ➤ 1 Counters",
+                      "expanded": true,
+                      "name": "1 Counters",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/147",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/26",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 1 7400 series ➤ Z Others",
+                      "expanded": true,
+                      "name": "Z Others",
+                      "description": ""
                     }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 41,
-                    "name": "2 LCD Displays",
-                    "description": "",
-                    "children": [{
-                        "id": 42,
-                        "name": "2 Graphics",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 43,
-                        "name": "1 Text",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
+                  ],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 1 7400 series",
+                  "expanded": true,
+                  "name": "1 7400 series",
+                  "description": "https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits"
+                },
+                {
+                  "@id": "/api/part_categories/27",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 2 ADC, DAC",
+                  "expanded": true,
+                  "name": "2 ADC, DAC",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/28",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 3 Microcontrollers",
+                  "expanded": true,
+                  "name": "3 Microcontrollers",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/29",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 4 OpAmps",
+                  "expanded": true,
+                  "name": "4 OpAmps",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/30",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 5 Timers",
+                  "expanded": true,
+                  "name": "5 Timers",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/31",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 6 EPROM",
+                  "expanded": true,
+                  "name": "6 EPROM",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/32",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 7 EEPROM",
+                  "expanded": true,
+                  "name": "7 EEPROM",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/33",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 8 Comparators",
+                  "expanded": true,
+                  "name": "8 Comparators",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/34",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 9 MOSFET Drivers",
+                  "expanded": true,
+                  "name": "9 MOSFET Drivers",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/35",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ A Voltage Regulators / Controllers",
+                  "expanded": true,
+                  "name": "A Voltage Regulators / Controllers",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/36",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ Z Others",
+                  "expanded": true,
+                  "name": "Z Others",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/131",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ B FPGA",
+                  "expanded": true,
+                  "name": "B FPGA",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/132",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ C CPLD",
+                  "expanded": true,
+                  "name": "C CPLD",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/133",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ D PAL",
+                  "expanded": true,
+                  "name": "D PAL",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/134",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ E GAL",
+                  "expanded": true,
+                  "name": "E GAL",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/135",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [
+                    {
+                      "@id": "/api/part_categories/136",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/135",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ F RAM ➤ SRAM",
+                      "expanded": true,
+                      "name": "SRAM",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/137",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/135",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ F RAM ➤ DRAM",
+                      "expanded": true,
+                      "name": "DRAM",
+                      "description": ""
                     }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 90,
-                    "name": "3 Optocouplers",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 117,
-                    "name": "5 Optical Switches",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
+                  ],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ F RAM",
+                  "expanded": true,
+                  "name": "F RAM",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/138",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ G Buffer/Line driver",
+                  "expanded": true,
+                  "name": "G Buffer/Line driver",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/145",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ H UART / Serial",
+                  "expanded": true,
+                  "name": "H UART / Serial",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/148",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/18",
+                  "children": [
+                    {
+                      "@id": "/api/part_categories/149",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/148",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 0 4000 series ➤ Analog Switches",
+                      "expanded": true,
+                      "name": "Analog Switches",
+                      "description": ""
+                    }
+                  ],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits ➤ 0 4000 series",
+                  "expanded": true,
+                  "name": "0 4000 series",
+                  "description": "https://en.wikipedia.org/wiki/List_of_4000-series_integrated_circuits"
                 }
-                ],
-                "expanded": true
-            }, {
-                "id": 46,
-                "name": "3 Others",
-                "description": "",
-                "children": [{
-                    "id": 47,
-                    "name": "Inverter",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
+              ],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 2 Integrated Circuits",
+              "expanded": true,
+              "name": "2 Integrated Circuits",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/19",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/14",
+              "children": [
+                {
+                  "@id": "/api/part_categories/39",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/19",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 3 Diodes ➤ 1 Universal",
+                  "expanded": true,
+                  "name": "1 Universal",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/40",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/19",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 3 Diodes ➤ 2 Schottky",
+                  "expanded": true,
+                  "name": "2 Schottky",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/41",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/19",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 3 Diodes ➤ 3 Z Diodes",
+                  "expanded": true,
+                  "name": "3 Z Diodes",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/42",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/19",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 3 Diodes ➤ 4 Rectifiers and Rectifier Diodes",
+                  "expanded": true,
+                  "name": "4 Rectifiers and Rectifier Diodes",
+                  "description": ""
                 }
-                ],
-                "expanded": true
+              ],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 3 Diodes",
+              "expanded": true,
+              "name": "3 Diodes",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/20",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/14",
+              "children": [],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 4 Triacs",
+              "expanded": true,
+              "name": "4 Triacs",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/21",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/14",
+              "children": [],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ 5 Voltage References",
+              "expanded": true,
+              "name": "5 Voltage References",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/22",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/14",
+              "children": [
+                {
+                  "@id": "/api/part_categories/43",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/22",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ Thyristor ➤ 1 TRIACs",
+                  "expanded": true,
+                  "name": "1 TRIACs",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/44",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/22",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ Thyristor ➤ 2 SCR",
+                  "expanded": true,
+                  "name": "2 SCR",
+                  "description": ""
+                }
+              ],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors ➤ Thyristor",
+              "expanded": true,
+              "name": "Thyristor",
+              "description": ""
             }
-            ],
-            "expanded": true
-        }, {
-            "id": 12,
-            "name": "3 Electromechanical Parts",
-            "description": "",
-            "children": [{
-                "id": 13,
-                "name": "1 Connectors",
-                "description": "",
-                "children": [{
-                    "id": 14,
-                    "name": "2 PCB Connectors",
-                    "description": "",
-                    "children": [{
-                        "id": 17,
-                        "name": "1 Rectangular",
-                        "description": "",
-                        "children": [{
-                            "id": 18,
-                            "name": "2 USB",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 48,
-                            "name": "3 D-Sub",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 91,
-                            "name": "1 Wire-to-Board",
-                            "description": "",
-                            "children": [{
-                                "id": 96,
-                                "name": "1 PSK",
-                                "description": "",
-                                "children": [{
-                                    "id": 76,
-                                    "name": "1 Sets",
-                                    "description": "",
-                                    "children": [],
-                                    "leaf": true
-                                }
-                                ],
-                                "expanded": true
-                            }, {
-                                "id": 124,
-                                "name": "2 Dupont Crimp Contacts",
-                                "description": "",
-                                "children": [],
-                                "leaf": true
-                            }
-                            ],
-                            "expanded": true
-                        }, {
-                            "id": 105,
-                            "name": "4 IDC Connectors + Box Headers",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 119,
-                            "name": "5 Terminal Blocks",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 125,
-                            "name": "6 Board to Board",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }
-                        ],
-                        "expanded": true
-                    }, {
-                        "id": 28,
-                        "name": "2 Round",
-                        "description": "",
-                        "children": [{
-                            "id": 29,
-                            "name": "1 PSU",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }
-                        ],
-                        "expanded": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 37,
-                    "name": "4 Others",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 16,
-                    "name": "1 IC Sockets",
-                    "description": "",
-                    "children": [{
-                        "id": 133,
-                        "name": "1 Test Sockets",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 134,
-                        "name": "2 Precision",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 135,
-                        "name": "3 Low Cost",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 40,
-                    "name": "3 Audio",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 94,
-                    "name": "5 WAGO",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 118,
-                    "name": "6 Faston",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 129,
-                    "name": "7 HF",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 139,
-                    "name": "8 DC Power Jacks",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 149,
-                    "name": "9 Lab Connectors",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
+          ],
+          "categoryPath": "Root Category ➤ 1 Active Components ➤ 1 Semiconductors",
+          "expanded": true,
+          "name": "1 Semiconductors",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/15",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/3",
+          "children": [
+            {
+              "@id": "/api/part_categories/45",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/15",
+              "children": [
+                {
+                  "@id": "/api/part_categories/46",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/45",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 1 LED ➤ Module",
+                  "expanded": true,
+                  "name": "Module",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/47",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/45",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 1 LED ➤ SMD",
+                  "expanded": true,
+                  "name": "SMD",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/48",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/45",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 1 LED ➤ Standard",
+                  "expanded": true,
+                  "name": "Standard",
+                  "description": ""
                 }
-                ],
-                "expanded": true
-            }, {
-                "id": 27,
-                "name": "2 Switches and Buttons",
-                "description": "",
-                "children": [{
-                    "id": 78,
-                    "name": "Rotary step switches",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 93,
-                    "name": "1 Switches",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 108,
-                    "name": "2 Push Button",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 109,
-                    "name": "3 Code Switches",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 116,
-                    "name": "4 DIP Switches",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
+              ],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 1 LED",
+              "expanded": true,
+              "name": "1 LED",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/49",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/15",
+              "children": [
+                {
+                  "@id": "/api/part_categories/50",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/49",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 2 LCD Displays ➤ 1 Text",
+                  "expanded": true,
+                  "name": "1 Text",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/51",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/49",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 2 LCD Displays ➤ 2 Graphics",
+                  "expanded": true,
+                  "name": "2 Graphics",
+                  "description": ""
                 }
-                ],
-                "expanded": true
-            }, {
-                "id": 44,
-                "name": "3 Relais",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 98,
-                "name": "4 Fuses",
-                "description": "",
-                "children": [{
-                    "id": 107,
-                    "name": "1 5*20",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 137,
-                    "name": "2 6,3*32",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 142,
-                    "name": "3 Blade Fuses",
-                    "description": "",
-                    "children": [{
-                        "id": 143,
-                        "name": "1 ATO",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }
-                ],
-                "expanded": true
-            }, {
-                "id": 127,
-                "name": "5 Battery Holders",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 130,
-                "name": "6 Transformers",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 140,
-                "name": "7 Motors",
-                "description": "",
-                "children": [{
-                    "id": 141,
-                    "name": "1 Servo",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }
-                ],
-                "expanded": true
+              ],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 2 LCD Displays",
+              "expanded": true,
+              "name": "2 LCD Displays",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/52",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/15",
+              "children": [],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 3 Octocouplers",
+              "expanded": true,
+              "name": "3 Octocouplers",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/53",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/15",
+              "children": [],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 4 Others",
+              "expanded": true,
+              "name": "4 Others",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/54",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/15",
+              "children": [],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics ➤ 5 Optical Switches",
+              "expanded": true,
+              "name": "5 Optical Switches",
+              "description": ""
             }
-            ],
-            "expanded": true
-        }, {
-            "id": 24,
-            "name": "2 Passive Components",
-            "description": "",
-            "children": [{
-                "id": 25,
-                "name": "1 Resistors",
-                "description": "",
-                "children": [{
-                    "id": 75,
-                    "name": "1 Metal Film 1%",
-                    "description": "",
-                    "children": [{
-                        "id": 138,
-                        "name": "SMD",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 82,
-                    "name": "PTC",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 97,
-                    "name": "2 Carbon Film 5%",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 104,
-                    "name": "3 Networks",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }
-                ],
-                "expanded": true
-            }, {
-                "id": 38,
-                "name": "4 Potentiometers \/ Padders",
-                "description": "",
-                "children": [{
-                    "id": 26,
-                    "name": "2 Trimmer",
-                    "description": "",
-                    "children": [{
-                        "id": 100,
-                        "name": "1 10\/25 Turns Precision",
-                        "description": "",
-                        "children": [{
-                            "id": 101,
-                            "name": "1 64P",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 102,
-                            "name": "2 64W",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 103,
-                            "name": "3 64Y",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 128,
-                            "name": "4 64X",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }, {
-                            "id": 148,
-                            "name": "5 64Z",
-                            "description": "",
-                            "children": [],
-                            "leaf": true
-                        }
-                        ],
-                        "expanded": true
-                    }, {
-                        "id": 106,
-                        "name": "2 Cermet",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }, {
-                        "id": 131,
-                        "name": "3 Precision",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 39,
-                    "name": "4 Encoders",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 45,
-                    "name": "3 Slide Potentiometers",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 51,
-                    "name": "1 Potentiometers",
-                    "description": "",
-                    "children": [{
-                        "id": 88,
-                        "name": "Accessories",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }
-                ],
-                "expanded": true
-            }, {
-                "id": 65,
-                "name": "Varistor",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 66,
-                "name": "Resistor Networks",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 86,
-                "name": "Inductive Components",
-                "description": "",
-                "children": [{
-                    "id": 87,
-                    "name": "Exchangers",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }
-                ],
-                "expanded": true
-            }, {
-                "id": 19,
-                "name": "3 Crystals and Oscillators",
-                "description": "",
-                "children": [{
-                    "id": 120,
-                    "name": "1 Crystals",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 121,
-                    "name": "2 Crystal Oscillators",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }
-                ],
-                "expanded": true
-            }, {
-                "id": 35,
-                "name": "2 Capacitors",
-                "description": "",
-                "children": [{
-                    "id": 55,
-                    "name": "2 Electrolythic",
-                    "description": "",
-                    "children": [{
-                        "id": 99,
-                        "name": "1 SMD",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 60,
-                    "name": "3 Film",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }, {
-                    "id": 64,
-                    "name": "1 Ceramic",
-                    "description": "",
-                    "children": [{
-                        "id": 112,
-                        "name": "SMD",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 80,
-                    "name": "Tantal",
-                    "description": "",
-                    "children": [{
-                        "id": 113,
-                        "name": "SMD",
-                        "description": "",
-                        "children": [],
-                        "leaf": true
-                    }
-                    ],
-                    "expanded": true
-                }, {
-                    "id": 84,
-                    "name": "Styroflex",
-                    "description": "",
-                    "children": [],
-                    "leaf": true
-                }
-                ],
-                "expanded": true
-            }, {
-                "id": 146,
-                "name": "8 Photoresistors \/ LDRs",
-                "description": "",
-                "children": [],
-                "leaf": true
+          ],
+          "categoryPath": "Root Category ➤ 1 Active Components ➤ 2 Optoelectronics",
+          "expanded": true,
+          "name": "2 Optoelectronics",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/16",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/3",
+          "children": [
+            {
+              "@id": "/api/part_categories/55",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/16",
+              "children": [],
+              "categoryPath": "Root Category ➤ 1 Active Components ➤ 3 Others ➤ Inverter",
+              "expanded": true,
+              "name": "Inverter",
+              "description": ""
             }
-            ],
-            "expanded": true
-        }, {
-            "id": 49,
-            "name": "5 Cables",
-            "description": "",
-            "children": [{
-                "id": 50,
-                "name": "1 Ribbon Cable",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }
-            ],
-            "expanded": true
-        }, {
-            "id": 52,
-            "name": "4 Mechanical Parts",
-            "description": "",
-            "children": [{
-                "id": 53,
-                "name": "Washer",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 54,
-                "name": "Mother",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 61,
-                "name": "2 Cooling",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 63,
-                "name": "Spacer",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 69,
-                "name": "Others",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 70,
-                "name": "Screws",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 72,
-                "name": "Brads",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 92,
-                "name": "Spacers",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }, {
-                "id": 123,
-                "name": "1 Mica Washers",
-                "description": "",
-                "children": [],
-                "leaf": true
-            }
-            ],
-            "expanded": true
-        }, {
-            "id": 68,
-            "name": "W PC Accessories",
-            "description": "",
-            "children": [],
-            "leaf": true
-        }, {
-            "id": 71,
-            "name": "Y Other Stuff",
-            "description": "",
-            "children": [],
-            "leaf": true
-        }, {
-            "id": 77,
-            "name": "X PCB Material",
-            "description": "",
-            "children": [],
-            "leaf": true
-        }, {
-            "id": 147,
-            "name": "6 Speakers and Buzzers",
-            "description": "",
-            "children": [],
-            "leaf": true
+          ],
+          "categoryPath": "Root Category ➤ 1 Active Components ➤ 3 Others",
+          "expanded": true,
+          "name": "3 Others",
+          "description": ""
         }
-        ],
-        "expanded": true
+      ],
+      "categoryPath": "Root Category ➤ 1 Active Components",
+      "expanded": true,
+      "name": "1 Active Components",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/4",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [
+        {
+          "@id": "/api/part_categories/56",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/4",
+          "children": [
+            {
+              "@id": "/api/part_categories/57",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/56",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 1 Resistors ➤ 1 Metal Film 1%",
+              "expanded": true,
+              "name": "1 Metal Film 1%",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/58",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/56",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 1 Resistors ➤ 2 Carbon Film 5%",
+              "expanded": true,
+              "name": "2 Carbon Film 5%",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/59",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/56",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 1 Resistors ➤ 3 Networks",
+              "expanded": true,
+              "name": "3 Networks",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/60",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/56",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 1 Resistors ➤ 4 Power Resistors",
+              "expanded": true,
+              "name": "4 Power Resistors",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/61",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/56",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 1 Resistors ➤ PTC",
+              "expanded": true,
+              "name": "PTC",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 2 Passive Components ➤ 1 Resistors",
+          "expanded": true,
+          "name": "1 Resistors",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/62",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/4",
+          "children": [
+            {
+              "@id": "/api/part_categories/63",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/62",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 2 Capacitors ➤ 1 Ceramic",
+              "expanded": true,
+              "name": "1 Ceramic",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/64",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/62",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 2 Capacitors ➤ 2 Electrolythic",
+              "expanded": true,
+              "name": "2 Electrolythic",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/65",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/62",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 2 Capacitors ➤ 3 Film",
+              "expanded": true,
+              "name": "3 Film",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/66",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/62",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 2 Capacitors ➤ Styroflex",
+              "expanded": true,
+              "name": "Styroflex",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/67",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/62",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 2 Capacitors ➤ Tantal",
+              "expanded": true,
+              "name": "Tantal",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 2 Passive Components ➤ 2 Capacitors",
+          "expanded": true,
+          "name": "2 Capacitors",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/68",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/4",
+          "children": [
+            {
+              "@id": "/api/part_categories/69",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/68",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 3 Crystals, OSC, Filt ➤ 1 Crystals",
+              "expanded": true,
+              "name": "1 Crystals",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/70",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/68",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 3 Crystals, OSC, Filt ➤ 2 Oscillators",
+              "expanded": true,
+              "name": "2 Oscillators",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/142",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/68",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 3 Crystals, OSC, Filt ➤ 3 Filters",
+              "expanded": true,
+              "name": "3 Filters",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 2 Passive Components ➤ 3 Crystals, OSC, Filt",
+          "expanded": true,
+          "name": "3 Crystals, OSC, Filt",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/71",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/4",
+          "children": [
+            {
+              "@id": "/api/part_categories/72",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/71",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 1 Potentiometers",
+              "expanded": true,
+              "name": "1 Potentiometers",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/73",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/71",
+              "children": [
+                {
+                  "@id": "/api/part_categories/74",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/73",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 2 Trimmer ➤ 1 10/25 Tirms precision",
+                  "expanded": true,
+                  "name": "1 10/25 Tirms precision",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/75",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/73",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 2 Trimmer ➤ 2 Cermet",
+                  "expanded": true,
+                  "name": "2 Cermet",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/76",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/73",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 2 Trimmer ➤ 3 Precision",
+                  "expanded": true,
+                  "name": "3 Precision",
+                  "description": ""
+                }
+              ],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 2 Trimmer",
+              "expanded": true,
+              "name": "2 Trimmer",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/77",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/71",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 3 Slide Potentiometer",
+              "expanded": true,
+              "name": "3 Slide Potentiometer",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/78",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/71",
+              "children": [],
+              "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders ➤ 4 Encoders",
+              "expanded": true,
+              "name": "4 Encoders",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 2 Passive Components ➤ 4 Potentiometers / Padders",
+          "expanded": true,
+          "name": "4 Potentiometers / Padders",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/79",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/4",
+          "children": [],
+          "categoryPath": "Root Category ➤ 2 Passive Components ➤ 8 Photoresistors / LDRs",
+          "expanded": true,
+          "name": "8 Photoresistors / LDRs",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/80",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/4",
+          "children": [],
+          "categoryPath": "Root Category ➤ 2 Passive Components ➤ 9 Varistor",
+          "expanded": true,
+          "name": "9 Varistor",
+          "description": ""
+        }
+      ],
+      "categoryPath": "Root Category ➤ 2 Passive Components",
+      "expanded": true,
+      "name": "2 Passive Components",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/5",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [
+        {
+          "@id": "/api/part_categories/81",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [
+            {
+              "@id": "/api/part_categories/82",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/81",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 1 IC Sockets",
+              "expanded": true,
+              "name": "1 IC Sockets",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/83",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/81",
+              "children": [
+                {
+                  "@id": "/api/part_categories/84",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [
+                    {
+                      "@id": "/api/part_categories/85",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 1 Wire-to-Board",
+                      "expanded": true,
+                      "name": "1 Wire-to-Board",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/86",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 2 USB",
+                      "expanded": true,
+                      "name": "2 USB",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/87",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 3 D-Sub",
+                      "expanded": true,
+                      "name": "3 D-Sub",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/88",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 4 IDC Connectors and Box Headers",
+                      "expanded": true,
+                      "name": "4 IDC Connectors and Box Headers",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/89",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 5 Terminal Blocks",
+                      "expanded": true,
+                      "name": "5 Terminal Blocks",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/90",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 6 Board to Board",
+                      "expanded": true,
+                      "name": "6 Board to Board",
+                      "description": ""
+                    },
+                    {
+                      "@id": "/api/part_categories/91",
+                      "@type": "PartCategory",
+                      "parent": "/api/part_categories/84",
+                      "children": [],
+                      "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular ➤ 7 Pin Headers",
+                      "expanded": true,
+                      "name": "7 Pin Headers",
+                      "description": ""
+                    }
+                  ],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 1 Rectangular",
+                  "expanded": true,
+                  "name": "1 Rectangular",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/92",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 2 Round",
+                  "expanded": true,
+                  "name": "2 Round",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/93",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 3 Audio",
+                  "expanded": true,
+                  "name": "3 Audio",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/94",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 4 Others",
+                  "expanded": true,
+                  "name": "4 Others",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/95",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 5 WAGO",
+                  "expanded": true,
+                  "name": "5 WAGO",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/96",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 6 Faston",
+                  "expanded": true,
+                  "name": "6 Faston",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/97",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 7 HF",
+                  "expanded": true,
+                  "name": "7 HF",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/98",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 8 DC Power Jacks",
+                  "expanded": true,
+                  "name": "8 DC Power Jacks",
+                  "description": ""
+                },
+                {
+                  "@id": "/api/part_categories/99",
+                  "@type": "PartCategory",
+                  "parent": "/api/part_categories/83",
+                  "children": [],
+                  "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors ➤ 9 Lab Connectors",
+                  "expanded": true,
+                  "name": "9 Lab Connectors",
+                  "description": ""
+                }
+              ],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors ➤ 2 PCB Connectors",
+              "expanded": true,
+              "name": "2 PCB Connectors",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 1 Connectors",
+          "expanded": true,
+          "name": "1 Connectors",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/100",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [
+            {
+              "@id": "/api/part_categories/101",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/100",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 2 Switches and Buttons ➤ 1 Switches",
+              "expanded": true,
+              "name": "1 Switches",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/102",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/100",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 2 Switches and Buttons ➤ 2 Push Button",
+              "expanded": true,
+              "name": "2 Push Button",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/103",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/100",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 2 Switches and Buttons ➤ 3 Code Switches",
+              "expanded": true,
+              "name": "3 Code Switches",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/104",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/100",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 2 Switches and Buttons ➤ 4 DIP Switches",
+              "expanded": true,
+              "name": "4 DIP Switches",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/144",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/100",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 2 Switches and Buttons ➤ 5 Accessories",
+              "expanded": true,
+              "name": "5 Accessories",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 2 Switches and Buttons",
+          "expanded": true,
+          "name": "2 Switches and Buttons",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/105",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 3 Relais",
+          "expanded": true,
+          "name": "3 Relais",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/106",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [
+            {
+              "@id": "/api/part_categories/110",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/106",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 4 Fuses ➤ 1 5*20",
+              "expanded": true,
+              "name": "1 5*20",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/111",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/106",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 4 Fuses ➤ 2 6,3*32",
+              "expanded": true,
+              "name": "2 6,3*32",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/112",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/106",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 4 Fuses ➤ 3 Blade Fuses",
+              "expanded": true,
+              "name": "3 Blade Fuses",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 4 Fuses",
+          "expanded": true,
+          "name": "4 Fuses",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/107",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 5 Battery Holders",
+          "expanded": true,
+          "name": "5 Battery Holders",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/108",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 6 Transformers",
+          "expanded": true,
+          "name": "6 Transformers",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/109",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [
+            {
+              "@id": "/api/part_categories/113",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/109",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 7 Motors ➤ 1 DC",
+              "expanded": true,
+              "name": "1 DC",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/114",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/109",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 7 Motors ➤ 2 Stepper",
+              "expanded": true,
+              "name": "2 Stepper",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/115",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/109",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 7 Motors ➤ 3 Servo",
+              "expanded": true,
+              "name": "3 Servo",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/116",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/109",
+              "children": [],
+              "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 7 Motors ➤ 4 Brushless",
+              "expanded": true,
+              "name": "4 Brushless",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 7 Motors",
+          "expanded": true,
+          "name": "7 Motors",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/117",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/5",
+          "children": [],
+          "categoryPath": "Root Category ➤ 3 Electromechanical Parts ➤ 8 Selenoids",
+          "expanded": true,
+          "name": "8 Selenoids",
+          "description": ""
+        }
+      ],
+      "categoryPath": "Root Category ➤ 3 Electromechanical Parts",
+      "expanded": true,
+      "name": "3 Electromechanical Parts",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/6",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [
+        {
+          "@id": "/api/part_categories/118",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 1 Mica Washers",
+          "expanded": true,
+          "name": "1 Mica Washers",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/119",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 2 Cooling",
+          "expanded": true,
+          "name": "2 Cooling",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/120",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [
+            {
+              "@id": "/api/part_categories/121",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/120",
+              "children": [],
+              "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 3 Screws ➤ 1 Auto",
+              "expanded": true,
+              "name": "1 Auto",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/122",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/120",
+              "children": [],
+              "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 3 Screws ➤ 2 Mx",
+              "expanded": true,
+              "name": "2 Mx",
+              "description": ""
+            },
+            {
+              "@id": "/api/part_categories/123",
+              "@type": "PartCategory",
+              "parent": "/api/part_categories/120",
+              "children": [],
+              "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 3 Screws ➤ 3 Imperial",
+              "expanded": true,
+              "name": "3 Imperial",
+              "description": ""
+            }
+          ],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 3 Screws",
+          "expanded": true,
+          "name": "3 Screws",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/124",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 5 Nuts",
+          "expanded": true,
+          "name": "5 Nuts",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/125",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 6 Pulleys",
+          "expanded": true,
+          "name": "6 Pulleys",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/126",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 7 Bearings",
+          "expanded": true,
+          "name": "7 Bearings",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/127",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 8 Spacers",
+          "expanded": true,
+          "name": "8 Spacers",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/128",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/6",
+          "children": [],
+          "categoryPath": "Root Category ➤ 4 Mechanical Parts ➤ 9 Sliding things",
+          "expanded": true,
+          "name": "9 Sliding things",
+          "description": ""
+        }
+      ],
+      "categoryPath": "Root Category ➤ 4 Mechanical Parts",
+      "expanded": true,
+      "name": "4 Mechanical Parts",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/7",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [
+        {
+          "@id": "/api/part_categories/129",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/7",
+          "children": [],
+          "categoryPath": "Root Category ➤ 5 Cables ➤ 1 Spools",
+          "expanded": true,
+          "name": "1 Spools",
+          "description": ""
+        },
+        {
+          "@id": "/api/part_categories/130",
+          "@type": "PartCategory",
+          "parent": "/api/part_categories/7",
+          "children": [],
+          "categoryPath": "Root Category ➤ 5 Cables ➤ 2 Ribbon Cable",
+          "expanded": true,
+          "name": "2 Ribbon Cable",
+          "description": ""
+        }
+      ],
+      "categoryPath": "Root Category ➤ 5 Cables",
+      "expanded": true,
+      "name": "5 Cables",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/8",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ 6 Speakers and Buzzers",
+      "expanded": true,
+      "name": "6 Speakers and Buzzers",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/9",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ V Modules",
+      "expanded": true,
+      "name": "V Modules",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/10",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ W PC Stuff",
+      "expanded": true,
+      "name": "W PC Stuff",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/11",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ X PCB Material",
+      "expanded": true,
+      "name": "X PCB Material",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/12",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ Y Other Stuff",
+      "expanded": true,
+      "name": "Y Other Stuff",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/13",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ Z Projects",
+      "expanded": true,
+      "name": "Z Projects",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/139",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ U 3D Printing",
+      "expanded": true,
+      "name": "U 3D Printing",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/140",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ T Books",
+      "expanded": true,
+      "name": "T Books",
+      "description": ""
+    },
+    {
+      "@id": "/api/part_categories/141",
+      "@type": "PartCategory",
+      "parent": "/api/part_categories/1",
+      "children": [],
+      "categoryPath": "Root Category ➤ # To test",
+      "expanded": true,
+      "name": "# To test",
+      "description": ""
     }
+  ],
+  "categoryPath": "Root Category",
+  "expanded": true,
+  "name": "Root Category",
+  "description": null
 }
-
-

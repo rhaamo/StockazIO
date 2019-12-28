@@ -1,11 +1,13 @@
 from os import path
 
 import yaml
+import json
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from controllers.part.models import PartUnit  # , ParametersUnit
 from controllers.footprints.models import Footprint, FootprintCategory
+from controllers.categories.models import Category
 
 # from vendoring.models import Distributor, Manufacturer, ManufacturerLogo
 
@@ -50,6 +52,36 @@ def seed_footprints():
                 fi = open("{0}/../setup-data/footprints/{1}".format(settings.BASE_DIR, z[i][ii]["image"]), "rb")
                 f.picture.save(path.basename(z[i][ii]["image"]), fi, save=False)
             f.save()
+
+
+def seed_categories():
+    print("+++ 000 --- Seeding Categories")
+    with open("{0}/../setup-data/categories.json".format(settings.BASE_DIR), "r") as stream:
+        root_category = json.load(stream)
+
+    # create root category
+    try:
+        rc = Category.objects.get(name=root_category["name"])
+    except Category.DoesNotExist:
+        rc = Category(name=root_category["name"])
+        rc.save()
+    except Category.MultipleObjectsReturned:
+        print(f"WARNING: Multiple entries returned for root category {root_category['name']!r}")
+        print("Cannot continue")
+        return
+
+    def walk_childrens(cat, parent=None, level=0):
+        for child in cat["children"]:
+            # try to get (children) category
+            try:
+                cc = Category.objects.get(name=child["name"], parent=parent)
+            except Category.DoesNotExist:
+                cc = Category(name=child["name"], parent=parent)
+                cc.save()
+            if "children" in child:
+                walk_childrens(child, parent=cc, level=level + 1)
+
+    walk_childrens(root_category, parent=rc, level=0)
 
 
 def seed_parameters_unit():
@@ -103,6 +135,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         seed_part_units()
         seed_footprints()
+        seed_categories()
         # seed_parameters_unit()
         # seed_manufacturers()
         # seed_distributors()
