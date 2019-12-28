@@ -42,7 +42,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = []
 
-LOCAL_APPS = ["controllers.part", "controllers.footprints"]
+LOCAL_APPS = ["controllers.part", "controllers.footprints", "controllers.storage", "controllers.categories"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
