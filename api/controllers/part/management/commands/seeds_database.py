@@ -8,8 +8,8 @@ from django.core.management.base import BaseCommand
 from controllers.part.models import PartUnit  # , ParametersUnit
 from controllers.footprints.models import Footprint, FootprintCategory
 from controllers.categories.models import Category
-
-# from vendoring.models import Distributor, Manufacturer, ManufacturerLogo
+from controllers.manufacturer.models import Manufacturer, ManufacturerLogo
+from controllers.distributor.models import Distributor
 
 
 def seed_part_units():
@@ -101,14 +101,21 @@ def seed_manufacturers():
         manufacturers = yaml.load(stream, Loader=yaml.FullLoader)
 
     for name in manufacturers:
-        man = Manufacturer(name=name)
-        man.save()
+        try:
+            man = Manufacturer.objects.get(name=name)
+        except Manufacturer.DoesNotExist:
+            man = Manufacturer(name=name)
+            man.save()
 
-        for logo in manufacturers[name]:
-            f = ManufacturerLogo(manufacturer=man)
-            fi = open("{0}/setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
-            f.logo.save(path.basename(logo), fi, save=False)
-            f.save()
+            for logo in manufacturers[name]:
+                f = ManufacturerLogo(manufacturer=man)
+                fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
+                f.logo.save(path.basename(logo), fi, save=False)
+                f.save()
+
+        except Manufacturer.MultipleObjectsReturned:
+            print(f"WARNING: Multiple entries returned for {name!r}, skipping")
+            continue
 
 
 def seed_distributors():
@@ -119,9 +126,15 @@ def seed_distributors():
         ["DigiKey Electronics", "https://www.digikey.com/"],
         ["TME", "https://www.tme.eu/"],
     ]
-    for d in distributors:
-        distributor = Distributor(name=d[0], url=d[1])
-        distributor.save()
+    for name, url in distributors:
+        try:
+            distributor = Distributor.objects.get(name=name, url=url)
+        except Distributor.DoesNotExist:
+            distributor = Distributor(name=name, url=url)
+            distributor.save()
+        except Distributor.MultipleObjectsReturned:
+            print(f"WARNING: Multiple entries returned for {name!r}, {url!r}, skipping")
+            continue
 
 
 class Command(BaseCommand):
@@ -137,5 +150,5 @@ class Command(BaseCommand):
         seed_footprints()
         seed_categories()
         # seed_parameters_unit()
-        # seed_manufacturers()
-        # seed_distributors()
+        seed_manufacturers()
+        seed_distributors()
