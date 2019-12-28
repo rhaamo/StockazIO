@@ -21,7 +21,8 @@ def part_list(request, template_name="parts/part_list.html"):
         ctx["sort_arg"] = "name"
         ctx["sort_by"] = "-name"
 
-    base_queryset = Part.objects.values("id", "name", "storage", "stock_qty", "stock_qty_min", "footprint")
+    base_queryset = Part.objects.prefetch_related("storage", "footprint")
+    # base_queryset = Part.objects.values("id", "name", "storage", "stock_qty", "stock_qty_min", "footprint")
 
     ctx["object_list"] = base_queryset.order_by(ctx["sort_by"])
     paginator = Paginator(ctx["object_list"], settings.PAGINATION["PARTS"])

@@ -41,7 +41,7 @@ ul.cat-list {
 ul.cat-list ul.children {
     list-style: none;
     margin: 0;
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 ul.cat-list li {

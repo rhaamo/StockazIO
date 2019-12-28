@@ -25,7 +25,8 @@ SECRET_KEY = "^@*2wer5(q2k!f1)!bns&%gf_qliixb$cd)%k*=_blze$a4@%1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
+INTERNAL_IPS = ALLOWED_HOSTS
 
 
 # Application definition
