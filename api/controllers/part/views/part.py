@@ -6,10 +6,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from controllers.part.models import Part
 from controllers.part.forms import PartForm
+from controllers.categories.models import Category
 
 
 @login_required
-def part_list(request, template_name="parts/part_list.html"):
+def part_list(request, category=None, template_name="parts/part_list.html"):
     sort = request.GET.get("sort", "name")
     page = request.GET.get("page", 1)
     ctx = {}
@@ -21,13 +22,19 @@ def part_list(request, template_name="parts/part_list.html"):
         ctx["sort_arg"] = "name"
         ctx["sort_by"] = "-name"
 
-    base_queryset = Part.objects.prefetch_related("storage", "footprint")
-    # base_queryset = Part.objects.values("id", "name", "storage", "stock_qty", "stock_qty_min", "footprint")
+    if category:
+        cat = get_object_or_404(Category, id=category)
+        base_queryset = Part.objects.prefetch_related("storage", "footprint").filter(category=cat)
+    else:
+        base_queryset = Part.objects.prefetch_related("storage", "footprint")
 
     ctx["object_list"] = base_queryset.order_by(ctx["sort_by"])
     paginator = Paginator(ctx["object_list"], settings.PAGINATION["PARTS"])
     ctx["paginator"] = paginator.page(page)
     ctx["page"] = page
+    if category:
+        ctx["category"] = cat
+        ctx["category_path"] = cat.__str__().split("->")
 
     return render(request, template_name, ctx)
 

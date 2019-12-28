@@ -134,7 +134,7 @@
             <ul class="cat-list">
                 {% recursetree categories %}
                     <li>
-                        <i class="fa fa-folder"></i> <a href="" title="{{ node.name }}">{{ node.name }}</a>
+                        <i class="fa fa-folder"></i> <a href="{% url 'part_list' category=node.id %}" title="{{ node.name }}">{{ node.name }}</a>
                         {% if not node.is_leaf_node %}
                             <ul class="children">
                                 {{ children }}
