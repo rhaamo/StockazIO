@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from controllers.footprints.models import Footprint
 from controllers.categories.models import Category
+from controllers.storage.models import StorageLocation
 
 
 class PartUnit(models.Model):
@@ -39,7 +40,7 @@ class Part(models.Model):
     )
     part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.PROTECT)
-    # storage location
+    storage = models.ForeignKey(StorageLocation, blank=True, null=True, on_delete=models.PROTECT)
     footprint = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.PROTECT)
     comment = models.CharField(
         _("comment"), max_length=255, unique=False, blank=True, help_text=_("Comments about the part itself")

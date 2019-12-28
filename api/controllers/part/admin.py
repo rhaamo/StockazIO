@@ -12,7 +12,7 @@ class PartAdmin(CommonAdmin):
     list_display = (
         "name",
         "description",
-        # "storage",
+        "storage",
         "category",
         "stock_qty",
         "stock_qty_min",

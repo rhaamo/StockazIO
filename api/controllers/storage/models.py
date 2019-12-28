@@ -45,4 +45,9 @@ class StorageLocation(models.Model):
         verbose_name_plural = _("storage locations")
 
     def __str__(self):
-        return self.name
+        full_path = [self.name]
+        k = self.category
+        while k is not None:
+            full_path.append(k.name)
+            k = k.parent
+        return " -> ".join(full_path[::-1])
