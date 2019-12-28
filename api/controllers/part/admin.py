@@ -48,7 +48,7 @@ class PartAdmin(CommonAdmin):
         "name",
         "description",
         "storage",
-        "category",
+        # "category",
         "stock_qty",
         "stock_qty_min",
         "footprint",
