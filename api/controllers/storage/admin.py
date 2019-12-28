@@ -19,6 +19,7 @@ class StorageLocationAdmin(CommonAdmin):
             )
 
     get_picture.short_description = _("Picture")
+    list_filter = ("category",)
 
 
 admin.site.register(StorageCategory)

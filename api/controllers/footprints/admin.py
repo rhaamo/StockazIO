@@ -29,6 +29,7 @@ class FootprintAdmin(CommonAdmin):
             )
 
     get_picture.short_description = _("Picture")
+    list_filter = ("footprint",)
 
 
 admin.site.register(FootprintCategory, FootprintCategoryAdmin)

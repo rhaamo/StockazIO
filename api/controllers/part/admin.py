@@ -3,6 +3,7 @@ from .models import Part, PartUnit, PartParameter, ParametersUnit, PartAttachmen
 from config.admin import CommonAdmin
 from controllers.distributor.models import DistributorSku
 from controllers.manufacturer.models import PartManufacturer
+from django_admin_listfilter_dropdown.filters import DropdownFilter
 
 
 class PartUnitAdmin(CommonAdmin):
@@ -18,6 +19,7 @@ class ParametersUnitAdmin(CommonAdmin):
         "description",
     )
     search_fields = ("name",)
+    list_filter = ("name",)
 
 
 class DistributorSkuInLine(admin.TabularInline):
@@ -53,6 +55,11 @@ class PartAdmin(CommonAdmin):
     )
     search_fields = ("name",)
     inlines = [DistributorSkuInLine, PartManufacturerInLine, PartParameterInLine, PartAttachmentInLine]
+    list_filter = (
+        ("category__name", DropdownFilter),
+        ("storage__name", DropdownFilter),
+        ("footprint__name", DropdownFilter),
+    )
 
 
 class PartAttachmentAdmin(CommonAdmin):

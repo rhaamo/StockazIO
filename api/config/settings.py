@@ -40,7 +40,7 @@ DJANGO_APPS = [
     "django.contrib.admin",
 ]
 
-THIRD_PARTY_APPS = ["mptt", "debug_toolbar", "imagekit", "crispy_forms"]
+THIRD_PARTY_APPS = ["mptt", "debug_toolbar", "imagekit", "crispy_forms", "django_admin_listfilter_dropdown"]
 
 LOCAL_APPS = [
     "controllers.part",

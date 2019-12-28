@@ -41,7 +41,10 @@ class Command(BaseCommand):
                 csv_reader = csv.DictReader(csv_file, delimiter=",")
                 for row in csv_reader:
                     # Get or create part unit
-                    part_unit, _ = PartUnit.objects.get_or_create(name=row["partUnit.name"])
+                    if row["partUnit.name"] == "null":
+                        part_unit = None
+                    else:
+                        part_unit, _ = PartUnit.objects.get_or_create(name=row["partUnit.name"])
                     # Get Category if possible
                     try:
                         category = Category.objects.get(name=row["category.name"])
