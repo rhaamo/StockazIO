@@ -40,7 +40,7 @@ DJANGO_APPS = [
     "django.contrib.admin",
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = ["mptt"]
 
 LOCAL_APPS = ["controllers.part", "controllers.footprints", "controllers.storage", "controllers.categories"]
 
