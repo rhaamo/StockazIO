@@ -85,6 +85,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "part", "verbose_name_plural": "parts", "ordering": ("name",),},
-        ),
+            options={"verbose_name": "part", "verbose_name_plural": "parts", "ordering": ("name",)},
+        )
     ]

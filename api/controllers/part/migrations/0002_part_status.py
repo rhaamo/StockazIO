@@ -5,9 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("part", "0001_initial"),
-    ]
+    dependencies = [("part", "0001_initial")]
 
     operations = [
         migrations.AddField(
@@ -16,5 +14,5 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True, help_text="Notes about the inventory sheet status ?", max_length=255, verbose_name="status"
             ),
-        ),
+        )
     ]

@@ -1,5 +1,20 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from controllers.footprints.models import Footprint
+
+
+class PartUnit(models.Model):
+    name = models.CharField(_("name"), max_length=255, unique=True, blank=False, help_text=_("ex. Centimeters"))
+    short_name = models.CharField(_("short name"), max_length=255, unique=False, blank=False, help_text=_("ex. cms"))
+    description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
+
+    class Meta(object):
+        ordering = ("name",)
+        verbose_name = _("part unit")
+        verbose_name_plural = _("part units")
+
+    def __str__(self):
+        return "{0} ({1})".format(self.name, self.short_name)
 
 
 class Part(models.Model):
@@ -21,10 +36,10 @@ class Part(models.Model):
     stock_qty = models.IntegerField(
         _("stock quantity"), default=1, unique=False, blank=False, help_text=_("How many do you have now ?")
     )
-    # part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.PROTECT)
+    part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.PROTECT)
     # category
     # storage location
-    # footprint = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.PROTECT)
+    footprint = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.PROTECT)
     comment = models.CharField(
         _("comment"), max_length=255, unique=False, blank=True, help_text=_("Comments about the part itself")
     )

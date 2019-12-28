@@ -1,0 +1,892 @@
+{
+    "status": "ok",
+    "success": true,
+    "response": {
+        "id": 1,
+        "name": "Root Category",
+        "description": "",
+        "children": [{
+            "id": 2,
+            "name": "1 Active Components",
+            "description": "",
+            "children": [{
+                "id": 3,
+                "name": "1 Semiconductors",
+                "description": "",
+                "children": [{
+                    "id": 4,
+                    "name": "2 Integrated Circuits",
+                    "description": "",
+                    "children": [{
+                        "id": 5,
+                        "name": "1 Logic Gates",
+                        "description": "",
+                        "children": [{
+                            "id": 6,
+                            "name": "2 TTL",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 10,
+                            "name": "1 CMOS",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }
+                        ],
+                        "expanded": true
+                    }, {
+                        "id": 7,
+                        "name": "9 MOSFET Drivers",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 8,
+                        "name": "Z Others",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 9,
+                        "name": "4 OpAmps",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 11,
+                        "name": "2 ADC, DAC",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 36,
+                        "name": "3 Microcontrollers",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 79,
+                        "name": "5 Timers",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 122,
+                        "name": "6 EPROM",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 126,
+                        "name": "7 Comparators",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 132,
+                        "name": "8 Memory",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 81,
+                        "name": "A Voltage Regulators \/ Controllers",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 32,
+                    "name": "1 Transistors",
+                    "description": "",
+                    "children": [{
+                        "id": 33,
+                        "name": "NPN",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 74,
+                        "name": "PNP",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 114,
+                        "name": "MOSFET",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 56,
+                    "name": "3 Diodes",
+                    "description": "",
+                    "children": [{
+                        "id": 57,
+                        "name": "3 Z Diodes",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 58,
+                        "name": "1 Universal",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 59,
+                        "name": "Other",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 67,
+                        "name": "4 Rectifiers and Rectifier Diodes",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 85,
+                        "name": "2 Schottky",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 62,
+                    "name": "Thyristor",
+                    "description": "",
+                    "children": [{
+                        "id": 111,
+                        "name": "1 TRIACs",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 136,
+                        "name": "2 SCR",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 89,
+                    "name": "5 Voltage References",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 110,
+                    "name": "4 Triacs",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 21,
+                "name": "2 Optoelectronics",
+                "description": "",
+                "children": [{
+                    "id": 22,
+                    "name": "4 Others",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 23,
+                    "name": "1 LED",
+                    "description": "",
+                    "children": [{
+                        "id": 30,
+                        "name": "Standard",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 31,
+                        "name": "Module",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 95,
+                        "name": "SMD",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 41,
+                    "name": "2 LCD Displays",
+                    "description": "",
+                    "children": [{
+                        "id": 42,
+                        "name": "2 Graphics",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 43,
+                        "name": "1 Text",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 90,
+                    "name": "3 Optocouplers",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 117,
+                    "name": "5 Optical Switches",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 46,
+                "name": "3 Others",
+                "description": "",
+                "children": [{
+                    "id": 47,
+                    "name": "Inverter",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }
+            ],
+            "expanded": true
+        }, {
+            "id": 12,
+            "name": "3 Electromechanical Parts",
+            "description": "",
+            "children": [{
+                "id": 13,
+                "name": "1 Connectors",
+                "description": "",
+                "children": [{
+                    "id": 14,
+                    "name": "2 PCB Connectors",
+                    "description": "",
+                    "children": [{
+                        "id": 17,
+                        "name": "1 Rectangular",
+                        "description": "",
+                        "children": [{
+                            "id": 18,
+                            "name": "2 USB",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 48,
+                            "name": "3 D-Sub",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 91,
+                            "name": "1 Wire-to-Board",
+                            "description": "",
+                            "children": [{
+                                "id": 96,
+                                "name": "1 PSK",
+                                "description": "",
+                                "children": [{
+                                    "id": 76,
+                                    "name": "1 Sets",
+                                    "description": "",
+                                    "children": [],
+                                    "leaf": true
+                                }
+                                ],
+                                "expanded": true
+                            }, {
+                                "id": 124,
+                                "name": "2 Dupont Crimp Contacts",
+                                "description": "",
+                                "children": [],
+                                "leaf": true
+                            }
+                            ],
+                            "expanded": true
+                        }, {
+                            "id": 105,
+                            "name": "4 IDC Connectors + Box Headers",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 119,
+                            "name": "5 Terminal Blocks",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 125,
+                            "name": "6 Board to Board",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }
+                        ],
+                        "expanded": true
+                    }, {
+                        "id": 28,
+                        "name": "2 Round",
+                        "description": "",
+                        "children": [{
+                            "id": 29,
+                            "name": "1 PSU",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }
+                        ],
+                        "expanded": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 37,
+                    "name": "4 Others",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 16,
+                    "name": "1 IC Sockets",
+                    "description": "",
+                    "children": [{
+                        "id": 133,
+                        "name": "1 Test Sockets",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 134,
+                        "name": "2 Precision",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 135,
+                        "name": "3 Low Cost",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 40,
+                    "name": "3 Audio",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 94,
+                    "name": "5 WAGO",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 118,
+                    "name": "6 Faston",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 129,
+                    "name": "7 HF",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 139,
+                    "name": "8 DC Power Jacks",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 149,
+                    "name": "9 Lab Connectors",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 27,
+                "name": "2 Switches and Buttons",
+                "description": "",
+                "children": [{
+                    "id": 78,
+                    "name": "Rotary step switches",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 93,
+                    "name": "1 Switches",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 108,
+                    "name": "2 Push Button",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 109,
+                    "name": "3 Code Switches",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 116,
+                    "name": "4 DIP Switches",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 44,
+                "name": "3 Relais",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 98,
+                "name": "4 Fuses",
+                "description": "",
+                "children": [{
+                    "id": 107,
+                    "name": "1 5*20",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 137,
+                    "name": "2 6,3*32",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 142,
+                    "name": "3 Blade Fuses",
+                    "description": "",
+                    "children": [{
+                        "id": 143,
+                        "name": "1 ATO",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 127,
+                "name": "5 Battery Holders",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 130,
+                "name": "6 Transformers",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 140,
+                "name": "7 Motors",
+                "description": "",
+                "children": [{
+                    "id": 141,
+                    "name": "1 Servo",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }
+            ],
+            "expanded": true
+        }, {
+            "id": 24,
+            "name": "2 Passive Components",
+            "description": "",
+            "children": [{
+                "id": 25,
+                "name": "1 Resistors",
+                "description": "",
+                "children": [{
+                    "id": 75,
+                    "name": "1 Metal Film 1%",
+                    "description": "",
+                    "children": [{
+                        "id": 138,
+                        "name": "SMD",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 82,
+                    "name": "PTC",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 97,
+                    "name": "2 Carbon Film 5%",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 104,
+                    "name": "3 Networks",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 38,
+                "name": "4 Potentiometers \/ Padders",
+                "description": "",
+                "children": [{
+                    "id": 26,
+                    "name": "2 Trimmer",
+                    "description": "",
+                    "children": [{
+                        "id": 100,
+                        "name": "1 10\/25 Turns Precision",
+                        "description": "",
+                        "children": [{
+                            "id": 101,
+                            "name": "1 64P",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 102,
+                            "name": "2 64W",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 103,
+                            "name": "3 64Y",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 128,
+                            "name": "4 64X",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }, {
+                            "id": 148,
+                            "name": "5 64Z",
+                            "description": "",
+                            "children": [],
+                            "leaf": true
+                        }
+                        ],
+                        "expanded": true
+                    }, {
+                        "id": 106,
+                        "name": "2 Cermet",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }, {
+                        "id": 131,
+                        "name": "3 Precision",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 39,
+                    "name": "4 Encoders",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 45,
+                    "name": "3 Slide Potentiometers",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 51,
+                    "name": "1 Potentiometers",
+                    "description": "",
+                    "children": [{
+                        "id": 88,
+                        "name": "Accessories",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 65,
+                "name": "Varistor",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 66,
+                "name": "Resistor Networks",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 86,
+                "name": "Inductive Components",
+                "description": "",
+                "children": [{
+                    "id": 87,
+                    "name": "Exchangers",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 19,
+                "name": "3 Crystals and Oscillators",
+                "description": "",
+                "children": [{
+                    "id": 120,
+                    "name": "1 Crystals",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 121,
+                    "name": "2 Crystal Oscillators",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 35,
+                "name": "2 Capacitors",
+                "description": "",
+                "children": [{
+                    "id": 55,
+                    "name": "2 Electrolythic",
+                    "description": "",
+                    "children": [{
+                        "id": 99,
+                        "name": "1 SMD",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 60,
+                    "name": "3 Film",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }, {
+                    "id": 64,
+                    "name": "1 Ceramic",
+                    "description": "",
+                    "children": [{
+                        "id": 112,
+                        "name": "SMD",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 80,
+                    "name": "Tantal",
+                    "description": "",
+                    "children": [{
+                        "id": 113,
+                        "name": "SMD",
+                        "description": "",
+                        "children": [],
+                        "leaf": true
+                    }
+                    ],
+                    "expanded": true
+                }, {
+                    "id": 84,
+                    "name": "Styroflex",
+                    "description": "",
+                    "children": [],
+                    "leaf": true
+                }
+                ],
+                "expanded": true
+            }, {
+                "id": 146,
+                "name": "8 Photoresistors \/ LDRs",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }
+            ],
+            "expanded": true
+        }, {
+            "id": 49,
+            "name": "5 Cables",
+            "description": "",
+            "children": [{
+                "id": 50,
+                "name": "1 Ribbon Cable",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }
+            ],
+            "expanded": true
+        }, {
+            "id": 52,
+            "name": "4 Mechanical Parts",
+            "description": "",
+            "children": [{
+                "id": 53,
+                "name": "Washer",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 54,
+                "name": "Mother",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 61,
+                "name": "2 Cooling",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 63,
+                "name": "Spacer",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 69,
+                "name": "Others",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 70,
+                "name": "Screws",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 72,
+                "name": "Brads",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 92,
+                "name": "Spacers",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }, {
+                "id": 123,
+                "name": "1 Mica Washers",
+                "description": "",
+                "children": [],
+                "leaf": true
+            }
+            ],
+            "expanded": true
+        }, {
+            "id": 68,
+            "name": "W PC Accessories",
+            "description": "",
+            "children": [],
+            "leaf": true
+        }, {
+            "id": 71,
+            "name": "Y Other Stuff",
+            "description": "",
+            "children": [],
+            "leaf": true
+        }, {
+            "id": 77,
+            "name": "X PCB Material",
+            "description": "",
+            "children": [],
+            "leaf": true
+        }, {
+            "id": 147,
+            "name": "6 Speakers and Buzzers",
+            "description": "",
+            "children": [],
+            "leaf": true
+        }
+        ],
+        "expanded": true
+    }
+}
+
+
