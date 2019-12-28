@@ -20,6 +20,9 @@ from django.conf.urls import static, url, include
 
 urlpatterns = [path("admin/", admin.site.urls)]
 
+admin.site.site_header = "StockazIO Inventory"
+admin.site.site_title = "StockazIO Admin Portal"
+admin.site.index_title = "Welcome to StockazIO"
 
 if settings.DEBUG:
     import debug_toolbar
