@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from controllers.footprints.models import Footprint
 from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation
+from controllers.part.validators import validate_file_type
 
 
 class PartUnit(models.Model):
@@ -112,3 +113,26 @@ class PartParameter(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PartAttachment(models.Model):
+    description = models.CharField(
+        _("description"), max_length=100, blank=False, unique=True, help_text=_("Description of the attachment")
+    )
+    file = models.FileField(
+        verbose_name=_("File"),
+        help_text=_("File to upload"),
+        upload_to="part_attachments/",
+        validators=[validate_file_type],
+        blank=False,
+        null=False,
+    )
+    part = models.ForeignKey(Part, related_name="part_attachments", blank=True, null=True, on_delete=models.PROTECT)
+
+    class Meta(object):
+        ordering = ("id",)
+        verbose_name = _("Part Attachment")
+        verbose_name_plural = _("Part Attachments")
+
+    def __str__(self):
+        return self.description

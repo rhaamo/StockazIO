@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Part, PartUnit, PartParameter, ParametersUnit
+from .models import Part, PartUnit, PartParameter, ParametersUnit, PartAttachment
 from config.admin import CommonAdmin
 from controllers.distributor.models import DistributorSku
 from controllers.manufacturer.models import PartManufacturer
@@ -35,6 +35,11 @@ class PartParameterInLine(admin.TabularInline):
     extra = 1
 
 
+class PartAttachmentInLine(admin.TabularInline):
+    model = PartAttachment
+    extra = 1
+
+
 class PartAdmin(CommonAdmin):
     list_display = (
         "name",
@@ -47,9 +52,14 @@ class PartAdmin(CommonAdmin):
         "internal_part_number",
     )
     search_fields = ("name",)
-    inlines = [DistributorSkuInLine, PartManufacturerInLine, PartParameterInLine]
+    inlines = [DistributorSkuInLine, PartManufacturerInLine, PartParameterInLine, PartAttachmentInLine]
+
+
+class PartAttachmentAdmin(CommonAdmin):
+    list_display = ("description",)
 
 
 admin.site.register(PartUnit, PartUnitAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(ParametersUnit, ParametersUnitAdmin)
+admin.site.register(PartAttachment, PartAttachmentAdmin)
