@@ -1,0 +1,13 @@
+[tool.black]
+line-length = 120
+exclude = '''
+/(
+    \.git
+  | \.eggs
+  | \.idea
+  | \__pycache__
+  | venv
+  | front
+)/
+'''
+skip-numeric-underscore-normalization = true
