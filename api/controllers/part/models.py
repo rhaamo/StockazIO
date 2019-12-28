@@ -71,7 +71,7 @@ class Part(models.Model):
     # Search vector
 
     class Meta(object):
-        ordering = ("name",)
+        ordering = ("category",)
         verbose_name = _("part")
         verbose_name_plural = _("parts")
 
