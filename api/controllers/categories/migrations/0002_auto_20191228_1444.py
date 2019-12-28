@@ -6,16 +6,10 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('categories', '0001_initial'),
+        ("categories", "0001_initial"),
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(
-            name='category',
-            unique_together=set(),
-        ),
-        migrations.RemoveField(
-            model_name='category',
-            name='slug',
-        ),
+        migrations.AlterUniqueTogether(name="category", unique_together=set(),),
+        migrations.RemoveField(model_name="category", name="slug",),
     ]

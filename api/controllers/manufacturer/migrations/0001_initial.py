@@ -8,39 +8,43 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Manufacturer',
+            name="Manufacturer",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Name', max_length=255, unique=True, verbose_name='name')),
-                ('address', models.CharField(blank=True, help_text='Address', max_length=255, verbose_name='address')),
-                ('url', models.CharField(blank=True, help_text='URL', max_length=255, verbose_name='url')),
-                ('email', models.CharField(blank=True, help_text='Email', max_length=255, verbose_name='email')),
-                ('comment', models.CharField(blank=True, help_text='Comment', max_length=255, verbose_name='comment')),
-                ('phone', models.CharField(blank=True, help_text='Phone', max_length=255, verbose_name='phone')),
-                ('fax', models.CharField(blank=True, help_text='FAX', max_length=255, verbose_name='fax')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(help_text="Name", max_length=255, unique=True, verbose_name="name")),
+                ("address", models.CharField(blank=True, help_text="Address", max_length=255, verbose_name="address")),
+                ("url", models.CharField(blank=True, help_text="URL", max_length=255, verbose_name="url")),
+                ("email", models.CharField(blank=True, help_text="Email", max_length=255, verbose_name="email")),
+                ("comment", models.CharField(blank=True, help_text="Comment", max_length=255, verbose_name="comment")),
+                ("phone", models.CharField(blank=True, help_text="Phone", max_length=255, verbose_name="phone")),
+                ("fax", models.CharField(blank=True, help_text="FAX", max_length=255, verbose_name="fax")),
             ],
-            options={
-                'verbose_name': 'manufacturer',
-                'verbose_name_plural': 'manufacturers',
-                'ordering': ('name',),
-            },
+            options={"verbose_name": "manufacturer", "verbose_name_plural": "manufacturers", "ordering": ("name",),},
         ),
         migrations.CreateModel(
-            name='ManufacturerLogo',
+            name="ManufacturerLogo",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('logo', models.ImageField(upload_to='manufacturers/', verbose_name='Manufacturer logo')),
-                ('manufacturer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='logos', to='manufacturer.Manufacturer')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("logo", models.ImageField(upload_to="manufacturers/", verbose_name="Manufacturer logo")),
+                (
+                    "manufacturer",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="logos",
+                        to="manufacturer.Manufacturer",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'manufacturer logo',
-                'verbose_name_plural': 'manufacturer logos',
-                'ordering': ('id',),
+                "verbose_name": "manufacturer logo",
+                "verbose_name_plural": "manufacturer logos",
+                "ordering": ("id",),
             },
         ),
     ]

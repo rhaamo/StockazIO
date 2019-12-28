@@ -94,8 +94,8 @@ def seed_parameters_unit():
             try:
                 pu = ParametersUnit.objects.get(name=i, symbol=units[i]["symbol"], prefix=ii)
             except ParametersUnit.DoesNotExist:
-                a = ParametersUnit(name=i, symbol=units[i]["symbol"], prefix=ii)
-                a.save()
+                pu = ParametersUnit(name=i, symbol=units[i]["symbol"], prefix=ii)
+                pu.save()
             except ParametersUnit.MultipleObjectsReturned:
                 print(
                     f"WARNING: Multiple entries returned for name={i!r}, symbol={units[i]['symbol']!r}, prefix={ii!r}"

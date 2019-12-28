@@ -7,14 +7,16 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('categories', '0001_initial'),
-        ('part', '0004_part_footprint'),
+        ("categories", "0001_initial"),
+        ("part", "0004_part_footprint"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='part',
-            name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='categories.Category'),
+            model_name="part",
+            name="category",
+            field=models.ForeignKey(
+                blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to="categories.Category"
+            ),
         ),
     ]

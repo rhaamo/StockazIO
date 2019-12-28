@@ -8,22 +8,47 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('part', '0007_parametersunit_partparameter'),
+        ("part", "0007_parametersunit_partparameter"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PartAttachment',
+            name="PartAttachment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.CharField(help_text='Description of the attachment', max_length=100, unique=True, verbose_name='description')),
-                ('file', models.FileField(help_text='File to upload', upload_to='part_attachments/', validators=[controllers.part.validators.validate_file_type], verbose_name='File')),
-                ('part', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='part_attachments', to='part.Part')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "description",
+                    models.CharField(
+                        help_text="Description of the attachment",
+                        max_length=100,
+                        unique=True,
+                        verbose_name="description",
+                    ),
+                ),
+                (
+                    "file",
+                    models.FileField(
+                        help_text="File to upload",
+                        upload_to="part_attachments/",
+                        validators=[controllers.part.validators.validate_file_type],
+                        verbose_name="File",
+                    ),
+                ),
+                (
+                    "part",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="part_attachments",
+                        to="part.Part",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Part Attachment',
-                'verbose_name_plural': 'Part Attachments',
-                'ordering': ('id',),
+                "verbose_name": "Part Attachment",
+                "verbose_name_plural": "Part Attachments",
+                "ordering": ("id",),
             },
         ),
     ]
