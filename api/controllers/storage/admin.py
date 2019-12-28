@@ -3,6 +3,8 @@ from .models import StorageCategory, StorageLocation
 from config.admin import CommonAdmin
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from mptt.admin import MPTTModelAdmin
+from mptt.admin import TreeRelatedFieldListFilter
 
 
 class StorageLocationAdmin(CommonAdmin):
@@ -19,8 +21,8 @@ class StorageLocationAdmin(CommonAdmin):
             )
 
     get_picture.short_description = _("Picture")
-    list_filter = ("category",)
+    list_filter = [("category", TreeRelatedFieldListFilter)]
 
 
-admin.site.register(StorageCategory)
+admin.site.register(StorageCategory, MPTTModelAdmin)
 admin.site.register(StorageLocation, StorageLocationAdmin)

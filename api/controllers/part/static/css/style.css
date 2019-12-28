@@ -27,61 +27,41 @@ div.sc_value {
 }
 
 ul.cat-list {
-    text-align: center;
+    text-align: left;
+    margin: 0;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 ul.cat-list {
     list-style: none;
+}
+
+ul.cat-list ul.children {
+    list-style: none;
     margin: 0;
-    padding: 0 0 10px 0;
-    border-bottom: 1px dashed #f2f2f2;
+    padding-left: 10px;
 }
 
 ul.cat-list li {
     list-style: none;
-    display: inline-block;
-    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 ul.cat-list li a {
-    display: inline-block;
     font-size: 13px;
-    padding: 4px 10px 4px 10px;
-    background-color: #DAF5C5;
-    color: #fff;
     margin: 0;
     text-decoration: none;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-color: #BEEE9B;
-}
-
-ul.cat-list li a.selected {
-    background-color: #4a8d18;
 }
 
 ul.cat-list li a:hover {
-    background-color: #4a8d18;
-}
-
-ul.cat-list li a.isComponents {
-    border: 1px solid #4F971A;
-    display: inline-block;
-    font-size: 12px;
-    padding: 3px 8px 3px 8px;
-    background-color: #5FB61F;
-    color: #FFF;
-    margin: 0;
-    text-decoration: none;
+    background-color: lightgrey;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-}
-
-ul.cat-list li a.isComponents:hover {
-    cursor: pointer;
-    background-color: #4a8d18;
 }
 
 .sidebar {
