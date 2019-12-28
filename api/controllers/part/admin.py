@@ -35,6 +35,7 @@ class PartManufacturerInLine(admin.TabularInline):
 class PartParameterInLine(admin.TabularInline):
     model = PartParameter
     extra = 1
+    autocomplete_fields = ["unit"]
 
 
 class PartAttachmentInLine(admin.TabularInline):
@@ -53,13 +54,14 @@ class PartAdmin(CommonAdmin):
         "footprint",
         "internal_part_number",
     )
-    search_fields = ("name",)
+    search_fields = ["name"]
     inlines = [DistributorSkuInLine, PartManufacturerInLine, PartParameterInLine, PartAttachmentInLine]
     list_filter = (
         ("category__name", DropdownFilter),
         ("storage__name", DropdownFilter),
         ("footprint__name", DropdownFilter),
     )
+    autocomplete_fields = ("storage", "category", "footprint")
 
 
 class PartAttachmentAdmin(CommonAdmin):

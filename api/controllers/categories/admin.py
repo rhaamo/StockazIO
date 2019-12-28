@@ -1,4 +1,10 @@
 from django.contrib import admin
 from .models import Category
+from config.admin import CommonAdmin
 
-admin.site.register(Category)
+
+class CategoryAdmin(CommonAdmin):
+    search_fields = ["name"]
+
+
+admin.site.register(Category, CategoryAdmin)
