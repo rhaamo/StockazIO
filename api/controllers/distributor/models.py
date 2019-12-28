@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from controllers.part.models import Part
 
 
 class Distributor(models.Model):
@@ -18,3 +19,20 @@ class Distributor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class DistributorSku(models.Model):
+    sku = models.CharField(_("sku id"), max_length=255, blank=False, null=False)
+
+    part = models.ForeignKey(Part, related_name="distributors_sku", blank=True, null=True, on_delete=models.PROTECT)
+    distributor = models.ForeignKey(
+        Distributor, related_name="parts_distributors_sku", blank=True, null=True, on_delete=models.PROTECT
+    )
+
+    class Meta(object):
+        ordering = ("sku",)
+        verbose_name = _("Distributor")
+        verbose_name_plural = _("Distributors")
+
+    def __str__(self):
+        return self.sku

@@ -5,7 +5,7 @@ import json
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from controllers.part.models import PartUnit  # , ParametersUnit
+from controllers.part.models import PartUnit, ParametersUnit
 from controllers.footprints.models import Footprint, FootprintCategory
 from controllers.categories.models import Category
 from controllers.manufacturer.models import Manufacturer, ManufacturerLogo
@@ -91,8 +91,16 @@ def seed_parameters_unit():
 
     for i in units:
         for ii in units[i]["prefixes"]:
-            a = ParametersUnit(name=i, symbol=units[i]["symbol"], prefix=ii)
-            a.save()
+            try:
+                pu = ParametersUnit.objects.get(name=i, symbol=units[i]["symbol"], prefix=ii)
+            except ParametersUnit.DoesNotExist:
+                a = ParametersUnit(name=i, symbol=units[i]["symbol"], prefix=ii)
+                a.save()
+            except ParametersUnit.MultipleObjectsReturned:
+                print(
+                    f"WARNING: Multiple entries returned for name={i!r}, symbol={units[i]['symbol']!r}, prefix={ii!r}"
+                )
+                continue
 
 
 def seed_manufacturers():
@@ -149,6 +157,6 @@ class Command(BaseCommand):
         seed_part_units()
         seed_footprints()
         seed_categories()
-        # seed_parameters_unit()
+        seed_parameters_unit()
         seed_manufacturers()
         seed_distributors()

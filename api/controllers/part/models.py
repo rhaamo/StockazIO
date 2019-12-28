@@ -76,3 +76,39 @@ class Part(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ParametersUnit(models.Model):
+    name = models.CharField(_("name"), max_length=255, unique=False, blank=False, help_text=_("ex. Ampere"))
+    symbol = models.CharField(_("symbol"), max_length=255, unique=False, blank=True, help_text=_("ex. A"))
+    prefix = models.CharField(_("prefix"), max_length=255, unique=False, blank=True, help_text=_("ex. μ"))
+
+    description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
+
+    # REL: parameters
+
+    class Meta(object):
+        ordering = ("name",)
+        verbose_name = _("parameter unit")
+        verbose_name_plural = _("parameter units")
+
+    def __str__(self):
+        if self.prefix or self.symbol:
+            return "{0} ({1}{2})".format(self.name, self.prefix, self.symbol)
+        else:
+            return self.name
+
+
+class PartParameter(models.Model):
+    name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
+    description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
+    value = models.CharField(_("value"), max_length=255, unique=False, blank=False)
+    unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.PROTECT)
+
+    part = models.ForeignKey(Part, related_name="part_parameters", blank=True, null=True, on_delete=models.PROTECT)
+
+    class Meta(object):
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name

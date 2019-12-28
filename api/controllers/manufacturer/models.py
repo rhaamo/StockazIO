@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
+from controllers.part.models import Part
 
 
 class Manufacturer(models.Model):
@@ -42,3 +43,20 @@ class ManufacturerLogo(models.Model):
         ordering = ("id",)
         verbose_name = _("manufacturer logo")
         verbose_name_plural = _("manufacturer logos")
+
+
+class PartManufacturer(models.Model):
+    sku = models.CharField(_("sku id"), max_length=255, blank=False, null=False)
+
+    part = models.ForeignKey(Part, related_name="manufacturers_sku", blank=True, null=True, on_delete=models.PROTECT)
+    manufacturer = models.ForeignKey(
+        Manufacturer, related_name="parts_manufacturers_sku", blank=True, null=True, on_delete=models.PROTECT
+    )
+
+    class Meta(object):
+        ordering = ("sku",)
+        verbose_name = _("Manufacturer")
+        verbose_name_plural = _("Manufacturers")
+
+    def __str__(self):
+        return self.sku
