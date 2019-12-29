@@ -9,7 +9,11 @@ from django.conf import settings
 # Informations
 @login_required
 def other_informations(request, template_name="other/informations.html"):
-    ctx = {"parts_count": Part.objects.values("id").count(), "django_version": django.get_version()}
+    ctx = {
+        "parts_count": Part.objects.values("id").count(),
+        "django_version": django.get_version(),
+        "categories_count": Category.objects.count(),
+    }
     return render(request, template_name, ctx)
 
 
