@@ -38,3 +38,24 @@ class DistributorForm(ModelForm):
                 HTML("<a class='btn btn-default' href='{% url \"distributor_list\" %}'>Cancel</a>"),
             ),
         )
+
+
+class DistributorSkuForm(ModelForm):
+    sku = forms.CharField()
+    distributor = forms.ModelChoiceField(required=False, queryset=Distributor.objects.all())
+
+    class Meta:
+        model = Distributor
+        fields = ["sku", "distributor"]
+
+    def __init__(self, *args, **kwargs):
+        super(DistributorSkuForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-sm-2"
+        self.helper.field_class = "col-sm-8"
+        self.helper.layout = Layout(
+            Field("sku"),
+            Field("distributor"),
+            FormActions(Submit("distributor_sku_create", "Save changes", css_class="btn-primary")),
+        )

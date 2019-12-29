@@ -7,6 +7,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from controllers.part.models import Part
 from controllers.part.forms import PartForm
 from controllers.categories.models import Category
+from controllers.distributor.models import DistributorSku
+from controllers.distributor.forms import DistributorSkuForm
+
+from django.forms.models import inlineformset_factory
 
 
 @login_required
@@ -42,14 +46,19 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
 @login_required
 def part_create(request, template_name="parts/part_create.html"):
     form = PartForm(request.POST or None)
+    distributor_sku_inline_formset = inlineformset_factory(
+        Part, DistributorSku, form=DistributorSkuForm, can_delete=True
+    )
+
     if form.is_valid():
         obj = form.save(commit=False)
         obj.save()
-        obj.tags.add(*form.cleaned_data["tags"])
         form.save_m2m()
         messages.success(request, "Part successfully created.")
         return redirect("part_list")
-    return render(request, template_name, {"form": form})
+    return render(
+        request, template_name, {"form": form, "distributor_sku_inline_formset": distributor_sku_inline_formset}
+    )
 
 
 @login_required

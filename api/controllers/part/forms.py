@@ -7,6 +7,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Field
 from django import forms
 from django.forms import ModelForm
+from controllers.categories.models import Category
+from mptt.forms import TreeNodeChoiceField
 
 
 class PartUnitForm(ModelForm):
@@ -89,11 +91,14 @@ class PartForm(ModelForm):
     private = forms.BooleanField(required=False, initial=False)
 
     footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
+    category = TreeNodeChoiceField(required=False, queryset=Category.objects.all())
     part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
     storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
 
     # part parameters
     # part attachment
+    # part manufacturer
+    # part distributor
 
     def __init__(self, *args, **kwargs):
         super(PartForm, self).__init__(*args, **kwargs)
@@ -109,6 +114,7 @@ class PartForm(ModelForm):
             Field("stock_qty_min"),
             Field("part_unit"),
             Field("needs_review"),
+            Field("category"),
             Field("condition"),
             Field("can_be_sold"),
             Field("private"),

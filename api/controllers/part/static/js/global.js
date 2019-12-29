@@ -11,5 +11,6 @@ $(document).ready(function () {
         $('#id_part_unit.select').chosen(chosenOpts);
         $('#id_footprint.select').chosen(chosenOpts);
         $('#id_storage.select').chosen(chosenOpts);
+        $('#id_category.select').chosen(chosenOpts);
     });
 });

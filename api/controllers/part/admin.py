@@ -25,11 +25,13 @@ class ParametersUnitAdmin(CommonAdmin):
 class DistributorSkuInLine(admin.TabularInline):
     model = DistributorSku
     extra = 1
+    autocomplete_fields = ["distributor"]
 
 
 class PartManufacturerInLine(admin.TabularInline):
     model = PartManufacturer
     extra = 1
+    autocomplete_fields = ["manufacturer"]
 
 
 class PartParameterInLine(admin.TabularInline):
