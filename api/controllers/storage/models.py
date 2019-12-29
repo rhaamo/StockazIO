@@ -26,7 +26,7 @@ class StorageCategory(MPTTModel):
 
 class StorageLocation(models.Model):
     name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
-    category = models.ForeignKey(StorageCategory, blank=True, null=True, on_delete=models.PROTECT)
+    category = models.ForeignKey(StorageCategory, blank=True, null=True, on_delete=models.CASCADE)
 
     picture = models.ImageField(
         upload_to="storage_locations/",
@@ -45,9 +45,4 @@ class StorageLocation(models.Model):
         verbose_name_plural = _("storage locations")
 
     def __str__(self):
-        full_path = [self.name]
-        k = self.category
-        while k is not None:
-            full_path.append(k.name)
-            k = k.parent
-        return " -> ".join(full_path[::-1])
+        return self.name

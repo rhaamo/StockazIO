@@ -23,9 +23,7 @@ def storage_category_list(request, template_name="storages/storage_category_list
         ctx["sort_by"] = "-name"
 
     ctx["object_list"] = (
-        StorageCategory.objects.values("id", "name", "description")
-        .annotate(storages_count=models.Count("storage"))
-        .order_by(ctx["sort_by"])
+        StorageCategory.objects.all().annotate(storages_count=models.Count("storagelocation")).order_by(ctx["sort_by"])
     )
 
     return render(request, template_name, ctx)
@@ -52,7 +50,7 @@ def storage_category_update(request, pk, template_name="storages/storage_categor
     return render(request, template_name, {"form": form, "object": storage})
 
 
-# Footprints
+# Storage locations
 @login_required
 def storage_list(request, pk_category, template_name="storages/storage_list.html"):
     storage_category = get_object_or_404(StorageCategory, pk=pk_category)
@@ -67,7 +65,7 @@ def storage_list(request, pk_category, template_name="storages/storage_list.html
         ctx["sort_arg"] = "name"
         ctx["sort_by"] = "-name"
 
-    ctx["object_list"] = storage_category.storage_set.order_by(ctx["sort_by"])
+    ctx["object_list"] = storage_category.storagelocation_set.order_by(ctx["sort_by"])
     ctx["storage_category_name"] = storage_category.name
     ctx["storage_category_id"] = storage_category.id
     paginator = Paginator(ctx["object_list"], settings.PAGINATION["STORAGES"])
