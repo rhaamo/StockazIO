@@ -4,6 +4,7 @@ from config.admin import CommonAdmin
 from controllers.distributor.models import DistributorSku
 from controllers.manufacturer.models import PartManufacturer
 from django_admin_listfilter_dropdown.filters import DropdownFilter
+from mptt.admin import TreeRelatedFieldListFilter
 
 
 class PartUnitAdmin(CommonAdmin):
@@ -58,11 +59,11 @@ class PartAdmin(CommonAdmin):
     )
     search_fields = ["name"]
     inlines = [DistributorSkuInLine, PartManufacturerInLine, PartParameterInLine, PartAttachmentInLine]
-    list_filter = (
-        ("category__name", DropdownFilter),
-        ("storage__name", DropdownFilter),
+    list_filter = [
         ("footprint__name", DropdownFilter),
-    )
+        ("storage__name", DropdownFilter),
+        ("category", TreeRelatedFieldListFilter),
+    ]
     autocomplete_fields = ("storage", "category", "footprint")
 
 
