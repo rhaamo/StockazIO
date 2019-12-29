@@ -7,7 +7,7 @@ from crispy_forms.bootstrap import FormActions
 
 
 class ManufacturerLogoForm(ModelForm):
-    logo = forms.FileField()
+    logo = forms.FileField(required=False)
 
     class Meta:
         model = ManufacturerLogo

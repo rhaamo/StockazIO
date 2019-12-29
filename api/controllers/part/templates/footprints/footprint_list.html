@@ -39,8 +39,13 @@
                     <tr>
                         <td>{{ footprint.name }}</td>
                         <td>{{ footprint.description }}</td>
-                        <td><a href="{{ footprint.picture_small.url }}" target="_blank"><img
-                                src="{{ footprint.picture_small.url }}" width="100px"/></a></td>
+                        <td>{% if footprint.picture %}
+                            <a href="{{ footprint.picture_medium.url }}" target="_blank"><img
+                                src="{{ footprint.picture_small.url }}" width="100px"/></a>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
                         <td>
                             <a href="{% url "footprint_update" pk_category=footprint_category_id pk=footprint.id %}"><i
                                     class="fa fa-pencil-square-o" aria-hidden="true"></i></a>

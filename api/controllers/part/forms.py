@@ -1,5 +1,6 @@
 from controllers.footprints.models import Footprint
 from controllers.part.models import PartUnit, ParametersUnit, Part
+from controllers.storage.models import StorageLocation
 from controllers.part.forms_widgets import GroupedModelChoiceField
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
@@ -89,8 +90,8 @@ class PartForm(ModelForm):
 
     footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
     part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
+    storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
 
-    # tags
     # part parameters
     # part attachment
 
@@ -99,19 +100,20 @@ class PartForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-5"
         self.helper.layout = Layout(
             Field("name"),
             Field("description"),
             Field("comment"),
             Field("stock_qty"),
             Field("stock_qty_min"),
+            Field("part_unit"),
             Field("needs_review"),
             Field("condition"),
             Field("can_be_sold"),
             Field("private"),
             Field("footprint"),
-            Field("part_unit"),
+            Field("storage"),
             FormActions(
                 Submit("part_list", "Save changes", css_class="btn-primary"),
                 HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),

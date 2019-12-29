@@ -8,7 +8,7 @@ from crispy_forms.bootstrap import FormActions
 
 class FootprintCategoryForm(ModelForm):
     name = forms.CharField()
-    description = forms.CharField()
+    description = forms.CharField(required=False)
 
     class Meta:
         model = FootprintCategory
@@ -32,8 +32,8 @@ class FootprintCategoryForm(ModelForm):
 
 class FootprintForm(ModelForm):
     name = forms.CharField()
-    description = forms.CharField()
-    picture = forms.FileField()
+    description = forms.CharField(required=False)
+    picture = forms.FileField(required=False)
 
     class Meta:
         model = Footprint
