@@ -13,6 +13,9 @@ class FootprintCategory(models.Model):
         verbose_name = _("footprint category")
         verbose_name_plural = _("footprint categories")
 
+    def __str__(self):
+        return self.name
+
 
 class Footprint(models.Model):
     name = models.CharField(_("name"), max_length=64, unique=True, blank=False, help_text=_("ex. PBGA-260"))
@@ -45,3 +48,6 @@ class Footprint(models.Model):
         ordering = ("name",)
         verbose_name = _("footprint")
         verbose_name_plural = _("footprints")
+
+    def __str__(self):
+        return self.name

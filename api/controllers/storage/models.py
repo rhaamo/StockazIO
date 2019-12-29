@@ -16,12 +16,7 @@ class StorageCategory(MPTTModel):
         verbose_name_plural = _("storage categories")
 
     def __str__(self):
-        full_path = [self.name]
-        k = self.parent
-        while k is not None:
-            full_path.append(k.name)
-            k = k.parent
-        return " -> ".join(full_path[::-1])
+        return self.name
 
 
 class StorageLocation(models.Model):
@@ -43,3 +38,6 @@ class StorageLocation(models.Model):
         ordering = ("name",)
         verbose_name = _("storage location")
         verbose_name_plural = _("storage locations")
+
+    def __str__(self):
+        return self.name

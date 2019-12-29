@@ -47,15 +47,19 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
 def part_create(request, template_name="parts/part_create.html"):
     form = PartForm(request.POST or None)
     distributor_sku_inline_formset = inlineformset_factory(
-        Part, DistributorSku, form=DistributorSkuForm, can_delete=True, extra=1
+        Part, DistributorSku, can_delete=True, extra=1, form=DistributorSkuForm
     )
 
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.save()
-        form.save_m2m()
-        messages.success(request, "Part successfully created.")
-        return redirect("part_list")
+    if request.method == "POST":
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            form.save_m2m()
+            formset = distributor_sku_inline_formset(request.POST, instance=obj)
+            if formset.is_valid():
+                formset.save()
+                messages.success(request, "Part successfully created.")
+                return redirect("part_list")
     return render(
         request, template_name, {"form": form, "distributor_sku_inline_formset": distributor_sku_inline_formset}
     )
