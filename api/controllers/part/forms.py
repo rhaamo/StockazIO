@@ -91,7 +91,7 @@ class PartForm(ModelForm):
     private = forms.BooleanField(required=False, initial=False)
 
     footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
-    category = TreeNodeChoiceField(required=False, queryset=Category.objects.all())
+    category = TreeNodeChoiceField(required=False, queryset=Category.objects.all(), level_indicator=u"+--")
     part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
     storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
 
@@ -104,8 +104,8 @@ class PartForm(ModelForm):
         super(PartForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
-        self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-5"
+        self.helper.label_class = "col-sm-4"
+        self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
             Field("name"),
             Field("description"),

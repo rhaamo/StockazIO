@@ -4,7 +4,7 @@ from config.admin import CommonAdmin
 from mptt.admin import MPTTModelAdmin
 
 
-class CategoryAdmin(CommonAdmin, MPTTModelAdmin):
+class CategoryAdmin(MPTTModelAdmin, CommonAdmin):
     search_fields = ["name"]
 
 

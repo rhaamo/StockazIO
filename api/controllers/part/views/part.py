@@ -47,7 +47,7 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
 def part_create(request, template_name="parts/part_create.html"):
     form = PartForm(request.POST or None)
     distributor_sku_inline_formset = inlineformset_factory(
-        Part, DistributorSku, form=DistributorSkuForm, can_delete=True
+        Part, DistributorSku, form=DistributorSkuForm, can_delete=True, extra=1
     )
 
     if form.is_valid():
