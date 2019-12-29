@@ -1,0 +1,66 @@
+{% extends 'base.html' %}{% load bootstrap3 %}{% load custom %}
+
+{% block title %}Parts{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            <ol class="breadcrumb">
+                {% if not category %}
+                    <li>{{ title }}</li>
+                    <li class="active">All</li>
+                {% else %}
+                    {% for c in category_path %}
+                        {% if forloop.last %}
+                        <li class="active">{{ c }}</li>
+                        {% else %}
+                        <li>{{ c }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-condensed table-stripped">
+                <thead>
+                <tr>
+                    <th>
+                        <a href="{% url "soldable" %}?sort={{ sort_arg }}&page={{ page }}">Name</a>
+                        {% if sort_by == 'name' %}
+                            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+                        {% endif %}
+                    </th>
+                <th>Stock</th>
+                <th>Min</th>
+                <th>Footprint</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for part in paginator %}
+                    <tr>
+                        <td>{{ part.name }}</td>
+                        <td>{{ part.stock_qty }}</td>
+                        <td>{{ part.stock_qty_min }}</td>
+                        <td>
+                            {% if not part.footprint %}
+                            -
+                            {% else %}
+                            {{ part.footprint }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% bootstrap_pagination paginator extra="sort="|add:sort_by %}
+        </div>
+    </div>
+{% endblock %}

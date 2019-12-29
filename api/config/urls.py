@@ -215,8 +215,12 @@ urlpatterns = [
         ),
         name="parameters_unit_delete",
     ),
-    # Views
+    # Other Views
     url(r"^views/infos/$", mbv_other.other_informations, name="other_informations"),
+    url(r"^views/soldable/$", mbv_other.soldable, name="soldable"),
+    url(r"^views/soldable/category/(?P<category>[0-9a-zA-Z]+)$", mbv_other.soldable, name="soldable"),
+    url(r"^views/public/$", mbv_other.public, name="public"),
+    url(r"^views/public/category/(?P<category>[0-9a-zA-Z]+)$", mbv_other.public, name="public"),
     # Parts
     url(r"^parts/$", mbv_part.part_list, name="part_list"),
     url(r"^parts/create/$", mbv_part.part_create, name="part_create"),
