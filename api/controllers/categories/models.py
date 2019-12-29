@@ -20,3 +20,6 @@ class Category(MPTTModel):
             full_path.append(k.name)
             k = k.parent
         return " -> ".join(full_path[::-1])
+
+    def get_parts_count(self):
+        return self.part_set.count()
