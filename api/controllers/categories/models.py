@@ -22,4 +22,4 @@ class Category(MPTTModel):
         return " -> ".join(full_path[::-1])
 
     def get_parts_count(self):
-        return self.part_set.count()
+        return 0  # self.part_set.count()

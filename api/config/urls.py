@@ -33,6 +33,7 @@ from controllers.storage.models import StorageCategory, StorageLocation
 from controllers.part.models import PartUnit, ParametersUnit
 from controllers.manufacturer.models import Manufacturer
 from controllers.distributor.models import Distributor
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
@@ -232,4 +233,5 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += staticfiles_urlpatterns()
     urlpatterns = [url(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
