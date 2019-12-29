@@ -80,6 +80,7 @@ scripts/nuke
 
 # Static
 media/
+api/static/
 
 TODO
 

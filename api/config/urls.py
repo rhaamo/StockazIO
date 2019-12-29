@@ -38,8 +38,8 @@ from controllers.distributor.models import Distributor
 urlpatterns = [
     url(r"^admin/", admin.site.urls),
     url(r"^$", RedirectView.as_view(pattern_name="part_list", permanent=True)),
-    url(r"^login/$", auth_views.LoginView.as_view(template_name="auth/login.html"), name="auth_login"),
-    url(r"^logout/$", auth_views.LogoutView.as_view(template_name="auth/logged_out.html"), name="auth_logout"),
+    url(r"^accounts/login/$", auth_views.LoginView.as_view(template_name="auth/login.html"), name="auth_login"),
+    url(r"^accounts/logout/$", auth_views.LogoutView.as_view(template_name="auth/logged_out.html"), name="auth_logout"),
     url(
         r"^password/reset/$",
         auth_views.PasswordResetView.as_view(template_name="auth/password_reset_form.html"),
