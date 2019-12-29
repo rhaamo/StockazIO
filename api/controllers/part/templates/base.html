@@ -134,14 +134,12 @@
             <ul class="cat-list">
                 {% recursetree categories %}
                     <li>
-                    {% with parts_count=node.get_parts_count %}
-                        <i class="fa fa-folder"></i> <a href="{% url 'part_list' category=node.id %}" title="{{ node.name }} ({{ parts_count }})">{{ node.name }}</a> <small>({{ parts_count }})</small>
+                        <i class="fa fa-folder"></i> <a href="{% url 'part_list' category=node.id %}" title="{{ node.name }} ({{ node.parts_count }})">{{ node.name }}</a> <small>({{ node.parts_count }})</small>
                         {% if not node.is_leaf_node %}
                             <ul class="children">
                                 {{ children }}
                             </ul>
                         {% endif %}
-                    {% endwith %}
                     </li>
                 {% endrecursetree %}
             </ul>

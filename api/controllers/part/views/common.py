@@ -3,10 +3,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import DeleteView, DetailView
 from controllers import __version__
 from controllers.categories.models import Category
+from django.db import models
 
 
 def add_common_context(request):
-    ctx = {"VERSION": __version__, "categories": Category.objects.all()}
+    ctx = {"VERSION": __version__, "categories": Category.objects.all().annotate(parts_count=models.Count("part"))}
     return ctx
 
 
