@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from controllers.part.models import Part, PartUnit
 from controllers.footprints.models import Footprint
 from controllers.storage.models import StorageLocation
-from controllers.part.forms import PartForm, PartParameterFormSet
+from controllers.part.forms import PartForm, PartParameterFormSet, PartQuickAddForm
 from controllers.categories.models import Category
 
 from django.views.generic.edit import CreateView, UpdateView
@@ -16,6 +16,7 @@ from django.db import transaction
 from controllers.distributor.forms import DistributorSkuFormSet
 from controllers.manufacturer.forms import PartManufacturerFormSet
 from django.utils.decorators import method_decorator
+from .common import query_reverse
 
 
 @login_required
@@ -50,6 +51,74 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
         ctx["category_path"] = cat.__str__().split("->")
 
     return render(request, template_name, ctx)
+
+
+class PartQuickAdd(SuccessMessageMixin, CreateView):
+    model = Part
+    template_name = "parts/part_create.html"
+    form_class = PartQuickAddForm
+    success_message = "Part successfully created."
+
+    def get_context_data(self, **kwargs):
+        data = super(PartQuickAdd, self).get_context_data(**kwargs)
+        return data
+
+    def form_valid(self, form):
+        with transaction.atomic():
+            # Save without commit
+            self.object = form.save(commit=False)
+            # Fill FKs
+            self.object.part_unit = form.cleaned_data["part_unit"]
+            self.object.category = form.cleaned_data["category"]
+            self.object.footprint = form.cleaned_data["footprint"]
+            self.object.storage = form.cleaned_data["storage"]
+
+            # Save for real
+            self.object.save()
+            form.save_m2m()
+
+        return super(PartQuickAdd, self).form_valid(form)
+
+    def get_success_url(self):
+        quack = {
+            "part_unit": self.object.part_unit.id if self.object.part_unit else "None",
+            "category": self.object.category.id if self.object.category else "None",
+            "footprint": self.object.footprint.id if self.object.footprint else "None",
+            "storage": self.object.storage.id if self.object.storage else "None",
+        }
+        return query_reverse("part_quick_add", query=quack)
+
+    def get_initial(self):
+        initial = super(PartQuickAdd, self).get_initial()
+        # Part unit
+        try:
+            initial["part_unit"] = PartUnit.objects.get(id=self.request.GET.get("part_unit")).id
+        except (AttributeError, PartUnit.DoesNotExist, ValueError):
+            pass
+
+        # Category
+        try:
+            initial["category"] = Category.objects.get(id=self.request.GET.get("category")).id
+        except (AttributeError, Category.DoesNotExist, ValueError):
+            pass
+
+        # Storage Location
+        try:
+            initial["storage"] = StorageLocation.objects.get(id=self.request.GET.get("storage")).id
+        except (AttributeError, StorageLocation.DoesNotExist, ValueError):
+            pass
+
+        # Footprint
+        try:
+            initial["footprint"] = Footprint.objects.get(id=self.request.GET.get("footprint")).id
+        except (AttributeError, Footprint.DoesNotExist, ValueError):
+            pass
+
+        return initial
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(PartQuickAdd, self).dispatch(*args, **kwargs)
 
 
 class PartCreate(SuccessMessageMixin, CreateView):

@@ -152,6 +152,85 @@ class PartForm(ModelForm):
         )
 
 
+class PartQuickAddForm(ModelForm):
+    class Meta:
+        model = Part
+        fields = [
+            "name",
+            "description",
+            "comment",
+            "stock_qty",
+            "stock_qty_min",
+            "needs_review",
+            "condition",
+            "can_be_sold",
+            "private",
+        ]
+
+    name = forms.CharField()
+    description = forms.CharField(required=False)
+    comment = forms.CharField(required=False)
+    stock_qty = forms.IntegerField(initial=1)
+    stock_qty_min = forms.IntegerField(initial=0)
+    needs_review = forms.BooleanField(required=False, initial=False)
+    condition = forms.CharField(required=False)
+    can_be_sold = forms.BooleanField(required=False, initial=False)
+    private = forms.BooleanField(required=False, initial=False)
+    status = forms.CharField(required=False)
+    internal_part_number = forms.CharField(required=False)
+
+    footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
+    category = TreeNodeChoiceField(required=False, queryset=Category.objects.all(), level_indicator=u"+--")
+    part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
+    storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
+
+    # part attachment
+
+    def __init__(self, *args, **kwargs):
+        super(PartQuickAddForm, self).__init__(*args, **kwargs)
+
+        self.fields["storage"].label = "Storage Location"
+        self.fields["status"].label = "Sheet Status"
+
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-sm-4"
+        self.helper.field_class = "col-sm-8"
+        self.helper.layout = Layout(
+            Div(
+                Fieldset(
+                    "Basic parts informations",
+                    Field("name"),
+                    Field("description"),
+                    Field("stock_qty"),
+                    Field("stock_qty_min"),
+                    Field("status"),
+                    Field("needs_review"),
+                    Field("condition"),
+                    Field("can_be_sold"),
+                    Field("private"),
+                    Field("internal_part_number"),
+                ),
+                css_class="col-lg-6",
+            ),
+            Div(
+                Fieldset(
+                    "&nbsp;",
+                    Field("part_unit"),
+                    Field("category"),
+                    Field("storage"),
+                    Field("footprint"),
+                    FormActions(
+                        Submit("submit", "Save changes", css_class="btn-primary"),
+                        HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),
+                    ),
+                ),
+                css_class="col-lg-6",
+            ),
+        )
+
+
 class PartParameterForm(ModelForm):
     name = forms.CharField(required=True)
     description = forms.CharField(required=False)

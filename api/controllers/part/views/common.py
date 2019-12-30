@@ -7,6 +7,8 @@ from django.db import models
 from django.contrib.admin.utils import NestedObjects
 from django.utils.text import capfirst
 from django.utils.encoding import force_text
+from urllib.parse import urlencode, quote_plus
+from django.urls import reverse
 
 
 def add_common_context(request):
@@ -52,3 +54,9 @@ def get_deleted_objects(objs):
     model_count = {model._meta.verbose_name_plural: len(objs) for model, objs in collector.model_objs.items()}
 
     return to_delete, model_count, protected
+
+
+def query_reverse(*args, **kwargs):
+    query = kwargs.pop("query", {})
+    url = reverse(*args, **kwargs)
+    return url + "?" + urlencode(query, quote_via=quote_plus)
