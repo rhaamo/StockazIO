@@ -2,7 +2,7 @@ from controllers.footprints.models import Footprint
 from controllers.part.models import PartUnit, ParametersUnit, Part
 from controllers.storage.models import StorageLocation
 from controllers.part.forms_widgets import GroupedModelChoiceField
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.bootstrap import FormActions, Tab, TabHolder
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Field, Fieldset, Div
 from django import forms
@@ -90,6 +90,9 @@ class PartForm(ModelForm):
     condition = forms.CharField(required=False)
     can_be_sold = forms.BooleanField(required=False, initial=False)
     private = forms.BooleanField(required=False, initial=False)
+    production_remarks = forms.CharField(required=False)
+    status = forms.CharField(required=False)
+    internal_part_number = forms.CharField(required=False)
 
     footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
     category = TreeNodeChoiceField(required=False, queryset=Category.objects.all(), level_indicator=u"+--")
@@ -102,6 +105,10 @@ class PartForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PartForm, self).__init__(*args, **kwargs)
+
+        self.fields["storage"].label = "Storage Location"
+        self.fields["status"].label = "Sheet Status"
+
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_class = "form-horizontal"
@@ -110,20 +117,23 @@ class PartForm(ModelForm):
         self.helper.layout = Layout(
             Div(
                 Fieldset(
-                    "Add part",
+                    "Basic parts informations",
                     Field("name"),
                     Field("description"),
-                    Field("comment"),
                     Field("stock_qty"),
                     Field("stock_qty_min"),
                     Field("part_unit"),
-                    Field("needs_review"),
                     Field("category"),
+                    Field("storage"),
+                    Field("footprint"),
+                    Field("comment"),
+                    Field("production_remarks"),
+                    Field("status"),
+                    Field("needs_review"),
                     Field("condition"),
                     Field("can_be_sold"),
                     Field("private"),
-                    Field("footprint"),
-                    Field("storage"),
+                    Field("internal_part_number"),
                     FormActions(
                         Submit("submit", "Save changes", css_class="btn-primary"),
                         HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),
@@ -132,8 +142,10 @@ class PartForm(ModelForm):
                 css_class="col-lg-6",
             ),
             Div(
-                Fieldset("Add manufacturers", Formset("part_manufacturers")),
-                Fieldset("Add distributors", Formset("distributors_sku")),
+                TabHolder(
+                    Tab("Manufacturers", Formset("part_manufacturers")),
+                    Tab("Distributors", Formset("distributors_sku")),
+                ),
                 css_class="col-lg-6",
             ),
         )

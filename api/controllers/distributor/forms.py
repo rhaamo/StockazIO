@@ -56,6 +56,8 @@ class DistributorSkuForm(ModelForm):
 
         formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
 
+        self.fields["sku"].label = "SKU"
+
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
