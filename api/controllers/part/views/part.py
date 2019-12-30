@@ -15,6 +15,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.db import transaction
 from controllers.distributor.forms import DistributorSkuFormSet
+from django.utils.decorators import method_decorator
 
 
 @login_required
@@ -98,21 +99,24 @@ class PartCreate(CreateView):
             data["distributors_sku"] = DistributorSkuFormSet()
         return data
 
-    def valid_form(self, form):
+    def form_valid(self, form):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
         with transaction.atomic():
-            form.instance.created_by = self.request.user
-            self.object = form.save()
+            self.object = form.save(commit=False)
+            self.object.save()
             form.save_m2m()
             if distributors_sku.is_valid():
                 distributors_sku.instance = self.object
                 distributors_sku.save()
-                distributors_sku.save_m2m()
         return super(PartCreate, self).form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy("part_list")
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(PartCreate, self).dispatch(*args, **kwargs)
 
 
 class PartUpdate(UpdateView):
@@ -129,7 +133,7 @@ class PartUpdate(UpdateView):
             data["distributors_sku"] = DistributorSkuFormSet(instance=self.object)
         return data
 
-    def valid_form(self, form):
+    def form_valid(self, form):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
         with transaction.atomic():
@@ -142,3 +146,7 @@ class PartUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("part_list")
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(PartUpdate, self).dispatch(*args, **kwargs)

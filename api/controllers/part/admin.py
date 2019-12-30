@@ -54,6 +54,7 @@ class PartAdmin(CommonAdmin):
         # "category",
         "stock_qty",
         "stock_qty_min",
+        "part_unit",
         "footprint",
         "internal_part_number",
     )
