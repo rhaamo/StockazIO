@@ -154,8 +154,8 @@ class PartForm(ModelForm):
 
 class PartParameterForm(ModelForm):
     name = forms.CharField(required=True)
-    description = forms.CharField()
-    value = forms.CharField()
+    description = forms.CharField(required=False)
+    value = forms.CharField(required=True)
     unit = forms.ModelChoiceField(required=False, queryset=ParametersUnit.objects.all())
 
     class Meta:

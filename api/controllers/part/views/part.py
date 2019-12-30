@@ -32,9 +32,9 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
 
     if category:
         cat = get_object_or_404(Category, id=category)
-        base_queryset = Part.objects.prefetch_related("storage", "footprint").filter(category=cat)
+        base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit").filter(category=cat)
     else:
-        base_queryset = Part.objects.prefetch_related("storage", "footprint")
+        base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit")
 
     if q:
         base_queryset = base_queryset.filter(name__icontains=q)
@@ -115,14 +115,21 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(PartUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
+            data["part_parameters"] = PartParameterFormSet(self.request.POST, instance=self.object)
             data["distributors_sku"] = DistributorSkuFormSet(self.request.POST, instance=self.object)
+            data["part_manufacturers"] = PartManufacturerFormSet(self.request.POST, instance=self.object)
         else:
+            data["part_parameters"] = PartParameterFormSet(instance=self.object)
             data["distributors_sku"] = DistributorSkuFormSet(instance=self.object)
+            data["part_manufacturers"] = PartManufacturerFormSet(instance=self.object)
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
+        part_manufacturers = context["part_manufacturers"]
+        part_parameters = context["part_parameters"]
+
         with transaction.atomic():
             # Save without commit
             self.object = form.save(commit=False)
@@ -140,6 +147,12 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
             if distributors_sku.is_valid():
                 distributors_sku.instance = self.object
                 distributors_sku.save()
+            if part_manufacturers.is_valid():
+                part_manufacturers.instance = self.object
+                part_manufacturers.save()
+            if part_parameters.is_valid():
+                part_parameters.instance = self.object
+                part_parameters.save()
         return super(PartUpdate, self).form_valid(form)
 
     @method_decorator(login_required())
