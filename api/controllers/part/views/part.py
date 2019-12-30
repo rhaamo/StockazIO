@@ -12,6 +12,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db import transaction
 from controllers.distributor.forms import DistributorSkuFormSet
+from controllers.manufacturer.forms import PartManufacturerFormSet
 from django.utils.decorators import method_decorator
 
 
@@ -60,13 +61,16 @@ class PartCreate(SuccessMessageMixin, CreateView):
         data = super(PartCreate, self).get_context_data(**kwargs)
         if self.request.POST:
             data["distributors_sku"] = DistributorSkuFormSet(self.request.POST)
+            data["part_manufacturers"] = PartManufacturerFormSet(self.request.POST)
         else:
             data["distributors_sku"] = DistributorSkuFormSet()
+            data["part_manufacturers"] = PartManufacturerFormSet()
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
+        part_manufacturers = context["part_manufacturers"]
         with transaction.atomic():
             # Save without commit
             self.object = form.save(commit=False)
@@ -84,6 +88,9 @@ class PartCreate(SuccessMessageMixin, CreateView):
             if distributors_sku.is_valid():
                 distributors_sku.instance = self.object
                 distributors_sku.save()
+            if part_manufacturers.is_valid():
+                part_manufacturers.instance = self.object
+                part_manufacturers.save()
         return super(PartCreate, self).form_valid(form)
 
     @method_decorator(login_required())

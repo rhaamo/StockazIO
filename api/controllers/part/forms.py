@@ -99,7 +99,6 @@ class PartForm(ModelForm):
     # part parameters
     # part attachment
     # part manufacturer
-    # part distributor
 
     def __init__(self, *args, **kwargs):
         super(PartForm, self).__init__(*args, **kwargs)
@@ -132,5 +131,9 @@ class PartForm(ModelForm):
                 ),
                 css_class="col-lg-6",
             ),
-            Div(Fieldset("Add distributors", Formset("distributors_sku")), css_class="col-lg-6"),
+            Div(
+                Fieldset("Add manufacturers", Formset("part_manufacturers")),
+                Fieldset("Add distributors", Formset("distributors_sku")),
+                css_class="col-lg-6",
+            ),
         )

@@ -14,10 +14,10 @@ $(document).ready(function () {
         $('#id_category.select').chosen(chosenOpts);
 
 
-        $('.formset_row-distributors_sku').formset({
-            addText: 'add another one',
-            deleteText: 'remove',
-            prefix: 'distributors_sku',
-        });
+        //$('.formset_row-distributors_sku').formset({
+        //    addText: 'add another one',
+        //    deleteText: 'remove',
+        //    prefix: 'distributors_sku',
+        //});
     });
 });
