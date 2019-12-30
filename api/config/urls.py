@@ -84,7 +84,6 @@ urlpatterns = [
         CBVDeleteView.as_view(
             model=FootprintCategory,
             success_url=reverse_lazy("footprint_category_list"),
-            template_name="footprints/footprint_category_delete.html",
             success_message="Footprint Category deleted successfully",
         ),
         name="footprint_category_delete",
@@ -107,7 +106,6 @@ urlpatterns = [
         CBVDeleteView.as_view(
             model=Footprint,
             success_url=reverse_lazy("footprint_category_list"),
-            template_name="footprints/footprint_delete.html",
             success_message="Footprint deleted successfully",
         ),
         name="footprint_delete",
@@ -126,7 +124,6 @@ urlpatterns = [
         CBVDeleteView.as_view(
             model=Distributor,
             success_url=reverse_lazy("distributor_list"),
-            template_name="distributors/distributor_delete.html",
             success_message="Distributor deleted successfully",
         ),
         name="distributor_delete",
@@ -145,7 +142,6 @@ urlpatterns = [
         CBVDeleteView.as_view(
             model=Manufacturer,
             success_url=reverse_lazy("manufacturer_list"),
-            template_name="manufacturers/manufacturer_delete.html",
             success_message="Manufacturer deleted successfully",
         ),
         name="manufacturer_delete",
@@ -159,7 +155,6 @@ urlpatterns = [
         CBVDeleteView.as_view(
             model=StorageCategory,
             success_url=reverse_lazy("storage_category_list"),
-            template_name="storages/storage_category_delete.html",
             success_message="Storage Category deleted successfully",
         ),
         name="storage_category_delete",
@@ -210,7 +205,6 @@ urlpatterns = [
         CBVDeleteView.as_view(
             model=ParametersUnit,
             success_url=reverse_lazy("parameters_unit_list"),
-            template_name="parameters_units/parameters_unit_delete.html",
             success_message="Parameters Unit deleted successfully",
         ),
         name="parameters_unit_delete",
@@ -229,10 +223,7 @@ urlpatterns = [
     url(
         r"^parts/(?P<pk>[0-9]+)/delete$",
         CBVDeleteView.as_view(
-            model=Part,
-            success_url=reverse_lazy("part_list"),
-            template_name="parts/part_delete.html",
-            success_message="Part deleted successfully",
+            model=Part, success_url=reverse_lazy("part_list"), success_message="Part deleted successfully"
         ),
         name="part_delete",
     ),

@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-9">
             <ol class="breadcrumb">
-                <li><a href="{% url "part_list" %}">Part</a></li>
+                <li><a href="{{ success_url }}">Part</a></li>
                 <li class="active">{{ object.name }}</li>
             </ol>
         </div>
@@ -18,7 +18,7 @@
             <h3>Are you sure ?</h3>
             <br/>
 
-            <p>Are you sure you want to delete the part "{{ object.name }}"? All of the following related items will be deleted:</p>
+            <p>Are you sure you want to delete the {{ model_name }} "{{ object.name }}"? All of the following related items will be deleted:</p>
             <br/>
 
             <h4>Summary</h4>
@@ -37,7 +37,7 @@
             <form action="" method="post">
                 {% csrf_token %}
                 <input type="submit" value="Yes, I'm sure" class="btn btn-danger"/>
-                <a href="{% url 'part_list' %}" class="btn btn-default">No, take me back</a>
+                <a href="{{ success_url }}" class="btn btn-default">No, take me back</a>
             </form>
 
         </div>

@@ -19,6 +19,7 @@ class CBVDetailView(DetailView):
 
 
 class CBVDeleteView(SuccessMessageMixin, DeleteView):
+    template_name = "delete_object.html"
     success_message = "Deleted successfully"
 
     # Inject deletable objects tree into context
@@ -28,6 +29,8 @@ class CBVDeleteView(SuccessMessageMixin, DeleteView):
         context["deletable_objects"] = deletable_objects
         context["model_count"] = dict(model_count).items()
         context["protected"] = protected
+        context["success_url"] = self.success_url
+        context["model_name"] = self.object._meta.model_name
         return context
 
     def delete(self, request, *args, **kwargs):
