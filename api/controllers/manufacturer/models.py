@@ -48,7 +48,7 @@ class ManufacturerLogo(models.Model):
 class PartManufacturer(models.Model):
     sku = models.CharField(_("sku id"), max_length=255, blank=False, null=False)
 
-    part = models.ForeignKey(Part, related_name="manufacturers_sku", blank=True, null=True, on_delete=models.PROTECT)
+    part = models.ForeignKey(Part, related_name="manufacturers_sku", blank=True, null=True, on_delete=models.CASCADE)
     manufacturer = models.ForeignKey(
         Manufacturer, related_name="parts_manufacturers_sku", blank=True, null=True, on_delete=models.PROTECT
     )

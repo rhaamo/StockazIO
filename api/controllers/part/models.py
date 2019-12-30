@@ -106,7 +106,7 @@ class PartParameter(models.Model):
     value = models.CharField(_("value"), max_length=255, unique=False, blank=False)
     unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.PROTECT)
 
-    part = models.ForeignKey(Part, related_name="part_parameters", blank=True, null=True, on_delete=models.PROTECT)
+    part = models.ForeignKey(Part, related_name="part_parameters", blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta(object):
         ordering = ("name",)
@@ -127,7 +127,7 @@ class PartAttachment(models.Model):
         blank=False,
         null=False,
     )
-    part = models.ForeignKey(Part, related_name="part_attachments", blank=True, null=True, on_delete=models.PROTECT)
+    part = models.ForeignKey(Part, related_name="part_attachments", blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta(object):
         ordering = ("id",)

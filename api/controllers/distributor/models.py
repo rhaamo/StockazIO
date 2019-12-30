@@ -24,7 +24,7 @@ class Distributor(models.Model):
 class DistributorSku(models.Model):
     sku = models.CharField(_("sku id"), max_length=255, blank=False, null=False)
 
-    part = models.ForeignKey(Part, related_name="distributors_sku", blank=False, null=False, on_delete=models.PROTECT)
+    part = models.ForeignKey(Part, related_name="distributors_sku", blank=False, null=False, on_delete=models.CASCADE)
     distributor = models.ForeignKey(
         Distributor, related_name="parts_distributors_sku", blank=False, null=False, on_delete=models.PROTECT
     )
