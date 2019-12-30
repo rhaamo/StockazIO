@@ -1,17 +1,14 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 from controllers.part.models import Part
 from controllers.part.forms import PartForm
 from controllers.categories.models import Category
-from controllers.distributor.models import DistributorSku
-from controllers.distributor.forms import DistributorSkuForm
 
-from django.forms.models import inlineformset_factory
 from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db import transaction
 from controllers.distributor.forms import DistributorSkuFormSet
@@ -52,44 +49,12 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
     return render(request, template_name, ctx)
 
 
-@login_required
-def part_create(request, template_name="parts/part_create.html"):
-    form = PartForm(request.POST or None)
-    distributor_sku_inline_formset = inlineformset_factory(
-        Part, DistributorSku, can_delete=True, extra=1, form=DistributorSkuForm
-    )
-
-    if request.method == "POST":
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
-            form.save_m2m()
-            formset = distributor_sku_inline_formset(request.POST, instance=obj)
-            if formset.is_valid():
-                formset.save()
-                messages.success(request, "Part successfully created.")
-                return redirect("part_list")
-    return render(
-        request, template_name, {"form": form, "distributor_sku_inline_formset": distributor_sku_inline_formset}
-    )
-
-
-@login_required
-def part_update(request, pk, template_name="parts/part_update.html"):
-    part = get_object_or_404(Part, pk=pk)
-    form = PartForm(request.POST or None, instance=part)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Part successfully updated.")
-        return redirect("part_list")
-    return render(request, template_name, {"form": form, "object": part})
-
-
-class PartCreate(CreateView):
+class PartCreate(SuccessMessageMixin, CreateView):
     model = Part
     template_name = "parts/part_create.html"
     form_class = PartForm
-    success_url = None
+    success_url = reverse_lazy("part_list")
+    success_message = "Part successfully created."
 
     def get_context_data(self, **kwargs):
         data = super(PartCreate, self).get_context_data(**kwargs)
@@ -103,27 +68,35 @@ class PartCreate(CreateView):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
         with transaction.atomic():
+            # Save without commit
             self.object = form.save(commit=False)
+            # Fill FKs
+            self.object.part_unit = form.cleaned_data["part_unit"]
+            self.object.category = form.cleaned_data["category"]
+            self.object.footprint = form.cleaned_data["footprint"]
+            self.object.storage = form.cleaned_data["storage"]
+
+            # Save for real
             self.object.save()
             form.save_m2m()
+
+            # Handle inline forms
             if distributors_sku.is_valid():
                 distributors_sku.instance = self.object
                 distributors_sku.save()
         return super(PartCreate, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy("part_list")
 
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
         return super(PartCreate, self).dispatch(*args, **kwargs)
 
 
-class PartUpdate(UpdateView):
+class PartUpdate(SuccessMessageMixin, UpdateView):
     model = Part
     template_name = "parts/part_update.html"
     form_class = PartForm
-    success_url = None
+    success_url = reverse_lazy("part_list")
+    success_message = "Part successfully updated."
 
     def get_context_data(self, **kwargs):
         data = super(PartUpdate, self).get_context_data(**kwargs)
@@ -143,9 +116,6 @@ class PartUpdate(UpdateView):
                 distributors_sku.instance = self.object
                 distributors_sku.save()
         return super(PartUpdate, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy("part_list")
 
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
