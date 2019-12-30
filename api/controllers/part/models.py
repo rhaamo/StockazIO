@@ -4,6 +4,7 @@ from controllers.footprints.models import Footprint
 from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation
 from controllers.part.validators import validate_file_type
+import uuid
 
 
 class PartUnit(models.Model):
@@ -67,6 +68,7 @@ class Part(models.Model):
     internal_part_number = models.CharField(
         _("internal part number"), max_length=255, unique=False, blank=True, help_text=_("Internal part number")
     )
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     # Search vector
 

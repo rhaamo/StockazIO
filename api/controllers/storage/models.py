@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from mptt.models import MPTTModel, TreeForeignKey
+import uuid
 
 
 class StorageCategory(MPTTModel):
@@ -33,6 +34,7 @@ class StorageLocation(models.Model):
     picture_medium = ImageSpecField(
         source="picture", processors=[ResizeToFill(400, 400, upscale=False)], format="JPEG", options={"quality": 80}
     )
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     class Meta(object):
         ordering = ("name",)
