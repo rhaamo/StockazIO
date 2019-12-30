@@ -16,8 +16,8 @@ class Manufacturer(models.Model):
 
     class Meta(object):
         ordering = ("name",)
-        verbose_name = _("manufacturer")
-        verbose_name_plural = _("manufacturers")
+        verbose_name = _("Manufacturer")
+        verbose_name_plural = _("Manufacturers")
 
     def __str__(self):
         return self.name
@@ -41,8 +41,8 @@ class ManufacturerLogo(models.Model):
 
     class Meta(object):
         ordering = ("id",)
-        verbose_name = _("manufacturer logo")
-        verbose_name_plural = _("manufacturer logos")
+        verbose_name = _("Manufacturer Logo")
+        verbose_name_plural = _("Manufacturers Logo")
 
 
 class PartManufacturer(models.Model):
@@ -55,8 +55,8 @@ class PartManufacturer(models.Model):
 
     class Meta(object):
         ordering = ("sku",)
-        verbose_name = _("Manufacturer")
-        verbose_name_plural = _("Manufacturers")
+        verbose_name = _("Part Manufacturer")
+        verbose_name_plural = _("Part Manufacturers")
 
     def __str__(self):
         return self.sku

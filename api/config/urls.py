@@ -30,7 +30,7 @@ from controllers.part.views.common import CBVDeleteView, CBVDetailView
 from django.urls import reverse_lazy
 from controllers.footprints.models import FootprintCategory, Footprint
 from controllers.storage.models import StorageCategory, StorageLocation
-from controllers.part.models import PartUnit, ParametersUnit
+from controllers.part.models import PartUnit, ParametersUnit, Part
 from controllers.manufacturer.models import Manufacturer
 from controllers.distributor.models import Distributor
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -226,6 +226,16 @@ urlpatterns = [
     url(r"^parts/create/$", mbv_part.PartCreate.as_view(), name="part_create"),
     url(r"^parts/category/(?P<category>[0-9a-zA-Z]+)$", mbv_part.part_list, name="part_list"),
     url(r"^parts/(?P<pk>[0-9]+)/update/$", mbv_part.PartUpdate.as_view(), name="part_update"),
+    url(
+        r"^parts/(?P<pk>[0-9]+)/delete$",
+        CBVDeleteView.as_view(
+            model=Part,
+            success_url=reverse_lazy("part_list"),
+            template_name="parts/part_delete.html",
+            success_message="Part deleted successfully",
+        ),
+        name="part_delete",
+    ),
 ]
 
 

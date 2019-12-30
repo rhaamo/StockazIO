@@ -71,7 +71,7 @@
                         <td>
                             <a href="{% url 'part_update' pk=part.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             &nbsp;
-                            <a href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a href="{% url "part_delete" pk=part.id %}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
