@@ -124,6 +124,34 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
             data["part_manufacturers"] = PartManufacturerFormSet(instance=self.object)
         return data
 
+    def get_initial(self):
+        initial = super(PartUpdate, self).get_initial()
+        # Part unit
+        try:
+            initial["part_unit"] = self.get_object().part_unit.pk
+        except AttributeError:
+            pass
+
+        # Category
+        try:
+            initial["category"] = self.get_object().category.pk
+        except AttributeError:
+            pass
+
+        # Storage Location
+        try:
+            initial["storage"] = self.get_object().storage.pk
+        except AttributeError:
+            pass
+
+        # Footprint
+        try:
+            initial["footprint"] = self.get_object().footprint.pk
+        except AttributeError:
+            pass
+
+        return initial
+
     def form_valid(self, form):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
