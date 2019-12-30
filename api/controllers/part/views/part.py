@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
 from controllers.part.models import Part
-from controllers.part.forms import PartForm, PartParameterForm
+from controllers.part.forms import PartForm, PartParameterFormSet
 from controllers.categories.models import Category
 
 from django.views.generic.edit import CreateView, UpdateView
@@ -60,13 +60,13 @@ class PartCreate(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(PartCreate, self).get_context_data(**kwargs)
         if self.request.POST:
+            data["part_parameters"] = PartParameterFormSet(self.request.POST)
             data["distributors_sku"] = DistributorSkuFormSet(self.request.POST)
             data["part_manufacturers"] = PartManufacturerFormSet(self.request.POST)
-            data["part_parameters"] = PartParameterForm(self.request.POST)
         else:
+            data["part_parameters"] = PartParameterFormSet()
             data["distributors_sku"] = DistributorSkuFormSet()
             data["part_manufacturers"] = PartManufacturerFormSet()
-            data["part_parameters"] = PartParameterForm()
         return data
 
     def form_valid(self, form):

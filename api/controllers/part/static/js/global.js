@@ -14,10 +14,20 @@ $(document).ready(function () {
         $('#id_category.select').chosen(chosenOpts);
 
 
-        //$('.formset_row-distributors_sku').formset({
-        //    addText: 'add another one',
-        //    deleteText: 'remove',
-        //    prefix: 'distributors_sku',
-        //});
+        $('.formset_row-distributors_sku').formset({
+            addText: 'add one',
+            deleteText: 'remove',
+            prefix: 'distributors_sku',
+        });
+        $('.formset_row-manufacturers_sku').formset({
+            addText: 'add one',
+            deleteText: 'remove',
+            prefix: 'manufacturers_sku',
+        });
+        $('.formset_row-part_parameters').formset({
+            addText: 'add one',
+            deleteText: 'remove',
+            prefix: 'part_parameters',
+        });
     });
 });
