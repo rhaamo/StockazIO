@@ -1,0 +1,16 @@
+{% load crispy_forms_tags %}
+
+<style type="text/css">
+  .delete-row {
+    align-self: center;
+  }
+</style>
+
+{{ formset.management_form|crispy }}
+
+{% for form in formset.forms %}
+  {% for hidden in form.hidden_fields %}
+    {{ hidden|as_crispy_field }}
+  {% endfor %}
+  {% crispy form %}
+{% endfor %}

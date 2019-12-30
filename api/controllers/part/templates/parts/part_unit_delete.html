@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Deleting object{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            <ol class="breadcrumb">
+                <li><a href="{% url "part_unit_list" %}">Part Units</a></li>
+                <li class="active">{{ object.name }}</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>Deleting Part Unit <i>{{ object.name }}</i></h3>
+
+            <form action="" method="post">{% csrf_token %}
+                <p>Are you sure you want to do that?</p>
+                <input type="submit" value="Confirm" class="btn btn-primary"/>
+                <a href="{% url 'part_unit_list' %}" class="btn btn-default">Cancel</a>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}
