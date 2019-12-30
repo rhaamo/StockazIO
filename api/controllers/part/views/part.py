@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
-from controllers.part.models import Part
+from controllers.part.models import Part, PartUnit
+from controllers.footprints.models import Footprint
+from controllers.storage.models import StorageLocation
 from controllers.part.forms import PartForm, PartParameterFormSet
 from controllers.categories.models import Category
 
@@ -129,25 +131,25 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
         # Part unit
         try:
             initial["part_unit"] = self.get_object().part_unit.pk
-        except AttributeError:
+        except (AttributeError, PartUnit.DoesNotExist):
             pass
 
         # Category
         try:
             initial["category"] = self.get_object().category.pk
-        except AttributeError:
+        except (AttributeError, Category.DoesNotExist):
             pass
 
         # Storage Location
         try:
             initial["storage"] = self.get_object().storage.pk
-        except AttributeError:
+        except (AttributeError, StorageLocation.DoesNotExist):
             pass
 
         # Footprint
         try:
             initial["footprint"] = self.get_object().footprint.pk
-        except AttributeError:
+        except (AttributeError, Footprint.DoesNotExist):
             pass
 
         return initial
