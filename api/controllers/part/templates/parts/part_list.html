@@ -6,10 +6,11 @@
     <div class="row">
         <div class="col-lg-9">
             <ol class="breadcrumb">
-                {% if not category %}
+                {% if search_query %}
                     <li>Parts</li>
-                    <li class="active">All</li>
-                {% else %}
+                    <li>Search</li>
+                    <li class="active">{{ search_query }}</li>
+                {% elif category %}
                     {% for c in category_path %}
                         {% if forloop.last %}
                         <li class="active">{{ c }}</li>
@@ -17,6 +18,9 @@
                         <li>{{ c }}</li>
                         {% endif %}
                     {% endfor %}
+                {% else %}
+                    <li>Parts</li>
+                    <li class="active">All</li>
                 {% endif %}
             </ol>
         </div>
@@ -31,7 +35,7 @@
                 <thead>
                 <tr>
                     <th>
-                        <a href="{% url "part_list" %}?sort={{ sort_arg }}&page={{ page }}">Name</a>
+                        <a href="{% url "part_list" %}?sort={{ sort_arg }}&page={{ page }}{% if search_query %}&q={{ search_query }}{% endif %}">Name</a>
                         {% if sort_by == 'name' %}
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                         {% else %}

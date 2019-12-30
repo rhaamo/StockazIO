@@ -23,7 +23,7 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
     sort = request.GET.get("sort", "name")
     page = request.GET.get("page", 1)
     q = request.GET.get("q", None)
-    ctx = {}
+    ctx = {"search_query": q}
 
     if sort == "name":
         ctx["sort_arg"] = "-name"
