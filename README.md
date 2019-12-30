@@ -25,3 +25,6 @@ python manage.py database_seeds
 # Images sources
 - Footprints: https://commons.wikimedia.org/wiki/SVG_integrated_circuits + own edits
 
+# TODO
+- All edit/new/delete/etc. should keep the: a) category if any, b) q= if any
+
