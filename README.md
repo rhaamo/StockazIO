@@ -19,3 +19,7 @@ python manage.py database_seeds
 
 - yummy bugs
 - partkeepr import from CSV (fixed fields)
+
+# Images sources
+- Footprints: https://commons.wikimedia.org/wiki/SVG_integrated_circuits + own edits
+
