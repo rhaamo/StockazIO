@@ -117,7 +117,7 @@ class PartCreate(CreateView):
 
 class PartUpdate(UpdateView):
     model = Part
-    template_name = "parts/part_create.html"
+    template_name = "parts/part_update.html"
     form_class = PartForm
     success_url = None
 
