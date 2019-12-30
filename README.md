@@ -7,6 +7,8 @@ Manage your inventory of electronic stuff
 ```
 git clone this repository
 cd StockazIO
+git submodule init
+git submodule update
 python3 -m virtualenv venv
 source venv/bin/activate
 pip install --requirements api/requirements.txt

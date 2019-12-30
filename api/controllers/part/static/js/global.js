@@ -15,7 +15,7 @@ $(document).ready(function () {
 
 
         $('.formset_row-distributors_sku').formset({
-            addText: 'add another',
+            addText: 'add another one',
             deleteText: 'remove',
             prefix: 'distributors_sku',
         });

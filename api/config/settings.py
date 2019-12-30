@@ -46,7 +46,6 @@ THIRD_PARTY_APPS = [
     "debug_toolbar",
     "imagekit",
     "crispy_forms",
-    "dynamic_formsets",
     "django_admin_listfilter_dropdown",
     "bootstrap3",
 ]

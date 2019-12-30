@@ -110,8 +110,19 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
         with transaction.atomic():
-            form.instance.created_by = self.request.user
-            self.object = form.save()
+            # Save without commit
+            self.object = form.save(commit=False)
+            # Fill FKs
+            self.object.part_unit = form.cleaned_data["part_unit"]
+            self.object.category = form.cleaned_data["category"]
+            self.object.footprint = form.cleaned_data["footprint"]
+            self.object.storage = form.cleaned_data["storage"]
+
+            # Save for real
+            self.object.save()
+            form.save_m2m()
+
+            # Handle inline forms
             if distributors_sku.is_valid():
                 distributors_sku.instance = self.object
                 distributors_sku.save()
