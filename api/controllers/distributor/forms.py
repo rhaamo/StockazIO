@@ -48,7 +48,7 @@ class DistributorSkuForm(ModelForm):
     distributor = forms.ModelChoiceField(required=False, queryset=Distributor.objects.all())
 
     class Meta:
-        model = Distributor
+        model = DistributorSku
         fields = ["sku", "distributor"]
 
     def __init__(self, *args, **kwargs):

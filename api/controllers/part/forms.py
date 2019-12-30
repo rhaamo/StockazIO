@@ -1,15 +1,17 @@
 from controllers.footprints.models import Footprint
-from controllers.part.models import PartUnit, ParametersUnit, Part
+from controllers.part.models import PartUnit, ParametersUnit, Part, PartParameter
 from controllers.storage.models import StorageLocation
 from controllers.part.forms_widgets import GroupedModelChoiceField
 from crispy_forms.bootstrap import FormActions, Tab, TabHolder
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field, Fieldset, Div
+from crispy_forms.layout import Layout, Submit, HTML, Field, Fieldset, Div, Row
 from django import forms
 from django.forms import ModelForm
 from controllers.categories.models import Category
 from mptt.forms import TreeNodeChoiceField
 from .custom_layout_object import Formset
+from django.forms.models import inlineformset_factory
+import re
 
 
 class PartUnitForm(ModelForm):
@@ -99,9 +101,7 @@ class PartForm(ModelForm):
     part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
     storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
 
-    # part parameters
     # part attachment
-    # part manufacturer
 
     def __init__(self, *args, **kwargs):
         super(PartForm, self).__init__(*args, **kwargs)
@@ -143,9 +143,52 @@ class PartForm(ModelForm):
             ),
             Div(
                 TabHolder(
+                    Tab("Parameters", Formset("part_parameters")),
                     Tab("Manufacturers", Formset("part_manufacturers")),
                     Tab("Distributors", Formset("distributors_sku")),
                 ),
                 css_class="col-lg-6",
             ),
         )
+
+
+class PartParameterForm(ModelForm):
+    name = forms.CharField(required=True)
+    description = forms.CharField()
+    value = forms.CharField()
+    unit = forms.ModelChoiceField(required=False, queryset=ParametersUnit.objects.all())
+
+    class Meta:
+        model = PartParameter
+        fields = ["name", "description", "value", "unit"]
+
+    def __init__(self, *args, **kwargs):
+        super(PartParameterForm, self).__init__(*args, **kwargs)
+
+        formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = "form-horizontal"
+        self.helper.label_class = "col-sm-2"
+        self.helper.field_class = "col-sm-8"
+        self.helper.layout = Layout(
+            Row(
+                Field("name"),
+                Field("description"),
+                Field("value"),
+                Field("unit"),
+                Field("DELETE"),
+                css_class="formset_row-{}".format(formtag_prefix),
+            )
+        )
+
+
+PartParameterFormSet = inlineformset_factory(
+    Part,
+    PartParameter,
+    form=PartParameterForm,
+    fields=["name", "description", "value", "unit"],
+    extra=1,
+    can_delete=True,
+)

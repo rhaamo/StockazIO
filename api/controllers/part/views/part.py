@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
 from controllers.part.models import Part
-from controllers.part.forms import PartForm
+from controllers.part.forms import PartForm, PartParameterForm
 from controllers.categories.models import Category
 
 from django.views.generic.edit import CreateView, UpdateView
@@ -62,15 +62,19 @@ class PartCreate(SuccessMessageMixin, CreateView):
         if self.request.POST:
             data["distributors_sku"] = DistributorSkuFormSet(self.request.POST)
             data["part_manufacturers"] = PartManufacturerFormSet(self.request.POST)
+            data["part_parameters"] = PartParameterForm(self.request.POST)
         else:
             data["distributors_sku"] = DistributorSkuFormSet()
             data["part_manufacturers"] = PartManufacturerFormSet()
+            data["part_parameters"] = PartParameterForm()
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         distributors_sku = context["distributors_sku"]
         part_manufacturers = context["part_manufacturers"]
+        part_parameters = context["part_parameters"]
+
         with transaction.atomic():
             # Save without commit
             self.object = form.save(commit=False)
@@ -91,6 +95,9 @@ class PartCreate(SuccessMessageMixin, CreateView):
             if part_manufacturers.is_valid():
                 part_manufacturers.instance = self.object
                 part_manufacturers.save()
+            if part_parameters.is_valid():
+                part_parameters.instance = self.object
+                part_parameters.save()
         return super(PartCreate, self).form_valid(form)
 
     @method_decorator(login_required())

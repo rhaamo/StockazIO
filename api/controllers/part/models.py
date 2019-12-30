@@ -106,10 +106,14 @@ class PartParameter(models.Model):
     value = models.CharField(_("value"), max_length=255, unique=False, blank=False)
     unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.PROTECT)
 
-    part = models.ForeignKey(Part, related_name="part_parameters", blank=True, null=True, on_delete=models.CASCADE)
+    part = models.ForeignKey(
+        Part, related_name="part_parameters_value", blank=False, null=False, on_delete=models.CASCADE
+    )
 
     class Meta(object):
         ordering = ("name",)
+        verbose_name = _("Part parameter")
+        verbose_name_plural = _("Part parameters")
 
     def __str__(self):
         return self.name
