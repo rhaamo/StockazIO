@@ -12,5 +12,12 @@ $(document).ready(function () {
         $('#id_footprint.select').chosen(chosenOpts);
         $('#id_storage.select').chosen(chosenOpts);
         $('#id_category.select').chosen(chosenOpts);
+
+
+        $('.formset_row-distributors_sku').formset({
+            addText: 'add another',
+            deleteText: 'remove',
+            prefix: 'distributors_sku',
+        });
     });
 });

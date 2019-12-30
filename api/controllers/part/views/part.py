@@ -11,12 +11,17 @@ from controllers.distributor.models import DistributorSku
 from controllers.distributor.forms import DistributorSkuForm
 
 from django.forms.models import inlineformset_factory
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse_lazy
+from django.db import transaction
+from controllers.distributor.forms import DistributorSkuFormSet
 
 
 @login_required
 def part_list(request, category=None, template_name="parts/part_list.html"):
     sort = request.GET.get("sort", "name")
     page = request.GET.get("page", 1)
+    q = request.GET.get("q", None)
     ctx = {}
 
     if sort == "name":
@@ -31,6 +36,9 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
         base_queryset = Part.objects.prefetch_related("storage", "footprint").filter(category=cat)
     else:
         base_queryset = Part.objects.prefetch_related("storage", "footprint")
+
+    if q:
+        base_queryset = base_queryset.filter(name__icontains=q)
 
     ctx["object_list"] = base_queryset.order_by(ctx["sort_by"])
     paginator = Paginator(ctx["object_list"], settings.PAGINATION["PARTS"])
@@ -74,3 +82,63 @@ def part_update(request, pk, template_name="parts/part_update.html"):
         messages.success(request, "Part successfully updated.")
         return redirect("part_list")
     return render(request, template_name, {"form": form, "object": part})
+
+
+class PartCreate(CreateView):
+    model = Part
+    template_name = "parts/part_create.html"
+    form_class = PartForm
+    success_url = None
+
+    def get_context_data(self, **kwargs):
+        data = super(PartCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data["distributors_sku"] = DistributorSkuFormSet(self.request.POST)
+        else:
+            data["distributors_sku"] = DistributorSkuFormSet()
+        return data
+
+    def valid_form(self, form):
+        context = self.get_context_data()
+        distributors_sku = context["distributors_sku"]
+        with transaction.atomic():
+            form.instance.created_by = self.request.user
+            self.object = form.save()
+            form.save_m2m()
+            if distributors_sku.is_valid():
+                distributors_sku.instance = self.object
+                distributors_sku.save()
+                distributors_sku.save_m2m()
+        return super(PartCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("part_list")
+
+
+class PartUpdate(UpdateView):
+    model = Part
+    template_name = "parts/part_create.html"
+    form_class = PartForm
+    success_url = None
+
+    def get_context_data(self, **kwargs):
+        data = super(PartUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data["distributors_sku"] = DistributorSkuFormSet(self.request.POST, instance=self.object)
+        else:
+            data["distributors_sku"] = DistributorSkuFormSet(instance=self.object)
+        return data
+
+    def valid_form(self, form):
+        context = self.get_context_data()
+        distributors_sku = context["distributors_sku"]
+        with transaction.atomic():
+            form.instance.created_by = self.request.user
+            self.object = form.save()
+            if distributors_sku.is_valid():
+                distributors_sku.instance = self.object
+                distributors_sku.save()
+        return super(PartUpdate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("part_list")

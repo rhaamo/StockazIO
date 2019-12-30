@@ -1,9 +1,11 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Distributor
+from .models import Distributor, DistributorSku
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Field
 from crispy_forms.bootstrap import FormActions
+from django.forms.models import inlineformset_factory
+from controllers.part.models import Part
 
 
 class DistributorForm(ModelForm):
@@ -59,3 +61,8 @@ class DistributorSkuForm(ModelForm):
             Field("distributor"),
             FormActions(Submit("distributor_sku_create", "Save changes", css_class="btn-primary")),
         )
+
+
+DistributorSkuFormSet = inlineformset_factory(
+    Part, DistributorSku, form=DistributorSkuForm, fields=["sku", "distributor"], extra=1, can_delete=True
+)

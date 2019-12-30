@@ -4,11 +4,12 @@ from controllers.storage.models import StorageLocation
 from controllers.part.forms_widgets import GroupedModelChoiceField
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field
+from crispy_forms.layout import Layout, Submit, HTML, Field, Fieldset, Div
 from django import forms
 from django.forms import ModelForm
 from controllers.categories.models import Category
 from mptt.forms import TreeNodeChoiceField
+from .custom_layout_object import Formset
 
 
 class PartUnitForm(ModelForm):
@@ -103,25 +104,33 @@ class PartForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PartForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag = True
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-4"
         self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
-            Field("name"),
-            Field("description"),
-            Field("comment"),
-            Field("stock_qty"),
-            Field("stock_qty_min"),
-            Field("part_unit"),
-            Field("needs_review"),
-            Field("category"),
-            Field("condition"),
-            Field("can_be_sold"),
-            Field("private"),
-            Field("footprint"),
-            Field("storage"),
-            FormActions(
-                Submit("part_list", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),
+            Div(
+                Fieldset(
+                    "Add part",
+                    Field("name"),
+                    Field("description"),
+                    Field("comment"),
+                    Field("stock_qty"),
+                    Field("stock_qty_min"),
+                    Field("part_unit"),
+                    Field("needs_review"),
+                    Field("category"),
+                    Field("condition"),
+                    Field("can_be_sold"),
+                    Field("private"),
+                    Field("footprint"),
+                    Field("storage"),
+                    FormActions(
+                        Submit("submit", "Save changes", css_class="btn-primary"),
+                        HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),
+                    ),
+                ),
+                css_class="col-lg-6",
             ),
+            Div(Fieldset("Add distributors", Formset("distributors_sku")), css_class="col-lg-6"),
         )
