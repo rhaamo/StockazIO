@@ -1,0 +1,31 @@
+{% extends 'base.html' %}{% load bootstrap3 %}{% load mptt_tags %}
+
+{% block title %}Storage map{% endblock %}
+
+{% block content %}
+    <h3>Storage tree</h3>
+    <br/>
+
+    <ul class="mptt-tree-storage_categories">
+        {% recursetree storage_categories %}
+        <li >
+            <i class="fa fa-table" title="Storage Category"></i> {{ node.name }}
+            <ul>
+                {% for i in node.storage_locations.all %}
+                    <li><i class="fa fa-file" title="Storage Location"></i> <a title="See all parts in {{ i.name }}" href="{% url 'part_list' %}?storageLocation={{ i.id }}">{{ i.name }}</a></li>
+                {% endfor %}
+            </ul>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                    <ul>
+                        {% for i in node.storage_locations.all %}
+                            <li><i class="fa fa-file" title="Storage Location"></i> <a title="See all parts in {{ i.name }}" href="{% url 'part_list' %}?storageLocation={{ i.id }}">{{ i.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+            {% endif %}
+        </li>
+        {% endrecursetree %}
+    </ul>
+{% endblock %}

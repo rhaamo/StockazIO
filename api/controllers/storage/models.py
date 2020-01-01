@@ -22,7 +22,9 @@ class StorageCategory(MPTTModel):
 
 class StorageLocation(models.Model):
     name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
-    category = models.ForeignKey(StorageCategory, blank=True, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        StorageCategory, related_name="storage_locations", blank=True, null=True, on_delete=models.CASCADE
+    )
 
     picture = models.ImageField(
         upload_to="storage_locations/",

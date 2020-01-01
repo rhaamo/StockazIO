@@ -7,6 +7,11 @@ from mptt.admin import MPTTModelAdmin
 from mptt.admin import TreeRelatedFieldListFilter
 
 
+class StorageLocationInLine(admin.TabularInline):
+    model = StorageLocation
+    extra = 1
+
+
 class StorageLocationAdmin(CommonAdmin):
     list_display = ("name", "category", "get_picture")
     search_fields = ("name",)
@@ -24,5 +29,9 @@ class StorageLocationAdmin(CommonAdmin):
     list_filter = [("category", TreeRelatedFieldListFilter)]
 
 
-admin.site.register(StorageCategory, MPTTModelAdmin)
+class StorageCategoryAdmin(MPTTModelAdmin, CommonAdmin):
+    inlines = [StorageLocationInLine]
+
+
+admin.site.register(StorageCategory, StorageCategoryAdmin)
 admin.site.register(StorageLocation, StorageLocationAdmin)

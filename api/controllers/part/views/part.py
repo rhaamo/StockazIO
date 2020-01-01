@@ -23,6 +23,7 @@ from .common import query_reverse
 def part_list(request, category=None, template_name="parts/part_list.html"):
     sort = request.GET.get("sort", "name")
     page = request.GET.get("page", 1)
+    storage_location = request.GET.get("storageLocation", None)
     q = request.GET.get("q", None)
     ctx = {"search_query": q}
 
@@ -38,6 +39,10 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
         base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit").filter(category=cat)
     else:
         base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit")
+
+    if storage_location:
+        storloc = get_object_or_404(StorageLocation, id=storage_location)
+        base_queryset = base_queryset.filter(storage=storloc)
 
     if q:
         base_queryset = base_queryset.filter(name__icontains=q)

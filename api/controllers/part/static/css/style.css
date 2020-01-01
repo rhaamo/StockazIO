@@ -26,6 +26,10 @@ div.sc_name {
 div.sc_value {
 }
 
+ul.mptt-tree-storage_categories, ul.mptt-tree-storage_categories ul {
+    list-style: none;
+}
+
 ul.cat-list {
     text-align: left;
     margin: 0;

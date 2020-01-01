@@ -8,6 +8,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import StorageCategoryForm, StorageForm
 from .models import StorageCategory, StorageLocation
 
+# Storage Map
+@login_required
+def storage_map(request, template_name="storages/map.html"):
+    ctx = {}
+    ctx["storage_categories"] = StorageCategory.objects.prefetch_related("storage_locations").all()
+
+    return render(request, template_name, ctx)
+
 
 # Storage Categories
 @login_required

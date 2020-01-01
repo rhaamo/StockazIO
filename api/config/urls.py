@@ -148,6 +148,7 @@ urlpatterns = [
     ),
     # Storages Categories
     url(r"^storages/$", mbv_storage.storage_category_list, name="storage_category_list"),
+    url(r"^storages/map$", mbv_storage.storage_map, name="storage_map"),
     url(r"^storages/create/$", mbv_storage.storage_category_create, name="storage_category_create"),
     url(r"^storages/(?P<pk>[0-9]+)/update/$", mbv_storage.storage_category_update, name="storage_category_update"),
     url(

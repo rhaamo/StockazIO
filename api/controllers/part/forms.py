@@ -96,10 +96,14 @@ class PartForm(ModelForm):
     status = forms.CharField(required=False)
     internal_part_number = forms.CharField(required=False)
 
-    footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
+    footprint = GroupedModelChoiceField(
+        required=False, queryset=Footprint.objects.prefetch_related("footprint").all(), group_by_field="footprint"
+    )
     category = TreeNodeChoiceField(required=False, queryset=Category.objects.all(), level_indicator=u"+--")
     part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
-    storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
+    storage = GroupedModelChoiceField(
+        required=False, queryset=StorageLocation.objects.prefetch_related("category").all(), group_by_field="category"
+    )
 
     # part attachment
 
@@ -179,10 +183,14 @@ class PartQuickAddForm(ModelForm):
     status = forms.CharField(required=False)
     internal_part_number = forms.CharField(required=False)
 
-    footprint = GroupedModelChoiceField(required=False, queryset=Footprint.objects.all(), group_by_field="footprint")
+    footprint = GroupedModelChoiceField(
+        required=False, queryset=Footprint.objects.prefetch_related("footprint").all(), group_by_field="footprint"
+    )
     category = TreeNodeChoiceField(required=False, queryset=Category.objects.all(), level_indicator=u"+--")
     part_unit = forms.ModelChoiceField(required=False, queryset=PartUnit.objects.all())
-    storage = GroupedModelChoiceField(required=False, queryset=StorageLocation.objects.all(), group_by_field="category")
+    storage = GroupedModelChoiceField(
+        required=False, queryset=StorageLocation.objects.prefetch_related("category").all(), group_by_field="category"
+    )
 
     # part attachment
 
