@@ -8,9 +8,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import StorageCategoryForm, StorageForm
 from .models import StorageCategory, StorageLocation
 
-# Storage Map
+# Storage Tree
 @login_required
-def storage_map(request, template_name="storages/map.html"):
+def storage_tree(request, template_name="storages/tree.html"):
     ctx = {}
     ctx["storage_categories"] = StorageCategory.objects.prefetch_related("storage_locations").all()
 
