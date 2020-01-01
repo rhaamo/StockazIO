@@ -20,7 +20,17 @@ python manage.py database_seeds
 # Features
 
 - yummy bugs
-- partkeepr import from CSV (fixed fields)
+- partkeepr import from CSV (fixed fields, see `controllers/part/management/commands/import_partkeepr.py`
+- Categories for parts
+- Storage categories and Storage Locations (with possible pictures)
+- Footprints categories and actual footprint in them (with possible picture)
+- Parts can have distributors SKU, manufacturers SKU, parts parameters
+- Parts and Storage Locations have UUIDs to generate an unique QRCode
+- Quick add form and a full-featured one
+
+# Generated QRCodes format
+- StorageLocation: `stockazio://storageLocation/{uuid}`
+- Part: `stockazio://part/{uuid}`
 
 # Images sources
 - Footprints
@@ -31,11 +41,3 @@ python manage.py database_seeds
     - qip-component-package-photo.jpg [here](https://blog.mbedded.ninja/pcb-design/component-packages/qip-component-package/#&gid=1&pid=1)
 - Manufacturers
     - \*shrug*
-
-# Generated QRCodes format
-- StorageLocation: `stockazio://storageLocation/{uuid}`
-- Part: `stockazio://part/{uuid}`
-
-# TODO
-- All edit/new/delete/etc. should keep the: a) category if any, b) q= if any
-
