@@ -39,6 +39,7 @@
             <table class="table table-condensed table-stripped">
                 <thead>
                 <tr>
+                    <!-- <th><i class="fa fa-qrcode"></i></th> -->
                     <th>
                         <a href="{% url "part_list" %}?sort={{ sort_arg }}&page={{ page }}{% if search_query %}&q={{ search_query }}{% endif %}">Name</a>
                         {% if sort_by == 'name' %}
@@ -47,11 +48,11 @@
                             <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
                         {% endif %}
                     </th>
-                <th>Storage</th>
-                <th>Stock</th>
-                <th>Min</th>
-                <th>Unit</th>
-                <th>Footprint</th>
+                    <th>Storage</th>
+                    <th>Stock</th>
+                    <th>Min</th>
+                    <th>Unit</th>
+                    <th>Footprint</th>
                     <th><i class="fa fa-tasks" aria-hidden="true"></i></th>
                 </tr>
                 </thead>
@@ -59,6 +60,7 @@
                 <tbody>
                 {% for part in paginator %}
                     <tr>
+                        <!-- <td></td> -->
                         <td>{{ part.name }}</td>
                         <td>
                             {% if not part.storage %}
