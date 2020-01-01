@@ -32,6 +32,10 @@ python manage.py database_seeds
 - Manufacturers
     - \*shrug*
 
+# Generated QRCodes format
+- StorageLocation: `stockazio://storageLocation/{uuid}`
+- Part: `stockazio://part/{uuid}`
+
 # TODO
 - All edit/new/delete/etc. should keep the: a) category if any, b) q= if any
 

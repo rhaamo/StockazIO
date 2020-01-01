@@ -20,6 +20,7 @@
             <table class="table table-condensed table-stripped">
                 <thead>
                 <tr>
+                    <th><i class="fa fa-qrcode"></i></th>
                     <th>
                         <a href="{% url "storage_list" pk_category=storage_category_id %}?sort={{ sort_arg }}&page={{ page }}">Name</a>
                         {% if sort_by == 'name' %}
@@ -36,7 +37,11 @@
                 <tbody>
                 {% for storage in paginator %}
                     <tr>
-                        <td>{{ storage.name }}</td>
+                        <td>
+                            <div id="qrcode-{{ storage.id }}" data-uuid="{{ storage.uuid }}"></div>
+                            <div id="qrcode-{{ storage.id }}-big" style="display: none; position: absolute; left: 6em; margin-top: -5em;"></div>
+                        </td>
+                        <td><a title="See all parts in {{ storage.name }}" href="{% url 'part_list' %}?storageLocation={{ storage.id }}">{{ storage.name }}</a> <small>({{ storage.part_set.count }})</small></td>
                         <td>{{ storage.description }}</td>
                         <td>
                             <a href="{% url "storage_update" pk_category=storage_category_id pk=storage.id %}"><i
@@ -52,4 +57,36 @@
             {% bootstrap_pagination paginator extra="sort="|add:sort_by %}
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="application/javascript">
+        function generateQrCode(id) {
+            console.log("Generating QRCode for", id);
+            let element = $(`div#${id}`);
+            let uuid = element.data('uuid');
+            let qrCodeContent = `stockazio://storageLocation/${uuid}`;
+            let qr = qrcode(0, 'M');
+            qr.addData(qrCodeContent, "Byte");
+            qr.make();
+            let imgSmall = qr.createImgTag(1, 0); // cellSize, margin
+            let imgBig = qr.createImgTag(3, 0);
+            element.html(imgSmall);
+            $(`div#${id}-big`).html(imgBig);
+        }
+
+        function generateHoverThing(id) {
+            let element = $(`div#${id} img`);
+            element.hover(function () {
+                $(`div#${id}-big`).show();
+            }, function () {
+                $(`div#${id}-big`).hide();
+            })
+        }
+
+        {% for part in paginator %}
+            generateQrCode("qrcode-{{ storage.id }}");
+            generateHoverThing("qrcode-{{ storage.id }}");
+        {% endfor %}
+    </script>
 {% endblock %}

@@ -39,7 +39,7 @@
             <table class="table table-condensed table-stripped">
                 <thead>
                 <tr>
-                    <!-- <th><i class="fa fa-qrcode"></i></th> -->
+                    <th width="25"><i class="fa fa-qrcode"></i></th>
                     <th>
                         <a href="{% url "part_list" %}?sort={{ sort_arg }}&page={{ page }}{% if search_query %}&q={{ search_query }}{% endif %}">Name</a>
                         {% if sort_by == 'name' %}
@@ -60,7 +60,10 @@
                 <tbody>
                 {% for part in paginator %}
                     <tr>
-                        <!-- <td></td> -->
+                        <td>
+                            <div id="qrcode-{{ part.id }}" data-uuid="{{ part.uuid }}"></div>
+                            <div id="qrcode-{{ part.id }}-big" style="display: none; position: absolute; left: 6em; margin-top: -5em;"></div>
+                        </td>
                         <td>{{ part.name }}</td>
                         <td>
                             {% if not part.storage %}
@@ -91,4 +94,36 @@
             {% bootstrap_pagination paginator extra="sort="|add:sort_by %}
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="application/javascript">
+        function generateQrCode(id) {
+            console.log("Generating QRCode for", id);
+            let element = $(`div#${id}`);
+            let uuid = element.data('uuid');
+            let qrCodeContent = `stockazio://part/${uuid}`;
+            let qr = qrcode(0, 'M');
+            qr.addData(qrCodeContent, "Byte");
+            qr.make();
+            let imgSmall = qr.createImgTag(1, 0); // cellSize, margin
+            let imgBig = qr.createImgTag(3, 0);
+            element.html(imgSmall);
+            $(`div#${id}-big`).html(imgBig);
+        }
+
+        function generateHoverThing(id) {
+            let element = $(`div#${id} img`);
+            element.hover(function () {
+                $(`div#${id}-big`).show();
+            }, function () {
+                $(`div#${id}-big`).hide();
+            })
+        }
+
+        {% for part in paginator %}
+            generateQrCode("qrcode-{{ part.id }}");
+            generateHoverThing("qrcode-{{ part.id }}");
+        {% endfor %}
+    </script>
 {% endblock %}
