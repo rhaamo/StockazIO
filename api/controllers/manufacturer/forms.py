@@ -75,6 +75,7 @@ class ManufacturerForm(ModelForm):
                 css_class="form-group row",
             )
         )
+        self.is_multipart = True
 
 
 class PartManufacturerForm(ModelForm):
