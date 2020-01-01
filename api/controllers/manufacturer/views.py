@@ -1,12 +1,15 @@
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.forms.models import modelformset_factory
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
+from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.db import transaction
+from django.utils.decorators import method_decorator
 
-from .forms import ManufacturerForm, ManufacturerLogoForm
-from .models import Manufacturer, ManufacturerLogo
+from .forms import ManufacturerForm, ManufacturerLogoFormSet
+from .models import Manufacturer
 
 
 @login_required
@@ -30,48 +33,71 @@ def manufacturer_list(request, template_name="manufacturers/manufacturer_list.ht
     return render(request, template_name, ctx)
 
 
-@login_required
-def manufacturer_create(request, template_name="manufacturers/manufacturer_create.html"):
-    form = ManufacturerForm(request.POST or None, request.FILES or None)
-    ml_formset = modelformset_factory(ManufacturerLogo, form=ManufacturerLogoForm, extra=1)
+class ManufacturerCreate(SuccessMessageMixin, CreateView):
+    model = Manufacturer
+    template_name = "manufacturers/manufacturer_create.html"
+    form_class = ManufacturerForm
+    success_url = reverse_lazy("manufacturer_list")
+    success_message = "Manufacturer successfully created."
 
-    if form.is_valid():
-        formset = ml_formset(request.POST or None, request.FILES or None)
-        form.save()
-        for f in formset:
-            f.empty_permitted = False
-            if f.is_valid() and f.has_changed():
-                f.instance.manufacturer_id = form.instance.id
-                f.save()
-        messages.success(request, "Manufacturer successfully created.")
-        return redirect("manufacturer_list")
+    def get_context_data(self, **kwargs):
+        data = super(ManufacturerCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data["manufacturer_logos"] = ManufacturerLogoFormSet(self.request.POST, self.request.FILES)
+        else:
+            data["manufacturer_logos"] = ManufacturerLogoFormSet()
+        return data
 
-    formset = ml_formset(queryset=ManufacturerLogo.objects.none())
-    return render(request, template_name, {"form": form, "formset": formset})
+    def form_valid(self, form):
+        context = self.get_context_data()
+        manufacturer_logos = context["manufacturer_logos"]
+
+        with transaction.atomic():
+            # Save without commit
+            self.object = form.save()
+
+            # Handle inline forms
+            if manufacturer_logos.is_valid():
+                manufacturer_logos.instance = self.object
+                manufacturer_logos.save()
+        return super(ManufacturerCreate, self).form_valid(form)
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(ManufacturerCreate, self).dispatch(*args, **kwargs)
 
 
-@login_required
-def manufacturer_update(request, pk, template_name="manufacturers/manufacturer_update.html"):
-    manufacturer = get_object_or_404(Manufacturer, pk=pk)
+class ManufacturerUpdate(SuccessMessageMixin, UpdateView):
+    model = Manufacturer
+    template_name = "manufacturers/manufacturer_update.html"
+    form_class = ManufacturerForm
+    success_url = reverse_lazy("manufacturer_list")
+    success_message = "Manufacturer successfully updated."
 
-    ml_formset = modelformset_factory(ManufacturerLogo, form=ManufacturerLogoForm, extra=1, can_delete=True)
+    def get_context_data(self, **kwargs):
+        data = super(ManufacturerUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data["manufacturer_logos"] = ManufacturerLogoFormSet(
+                self.request.POST, self.request.FILES, instance=self.object
+            )
+        else:
+            data["manufacturer_logos"] = ManufacturerLogoFormSet(instance=self.object)
+        return data
 
-    form = ManufacturerForm(request.POST or None, request.FILES or None, instance=manufacturer)
-    formset = ml_formset(request.POST or None, request.FILES or None)
+    def form_valid(self, form):
+        context = self.get_context_data()
+        manufacturer_logos = context["manufacturer_logos"]
 
-    if form.is_valid() and formset.is_valid():
-        form.save()
-        # Save new or updated formsets
-        for f in formset:
-            f.empty_permitted = False
-            if f.is_valid() and f.has_changed():
-                f.instance.manufacturer_id = manufacturer.id
-                f.save()
-        # Clear deleted ones
-        for form in formset.deleted_forms:
-            form.instance.delete()
-        messages.success(request, "Manufacturer successfully updated.")
-        return redirect("manufacturer_list")
+        with transaction.atomic():
+            # Save without commit
+            self.object = form.save()
 
-    formset = ml_formset(queryset=ManufacturerLogo.objects.filter(manufacturer=manufacturer.id))
-    return render(request, template_name, {"form": form, "object": manufacturer, "formset": formset})
+            # Handle inline forms
+            if manufacturer_logos.is_valid():
+                manufacturer_logos.instance = self.object
+                manufacturer_logos.save()
+        return super(ManufacturerUpdate, self).form_valid(form)
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(ManufacturerUpdate, self).dispatch(*args, **kwargs)

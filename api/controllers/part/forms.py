@@ -28,14 +28,14 @@ class PartUnitForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Field("name"),
             Field("short_name"),
             Field("description"),
             FormActions(
                 Submit("part_unit_list", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"part_unit_list\" %}'>Cancel</a>"),
+                HTML("<a class='btn btn-light' href='{% url \"part_unit_list\" %}'>Cancel</a>"),
             ),
         )
 
@@ -55,7 +55,7 @@ class ParametersUnitForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Field("name"),
             Field("prefix"),
@@ -63,9 +63,18 @@ class ParametersUnitForm(ModelForm):
             Field("description"),
             FormActions(
                 Submit("parameters_unit_list", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"parameters_unit_list\" %}'>Cancel</a>"),
+                HTML("<a class='btn btn-light' href='{% url \"parameters_unit_list\" %}'>Cancel</a>"),
             ),
         )
+
+
+# Correct bootstrap4 form with cols is
+# div class=row
+#   div class=col-md-10 mx-auto
+#       form
+#           div class=form-group row
+#               div class=col-xx-6
+#               div class=col-xx-6
 
 
 class PartForm(ModelForm):
@@ -120,38 +129,41 @@ class PartForm(ModelForm):
         self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
             Div(
-                Fieldset(
-                    "Basic parts informations",
-                    Field("name"),
-                    Field("description"),
-                    Field("stock_qty"),
-                    Field("stock_qty_min"),
-                    Field("part_unit"),
-                    Field("category"),
-                    Field("storage"),
-                    Field("footprint"),
-                    Field("comment"),
-                    Field("production_remarks"),
-                    Field("status"),
-                    Field("needs_review"),
-                    Field("condition"),
-                    Field("can_be_sold"),
-                    Field("private"),
-                    Field("internal_part_number"),
-                    FormActions(
-                        Submit("submit", "Save changes", css_class="btn-primary"),
-                        HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),
+                Div(
+                    Fieldset(
+                        "Basic parts informations",
+                        Field("name"),
+                        Field("description"),
+                        Field("stock_qty"),
+                        Field("stock_qty_min"),
+                        Field("part_unit"),
+                        Field("category"),
+                        Field("storage"),
+                        Field("footprint"),
+                        Field("comment"),
+                        Field("production_remarks"),
+                        Field("status"),
+                        Field("needs_review"),
+                        Field("condition"),
+                        Field("can_be_sold"),
+                        Field("private"),
+                        Field("internal_part_number"),
+                        FormActions(
+                            Submit("submit", "Save changes", css_class="btn-primary"),
+                            HTML("<a class='btn btn-light' href='{% url \"part_list\" %}'>Cancel</a>"),
+                        ),
                     ),
+                    css_class="col-lg-6",
                 ),
-                css_class="col-lg-6",
-            ),
-            Div(
-                TabHolder(
-                    Tab("Parameters", Formset("part_parameters")),
-                    Tab("Manufacturers", Formset("part_manufacturers")),
-                    Tab("Distributors", Formset("distributors_sku")),
+                Div(
+                    TabHolder(
+                        Tab("Parameters", Formset("part_parameters")),
+                        Tab("Manufacturers", Formset("part_manufacturers")),
+                        Tab("Distributors", Formset("distributors_sku")),
+                    ),
+                    css_class="col-lg-6",
                 ),
-                css_class="col-lg-6",
+                css_class="form-group row",
             ),
         )
 
@@ -207,35 +219,38 @@ class PartQuickAddForm(ModelForm):
         self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
             Div(
-                Fieldset(
-                    "Basic parts informations",
-                    Field("name"),
-                    Field("description"),
-                    Field("stock_qty"),
-                    Field("stock_qty_min"),
-                    Field("status"),
-                    Field("needs_review"),
-                    Field("condition"),
-                    Field("can_be_sold"),
-                    Field("private"),
-                    Field("internal_part_number"),
-                ),
-                css_class="col-lg-6",
-            ),
-            Div(
-                Fieldset(
-                    "&nbsp;",
-                    Field("part_unit"),
-                    Field("category"),
-                    Field("storage"),
-                    Field("footprint"),
-                    FormActions(
-                        Submit("submit", "Save changes", css_class="btn-primary"),
-                        HTML("<a class='btn btn-default' href='{% url \"part_list\" %}'>Cancel</a>"),
+                Div(
+                    Fieldset(
+                        "Basic parts informations",
+                        Field("name"),
+                        Field("description"),
+                        Field("stock_qty"),
+                        Field("stock_qty_min"),
+                        Field("status"),
+                        Field("needs_review"),
+                        Field("condition"),
+                        Field("can_be_sold"),
+                        Field("private"),
+                        Field("internal_part_number"),
                     ),
+                    css_class="col-lg-6",
                 ),
-                css_class="col-lg-6",
-            ),
+                Div(
+                    Fieldset(
+                        "&nbsp;",
+                        Field("part_unit"),
+                        Field("category"),
+                        Field("storage"),
+                        Field("footprint"),
+                        FormActions(
+                            Submit("submit", "Save changes", css_class="btn-primary"),
+                            HTML("<a class='btn btn-light' href='{% url \"part_list\" %}'>Cancel</a>"),
+                        ),
+                    ),
+                    css_class="col-lg-6",
+                ),
+                css_class="form-group row",
+            )
         )
 
 
@@ -257,7 +272,7 @@ class PartParameterForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
-        self.helper.label_class = "col-sm-2"
+        self.helper.label_class = "col-sm-3"
         self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
             Div(Row(Field("name"), Field("description")),),

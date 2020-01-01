@@ -7,13 +7,15 @@
     <div class="row">
         <div class="col-lg-9">
             <ol class="breadcrumb">
-                <li><a href="{% url "part_list" %}">Parts</a></li>
-                <li class="active">{{ object.name }}</li>
+                <li class="breadcrumb-item"><a href="{% url "part_list" %}">Parts</a></li>
+                <li class="breadcrumb-item active">{{ object.name }}</li>
             </ol>
         </div>
     </div>
 
     <div class="row">
-        {% crispy form %}
+        <div class="col-md-11 mx-auto">
+            {% crispy form %}
+        </div>
     </div>
 {% endblock %}

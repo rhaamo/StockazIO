@@ -19,13 +19,13 @@ class StorageForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Field("name"),
             Field("description"),
             FormActions(
                 Submit("storage_category_form", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"storage_category_list\" %}'>Cancel</a>"),
+                HTML("<a class='btn btn-light' href='{% url \"storage_category_list\" %}'>Cancel</a>"),
             ),
         )
 
@@ -43,12 +43,12 @@ class StorageCategoryForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Field("name"),
             Field("description"),
             FormActions(
                 Submit("storage_category_form", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"storage_category_list\" %}'>Cancel</a>"),
+                HTML("<a class='btn btn-light' href='{% url \"storage_category_list\" %}'>Cancel</a>"),
             ),
         )

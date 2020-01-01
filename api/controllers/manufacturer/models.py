@@ -25,7 +25,7 @@ class Manufacturer(models.Model):
 
 class ManufacturerLogo(models.Model):
     manufacturer = models.ForeignKey(
-        Manufacturer, related_name="logos", blank=True, null=True, on_delete=models.PROTECT
+        Manufacturer, related_name="logos", blank=False, null=False, on_delete=models.PROTECT
     )
 
     logo = models.ImageField(upload_to="manufacturers/", verbose_name=_("Manufacturer logo"), blank=False, null=False)
@@ -42,7 +42,7 @@ class ManufacturerLogo(models.Model):
     class Meta(object):
         ordering = ("id",)
         verbose_name = _("Manufacturer Logo")
-        verbose_name_plural = _("Manufacturers Logo")
+        verbose_name_plural = _("Manufacturer Logos")
 
 
 class PartManufacturer(models.Model):

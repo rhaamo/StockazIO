@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load bootstrap3 %}{% load custom %}
+{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}
 
 {% block title %}Parts{% endblock %}
 
@@ -7,14 +7,14 @@
         <div class="col-lg-9">
             <ol class="breadcrumb">
                 {% if not category %}
-                    <li>{{ title }}</li>
-                    <li class="active">All</li>
+                    <li class="breadcrumb-item">{{ title }}</li>
+                    <li class="breadcrumb-item active">All</li>
                 {% else %}
                     {% for c in category_path %}
                         {% if forloop.last %}
-                        <li class="active">{{ c }}</li>
+                        <li class="breadcrumb-item active">{{ c }}</li>
                         {% else %}
-                        <li>{{ c }}</li>
+                        <li class="breadcrumb-item">{{ c }}</li>
                         {% endif %}
                     {% endfor %}
                 {% endif %}

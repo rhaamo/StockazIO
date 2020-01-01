@@ -27,7 +27,7 @@ class DistributorForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Field("name"),
             Field("address"),
@@ -38,7 +38,7 @@ class DistributorForm(ModelForm):
             Field("fax"),
             FormActions(
                 Submit("distributor_create", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"distributor_list\" %}'>Cancel</a>"),
+                HTML("<a class='btn btn-light' href='{% url \"distributor_list\" %}'>Cancel</a>"),
             ),
         )
 
@@ -62,7 +62,7 @@ class DistributorSkuForm(ModelForm):
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Row(Field("sku"), Field("distributor"), Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix))
         )

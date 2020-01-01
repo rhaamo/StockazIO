@@ -25,7 +25,7 @@ class FootprintCategoryForm(ModelForm):
             Field("description"),
             FormActions(
                 Submit("footprint_category_create", "Save changes", css_class="btn-primary"),
-                HTML("<a class='btn btn-default' href='{% url \"footprint_category_list\" %}'>Cancel</a>"),
+                HTML("<a class='btn btn-light' href='{% url \"footprint_category_list\" %}'>Cancel</a>"),
             ),
         )
 

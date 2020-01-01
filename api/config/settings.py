@@ -47,7 +47,7 @@ THIRD_PARTY_APPS = [
     "imagekit",
     "crispy_forms",
     "django_admin_listfilter_dropdown",
-    "bootstrap3",
+    "bootstrap4",
 ]
 
 LOCAL_APPS = [
@@ -145,7 +145,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 
-CRISPY_TEMPLATE_PACK = "bootstrap3"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 CRISPY_FAIL_SILENTLY = not DEBUG
 
 PART_ATTACHMENT_ALLOWED_TYPES = [

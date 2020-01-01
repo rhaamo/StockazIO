@@ -1,14 +1,16 @@
-{% extends 'base.html' %}{% load bootstrap3 %}
+{% extends 'base.html' %}{% load bootstrap4 %}
 
 {% block title %}Storages in {{ storage_category_name }}{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-lg-9">
-            <ol class="breadcrumb">
-                <li><a href="{% url "storage_category_list" %}">Storage Categories</a></li>
-                <li class="active">{{ storage_category_name }}</li>
-            </ol>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url "storage_category_list" %}">Storage Categories</a></li>
+                    <li class="breadcrumb-item active">{{ storage_category_name }}</li>
+                </ol>
+            </nav>
         </div>
         <div class="col-lg-2">
             <a href="{% url "storage_create" pk_category=storage_category_id %}" class="btn btn-info">add new</a>

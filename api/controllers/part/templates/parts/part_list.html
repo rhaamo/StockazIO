@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load bootstrap3 %}{% load custom %}
+{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}
 
 {% block title %}Parts{% endblock %}
 
@@ -7,30 +7,30 @@
         <div class="col-lg-9">
             <ol class="breadcrumb">
                 {% if search_query %}
-                    <li>Parts</li>
-                    <li>Search</li>
-                    <li class="active">{{ search_query }}</li>
+                    <li class="breadcrumb-item">Parts</li>
+                    <li class="breadcrumb-item">Search</li>
+                    <li class="breadcrumb-item active">{{ search_query }}</li>
                 {% elif category %}
                     {% for c in category_path %}
                         {% if forloop.last %}
-                        <li class="active">{{ c }}</li>
+                        <li class="breadcrumb-item active">{{ c }}</li>
                         {% else %}
-                        <li>{{ c }}</li>
+                        <li class="breadcrumb-item">{{ c }}</li>
                         {% endif %}
                     {% endfor %}
                 {% elif storageLocation %}
-                    <li>Parts</li>
-                    <li>From storage location</li>
-                    <li class="active">{{ storageLocation.name }}</li>
+                    <li class="breadcrumb-item">Parts</li>
+                    <li class="breadcrumb-item">From storage location</li>
+                    <li class="breadcrumb-item active">{{ storageLocation.name }}</li>
                 {% else %}
-                    <li>Parts</li>
-                    <li class="active">All</li>
+                    <li class="breadcrumb-item">Parts</li>
+                    <li class="breadcrumb-item active">All</li>
                 {% endif %}
             </ol>
         </div>
         <div class="col-lg-3">
             <a href="{% url "part_create" %}" class="btn btn-info">add new</a>
-            <a href="{% url "part_quick_add" %}" class="btn btn-default">quick add</a>
+            <a href="{% url "part_quick_add" %}" class="btn btn-light">quick add</a>
         </div>
     </div>
 

@@ -135,8 +135,12 @@ urlpatterns = [
         CBVDetailView.as_view(model=Manufacturer, template_name="manufacturers/manufacturer_detail.html",),
         name="manufacturer_detail",
     ),
-    url(r"^manufacturers/create/$", mbv_manufacturer.manufacturer_create, name="manufacturer_create"),
-    url(r"^manufacturers/(?P<pk>[0-9]+)/update/$", mbv_manufacturer.manufacturer_update, name="manufacturer_update"),
+    url(r"^manufacturers/create/$", mbv_manufacturer.ManufacturerCreate.as_view(), name="manufacturer_create"),
+    url(
+        r"^manufacturers/(?P<pk>[0-9]+)/update/$",
+        mbv_manufacturer.ManufacturerUpdate.as_view(),
+        name="manufacturer_update",
+    ),
     url(
         r"^manufacturers/(?P<pk>[0-9]+)/delete$",
         CBVDeleteView.as_view(
