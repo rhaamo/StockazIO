@@ -12,7 +12,9 @@ from .models import StorageCategory, StorageLocation
 @login_required
 def storage_tree(request, template_name="storages/tree.html"):
     ctx = {}
-    ctx["storage_categories"] = StorageCategory.objects.prefetch_related("storage_locations").all()
+    ctx["storage_categories"] = StorageCategory.objects.prefetch_related(
+        "storage_locations", "storage_locations__part_set"
+    ).all()
 
     return render(request, template_name, ctx)
 

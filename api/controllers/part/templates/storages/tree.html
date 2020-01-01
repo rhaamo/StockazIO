@@ -12,7 +12,7 @@
             <i class="fa fa-table" title="Storage Category"></i> {{ node.name }}
             <ul>
                 {% for i in node.storage_locations.all %}
-                    <li><i class="fa fa-file" title="Storage Location"></i> <a title="See all parts in {{ i.name }}" href="{% url 'part_list' %}?storageLocation={{ i.id }}">{{ i.name }}</a></li>
+                    <li><i class="fa fa-file" title="Storage Location"></i> <a title="See all parts in {{ i.name }}" href="{% url 'part_list' %}?storageLocation={{ i.id }}">{{ i.name }}</a> <small>({{ i.part_set.count }})</small></li>
                 {% endfor %}
             </ul>
             {% if not node.is_leaf_node %}
@@ -20,7 +20,7 @@
                     {{ children }}
                     <ul>
                         {% for i in node.storage_locations.all %}
-                            <li><i class="fa fa-file" title="Storage Location"></i> <a title="See all parts in {{ i.name }}" href="{% url 'part_list' %}?storageLocation={{ i.id }}">{{ i.name }}</a></li>
+                            <li><i class="fa fa-file" title="Storage Location"></i> <a title="See all parts in {{ i.name }}" href="{% url 'part_list' %}?storageLocation={{ i.id }}">{{ i.name }}</a> <small>({{ i.part_set.count }})</small></li>
                         {% endfor %}
                     </ul>
                 </ul>

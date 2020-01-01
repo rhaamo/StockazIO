@@ -43,6 +43,7 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
     if storage_location:
         storloc = get_object_or_404(StorageLocation, id=storage_location)
         base_queryset = base_queryset.filter(storage=storloc)
+        ctx["storageLocation"] = storloc
 
     if q:
         base_queryset = base_queryset.filter(name__icontains=q)

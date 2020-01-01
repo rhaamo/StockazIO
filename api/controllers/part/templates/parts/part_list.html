@@ -18,6 +18,10 @@
                         <li>{{ c }}</li>
                         {% endif %}
                     {% endfor %}
+                {% elif storageLocation %}
+                    <li>Parts</li>
+                    <li>From storage location</li>
+                    <li class="active">{{ storageLocation.name }}</li>
                 {% else %}
                     <li>Parts</li>
                     <li class="active">All</li>
