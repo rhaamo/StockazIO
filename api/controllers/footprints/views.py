@@ -98,7 +98,7 @@ def footprint_create(request, pk_category, template_name="footprints/footprint_c
 def footprint_update(request, pk_category, pk, template_name="footprints/footprint_update.html"):
     footprint_category = get_object_or_404(FootprintCategory, pk=pk_category)
     footprint = get_object_or_404(Footprint, pk=pk)
-    form = FootprintForm(request.POST or None, instance=footprint)
+    form = FootprintForm(request.POST or None, request.FILES or None, instance=footprint)
     if form.is_valid():
         form.instance.footprint_id = footprint_category.id
         form.save()
