@@ -23,7 +23,14 @@ python manage.py database_seeds
 - partkeepr import from CSV (fixed fields)
 
 # Images sources
-- Footprints: https://commons.wikimedia.org/wiki/SVG_integrated_circuits + own edits
+- Footprints
+    - Unless noted, from https://commons.wikimedia.org/, original names, some have been edited to add a transform for orientation and size.
+    - plcc.svg by cpsdqs
+    - so8.svg other
+    - tqfp.svg other
+    - qip-component-package-photo.jpg [here](https://blog.mbedded.ninja/pcb-design/component-packages/qip-component-package/#&gid=1&pid=1)
+- Manufacturers
+    - \*shrug*
 
 # TODO
 - All edit/new/delete/etc. should keep the: a) category if any, b) q= if any
