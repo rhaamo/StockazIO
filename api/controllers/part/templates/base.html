@@ -113,7 +113,7 @@
             </ul>
 
             {% if user.is_authenticated %}
-                <form class="navbar-form navbar-right" action="{# url #}" method="get">
+                <form class="navbar-form navbar-right" action="{% url 'part_list' %}" method="get">
                     <input type="text" class="form-control" placeholder="Search..." id="q" name="q">
                 </form>
             {% endif %}

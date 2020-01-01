@@ -34,19 +34,22 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
         ctx["sort_arg"] = "name"
         ctx["sort_by"] = "-name"
 
+    base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit")
+
+    if q:
+        if q.startswith("stockazio://storageLocation/"):
+            storage_location = q.replace("stockazio://storageLocation/", "")
+        else:
+            base_queryset = base_queryset.filter(name__icontains=q)
+
     if category:
         cat = get_object_or_404(Category, id=category)
-        base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit").filter(category=cat)
-    else:
-        base_queryset = Part.objects.prefetch_related("storage", "footprint", "part_unit")
+        base_queryset.filter(category=cat)
 
     if storage_location:
         storloc = get_object_or_404(StorageLocation, id=storage_location)
         base_queryset = base_queryset.filter(storage=storloc)
         ctx["storageLocation"] = storloc
-
-    if q:
-        base_queryset = base_queryset.filter(name__icontains=q)
 
     ctx["object_list"] = base_queryset.order_by(ctx["sort_by"])
     paginator = Paginator(ctx["object_list"], settings.PAGINATION["PARTS"])
