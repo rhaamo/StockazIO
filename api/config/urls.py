@@ -37,32 +37,32 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
+    url(r"^admin", admin.site.urls),
     url(r"^$", RedirectView.as_view(pattern_name="part_list", permanent=True)),
-    url(r"^accounts/login/$", auth_views.LoginView.as_view(template_name="auth/login.html"), name="auth_login"),
-    url(r"^accounts/logout/$", auth_views.LogoutView.as_view(template_name="auth/logged_out.html"), name="auth_logout"),
+    url(r"^accounts/login$", auth_views.LoginView.as_view(template_name="auth/login.html"), name="auth_login"),
+    url(r"^accounts/logout$", auth_views.LogoutView.as_view(template_name="auth/logged_out.html"), name="auth_logout"),
     url(
-        r"^password/reset/$",
+        r"^password/reset$",
         auth_views.PasswordResetView.as_view(template_name="auth/password_reset_form.html"),
         name="password_reset",
     ),
     url(
-        r"^password/reset/done/$",
+        r"^password/reset/done$",
         auth_views.PasswordResetDoneView.as_view(template_name="auth/password_reset_done.html"),
         name="password_reset_done",
     ),
     url(
-        r"^password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+        r"^password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$",
         auth_views.PasswordResetConfirmView.as_view(template_name="auth/password_reset_confirm.html"),
         name="password_reset_confirm",
     ),
     url(
-        r"^password/reset/complete/$",
+        r"^password/reset/complete$",
         auth_views.PasswordResetCompleteView.as_view(template_name="auth/password_reset_complete.html"),
         name="password_reset_complete",
     ),
     url(
-        r"^password/change/$",
+        r"^password/change$",
         auth_views.PasswordChangeView.as_view(template_name="auth/password_change.html"),
         name="password_change",
     ),
@@ -72,12 +72,10 @@ urlpatterns = [
         name="password_change_done",
     ),
     # Footprint Categories
-    url(r"^footprints/$", mbv_footprint.footprint_category_list, name="footprint_category_list"),
-    url(r"^footprints/create/$", mbv_footprint.footprint_category_create, name="footprint_category_create"),
+    url(r"^footprints$", mbv_footprint.footprint_category_list, name="footprint_category_list"),
+    url(r"^footprints/new$", mbv_footprint.footprint_category_create, name="footprint_category_create"),
     url(
-        r"^footprints/(?P<pk>[0-9]+)/update/$",
-        mbv_footprint.footprint_category_update,
-        name="footprint_category_update",
+        r"^footprints/(?P<pk>[0-9]+)/edit$", mbv_footprint.footprint_category_update, name="footprint_category_update",
     ),
     url(
         r"^footprints/(?P<pk>[0-9]+)/delete$",
@@ -89,15 +87,15 @@ urlpatterns = [
         name="footprint_category_delete",
     ),
     # Footprints
-    url(r"^footprints/(?P<pk_category>[0-9]+)/$", mbv_footprint.footprint_list, name="footprint_list"),
-    url(r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/$", mbv_footprint.footprint_list, name="footprint_list"),
+    url(r"^footprints/(?P<pk_category>[0-9]+)$", mbv_footprint.footprint_list, name="footprint_list"),
+    url(r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints$", mbv_footprint.footprint_list, name="footprint_list"),
     url(
-        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/create/$",
+        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/new$",
         mbv_footprint.footprint_create,
         name="footprint_create",
     ),
     url(
-        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/(?P<pk>[0-9]+)/update/$",
+        r"^footprints/(?P<pk_category>[0-9]+)/sub_footprints/(?P<pk>[0-9]+)/edit$",
         mbv_footprint.footprint_update,
         name="footprint_update",
     ),
@@ -111,14 +109,14 @@ urlpatterns = [
         name="footprint_delete",
     ),
     # Distributors
-    url(r"^distributors/$", mbv_distributor.distributor_list, name="distributor_list"),
+    url(r"^distributors$", mbv_distributor.distributor_list, name="distributor_list"),
     url(
-        r"^distributors/(?P<pk>[0-9]+)/$",
+        r"^distributors/(?P<pk>[0-9]+)$",
         CBVDetailView.as_view(model=Distributor, template_name="distributors/distributor_detail.html",),
         name="distributor_detail",
     ),
-    url(r"^distributors/create/$", mbv_distributor.distributor_create, name="distributor_create"),
-    url(r"^distributors/(?P<pk>[0-9]+)/update/$", mbv_distributor.distributor_update, name="distributor_update"),
+    url(r"^distributors/new$", mbv_distributor.distributor_create, name="distributor_create"),
+    url(r"^distributors/(?P<pk>[0-9]+)/edit$", mbv_distributor.distributor_update, name="distributor_update"),
     url(
         r"^distributors/(?P<pk>[0-9]+)/delete$",
         CBVDeleteView.as_view(
@@ -129,15 +127,15 @@ urlpatterns = [
         name="distributor_delete",
     ),
     # Manufacturers
-    url(r"^manufacturers/$", mbv_manufacturer.manufacturer_list, name="manufacturer_list"),
+    url(r"^manufacturers$", mbv_manufacturer.manufacturer_list, name="manufacturer_list"),
     url(
-        r"^manufacturers/(?P<pk>[0-9]+)/$",
+        r"^manufacturers/(?P<pk>[0-9]+)$",
         CBVDetailView.as_view(model=Manufacturer, template_name="manufacturers/manufacturer_detail.html",),
         name="manufacturer_detail",
     ),
-    url(r"^manufacturers/create/$", mbv_manufacturer.ManufacturerCreate.as_view(), name="manufacturer_create"),
+    url(r"^manufacturers/new$", mbv_manufacturer.ManufacturerCreate.as_view(), name="manufacturer_create"),
     url(
-        r"^manufacturers/(?P<pk>[0-9]+)/update/$",
+        r"^manufacturers/(?P<pk>[0-9]+)/edit$",
         mbv_manufacturer.ManufacturerUpdate.as_view(),
         name="manufacturer_update",
     ),
@@ -151,10 +149,10 @@ urlpatterns = [
         name="manufacturer_delete",
     ),
     # Storages Categories
-    url(r"^storages/$", mbv_storage.storage_category_list, name="storage_category_list"),
+    url(r"^storages$", mbv_storage.storage_category_list, name="storage_category_list"),
     url(r"^storages/tree$", mbv_storage.storage_tree, name="storage_tree"),
-    url(r"^storages/create/$", mbv_storage.storage_category_create, name="storage_category_create"),
-    url(r"^storages/(?P<pk>[0-9]+)/update/$", mbv_storage.storage_category_update, name="storage_category_update"),
+    url(r"^storages/new$", mbv_storage.storage_category_create, name="storage_category_create"),
+    url(r"^storages/(?P<pk>[0-9]+)/edit$", mbv_storage.storage_category_update, name="storage_category_update"),
     url(
         r"^storages/(?P<pk>[0-9]+)/delete$",
         CBVDeleteView.as_view(
@@ -165,11 +163,11 @@ urlpatterns = [
         name="storage_category_delete",
     ),
     # Storages
-    url(r"^storages/(?P<pk_category>[0-9]+)/$", mbv_storage.storage_list, name="storage_list"),
-    url(r"^storages/(?P<pk_category>[0-9]+)/sub_storages/$", mbv_storage.storage_list, name="storage_list"),
-    url(r"^storages/(?P<pk_category>[0-9]+)/sub_storages/create/$", mbv_storage.storage_create, name="storage_create"),
+    url(r"^storages/(?P<pk_category>[0-9]+)$", mbv_storage.storage_list, name="storage_list"),
+    url(r"^storages/(?P<pk_category>[0-9]+)/sub_storages$", mbv_storage.storage_list, name="storage_list"),
+    url(r"^storages/(?P<pk_category>[0-9]+)/sub_storages/new$", mbv_storage.storage_create, name="storage_create"),
     url(
-        r"^storages/(?P<pk_category>[0-9]+)/sub_storages/(?P<pk>[0-9]+)/update/$",
+        r"^storages/(?P<pk_category>[0-9]+)/sub_storages/(?P<pk>[0-9]+)/edit$",
         mbv_storage.storage_update,
         name="storage_update",
     ),
@@ -184,9 +182,9 @@ urlpatterns = [
         name="storage_delete",
     ),
     # Part Units
-    url(r"^part_units/$", mbv_part_unit.part_unit_list, name="part_unit_list"),
-    url(r"^part_units/create/$", mbv_part_unit.part_unit_create, name="part_unit_create"),
-    url(r"^part_units/(?P<pk>[0-9]+)/update/$", mbv_part_unit.part_unit_update, name="part_unit_update"),
+    url(r"^part_units$", mbv_part_unit.part_unit_list, name="part_unit_list"),
+    url(r"^part_units/new$", mbv_part_unit.part_unit_create, name="part_unit_create"),
+    url(r"^part_units/(?P<pk>[0-9]+)/edit$", mbv_part_unit.part_unit_update, name="part_unit_update"),
     url(
         r"^part_units/(?P<pk>[0-9]+)/delete$",
         CBVDeleteView.as_view(
@@ -198,10 +196,10 @@ urlpatterns = [
         name="part_unit_delete",
     ),
     # Parameters Units
-    url(r"^parameters_units/$", mbv_parameters_unit.parameters_unit_list, name="parameters_unit_list"),
-    url(r"^parameters_units/create/$", mbv_parameters_unit.parameters_unit_create, name="parameters_unit_create"),
+    url(r"^parameters_units$", mbv_parameters_unit.parameters_unit_list, name="parameters_unit_list"),
+    url(r"^parameters_units/new$", mbv_parameters_unit.parameters_unit_create, name="parameters_unit_create"),
     url(
-        r"^parameters_units/(?P<pk>[0-9]+)/update/$",
+        r"^parameters_units/(?P<pk>[0-9]+)/edit$",
         mbv_parameters_unit.parameters_unit_update,
         name="parameters_unit_update",
     ),
@@ -215,17 +213,17 @@ urlpatterns = [
         name="parameters_unit_delete",
     ),
     # Other Views
-    url(r"^views/infos/$", mbv_other.other_informations, name="other_informations"),
-    url(r"^views/soldable/$", mbv_other.soldable, name="soldable"),
+    url(r"^views/infos$", mbv_other.other_informations, name="other_informations"),
+    url(r"^views/soldable$", mbv_other.soldable, name="soldable"),
     url(r"^views/soldable/category/(?P<category>[0-9a-zA-Z]+)$", mbv_other.soldable, name="soldable"),
-    url(r"^views/public/$", mbv_other.public, name="public"),
+    url(r"^views/public$", mbv_other.public, name="public"),
     url(r"^views/public/category/(?P<category>[0-9a-zA-Z]+)$", mbv_other.public, name="public"),
     # Parts
-    url(r"^parts/$", mbv_part.part_list, name="part_list"),
-    url(r"^parts/create/$", mbv_part.PartCreate.as_view(), name="part_create"),
-    url(r"^parts/quick_add/$", mbv_part.PartQuickAdd.as_view(), name="part_quick_add"),
+    url(r"^parts$", mbv_part.part_list, name="part_list"),
+    url(r"^parts/new$", mbv_part.PartCreate.as_view(), name="part_create"),
+    url(r"^parts/quick_add$", mbv_part.PartQuickAdd.as_view(), name="part_quick_add"),
     url(r"^parts/category/(?P<category>[0-9a-zA-Z]+)$", mbv_part.part_list, name="part_list"),
-    url(r"^parts/(?P<pk>[0-9]+)/update/$", mbv_part.PartUpdate.as_view(), name="part_update"),
+    url(r"^parts/(?P<pk>[0-9]+)/edit$", mbv_part.PartUpdate.as_view(), name="part_update"),
     url(
         r"^parts/(?P<pk>[0-9]+)/delete$",
         CBVDeleteView.as_view(
