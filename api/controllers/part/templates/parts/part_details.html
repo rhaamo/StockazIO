@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}{% load mptt_tags %}
+{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}
 
 {% block title %}Parts{% endblock %}
 
@@ -66,11 +66,11 @@
                         </tr>
                         <tr>
                             <td>Storage:</td>
-                            <td><span title="{{ part.storage.category.get_ancestors|tree_path:" > " }}" data-toggle="tooltip" class="storage">{{ part.storage }}</span></td>
+                            <td><span title="{{ part.storage.get_category_path }}" data-toggle="tooltip" class="storage">{{ part.storage }}</span></td>
                         </tr>
                         <tr>
                             <td>Category:</td>
-                            <td><span data-toggle="tooltip" title="{{ part.category.get_ancestors|tree_path:" > " }} > {{ part.category.name }}" class="category">{{ part.category }}</span></td>
+                            <td><span data-toggle="tooltip" title="{{ part.category.get_category_path }} > {{ part.category.name }}" class="category">{{ part.category }}</span></td>
                         </tr>
                         <tr>
                             <td>Internal part number:</td>

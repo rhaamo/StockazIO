@@ -4,6 +4,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from mptt.models import MPTTModel, TreeForeignKey
 import uuid
+from mptt.templatetags.mptt_tags import tree_path
 
 
 class StorageCategory(MPTTModel):
@@ -45,3 +46,9 @@ class StorageLocation(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_category_path(self, separator=" > "):
+        path = tree_path(self.category.get_ancestors(separator))
+        if not path:
+            return separator.join([self.category.name, self.name])
+        return separator.join([path, self.category.name, self.name])

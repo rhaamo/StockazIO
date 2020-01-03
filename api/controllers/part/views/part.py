@@ -112,7 +112,7 @@ def part_details_json(request, pk=None):
 
 @login_required
 def part_details(request, pk=None, template_name="parts/part_details.html"):
-    part = get_object_or_404(Part.objects.select_related("storage", "footprint", "part_unit"), id=pk)
+    part = get_object_or_404(Part, id=pk)
 
     return render(request, template_name, {"part": part})
 
