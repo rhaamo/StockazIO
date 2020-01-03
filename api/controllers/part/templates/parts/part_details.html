@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}
+{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}{% load mptt_tags %}
 
 {% block title %}Parts{% endblock %}
 
@@ -46,9 +46,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row no-gutters">
-                        <div class="col-md-3"><b>Qty:</b> <span class="qty">{{ part.stock_qty }}</span></div>
-                        <div class="col-md-3"><b>Min:</b> <span class="qty-min">{{ part.stock_qty_min }}</span></div>
-                        <div class="col-md-6"><b>Unit:</b> <span class="unit">{{ part.unit }}</span></div>
+                        <div class="col-md-3"><b>Qty:</b> <span data-toggle="tooltip" title="{{ part.stock_qty }} {{ part.part_unit.short_name }}" class="qty">{{ part.stock_qty }}</span></div>
+                        <div class="col-md-3"><b>Min:</b> <span data-toggle="tooltip" title="{{ part.stock_qty_min }} {{ part.part_unit.short_name }}" class="qty-min">{{ part.stock_qty_min }}</span></div>
+                        <div class="col-md-6"><b>Unit:</b> <span data-toggle="tooltip" title="{{ part.part_unit.description }}" class="unit">{{ part.part_unit }}</span></div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 description">{{ part.description }}</div>
@@ -62,15 +62,15 @@
                         <tbody>
                         <tr>
                             <td>Footprint:</td>
-                            <td><span class="footprint">{{ part.footprint }}</span></td>
+                            <td><span title="{{ part.footprint }} in {{ part.footprint.footprint.name }} {% if part.footprint.footprint.description %}({{ part.footprint.footprint.description }}){% endif %}" data-toggle="tooltip" class="footprint">{{ part.footprint }} {% if part.footprint.description %}({{ part.footprint.description }}){% endif %}</span></td>
                         </tr>
                         <tr>
                             <td>Storage:</td>
-                            <td><span class="storage">{{ part.storage }}</span></td>
+                            <td><span title="{{ part.storage.category.get_ancestors|tree_path:" > " }}" data-toggle="tooltip" class="storage">{{ part.storage }}</span></td>
                         </tr>
                         <tr>
                             <td>Category:</td>
-                            <td><span class="category">{{ part.category }}</span></td>
+                            <td><span data-toggle="tooltip" title="{{ part.category.get_ancestors|tree_path:" > " }} > {{ part.category.name }}" class="category">{{ part.category }}</span></td>
                         </tr>
                         <tr>
                             <td>Internal part number:</td>

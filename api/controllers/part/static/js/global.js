@@ -25,4 +25,8 @@ $(document).ready(function () {
             formCssClass: 'dynamic-formset-parts-parameters'
         });
     });
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 });
