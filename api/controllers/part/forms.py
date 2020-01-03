@@ -90,6 +90,9 @@ class PartForm(ModelForm):
             "condition",
             "can_be_sold",
             "private",
+            "production_remarks",
+            "status",
+            "internal_part_number",
         ]
 
     name = forms.CharField()
