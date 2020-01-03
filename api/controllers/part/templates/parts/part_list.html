@@ -160,6 +160,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a href="" class="btn btn-success page-link">Show full page</a>
                     <a href="" class="btn btn-primary edit-link" data-dismiss="modal">Edit</a>
                     <a href="" class="btn btn-danger delete-link">Delete</a>
                 </div>
@@ -232,9 +233,11 @@
                             <div id="qrcode-{{ part.id }}-big"
                                  style="display: none; position: absolute; left: 6em; margin-top: -5em;"></div>
                         </td>
-                        <td><a title="View part modal" href="#fixme" data-name="{{ part.name }}"
+                        <td><a title="View part modal" href="{% url 'part_details' pk=part.id %}" data-name="{{ part.name }}"
                                data-edit-url="{% url 'part_update' pk=part.id %}"
-                               data-delete-url="{% url 'part_delete' pk=part.id %}" data-id="{{ part.id }}"
+                               data-delete-url="{% url 'part_delete' pk=part.id %}"
+                               data-page-url="{% url 'part_details' pk=part.id %}"
+                               data-id="{{ part.id }}"
                                data-toggle="modal" data-target="#modalPart">{{ part.name }}</a></td>
                         <td>
                             {% if not part.storage %}
@@ -346,6 +349,7 @@
             });
 
             modal.find('.modal-title').text(btn.data('name'));
+            modal.find('.page-link').attr('href', btn.data('page-url'));
             modal.find('.edit-link').attr('href', btn.data('edit-url'));
             modal.find('.delete-link').attr('href', btn.data('delete-url'));
         });

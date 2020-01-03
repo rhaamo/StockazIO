@@ -1,0 +1,214 @@
+{% extends 'base.html' %}{% load bootstrap4 %}{% load custom %}
+
+{% block title %}Parts{% endblock %}
+
+{% block content %}
+    <div class="modal fade" id="modalQrCode" tabindex="-1" role="dialog" aria-labelledby="modalQrCodeLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QrCode for xxx</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <img class="qrCodeModalImg"/>
+                    <br/>
+                    <br/>
+                    The content of the QrCode is:<br/>
+                    <code class="qrCodeText"></code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9">
+                                <h3>
+                    <span title="click to show bigger QrCode" id="qrcode-{{ part.id }}"
+                                 data-uuid="{{ part.uuid }}" data-name="{{ part.name }}" data-toggle="modal"
+                                 data-target="#modalQrCode"></span>
+                            <span id="qrcode-{{ part.id }}-big"
+                                 style="display: none; position: absolute; left: 6em; margin-top: -5em;"></span>
+                    {% if part.private %}<i class="fa fa-lock"></i> {% endif %}{{ part.name }}
+                </h3>
+        </div>
+        <div class="col-lg-3">
+            <a href="{% url "part_update" pk=part.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url "part_delete" pk=part.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row no-gutters">
+                        <div class="col-md-3"><b>Qty:</b> <span class="qty">{{ part.stock_qty }}</span></div>
+                        <div class="col-md-3"><b>Min:</b> <span class="qty-min">{{ part.stock_qty_min }}</span></div>
+                        <div class="col-md-6"><b>Unit:</b> <span class="unit">{{ part.unit }}</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 description">{{ part.description }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-sm">
+                        <tbody>
+                        <tr>
+                            <td>Footprint:</td>
+                            <td><span class="footprint">{{ part.footprint }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Storage:</td>
+                            <td><span class="storage">{{ part.storage }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Category:</td>
+                            <td><span class="category">{{ part.category }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Internal part number:</td>
+                            <td><span class="internal-pn">{{ part.internal_part_number }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Comment:</td>
+                            <td><span class="comment">{{ part.comment }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Production remarks:</td>
+                            <td><span class="production-remarks">{{ part.production_remarks }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sheet Need review:</td>
+                            <td><i title="Shet review needed" class="fa {% if part.needs_review %}fa-question{% endif %}"></i> <span class="need-review"></span><span class="sheet-status">{{ part.status }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Part Condition:</td>
+                            <td><span class="condition">{{ part.condition }}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Can be sold:</td>
+                            <td><i title="Can be sold" class="fa {% if part.can_be_sold %}fa-dollar{% else %}fa-close{% endif %}"></i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link  active" href="#parameters" role="tab" data-toggle="tab"
+                       aria-selected="true">Parameters</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#distributors" role="tab" data-toggle="tab">Distributors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#manufacturers" role="tab"
+                       data-toggle="tab">Manufacturers</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="parameters">
+                    <table class="table table-sm" id="table-parameters">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Value</th>
+                            <th>Unit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for parameter in part.part_parameters_value.all %}
+                            <tr>
+                                <td>{{ parameter.name }}</td>
+                                <td>{{ parameter.description }}</td>
+                                <td>{{ parameter.value }}</td>
+                                <td>{{ parameter.unit }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="distributors">
+                    <table class="table table-sm" id="table-distributors">
+                        <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Distributor</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for distributor in part.distributors_sku.all %}
+                            <tr>
+                                <td>{{ distributor.sku }}</td>
+                                <td>{{ distributor.distributor }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="manufacturers">
+                    <table class="table table-sm" id="table-manufacturers">
+                        <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Manufacturer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for manufacturer in part.manufacturers_sku.all %}
+                            <tr>
+                                <td>{{ manufacturer.sku }}</td>
+                                <td>{{ manufacturer.manufacturer }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="application/javascript">
+        function generateQrCode(id) {
+            console.log("Generating QRCode for", id);
+            let element = $(`span#${id}`);
+            let uuid = element.data('uuid');
+            let qrCodeContent = `stockazio://part/${uuid}`;
+            let qr = qrcode(0, 'M');
+            qr.addData(qrCodeContent, "Byte");
+            qr.make();
+            let imgSmall = qr.createImgTag(1, 0); // cellSize, margin
+            let imgBig = qr.createImgTag(3, 0);
+            element.html(imgSmall);
+            $(`span#${id}-big`).html(imgBig);
+        }
+
+        generateQrCode("qrcode-{{ part.id }}");
+
+        $('#modalQrCode').on('show.bs.modal', function (event) {
+            let btn = $(event.relatedTarget);
+            let title = `QrCode for: ${btn.data('name')}`;
+            let bigQrCode = $(`#${btn.attr('id')}-big img`);
+            let qrCodeUuid = btn.data('uuid');
+            let modal = $(this);
+            modal.find('.modal-title').text(title);
+            modal.find('.qrCodeModalImg').attr('src', bigQrCode.attr('src'));
+            modal.find('.qrCodeText').text('stockazio://storageLocation/' + qrCodeUuid);
+        });
+    </script>
+{% endblock %}
