@@ -4,24 +4,167 @@
 
 {% block content %}
 
-    <div class="modal fade" id="modalQrCode" tabindex="-1" role="dialog" aria-labelledby="modalQrCodeLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">QrCode for xxx</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" style="text-align: center;">
-              <img class="qrCodeModalImg"/>
-              <br/>
-              <br/>
-            The content of the QrCode is:<br />
-              <code class="qrCodeText"></code>
-          </div>
+    <div class="modal fade" id="modalQrCode" tabindex="-1" role="dialog" aria-labelledby="modalQrCodeLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QrCode for xxx</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <img class="qrCodeModalImg"/>
+                    <br/>
+                    <br/>
+                    The content of the QrCode is:<br/>
+                    <code class="qrCodeText"></code>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
+
+
+    <div class="modal fade" id="modalPart" tabindex="-1" role="dialog" aria-labelledby="modalPartLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="modalPartTitle"><i title="Private" class="fa icon-private"></i> <span class="modal-title">Datas are loading...</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-3"><b>Qty:</b> <span class="qty"></span></div>
+                                            <div class="col-md-3"><b>Min:</b> <span class="qty-min"></span></div>
+                                            <div class="col-md-6"><b>Unit:</b> <span class="unit"></span></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12"><span class="description"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-sm">
+                                            <tbody>
+                                            <tr>
+                                                <td>Footprint:</td>
+                                                <td><span class="footprint"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Storage:</td>
+                                                <td><span class="storage"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Category:</td>
+                                                <td><span class="category"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Internal part number:</td>
+                                                <td><span class="internal-pn"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Comment:</td>
+                                                <td><span class="comment"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Production remarks:</td>
+                                                <td><span class="production-remarks"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sheet Need review:</td>
+                                                <td><i title="Shet review needed" class="fa icon-need-review"></i> <span class="need-review"></span><span class="sheet-status"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Part Condition:</td>
+                                                <td><span class="condition"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Can be sold:</td>
+                                                <td><i title="Can be sold" class="fa icon-can-be-sold"></i> <span class="can-be-sold"></span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link  active" href="#parameters" role="tab" data-toggle="tab"
+                                           aria-selected="true">Parameters</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#distributors" role="tab" data-toggle="tab">Distributors</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#manufacturers" role="tab"
+                                           data-toggle="tab">Manufacturers</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="parameters">
+                                        <table class="table table-sm" id="table-parameters">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Value</th>
+                                                <th>Unit</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="distributors">
+                                        <table class="table table-sm" id="table-distributors">
+                                            <thead>
+                                            <tr>
+                                                <th>SKU</th>
+                                                <th>Distributor</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="manufacturers">
+                                        <table class="table table-sm" id="table-manufacturers">
+                                            <thead>
+                                            <tr>
+                                                <th>SKU</th>
+                                                <th>Manufacturer</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="" class="btn btn-primary edit-link" data-dismiss="modal">Edit</a>
+                    <a href="" class="btn btn-danger delete-link">Delete</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -34,9 +177,9 @@
                 {% elif category %}
                     {% for c in category_path %}
                         {% if forloop.last %}
-                        <li class="breadcrumb-item active">{{ c }}</li>
+                            <li class="breadcrumb-item active">{{ c }}</li>
                         {% else %}
-                        <li class="breadcrumb-item">{{ c }}</li>
+                            <li class="breadcrumb-item">{{ c }}</li>
                         {% endif %}
                     {% endfor %}
                 {% elif storageLocation %}
@@ -62,7 +205,8 @@
                 <tr>
                     <th width="25"><i class="fa fa-qrcode"></i></th>
                     <th>
-                        <a href="{% url "part_list" %}?sort={{ sort_arg }}&page={{ page }}{% if search_query %}&q={{ search_query }}{% endif %}">Name</a>
+                        <a href="{% url "part_list" %}?sort={{ sort_arg }}&page=
+                                {{ page }}{% if search_query %}&q={{ search_query }}{% endif %}">Name</a>
                         {% if sort_by == 'name' %}
                             <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                         {% else %}
@@ -82,15 +226,21 @@
                 {% for part in paginator %}
                     <tr>
                         <td>
-                            <div title="click to show bigger QrCode" id="qrcode-{{ part.id }}" data-uuid="{{ part.uuid }}" data-name="{{ part.name }}" data-toggle="modal" data-target="#modalQrCode"></div>
-                            <div id="qrcode-{{ part.id }}-big" style="display: none; position: absolute; left: 6em; margin-top: -5em;"></div>
+                            <div title="click to show bigger QrCode" id="qrcode-{{ part.id }}"
+                                 data-uuid="{{ part.uuid }}" data-name="{{ part.name }}" data-toggle="modal"
+                                 data-target="#modalQrCode"></div>
+                            <div id="qrcode-{{ part.id }}-big"
+                                 style="display: none; position: absolute; left: 6em; margin-top: -5em;"></div>
                         </td>
-                        <td>{{ part.name }}</td>
+                        <td><a title="View part modal" href="#fixme" data-name="{{ part.name }}"
+                               data-edit-url="{% url 'part_update' pk=part.id %}"
+                               data-delete-url="{% url 'part_delete' pk=part.id %}" data-id="{{ part.id }}"
+                               data-toggle="modal" data-target="#modalPart">{{ part.name }}</a></td>
                         <td>
                             {% if not part.storage %}
-                            -
+                                -
                             {% else %}
-                            {{ part.storage }}
+                                {{ part.storage }}
                             {% endif %}
                         </td>
                         <td>{{ part.stock_qty }}</td>
@@ -98,15 +248,17 @@
                         <td>{% if not part.part_unit %}-{% else %}{{ part.part_unit }}{% endif %}</td>
                         <td>
                             {% if not part.footprint %}
-                            -
+                                -
                             {% else %}
-                            {{ part.footprint }}
+                                {{ part.footprint }}
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'part_update' pk=part.id %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <a href="{% url 'part_update' pk=part.id %}"><i class="fa fa-pencil-square-o"
+                                                                            aria-hidden="true"></i></a>
                             &nbsp;
-                            <a href="{% url "part_delete" pk=part.id %}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a href="{% url "part_delete" pk=part.id %}"><i class="fa fa-trash-o"
+                                                                            aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -146,6 +298,56 @@
             modal.find('.modal-title').text(title);
             modal.find('.qrCodeModalImg').attr('src', bigQrCode.attr('src'));
             modal.find('.qrCodeText').text('stockazio://storageLocation/' + qrCodeUuid);
+        });
+
+        $('#modalPart').on('show.bs.modal', function (event) {
+            let btn = $(event.relatedTarget);
+            let modal = $(this);
+
+            $.get(`/parts/${btn.data('id')}.json`, function (data) {
+                let item;
+                let items = [
+                    'qty', 'qty-min', 'unit', 'footprint', 'description', 'storage',
+                    'category', 'internal-pn', 'comment', 'production-remarks',
+                    'sheet-status', 'condition'];
+                for (item of items) {
+                    modal.find(`.${item}`).text(data[item]);
+                }
+                // Icons
+                // need-review, can-be-sold, private
+                if (data['need-review']) {
+                    modal.find('i.icon-need-review').addClass('fa-question')
+                } else {
+                    modal.find('i.icon-need-review').addClass('fa-check')
+                }
+                if (data['can-be-sold']) {
+                    modal.find('i.icon-can-be-sold').addClass('fa-dollar')
+                } else {
+                    modal.find('i.icon-can-be-sold').addClass('fa-close')
+                }
+                if (data['private']) {
+                    modal.find('i.icon-private').addClass('fa-lock')
+                }
+                // Parts parameters
+                let parameter;
+                for (parameter of data['parameters']) {
+                    $('table#table-parameters tbody').append(`<tr><td>${parameter['name']}</td><td>${parameter['description']}</td><td>${parameter['value']}</td><td>${parameter['unit']}</td></tr>`)
+                }
+                // Distributors
+                let distributor;
+                for (distributor of data['distributors']) {
+                    $('table#table-distributors tbody').append(`<tr><td>${distributor['sku']}</td><td>${distributor['distributor']}</td></tr>`)
+                }
+                // Manufacturers
+                let manufacturer;
+                for (manufacturer of data['manufacturers']) {
+                    $('table#table-manufacturers tbody').append(`<tr><td>${manufacturer['sku']}</td><td>${manufacturer['manufacturer']}</td></tr>`)
+                }
+            });
+
+            modal.find('.modal-title').text(btn.data('name'));
+            modal.find('.edit-link').attr('href', btn.data('edit-url'));
+            modal.find('.delete-link').attr('href', btn.data('delete-url'));
         });
     </script>
 {% endblock %}

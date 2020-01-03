@@ -150,3 +150,7 @@ ul.cat-list li a:hover {
     -webkit-border-radius: 2px;
 }
 
+#modalPart .modal-body .container .row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

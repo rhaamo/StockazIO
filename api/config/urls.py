@@ -220,6 +220,7 @@ urlpatterns = [
     url(r"^views/public/category/(?P<category>[0-9a-zA-Z]+)$", mbv_other.public, name="public"),
     # Parts
     url(r"^parts$", mbv_part.part_list, name="part_list"),
+    url(r"^parts/(?P<pk>[0-9]+).json$", mbv_part.part_details_json, name="part_details_json"),
     url(r"^parts/new$", mbv_part.PartCreate.as_view(), name="part_create"),
     url(r"^parts/quick_add$", mbv_part.PartQuickAdd.as_view(), name="part_quick_add"),
     url(r"^parts/category/(?P<category>[0-9a-zA-Z]+)$", mbv_part.part_list, name="part_list"),

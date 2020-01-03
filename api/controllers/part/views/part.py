@@ -17,6 +17,7 @@ from controllers.distributor.forms import DistributorSkuFormSet
 from controllers.manufacturer.forms import PartManufacturerFormSet
 from django.utils.decorators import method_decorator
 from .common import query_reverse
+from django.http import JsonResponse
 
 
 @login_required
@@ -60,6 +61,49 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
         ctx["category_path"] = cat.__str__().split("->")
 
     return render(request, template_name, ctx)
+
+
+@login_required
+def part_details_json(request, pk=None):
+    part = get_object_or_404(Part, id=pk)
+    return JsonResponse(
+        {
+            "id": part.id,
+            "name": part.name,
+            "qty": part.stock_qty,
+            "qty-min": part.stock_qty_min,
+            "unit": part.part_unit.__str__() if part.part_unit else None,
+            "footprint": part.footprint.__str__() if part.footprint else None,
+            "description": part.description,
+            "storage": part.storage.__str__() if part.storage else None,
+            "category": part.category.__str__() if part.category else None,
+            "internal-pn": part.internal_part_number,
+            "comment": part.comment,
+            "production-remarks": part.production_remarks,
+            "need-review": part.needs_review,
+            "sheet-status": part.status,
+            "condition": part.condition,
+            "can-be-sold": part.can_be_sold,
+            "private": part.private,
+            "parameters": [
+                {
+                    "name": a.name,
+                    "description": a.description,
+                    "value": a.value,
+                    "unit": a.unit.__str__() if a.unit else None,
+                }
+                for a in part.part_parameters_value.all()
+            ],
+            "distributors": [
+                {"sku": a.sku, "distributor": a.distributor.name if a.distributor else None}
+                for a in part.distributors_sku.all()
+            ],
+            "manufacturers": [
+                {"sku": a.sku, "manufacturer": a.manufacturer.name if a.manufacturer else None}
+                for a in part.manufacturers_sku.all()
+            ],
+        }
+    )
 
 
 class PartQuickAdd(SuccessMessageMixin, CreateView):
