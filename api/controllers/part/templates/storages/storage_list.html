@@ -3,6 +3,27 @@
 {% block title %}Storages in {{ storage_category_name }}{% endblock %}
 
 {% block content %}
+
+    <div class="modal fade" id="modalQrCode" tabindex="-1" role="dialog" aria-labelledby="modalQrCodeLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">QrCode for xxx</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="text-align: center;">
+              <img class="qrCodeModalImg"/>
+              <br/>
+              <br/>
+            The content of the QrCode is:<br />
+              <code class="qrCodeText"></code>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
         <div class="col-lg-9">
             <nav aria-label="breadcrumb">
@@ -40,7 +61,7 @@
                 {% for storage in paginator %}
                     <tr>
                         <td>
-                            <div id="qrcode-{{ storage.id }}" data-uuid="{{ storage.uuid }}"></div>
+                            <div title="click to show bigger QrCode" id="qrcode-{{ storage.id }}" data-uuid="{{ storage.uuid }}" data-name="{{ storage.name }}" data-toggle="modal" data-target="#modalQrCode"></div>
                             <div id="qrcode-{{ storage.id }}-big" style="display: none; position: absolute; left: 6em; margin-top: -5em;"></div>
                         </td>
                         <td><a title="See all parts in {{ storage.name }}" href="{% url 'part_list' %}?storageLocation={{ storage.id }}">{{ storage.name }}</a> <small>({{ storage.part_set.count }})</small></td>
@@ -77,18 +98,19 @@
             $(`div#${id}-big`).html(imgBig);
         }
 
-        function generateHoverThing(id) {
-            let element = $(`div#${id} img`);
-            element.hover(function () {
-                $(`div#${id}-big`).show();
-            }, function () {
-                $(`div#${id}-big`).hide();
-            })
-        }
-
-        {% for part in paginator %}
+        {% for storage in paginator %}
             generateQrCode("qrcode-{{ storage.id }}");
-            generateHoverThing("qrcode-{{ storage.id }}");
         {% endfor %}
+
+        $('#modalQrCode').on('show.bs.modal', function (event) {
+            let btn = $(event.relatedTarget);
+            let title = `QrCode for: ${btn.data('name')}`;
+            let bigQrCode = $(`#${btn.attr('id')}-big img`);
+            let qrCodeUuid = btn.data('uuid');
+            let modal = $(this);
+            modal.find('.modal-title').text(title);
+            modal.find('.qrCodeModalImg').attr('src', bigQrCode.attr('src'));
+            modal.find('.qrCodeText').text('stockazio://storageLocation/' + qrCodeUuid);
+        });
     </script>
 {% endblock %}
