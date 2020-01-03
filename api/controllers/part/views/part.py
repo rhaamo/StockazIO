@@ -18,6 +18,7 @@ from controllers.manufacturer.forms import PartManufacturerFormSet
 from django.utils.decorators import method_decorator
 from .common import query_reverse
 from django.http import JsonResponse
+from django.shortcuts import redirect
 
 
 @login_required
@@ -40,6 +41,9 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
     if q:
         if q.startswith("stockazio://storageLocation/"):
             storage_location = q.replace("stockazio://storageLocation/", "")
+        elif q.startswith("stockazio://part/"):
+            part_id = q.replace("stockazio://part/", "")
+            return redirect("part_details", pk=part_id)
         else:
             base_queryset = base_queryset.filter(name__icontains=q)
 
@@ -104,6 +108,13 @@ def part_details_json(request, pk=None):
             ],
         }
     )
+
+
+@login_required
+def part_details(request, pk=None, template_name="parts/part_detail.html"):
+    part = get_object_or_404(Part, id=pk)
+
+    return render(request, template_name, {"part": part})
 
 
 class PartQuickAdd(SuccessMessageMixin, CreateView):
