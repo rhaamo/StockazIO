@@ -49,7 +49,7 @@ def part_list(request, category=None, template_name="parts/part_list.html"):
 
     if category:
         cat = get_object_or_404(Category, id=category)
-        base_queryset.filter(category=cat)
+        base_queryset = base_queryset.filter(category=cat)
 
     if storage_location:
         storloc = get_object_or_404(StorageLocation, id=storage_location)
