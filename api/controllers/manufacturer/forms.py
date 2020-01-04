@@ -9,6 +9,8 @@ from django.forms.models import inlineformset_factory
 import re
 from controllers.part.custom_layout_object import Formset
 
+FormActions.template = "form_actions_tmpl.html"
+
 
 class ManufacturerLogoForm(ModelForm):
     logo = forms.FileField(required=False)

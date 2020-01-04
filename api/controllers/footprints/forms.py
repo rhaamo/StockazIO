@@ -5,6 +5,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML, Field
 from crispy_forms.bootstrap import FormActions
 
+FormActions.template = "form_actions_tmpl.html"
+
 
 class FootprintCategoryForm(ModelForm):
     name = forms.CharField()

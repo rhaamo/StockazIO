@@ -13,6 +13,8 @@ from .custom_layout_object import Formset
 from django.forms.models import inlineformset_factory
 import re
 
+FormActions.template = "form_actions_tmpl.html"
+
 
 class PartUnitForm(ModelForm):
     name = forms.CharField()

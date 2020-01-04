@@ -8,6 +8,8 @@ from django.forms.models import inlineformset_factory
 from controllers.part.models import Part
 import re
 
+FormActions.template = "form_actions_tmpl.html"
+
 
 class DistributorForm(ModelForm):
     name = forms.CharField()
