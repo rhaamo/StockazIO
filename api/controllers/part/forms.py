@@ -2,9 +2,9 @@ from controllers.footprints.models import Footprint
 from controllers.part.models import PartUnit, ParametersUnit, Part, PartParameter
 from controllers.storage.models import StorageLocation
 from controllers.part.forms_widgets import GroupedModelChoiceField
-from crispy_forms.bootstrap import FormActions, Tab, TabHolder, Div
+from crispy_forms.bootstrap import FormActions, Tab, TabHolder
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field, Fieldset, Row
+from crispy_forms.layout import Layout, Submit, HTML, Field, Fieldset, Row, Div, Column
 from django import forms
 from django.forms import ModelForm
 from controllers.categories.models import Category
@@ -278,11 +278,15 @@ class PartParameterForm(ModelForm):
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
         self.helper.label_class = "col-sm-3"
-        self.helper.field_class = "col-sm-8"
+        self.helper.field_class = "col-sm-9"
         self.helper.layout = Layout(
-            Div(Row(Field("name"), Field("description")),),
-            Row(Div(Field("value"), css_class="col-lg-6"), Div(Field("unit"), css_class="col-lg-6"),),
-            Row(Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix),),
+            Div(
+                Field("name"),
+                Field("description"),
+                Row(Column(Field("value"), css_class="col-lg-6"), Column(Field("unit"), css_class="col-lg-6")),
+                Field("DELETE"),
+                css_class="formset_row-{}".format(formtag_prefix),
+            )
         )
 
 

@@ -82,11 +82,11 @@ class ManufacturerForm(ModelForm):
 
 class PartManufacturerForm(ModelForm):
     sku = forms.CharField()
-    distributor = forms.ModelChoiceField(required=False, queryset=PartManufacturer.objects.all())
+    manufacturer = forms.ModelChoiceField(required=False, queryset=PartManufacturer.objects.all())
 
     class Meta:
         model = PartManufacturer
-        fields = ["sku", "distributor"]
+        fields = ["sku", "manufacturer"]
 
     def __init__(self, *args, **kwargs):
         super(PartManufacturerForm, self).__init__(*args, **kwargs)
@@ -98,10 +98,12 @@ class PartManufacturerForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
-        self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-8"
+        self.helper.label_class = "col-sm-3"
+        self.helper.field_class = "col-sm-9"
         self.helper.layout = Layout(
-            Row(Field("sku"), Field("manufacturer"), Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix))
+            Div(
+                Field("sku"), Field("manufacturer"), Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix),
+            )
         )
 
 

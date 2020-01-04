@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import Distributor, DistributorSku
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field, Row
+from crispy_forms.layout import Layout, Submit, HTML, Field, Div
 from crispy_forms.bootstrap import FormActions
 from django.forms.models import inlineformset_factory
 from controllers.part.models import Part
@@ -63,10 +63,10 @@ class DistributorSkuForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
-        self.helper.label_class = "col-sm-2"
-        self.helper.field_class = "col-sm-4"
+        self.helper.label_class = "col-sm-3"
+        self.helper.field_class = "col-sm-9"
         self.helper.layout = Layout(
-            Row(Field("sku"), Field("distributor"), Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix))
+            Div(Field("sku"), Field("distributor"), Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix),)
         )
 
 
