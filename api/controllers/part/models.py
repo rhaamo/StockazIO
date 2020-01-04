@@ -123,7 +123,7 @@ class PartParameter(models.Model):
 
 class PartAttachment(models.Model):
     description = models.CharField(
-        _("description"), max_length=100, blank=False, unique=True, help_text=_("Description of the attachment")
+        _("description"), max_length=100, blank=False, unique=False, help_text=_("Description of the attachment")
     )
     file = models.FileField(
         verbose_name=_("File"),
@@ -133,7 +133,7 @@ class PartAttachment(models.Model):
         blank=False,
         null=False,
     )
-    part = models.ForeignKey(Part, related_name="part_attachments", blank=True, null=True, on_delete=models.CASCADE)
+    part = models.ForeignKey(Part, related_name="part_attachments", blank=False, null=False, on_delete=models.CASCADE)
 
     class Meta(object):
         ordering = ("id",)
