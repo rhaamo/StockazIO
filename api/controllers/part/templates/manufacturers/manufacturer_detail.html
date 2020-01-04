@@ -19,22 +19,45 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <ul>
-                <li>Name: {{ object.name }}</li>
-                <li>Address: {{ object.address }}</li>
-                <li>URL: {{ object.url }}</li>
-                <li>Email: {{ object.email }}</li>
-                <li>Comment: {{ object.comment }}</li>
-                <li>Phone: {{ object.phone }}</li>
-                <li>FAX: {{ object.fax }}</li>
-            </ul>
-            <br/>
-            <ul>
+        <div class="col-lg-6">
+            <h3>Basic informations:</h3>
+            <table class="table table-sm" id="table-manufacturers">
+                <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>{{ object.name }}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{ object.address }}</td>
+                </tr>
+                <tr>
+                    <td>URL</td>
+                    <td><a target="_blank" href="{{ object.url }}">{{ object.url }}</a></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ object.email }}</td>
+                </tr>
+                <tr>
+                    <td>Comment</td>
+                    <td>{{ object.comment }}</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>{{ object.phone }}</td>
+                </tr>
+                <tr>
+                    <td>FAX</td>
+                    <td>{{ object.fax }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h3>Logos:</h3>
                 {% for logo in object.logos.all %}
-                    <li>{{ logo.id }}<br/><img src="{{ logo.logo_small.url }}"/></li>
+                    <img src="{{ logo.logo.url }}" alt="Manufacturer logo" class="img-thumbnail">
                 {% endfor %}
-            </ul>
         </div>
     </div>
 

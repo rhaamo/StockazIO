@@ -152,7 +152,7 @@
                         {% for distributor in part.distributors_sku.all %}
                             <tr>
                                 <td>{{ distributor.sku }}</td>
-                                <td>{{ distributor.distributor }}</td>
+                                <td><a href="{% url 'distributor_detail' pk=distributor.distributor.id %}">{{ distributor.distributor }}</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -170,7 +170,7 @@
                         {% for manufacturer in part.manufacturers_sku.all %}
                             <tr>
                                 <td>{{ manufacturer.sku }}</td>
-                                <td>{{ manufacturer.manufacturer }}</td>
+                                <td><a href="{% url 'manufacturer_detail' pk=manufacturer.manufacturer.id %}">{{ manufacturer.manufacturer }}</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
