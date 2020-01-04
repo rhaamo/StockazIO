@@ -1,0 +1,8 @@
+[Unit]
+Description=StockazIO application server
+After=postgresql.service
+
+[Service]
+User=stockazio
+WorkingDirectory=/home/stockazio/StockazIO/api
+ExecStart=/home/stockazio/StockazIO/venv/bin/gunicorn config.asgi:application -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8010
