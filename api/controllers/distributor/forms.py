@@ -45,7 +45,7 @@ class DistributorForm(ModelForm):
 
 class DistributorSkuForm(ModelForm):
     sku = forms.CharField()
-    distributor = forms.ModelChoiceField(required=False, queryset=Distributor.objects.all())
+    distributor = forms.ModelChoiceField(required=True, queryset=Distributor.objects.all())
 
     class Meta:
         model = DistributorSku

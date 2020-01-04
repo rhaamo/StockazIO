@@ -149,10 +149,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for distributor in part.distributors_sku.all %}
+                        {% for distributorSku in part.distributors_sku.all %}
                             <tr>
-                                <td>{{ distributor.sku }}</td>
-                                <td><a href="{% url 'distributor_detail' pk=distributor.distributor.id %}">{{ distributor.distributor }}</a></td>
+                                <td>{{ distributorSku.sku }}</td>
+                                <td>
+                                    {% if distributorSku.distributor.url %}
+                                    <a href="{{ distributorSku.distributor.url }}" target="_blank"><i class="fa fa-external-link"></i></a>&nbsp;
+                                    {% endif %}
+                                    <a href="{% url 'distributor_detail' pk=distributorSku.distributor.id %}">{{ distributorSku.distributor }}</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -167,10 +171,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for manufacturer in part.manufacturers_sku.all %}
+                        {% for manufacturerSku in part.manufacturers_sku.all %}
                             <tr>
-                                <td>{{ manufacturer.sku }}</td>
-                                <td><a href="{% url 'manufacturer_detail' pk=manufacturer.manufacturer.id %}">{{ manufacturer.manufacturer }}</a></td>
+                                <td>{{ manufacturerSku.sku }}</td>
+                                {% if manufacturerSku.manufacturer %}
+                                    <td>
+                                        {% if manufacturerSku.manufacturer.url %}
+                                        <a href="{{ manufacturerSku.manufacturer.url }}" target="_blank"><i class="fa fa-external-link"></i></a>&nbsp;
+                                        {% endif %}
+                                        <a href="{% url 'manufacturer_detail' pk=manufacturerSku.manufacturer.id %}">{{ manufacturerSku.manufacturer }}</a></td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                         </tbody>

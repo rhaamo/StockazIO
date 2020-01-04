@@ -99,11 +99,21 @@ def part_details_json(request, pk=None):
                 for a in part.part_parameters_value.all()
             ],
             "distributors": [
-                {"sku": a.sku, "distributor": a.distributor.name if a.distributor else None}
+                {
+                    "distributor_id": a.distributor.id,
+                    "sku": a.sku,
+                    "distributor": a.distributor.name,
+                    "distributor_www": a.distributor.url if a.distributor else None,
+                }
                 for a in part.distributors_sku.all()
             ],
             "manufacturers": [
-                {"sku": a.sku, "manufacturer": a.manufacturer.name if a.manufacturer else None}
+                {
+                    "manufacturer_id": a.manufacturer.id if a.manufacturer else None,
+                    "sku": a.sku,
+                    "manufacturer": a.manufacturer.name if a.manufacturer else None,
+                    "manufacturer_www": a.manufacturer.url if a.manufacturer else None,
+                }
                 for a in part.manufacturers_sku.all()
             ],
         }

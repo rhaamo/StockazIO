@@ -339,12 +339,30 @@
                 // Distributors
                 let distributor;
                 for (distributor of data['distributors']) {
-                    $('table#table-distributors tbody').append(`<tr><td>${distributor['sku']}</td><td>${distributor['distributor']}</td></tr>`)
+                    let distriUrl;
+                    if (distributor['distributor_id']) {
+                        distriUrl = `<a href="/distributors/${distributor['distributor_id']}">${distributor['distributor']}</a>`
+                    } else {
+                        distriUrl = `${distributor['distributor']}`
+                    }
+                    if (distributor['distributor_www'].length > 0) {
+                        distriUrl = `<a href="${distributor['distributor_www']}" target="_blank"><i class='fa fa-external-link'></i></a> ` + distriUrl
+                    }
+                    $('table#table-distributors tbody').append(`<tr><td>${distributor['sku']}</td><td>${distriUrl}</td></tr>`)
                 }
                 // Manufacturers
                 let manufacturer;
                 for (manufacturer of data['manufacturers']) {
-                    $('table#table-manufacturers tbody').append(`<tr><td>${manufacturer['sku']}</td><td>${manufacturer['manufacturer']}</td></tr>`)
+                    let manufUrl;
+                    if (manufacturer['manufacturer_id']) {
+                        manufUrl = `<a href="/manufacturers/${manufacturer['manufacturer_id']}">${manufacturer['manufacturer']}</a>`
+                    } else {
+                        manufUrl = `${manufacturer['manufacturer']}`
+                    }
+                    if (manufacturer['manufacturer_www'].length > 0) {
+                        manufUrl = `<a href="${manufacturer['manufacturer_www']}" target="_blank"><i class='fa fa-external-link'></i></a> ` + manufUrl
+                    }
+                    $('table#table-manufacturers tbody').append(`<tr><td>${manufacturer['sku']}</td><td>${manufUrl}</td></tr>`)
                 }
             });
 
