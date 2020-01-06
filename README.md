@@ -5,16 +5,18 @@ Manage your inventory of electronic stuff
 # Install
 
 ```
-git clone this repository
+git clone https://github.com/rhaamo/StockazIO/
 cd StockazIO
 git submodule init
 git submodule update
-python3 -m virtualenv venv
+python3 -m virtualenv -p python3 venv
 source venv/bin/activate
-pip install --requirements api/requirements.txt
-edit config, uses a gunicorn, whatever
-don't forget to run migrations and then
-python manage.py database_seeds
+pip install --requirement api/requirements.txt
+cd api
+python manage.py collectstatic
+# edit config, uses a gunicorn, whatever
+# don't forget to run migrations and then
+python manage.py seeds_database
 ```
 
 # Features
