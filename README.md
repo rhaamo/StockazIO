@@ -15,6 +15,7 @@ pip install --requirement api/requirements.txt
 cd api
 python manage.py collectstatic
 # edit config, uses a gunicorn, whatever
+# eg.: pip install gunicorn uvicorn
 # don't forget to run migrations and then
 python manage.py seeds_database
 ```
