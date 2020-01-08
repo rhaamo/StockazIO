@@ -26,6 +26,7 @@ class StorageLocation(models.Model):
     category = models.ForeignKey(
         StorageCategory, related_name="storage_locations", blank=True, null=True, on_delete=models.CASCADE
     )
+    description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
 
     picture = models.ImageField(
         upload_to="storage_locations/",

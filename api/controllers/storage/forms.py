@@ -24,7 +24,7 @@ class StorageForm(ModelForm):
         self.helper.field_class = "col-sm-4"
         self.helper.layout = Layout(
             Field("name"),
-            Field("description"),
+            Field("parent"),
             FormActions(
                 Submit("storage_category_form", "Save changes", css_class="btn-primary"),
                 HTML("<a class='btn btn-light' href='{% url \"storage_category_list\" %}'>Cancel</a>"),

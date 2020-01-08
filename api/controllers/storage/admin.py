@@ -13,7 +13,7 @@ class StorageLocationInLine(admin.TabularInline):
 
 
 class StorageLocationAdmin(CommonAdmin):
-    list_display = ("name", "category", "get_picture")
+    list_display = ("name", "description", "category", "get_picture")
     search_fields = ("name",)
     inlines = []
 
