@@ -1,3 +1,6 @@
 [submodule "api/controllers/part/static/qrcode-generator"]
 	path = api/controllers/part/static/qrcode-generator
 	url = https://github.com/kazuhikoarase/qrcode-generator
+[submodule "api/controllers/part/static/django-dynamic-formset"]
+	path = api/controllers/part/static/django-dynamic-formset
+	url = https://github.com/elo80ka/django-dynamic-formset
