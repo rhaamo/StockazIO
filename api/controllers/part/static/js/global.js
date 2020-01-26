@@ -7,22 +7,23 @@ $(document).ready(function () {
 
 
         $('.formset_row-distributors_sku').formset({
-            addText: 'add one',
-            deleteText: 'remove',
+            addText: 'Add one more SKU',
+            deleteText: 'Remove this SKU',
             prefix: 'distributors_sku',
             formCssClass: 'dynamic-formset-distributors'
         });
         $('.formset_row-manufacturers_sku').formset({
-            addText: 'add one',
-            deleteText: 'remove',
+            addText: 'Add one more SKU',
+            deleteText: 'Remove this SKU',
             prefix: 'manufacturers_sku',
             formCssClass: 'dynamic-formset-manufacturers'
         });
         $('.formset_row-part_parameters_value').formset({
-            addText: 'add one',
-            deleteText: 'remove',
+            addText: 'Add one more parameter',
+            deleteText: 'Remove this parameter',
             prefix: 'part_parameters_value',
-            formCssClass: 'dynamic-formset-parts-parameters'
+            formCssClass: 'dynamic-formset-parts-parameters',
+            deleteContainerClass: 'delete-here'
         });
     });
 
