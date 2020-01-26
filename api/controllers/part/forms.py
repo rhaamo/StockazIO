@@ -286,7 +286,11 @@ class PartParameterForm(ModelForm):
                 Row(Column(Field("value"), css_class="col-lg-6"), Column(Field("unit"), css_class="col-lg-6")),
                 Field("DELETE"),
                 css_class="formset_row-{}".format(formtag_prefix),
-            )
+            ),
+            Div(
+                Row(Column(css_class="col-lg-6 col-add-partparam"), Column(css_class="col-lg-6 col-delete-partparam"),),
+                css_class="formset_magic-{}".format(formtag_prefix),
+            ),
         )
 
 
