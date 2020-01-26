@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from .models import Manufacturer, ManufacturerLogo, PartManufacturer
 from controllers.part.models import Part
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Field, Row, Div, Fieldset
+from crispy_forms.layout import Layout, Submit, HTML, Field, Row, Div, Fieldset, Column
 from crispy_forms.bootstrap import FormActions
 from django.forms.models import inlineformset_factory
 import re
@@ -102,7 +102,11 @@ class PartManufacturerForm(ModelForm):
         self.helper.field_class = "col-sm-9"
         self.helper.layout = Layout(
             Div(
-                Field("sku"), Field("manufacturer"), Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix),
+                Field("sku"),
+                Field("manufacturer"),
+                Row(Column(css_class="col-lg-6 delete-here-manuf"), css_class="row"),
+                Field("DELETE"),
+                css_class="formset_row-{}".format(formtag_prefix),
             )
         )
 
