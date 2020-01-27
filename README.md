@@ -23,13 +23,20 @@ python manage.py seeds_database
 # Features
 
 - yummy bugs
-- partkeepr import from CSV (fixed fields, see `controllers/part/management/commands/import_partkeepr.py`
-- Categories for parts
+- partkeepr import from CSV (fixed fields, see [here](https://github.com/rhaamo/StockazIO/blob/master/api/controllers/part/management/commands/import_partkeepr.py#L14) for them) 
+- Categories tree for parts
 - Storage categories and Storage Locations (with possible pictures)
 - Footprints categories and actual footprint in them (with possible picture)
-- Parts can have distributors SKU, manufacturers SKU, parts parameters
-- Parts and Storage Locations have UUIDs to generate an unique QRCode
+- Parts can have distributors SKU, manufacturers SKU, parts parameters and file attachments
+- Parts and Storage Locations have UUIDs and QRCode (containing a specific URI usuable in the search input)
 - Quick add form and a full-featured one
+
+# TODO List
+- KISS Project management
+- Project BOM state
+- Export of project BOM
+- Export of all components or a category or search
+- ???
 
 # Generated QRCodes format
 - StorageLocation: `stockazio://storageLocation/{uuid}`

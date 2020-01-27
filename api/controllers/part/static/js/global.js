@@ -10,15 +10,15 @@ $(document).ready(function () {
 
         // dynamic formset handling
         $('.formset_row-distributors_sku').formset({
-            addText: 'Add one more SKU',
-            deleteText: 'Remove this SKU',
+            addText: 'Add one more distributor SKU',
+            deleteText: 'Remove this distributor SKU',
             prefix: 'distributors_sku',
             formCssClass: 'dynamic-formset-distributors',
             deleteContainerClass: 'delete-here-distrib'
         });
         $('.formset_row-manufacturers_sku').formset({
-            addText: 'Add one more SKU',
-            deleteText: 'Remove this SKU',
+            addText: 'Add one more manufacturer SKU',
+            deleteText: 'Remove this manufacturer SKU',
             prefix: 'manufacturers_sku',
             formCssClass: 'dynamic-formset-manufacturers',
             deleteContainerClass: 'delete-here-manuf'
