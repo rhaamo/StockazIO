@@ -53,8 +53,8 @@ else:
     paths = [
         # /srv/stockazio/api/.env
         ROOT_DIR,
-        # /srv/stockazio/config/.env
-        ((ROOT_DIR - 1) + "config"),
+        # /srv/stockazio/.env
+        (ROOT_DIR - 1),
     ]
     for path in paths:
         try:
@@ -258,6 +258,7 @@ ROOT_URLCONF = "config.urls"
 SPA_URLCONF = "config.spa_urls"
 ASGI_APPLICATION = "config.asgi.application"
 WSGI_APPLICATION = "config.wsgi.application"
+ADMIN_URL = env("DJANGO_ADMIN_URL", default="^api/admin/")
 
 # This ensures that Django will be able to detect a secure connection
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

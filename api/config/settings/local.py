@@ -26,7 +26,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="^@*2wer5(q2k!f1)!bns&%gf_qliixb$c
 # Mail settings
 # ------------------------------------------------------------------------------
 EMAIL_HOST = "localhost"
-EMAIL_PORT = 1025
+EMAIL_PORT = 25
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
