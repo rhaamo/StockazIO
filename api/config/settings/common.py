@@ -96,6 +96,7 @@ THIRD_PARTY_APPS = [
     "bootstrap4",
     "oauth2_provider",
     "corsheaders",
+    "rest_framework",
 ]
 
 LOCAL_APPS = [
