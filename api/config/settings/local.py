@@ -32,13 +32,14 @@ EMAIL_PORT = 25
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
 
-INTERNAL_IPS = "127.0.0.1"
+INTERNAL_IPS = ["127.0.0.1"]
+ALLOWED_HOSTS = INTERNAL_IPS + ALLOWED_HOSTS
 
 DEBUG_TOOLBAR_CONFIG = {
     "DISABLE_PANELS": ["debug_toolbar.panels.redirects.RedirectsPanel"],
     "SHOW_TEMPLATE_CONTEXT": True,
-    "SHOW_TOOLBAR_CALLBACK": lambda request: "debug" in request.GET,
-    "JQUERY_URL": "/staticfiles/admin/js/vendor/jquery/jquery.js",
+    # "SHOW_TOOLBAR_CALLBACK": lambda request: "debug" in request.GET,
+    # "JQUERY_URL": "/staticfiles/admin/js/vendor/jquery/jquery.js",
 }
 
 DEBUG_TOOLBAR_PANELS = [
