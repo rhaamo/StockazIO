@@ -12,12 +12,25 @@ git submodule update
 python3 -m virtualenv -p python3 venv
 source venv/bin/activate
 pip install --requirement api/requirements.txt
+# For production environment
+cp deploy/env.prod.sample .env
+$EDITOR .env
+# For local development see bellow
 cd api
 python manage.py collectstatic
 # edit config, uses a gunicorn, whatever
 # eg.: pip install gunicorn uvicorn
 # don't forget to run migrations and then
 python manage.py seeds_database
+```
+
+For local development, you always needs to export `DJANGO_SETTINGS_MODULE=config.settings.local` to have the right config:
+```
+cp deploy/env.dev.sample .env
+$EDITOR .env
+cd api
+export DJANGO_SETTINGS_MODULE=config.settings.local
+python manage.py ...
 ```
 
 # Features

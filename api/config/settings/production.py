@@ -10,6 +10,8 @@ from __future__ import absolute_import, unicode_literals
 
 from .common import *  # noqa
 
+print("PRODUCTION config included")
+
 # SECRET CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key

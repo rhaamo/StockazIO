@@ -10,6 +10,7 @@ Local settings
 
 from .common import *  # noqa
 
+print("DEBUG config included")
 
 # DEBUG
 # ------------------------------------------------------------------------------

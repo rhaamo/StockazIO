@@ -242,6 +242,7 @@ admin.site.site_title = "StockazIO Admin Portal"
 admin.site.index_title = "Welcome to StockazIO"
 
 if settings.DEBUG:
+    print("Debug URLs enabled")
     import debug_toolbar
 
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

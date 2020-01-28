@@ -1,6 +1,8 @@
 import logging.config
 import environ
 
+print("Common config included")
+
 logger = logging.getLogger("stockazio_api.config")
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path("controllers")
@@ -88,7 +90,6 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "mptt",
-    "debug_toolbar",
     "imagekit",
     "crispy_forms",
     "django_admin_listfilter_dropdown",
@@ -118,7 +119,6 @@ ADDITIONAL_MIDDLEWARES_BEFORE = env.list("ADDITIONAL_MIDDLEWARES_BEFORE", defaul
 MIDDLEWARE = ADDITIONAL_MIDDLEWARES_BEFORE + [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -227,13 +227,10 @@ CRISPY_FAIL_SILENTLY = not DEBUG
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = env("STATIC_ROOT", default=str(ROOT_DIR("staticfiles")))
+STATIC_ROOT = env("STATIC_ROOT", default=str(ROOT_DIR("static")))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = env("STATIC_URL", default=STOCKAZIO_URL + "/staticfiles/")
-
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (str(APPS_DIR.path("static")),)
+STATIC_URL = env("STATIC_URL", default="/static/")
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
@@ -247,7 +244,7 @@ STATICFILES_FINDERS = (
 MEDIA_ROOT = env("MEDIA_ROOT", default=str(APPS_DIR("media")))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = env("MEDIA_URL", default=STOCKAZIO_URL + "/media/")
+MEDIA_URL = env("MEDIA_URL", default="/media/")
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 ATTACHMENTS_UNATTACHED_PRUNE_DELAY = env.int("ATTACHMENTS_UNATTACHED_PRUNE_DELAY", default=3600 * 24)
@@ -258,7 +255,7 @@ ROOT_URLCONF = "config.urls"
 SPA_URLCONF = "config.spa_urls"
 ASGI_APPLICATION = "config.asgi.application"
 WSGI_APPLICATION = "config.wsgi.application"
-ADMIN_URL = env("DJANGO_ADMIN_URL", default="^api/admin/")
+ADMIN_URL = env("DJANGO_ADMIN_URL", default="^admin/")
 
 # This ensures that Django will be able to detect a secure connection
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
