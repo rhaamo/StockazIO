@@ -270,6 +270,8 @@ LOGIN_REDIRECT_URL = "/parts"
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
 # OAuth configuration
+# ------------------------------------------------------------------------------
+REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("oauth2_provider.contrib.rest_framework.OAuth2Authentication",)}
 
 # Various other things
 PART_ATTACHMENT_ALLOWED_TYPES = [
