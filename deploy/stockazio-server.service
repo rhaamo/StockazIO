@@ -1,11 +1,12 @@
 [Unit]
 Description=StockazIO application server
-After=postgresql.service
+After=redis.service postgresql.service
 
 [Service]
 User=stockazio
 WorkingDirectory=/home/stockazio/StockazIO/api
-ExecStart=/home/stockazio/StockazIO/venv/bin/gunicorn config.asgi:application -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8010
+EnvironmentFile=/home/stockazio/StockazIO/.env
+ExecStart=/home/stockazio/StockazIO/venv/bin/gunicorn config.asgi:application -w ${STOCKAZIO_WEB_WORKERS} -k uvicorn.workers.UvicornWorker -b ${STOCKAZIO_API_IP}:${STOCKAZIO_API_PORT}
 
 [Install]
 WantedBy=multi-user.target

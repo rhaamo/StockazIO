@@ -50,3 +50,6 @@ uvloop==0.14.0
 wcwidth==0.1.7
 websockets==8.1
 django-bootstrap4==1.1.1
+django-oauth-toolkit==1.2.0
+django-cors-middleware==1.5.0
+environ==1.0
