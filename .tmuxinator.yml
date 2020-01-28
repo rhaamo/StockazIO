@@ -1,0 +1,15 @@
+# .tmuxinator.yml
+
+name: dev
+root: .
+
+windows:
+  - backend:
+      - export DJANGO_SETTINGS_MODULE=config.settings.local
+      - source venv/bin/activate
+      - cd api
+      - python manage.py runserver
+  - frontend:
+      - cd front
+      - yarn serve
+

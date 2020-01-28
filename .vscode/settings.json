@@ -1,0 +1,42 @@
+{
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/node_modueles": true,
+        "**/__pycache__": true,
+        "**/*.egg-info": true
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+       {
+         "language": "vue",
+         "autoFix": true
+       },
+       {
+         "language": "html",
+         "autoFix": true
+       },
+       {
+         "language": "javascript",
+         "autoFix": true
+       },
+       {
+         "language": "typescript",
+         "autoFix": true
+       }
+     ],
+     "vetur.format.defaultFormatter.js": "vscode-typescript",
+     "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "python.pythonPath": "/Users/dashie/dev/StockazIO/venv/bin/python",
+    "restructuredtext.confPath": "${workspaceFolder}/docs"
+}
