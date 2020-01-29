@@ -5,8 +5,8 @@ from controllers import __version__
 
 
 class AppSettings(views.APIView):
-    permission_classes = []
-    authentication_classes = []
+    required_scope = "app"
+    anonymous_policy = True
 
     def get(self, request, *args, **kwargs):
         data = {

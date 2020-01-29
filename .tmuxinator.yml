@@ -11,5 +11,5 @@ windows:
       - python manage.py runserver
   - frontend:
       - cd front
-      - yarn serve
+      - VUE_APP_SERVER_URL=http://127.0.0.1:8000 yarn serve
 

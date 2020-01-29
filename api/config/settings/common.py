@@ -100,6 +100,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "controllers.app",
+    "controllers.oauth",
     "controllers.part",
     "controllers.footprints",
     "controllers.storage",
@@ -157,6 +159,13 @@ DATABASES = {
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DATABASES["default"]["CONN_MAX_AGE"] = env("DB_CONN_MAX_AGE", default=60 * 5)
+
+MIGRATION_MODULES = {
+    # see https://github.com/jazzband/django-oauth-toolkit/issues/634
+    # swappable models are badly designed in oauth2_provider
+    # ignore migrations and provide our own models.
+    "oauth2_provider": None,
+}
 
 #
 # DATABASES = {
@@ -269,16 +278,53 @@ LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/parts"
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
+# AAA
+PAGINATION = {
+    "DEFAULT": 25,
+    "FOOTPRINTS": 5,
+    "MANUFACTURERS": 10,
+    "DISTRIBUTORS": 10,
+    "STORAGES": 10,
+    "PART_UNITS": 10,
+    "PARAMETERS_UNITS": 10,
+    "PARTS": 10,
+}
+
 # OAuth configuration
 # ------------------------------------------------------------------------------
+from controllers.oauth import scopes  # noqa
+
 OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    "SCOPES": {"read": "Read scope", "write": "Write scope", "admin": "Admin scope"}
+    "SCOPES": {s.id: s.label for s in scopes.SCOPES_BY_ID.values()},
+    "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https", "urn"],
+    # we keep expired tokens for 15 days, for tracability
+    "REFRESH_TOKEN_EXPIRE_SECONDS": 3600 * 24 * 15,
+    "AUTHORIZATION_CODE_EXPIRE_SECONDS": 5 * 60,
+    "ACCESS_TOKEN_EXPIRE_SECONDS": 60 * 60 * 10,
+    "OAUTH2_SERVER_CLASS": "controllers.oauth.server.OAuth2Server",
 }
+OAUTH2_PROVIDER_APPLICATION_MODEL = "oauth.Application"
+OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = "oauth.AccessToken"
+OAUTH2_PROVIDER_GRANT_MODEL = "oauth.Grant"
+OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "oauth.RefreshToken"
+
+
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("oauth2_provider.contrib.rest_framework.OAuth2Authentication",),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PARSER_CLASSES": (
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("controllers.oauth.permissions.ScopePermission",),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
 }
+
 
 # Various other things
 PART_ATTACHMENT_ALLOWED_TYPES = [
@@ -296,13 +342,3 @@ PART_ATTACHMENT_ALLOWED_TYPES = [
     "application/vnd.oasis.opendocument.text",
     "application/vnd.oasis.opendocument.spreadsheet",
 ]
-
-PAGINATION = {
-    "FOOTPRINTS": 5,
-    "MANUFACTURERS": 10,
-    "DISTRIBUTORS": 10,
-    "STORAGES": 10,
-    "PART_UNITS": 10,
-    "PARAMETERS_UNITS": 10,
-    "PARTS": 10,
-}
