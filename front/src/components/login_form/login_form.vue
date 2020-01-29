@@ -107,11 +107,6 @@ export default {
       }
 
       // do some OAuth2 magic here
-      let user = this.user.username
-      let password = this.user.password
-      this.$auth.login({ user, password }).then(function () {
-        console.log('we are logged lol')
-      })
     },
     clearError () {
       this.error = false

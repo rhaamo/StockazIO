@@ -10,7 +10,6 @@ import VueRouter from 'vue-router'
 import GetTextPlugin from 'vue-gettext'
 import locales from './locales.js'
 import VueAxios from 'vue-axios'
-import VueAuthenticate from 'vue-authenticate'
 
 logger.default.info('Loading environment:', process.env.NODE_ENV)
 logger.default.debug('Environment variables:', process.env)
@@ -62,19 +61,6 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: routes(store)
-})
-
-Vue.use(VueAuthenticate, {
-  baseUrl: 'http://127.0.0.1:8000',
-  loginUrl: '/o/authorize/',
-  providers: {
-    oauth2: {
-      name: 'oauth2',
-      url: '/o/authorize/',
-      oauthType: '2.0',
-      popupOptions: { width: 320, height: 400 }
-    }
-  }
 })
 
 sync(store, router)
