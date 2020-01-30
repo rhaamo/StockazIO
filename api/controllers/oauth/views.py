@@ -180,7 +180,7 @@ class RevokeTokenView(oauth_views.RevokeTokenView):
 
 
 class CheckTokenview(views.APIView):
-    required_scope = "read"
+    required_scope = "check_oauth_token"
 
     def get(self, request, *args, **kwargs):
-        return "nya~"
+        return http.HttpResponse(json.dumps("nya~"), status=200, content_type="application/json")

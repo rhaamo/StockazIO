@@ -13,6 +13,9 @@ BASE_SCOPES = [Scope("app"), Scope("categories")]
 SCOPES = [
     Scope("read", children=[s.copy("read") for s in BASE_SCOPES]),
     Scope("write", children=[s.copy("write") for s in BASE_SCOPES]),
+    Scope("read"),
+    Scope("write"),
+    Scope("read:check_oauth_token"),
     Scope("admin"),
 ]
 
@@ -27,18 +30,8 @@ SCOPES_BY_ID = {s.id: s for s in flatten(*SCOPES)}
 
 ANONYMOUS_SCOPES = {"read:app", "read:categories"}
 
-LOGGED_IN_SCOPES = ANONYMOUS_SCOPES | {"read", "write"}
+COMMON_SCOPES = ANONYMOUS_SCOPES | {"read", "write", "read:check_oauth_token"}
 
-OAUTH_APP_SCOPES = ANONYMOUS_SCOPES | {"read", "write"}
+LOGGED_IN_SCOPES = COMMON_SCOPES | {"read", "write"}
 
-
-def get_from_permissions(**permissions):
-    from controllers.users import models
-
-    final = LOGGED_IN_SCOPES
-    for permission_name, value in permissions.items():
-        if value is False:
-            continue
-        config = models.PERMISSIONS_CONFIGURATION[permission_name]
-        final = final | config["scopes"]
-    return final
+OAUTH_APP_SCOPES = COMMON_SCOPES
