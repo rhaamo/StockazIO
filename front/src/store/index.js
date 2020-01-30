@@ -16,10 +16,7 @@ export default new Vuex.Store({
   plugins: [
     createPersistedState({
       key: 'oauth',
-      paths: ['oauth'],
-      filter: (mutation) => {
-        return mutation.type.startsWith('oauth/')
-      }
+      paths: ['oauth']
     }),
     createPersistedState({
       key: 'server',
