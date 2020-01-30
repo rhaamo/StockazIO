@@ -76,7 +76,7 @@
       </div>
     </b-navbar>
 
-    <div class="container-fluid">
+    <div v-if="currentUser" class="container-fluid">
         <div class="row">
             <nav v-if='currentUser' class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
@@ -85,6 +85,13 @@
             </nav>
 
             <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <router-view />
+            </div>
+        </div>
+    </div>
+    <div v-else class="container-fluid">
+        <div class="row justify-content-md-center">
+            <div role="main" class="col-md-10 col-lg-10 px-4">
                 <router-view />
             </div>
         </div>
