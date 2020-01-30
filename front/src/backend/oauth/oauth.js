@@ -20,8 +20,8 @@ export const getOrCreateApp = ({ clientId, clientSecret, commit }) => {
     redirect_uris: REDIRECT_URI,
     scopes: 'read write'
   })
-    .then((response) => ({ clientId: response.client_id, clientSecret: response.client_secret }))
-    .then((response) => commit('setClientData', response) || response)
+    .then((app) => ({ clientId: app.data.client_id, clientSecret: app.data.client_secret }))
+    .then((app) => commit('setClientData', app) || app)
 }
 
 /*
