@@ -2,7 +2,7 @@ import LoginForm from '../components/login_form/login_form.vue'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
-    if (store.state.auth.isAuthenticated) {
+    if (store.state.user.currentUser) {
       next()
     } else {
       next('/login')
@@ -14,7 +14,7 @@ export default (store) => {
     {
       path: '/',
       name: 'home',
-      redirect: _to => { return (store.state.auth.isAuthenticated ? '/parts' : '/login') }
+      redirect: _to => { return (store.state.user.currentUser ? '/parts' : '/login') }
     },
     {
       path: '/about',

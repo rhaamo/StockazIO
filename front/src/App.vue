@@ -10,7 +10,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <template v-if="isAuthenticated">
+        <template v-if="currentUser">
         <ul class="navbar-nav mr-auto">
 
           <li class="nav-item dropdown">
@@ -78,7 +78,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <nav v-if='isAuthenticated' class="col-md-2 d-none d-md-block bg-light sidebar">
+            <nav v-if='currentUser' class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
                     todo nav
                 </div>
@@ -95,12 +95,12 @@
 <style lang="scss" src="./App.scss"></style>
 
 <script>
+import initializeSomeStuff from './store/store_init'
 
 export default {
   computed: {
     backendVersion () { return this.$store.state.server.settings.backendVersion },
-    isAuthenticated () { return this.$store.state.auth.authenticated },
-    currentUser () { return this.$store.state.auth.user }
+    currentUser () { return this.$store.state.user.currentUser }
   },
   async created () {
     if (!this.$store.state.server.serverUrl) {
@@ -113,7 +113,12 @@ export default {
       // needed to trigger initialization of axios / service worker
       this.$store.commit('server/serverUrl', this.$store.state.server.serverUrl)
     }
-    this.$store.dispatch('server/fetchSettings')
+    // Fetch server settings
+    this.$store.dispatch('server/fetchSettings').finally(() => {
+    // Start oauth init
+      let store = this.$store
+      initializeSomeStuff({ store })
+    })
   }
 }
 </script>

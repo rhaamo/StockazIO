@@ -1,23 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-
-import auth from './auth'
 import server from './server'
+import user from './user'
+import oauth from './oauth'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    auth,
-    server
+    server,
+    user,
+    oauth
   },
   plugins: [
     createPersistedState({
-      key: 'auth',
-      paths: ['auth'],
+      key: 'oauth',
+      paths: ['oauth'],
       filter: (mutation) => {
-        return mutation.type.startsWith('auth/')
+        return mutation.type.startsWith('oauth/')
       }
     }),
     createPersistedState({

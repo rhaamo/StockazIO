@@ -31,9 +31,7 @@ export default {
         axios.defaults.baseURL = null
         return
       }
-      let suffix = 'api/v1/'
-      axios.defaults.baseURL = state.serverUrl + suffix
-      // auth.baseURL = state.serverUrl + suffix
+      axios.defaults.baseURL = state.serverUrl
     },
     settings: (state, value) => {
       logger.default.info('Merging settings with', value)
@@ -54,7 +52,7 @@ export default {
       })
     },
     fetchSettings ({ commit }, payload) {
-      return axios.get('app/settings').then(response => {
+      return axios.get('/api/v1/app/settings').then(response => {
         logger.default.info('Successfully fetched server settings')
         let sections = {}
         sections.partAttachmentAllowedTypes = response.data.part_attachment_allowed_types
