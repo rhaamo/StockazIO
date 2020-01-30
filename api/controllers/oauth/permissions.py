@@ -54,7 +54,7 @@ class ScopePermission(permissions.BasePermission):
         except AttributeError:
             raise ImproperlyConfigured("ScopePermission requires the view to define the required_scope attribute")
         anonymous_policy = getattr(view, "anonymous_policy", False)
-        if anonymous_policy not in [True, False, "setting"]:
+        if anonymous_policy not in [True, False]:
             raise ImproperlyConfigured("{} is not a valid value for anonymous_policy".format(anonymous_policy))
         if isinstance(scope_config, str):
             scope_config = {
@@ -73,10 +73,6 @@ class ScopePermission(permissions.BasePermission):
             return self.has_permission_token(token, required_scope)
         elif request.user.is_authenticated:
             user_scopes = scopes.get_from_permissions(**request.user.get_permissions())
-            return should_allow(required_scope=required_scope, request_scopes=user_scopes)
-        elif hasattr(request, "actor") and request.actor:
-            # we use default anonymous scopes
-            user_scopes = scopes.FEDERATION_REQUEST_SCOPES
             return should_allow(required_scope=required_scope, request_scopes=user_scopes)
         else:
             if anonymous_policy is False:

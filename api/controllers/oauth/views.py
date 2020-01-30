@@ -177,3 +177,10 @@ class TokenView(oauth_views.TokenView):
 class RevokeTokenView(oauth_views.RevokeTokenView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+
+class CheckTokenview(views.APIView):
+    required_scope = "read"
+
+    def get(self, request, *args, **kwargs):
+        return "nya~"

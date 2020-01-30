@@ -33,7 +33,7 @@ OAUTH_APP_SCOPES = ANONYMOUS_SCOPES | {"read", "write"}
 
 
 def get_from_permissions(**permissions):
-    from funkwhale_api.users import models
+    from controllers.users import models
 
     final = LOGGED_IN_SCOPES
     for permission_name, value in permissions.items():

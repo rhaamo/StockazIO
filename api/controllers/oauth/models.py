@@ -8,7 +8,7 @@ class Application(oauth2_models.AbstractApplication):
 
     @property
     def normalized_scopes(self):
-        from .oauth import permissions
+        from . import permissions
 
         raw_scopes = set(self.scope.split(" ") if self.scope else [])
         return permissions.normalize(*raw_scopes)

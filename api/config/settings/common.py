@@ -100,6 +100,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "controllers.users",  # custom users app
     "controllers.app",
     "controllers.oauth",
     "controllers.part",
@@ -278,6 +279,8 @@ LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/parts"
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
+AUTH_USER_MODEL = "users.User"
+
 # AAA
 PAGINATION = {
     "DEFAULT": 25,
@@ -302,6 +305,7 @@ OAUTH2_PROVIDER = {
     "AUTHORIZATION_CODE_EXPIRE_SECONDS": 5 * 60,
     "ACCESS_TOKEN_EXPIRE_SECONDS": 60 * 60 * 10,
     "OAUTH2_SERVER_CLASS": "controllers.oauth.server.OAuth2Server",
+    "OAUTH2_BACKEND_CLASS": "controllers.oauth.backend.JsonAndHtml",
 }
 OAUTH2_PROVIDER_APPLICATION_MODEL = "oauth.Application"
 OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = "oauth.AccessToken"

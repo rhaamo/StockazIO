@@ -70,7 +70,9 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import oauthApi from '../../backend/oauth/oauth'
+import logger from '@/logging'
 
 export default {
   mixins: [validationMixin],
@@ -86,7 +88,8 @@ export default {
   },
   computed: {
     ...mapState({
-      registrationEnabled: state => state.server.settings.registrationEnabled
+      registrationEnabled: state => state.server.settings.registrationEnabled,
+      oauth: state => state.oauth
     }),
     labels () {
       return {
@@ -99,6 +102,7 @@ export default {
     accountIsConfirmed () { return 'account_confirmed' in this.$route.query }
   },
   methods: {
+    ...mapActions({ login: 'user/login' }),
     submitPassword: function () {
       this.$v.$touch()
 
@@ -106,7 +110,38 @@ export default {
         return false
       }
 
+      const { clientId } = this.oauth
+
+      const data = {
+        clientId,
+        oauth: this.oauth,
+        commit: this.$store.commit
+      }
+      this.error = false
+
       // do some OAuth2 magic here
+      oauthApi.getOrCreateApp(data).then(app => {
+        oauthApi.getTokenWithCredentials({
+          ...app,
+          instance: data.instance,
+          username: this.user.username,
+          password: this.user.password
+        })
+          .then(result => {
+            if (result.data.error) {
+              logger.default.error('Error getting token with creds:', result.data.error)
+              this.error = result.data.error
+              this.focusOnPasswordInput()
+              return
+            }
+            this.login(result).then(() => {
+              this.$router.push({ name: 'home' })
+            })
+          })
+          .catch(error => {
+            console.log('todo handle error', error)
+          })
+      })
     },
     clearError () {
       this.error = false
