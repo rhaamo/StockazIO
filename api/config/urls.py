@@ -38,7 +38,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
-    url(r"oauth/", include(("controllers.oauth.urls", "oauth"), namespace="oauth")),
+    url(r"^oauth/", include(("controllers.oauth.urls", "oauth"), namespace="oauth")),
     url(r"^api/", include(("config.api_urls", "api"), namespace="api")),
     url(r"^$", RedirectView.as_view(pattern_name="part_list", permanent=True)),
     url(r"^accounts/login$", auth_views.LoginView.as_view(template_name="auth/login.html"), name="auth_login"),
