@@ -139,7 +139,14 @@ export default {
             })
           })
           .catch(error => {
-            console.log('todo handle error', error)
+            logger.default.error('Login error:', error)
+            this.error = this.$pgettext('Content/Login/Error/Occured', 'An error occured, please try again later')
+            this.$bvToast.toast(this.$pgettext('Content/Login/Toast/Error/Message', 'An error occured, please try again later'), {
+              title: this.$pgettext('Content/Login/Toast/Error/Title', 'Login'),
+              autoHideDelay: 5000,
+              appendToast: false,
+              variant: 'danger'
+            })
           })
       })
     },

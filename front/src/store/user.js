@@ -1,5 +1,7 @@
+import apiService from '../services/api/api.service'
 
 export default {
+  namespaced: true,
   state: {
     currentUser: false
   },
@@ -20,8 +22,13 @@ export default {
     },
     // eslint-disable-next-line camelcase
     async login ({ state, dispatch, commit }, { access_token }) {
+      // Store token in store
       commit('setToken', access_token, { root: true })
-      await dispatch('loginUser', access_token, { root: true })
+      // Check the token validity
+      apiService.verifyCredentials()
+        .then((result) => {
+        // TODO FIXME
+        })
     }
   }
 }

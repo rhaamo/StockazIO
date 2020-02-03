@@ -183,4 +183,5 @@ class CheckTokenview(views.APIView):
     required_scope = "check_oauth_token"
 
     def get(self, request, *args, **kwargs):
+        # TODO returns: token, expiry, is valid
         return http.HttpResponse(json.dumps("nya~"), status=200, content_type="application/json")
