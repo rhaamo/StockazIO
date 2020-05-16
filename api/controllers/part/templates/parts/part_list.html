@@ -239,7 +239,7 @@
                                data-page-url="{% url 'part_details' pk=part.id %}"
                                data-id="{{ part.id }}"
                                data-toggle="modal" data-target="#modalPart">{{ part.name }}</a>
-                            <% if part.description %>
+                            {% if part.description %}
                             <br/>{{ part.description }}
                             {% endif %}
                         </td>
