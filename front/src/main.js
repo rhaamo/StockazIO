@@ -49,7 +49,7 @@ Vue.use(BootstrapVue)
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
   if (store.state.oauth.userToken) {
-    config.headers['Authorization'] = store.getters['oauth/getUserToken']
+    config.headers['Authorization'] = `Bearer ${store.state.oauth.userToken}`
   }
   return config
 }, function (error) {

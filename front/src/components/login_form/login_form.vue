@@ -134,7 +134,7 @@ export default {
               this.focusOnPasswordInput()
               return
             }
-            this.login(result).then(() => {
+            this.login(result.data).then(() => {
               this.$router.push({ name: 'home' })
             })
           })
