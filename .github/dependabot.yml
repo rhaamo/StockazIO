@@ -6,11 +6,26 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target_branch: "api"
+  target-branch: "api"
 - package-ecosystem: npm
   directory: "/front"
   schedule:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target_branch: "api"
+  target-branch: "api"
+  
+- package-ecosystem: pip
+  directory: "/api"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  target-branch: "master"
+- package-ecosystem: npm
+  directory: "/front"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  target-branch: "master"
