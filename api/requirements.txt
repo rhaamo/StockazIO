@@ -14,7 +14,7 @@ django-crispy-forms==1.8.1
 django-debug-toolbar==2.1
 django-imagekit==4.0.2
 django-js-asset==1.2.2
-django-mptt==0.10.0
+django-mptt==0.11.0
 entrypoints==0.3
 flake8==3.7.9
 h11==0.9.0
