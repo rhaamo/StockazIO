@@ -10,9 +10,9 @@ const FOOTPRINTS_URL = '/api/v1/footprints'
 
 const STORAGES_URL = '/api/v1/storages'
 
-const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/unit'
+const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units'
 
-const PART_UNITS_URL = '/api/v1/part_units'
+const PART_UNITS_URL = '/api/v1/parts/units'
 
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
 

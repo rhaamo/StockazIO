@@ -3,9 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.viewsets import ModelViewSet
 
 from controllers.part.forms import PartUnitForm
 from controllers.part.models import PartUnit
+from controllers.part.serializers import PartsUnitSerializer
 
 
 @login_required
@@ -48,3 +50,20 @@ def part_unit_update(request, pk, template_name="part_units/part_unit_update.htm
         messages.success(request, "Part Unit successfully updated.")
         return redirect("part_unit_list")
     return render(request, template_name, {"form": form, "object": part_unit})
+
+
+class PartsUnitViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": None,
+    }
+    serializer_class = PartsUnitSerializer
+
+    def get_queryset(self):
+        queryset = PartUnit.objects.all()
+        return queryset
