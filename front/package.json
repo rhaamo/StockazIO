@@ -16,7 +16,7 @@
     "js-logger": "^1.6.0",
     "node-sass": "^4.13.1",
     "sass-loader": "^10.0.4",
-    "vue": "^2.6.10",
+    "vue": "^2.6.12",
     "vue-axios": "^2.1.5",
     "vue-gettext": "^2.1.8",
     "vue-router": "^3.4.8",
@@ -35,6 +35,6 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.12"
   }
 }
