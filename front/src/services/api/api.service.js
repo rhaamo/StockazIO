@@ -10,7 +10,7 @@ const FOOTPRINTS_URL = '/api/v1/footprints'
 
 const STORAGES_URL = '/api/v1/storages'
 
-const UNITS_URL = '/api/v1/units'
+const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/unit'
 
 const PART_UNITS_URL = '/api/v1/part_units'
 
@@ -38,8 +38,8 @@ const getStorages = () => {
   return Axios.get(STORAGES_URL)
 }
 
-const getUnits = () => {
-  return Axios.get(UNITS_URL)
+const getParametersUnits = () => {
+  return Axios.get(PARAMETERS_UNITS_URL)
 }
 
 const getPartUnits = () => {
@@ -60,7 +60,7 @@ const apiService = {
   getInformations,
   getFootprints,
   getStorages,
-  getUnits,
+  getParametersUnits,
   getPartUnits,
   getManufacturers,
   getDistributors

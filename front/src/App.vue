@@ -148,10 +148,10 @@ export default {
             logger.default.info('Storages preloaded')
           })
         // Preload units
-        apiService.getUnits()
+        apiService.getParametersUnits()
           .then((data) => {
-            this.$store.commit('setUnits', data.data)
-            logger.default.info('Units preloaded')
+            this.$store.commit('setParametersUnits', data.data)
+            logger.default.info('Parameters Units preloaded')
           })
         // Preload part-units
         apiService.getPartUnits()

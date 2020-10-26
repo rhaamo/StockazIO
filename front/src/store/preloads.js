@@ -3,7 +3,7 @@ const preloads = {
     categories: {},
     footprints: [],
     storages: [],
-    units: {},
+    parameters_unit: {},
     part_units: {},
     manufacturers: {},
     distributors: {}
@@ -18,8 +18,8 @@ const preloads = {
     setStorages (state, value) {
       state.strorages = value
     },
-    setUnits (state, value) {
-      state.units = value
+    setParametersUnits (state, value) {
+      state.parameters_unit = value
     },
     setPartUnits (state, value) {
       state.part_units = value
@@ -41,8 +41,8 @@ const preloads = {
     getStorages: state => () => {
       return state.storages || []
     },
-    getUnits: state => () => {
-      return state.units || {}
+    getParametersUnits: state => () => {
+      return state.parameters_unit || {}
     },
     getPartUnits: state => () => {
       return state.part_units || {}

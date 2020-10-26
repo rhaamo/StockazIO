@@ -3,9 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.viewsets import ModelViewSet
 
 from controllers.part.forms import ParametersUnitForm
 from controllers.part.models import ParametersUnit
+from controllers.part.serializers import ParametersUnitSerializer
 
 
 @login_required
@@ -50,3 +52,20 @@ def parameters_unit_update(request, pk, template_name="parameters_units/paramete
         messages.success(request, "Parameters Unit successfully updated.")
         return redirect("parameters_unit_list")
     return render(request, template_name, {"form": form, "object": parameter_unit})
+
+
+class PartsParametersUnitViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": None,
+    }
+    serializer_class = ParametersUnitSerializer
+
+    def get_queryset(self):
+        queryset = ParametersUnit.objects.all()
+        return queryset
