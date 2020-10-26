@@ -13,52 +13,41 @@
         <template v-if="currentUser">
         <ul class="navbar-nav mr-auto">
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-cogs fa-fw"></i> Edit
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" :to="{}"><i class="fa fa-paw fa-fw"></i> Footprints</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-home fa-fw"></i> Manufacturers</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-car fa-fw"></i> Distributors</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-archive fa-fw"></i> Storage</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-cogs fa-fw"></i> Parts units</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-cogs fa-fw"></i> Parameters Units</a>
-            </div>
-          </li>
+          <b-nav-item-dropdown id="editDropdown">
+            <template #button-content>
+              <i class="fa fa-cogs fa-fw"></i> View
+            </template>
+            <b-dropdown-item :to="{}"><i class="fa fa-paw fa-fw"></i> Footprints</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-home fa-fw"></i> Manufacturers</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-car fa-fw"></i> Distributors</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-archive fa-fw"></i> Storage</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-cogs fa-fw"></i> Parts units</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-cogs fa-fw"></i> Parameters Units</b-dropdown-item>
+          </b-nav-item-dropdown>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <b-nav-item-dropdown id="viewDropdown">
+            <template #button-content>
               <i class="fa fa-list fa-fw"></i> View
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" :to="{}"><i class="fa fa-cogs fa-fw"></i> Informations</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-list-alt fa-fw"></i> Storage tree</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-money fa-fw"></i> Parts to sold</a>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-list-alt fa-fw"></i> Public parts</a>
-            </div>
-          </li>
+            </template>
+            <b-dropdown-item :to="{}"><i class="fa fa-cogs fa-fw"></i> Informations</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-list-alt fa-fw"></i> Storage tree</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-money fa-fw"></i> Parts to sold</b-dropdown-item>
+            <b-dropdown-item :to="{}"><i class="fa fa-list-alt fa-fw"></i> Public parts</b-dropdown-item>
+          </b-nav-item-dropdown>
 
-          <li class="nav-item">
-            <a class="nav-link" :to="{}"><i class="fa fa-plus fa-fw"></i> Add part</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" :to="{}"><i class="fa fa-fast-forward fa-fw"></i> Quick add part</a>
-          </li>
+          <b-nav-item :to="{name: 'add-part'}"><i class="fa fa-plus fa-fw"></i> Add part</b-nav-item>
+          <b-nav-item :to="{}"><i class="fa fa-fast-forward fa-fw"></i> Quick add part</b-nav-item>
         </ul>
 
         <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <b-nav-item-dropdown id="userDropdown">
+            <template #button-content>
               <i class="fa fa-user fa-fw"></i> {{ currentUser.username }}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" :to="{}"><i class="fa fa-key fa-fw"></i> Change password</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :to="{}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-            </div>
-          </li>
+            </template>
+            <b-dropdown-item :to="{}"><i class="fa fa-key fa-fw"></i> Change password</b-dropdown-item>
+            <b-dropdown-divider/>
+            <b-dropdown-item :to="{}"><i class="fa fa-sign-out fa-fw"></i> Logout</b-dropdown-item>
+          </b-nav-item-dropdown>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" :to="{}" method="GET">
