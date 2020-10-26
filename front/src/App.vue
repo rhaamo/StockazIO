@@ -142,10 +142,35 @@ export default {
             logger.default.info('Footprints preloaded')
           })
         // Preload storages
+        apiService.getStorages()
+          .then((data) => {
+            this.$store.commit('setStorages', data.data)
+            logger.default.info('Storages preloaded')
+          })
         // Preload units
+        apiService.getUnits()
+          .then((data) => {
+            this.$store.commit('setUnits', data.data)
+            logger.default.info('Units preloaded')
+          })
         // Preload part-units
+        apiService.getPartUnits()
+          .then((data) => {
+            this.$store.commit('setPartUnits', data.data)
+            logger.default.info('Part Units preloaded')
+          })
         // Preload manufacturers
+        apiService.getManufacturers()
+          .then((data) => {
+            this.$store.commit('setManufacturers', data.data)
+            logger.default.info('Manufacturers preloaded')
+          })
         // Preload distributors
+        apiService.getDistributors()
+          .then((data) => {
+            this.$store.commit('setDistributors', data.data)
+            logger.default.info('Distributors preloaded')
+          })
       }
     })
   }

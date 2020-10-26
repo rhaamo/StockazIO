@@ -1,8 +1,8 @@
 const preloads = {
   state: {
     categories: {},
-    footprints: {},
-    storages: {},
+    footprints: [],
+    storages: [],
     units: {},
     part_units: {},
     manufacturers: {},
@@ -36,10 +36,10 @@ const preloads = {
       return state.categories || {}
     },
     getFootprints: state => () => {
-      return state.footprints || {}
+      return state.footprints || []
     },
     getStorages: state => () => {
-      return state.storages || {}
+      return state.storages || []
     },
     getUnits: state => () => {
       return state.units || {}
