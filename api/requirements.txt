@@ -38,7 +38,7 @@ pyflakes==2.1.1
 Pygments==2.7.2
 python-magic==0.4.15
 pytz==2019.3
-PyYAML==5.2
+PyYAML==5.3.1
 regex==2020.10.23
 six==1.13.0
 sqlparse==0.4.1
