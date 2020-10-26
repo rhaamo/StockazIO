@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate'
 import server from './server'
 import user from './user'
 import oauth from './oauth'
+import preloads from './preloads'
 
 Vue.use(Vuex)
 
@@ -11,7 +12,8 @@ export default new Vuex.Store({
   modules: {
     server,
     user,
-    oauth
+    oauth,
+    preloads
   },
   plugins: [
     createPersistedState({

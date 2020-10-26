@@ -104,12 +104,12 @@ export default {
   },
   data () {
     return {
-      categories: []
     }
   },
   computed: {
     backendVersion () { return this.$store.state.server.settings.backendVersion },
-    currentUser () { return this.$store.state.user.currentUser }
+    currentUser () { return this.$store.state.user.currentUser },
+    categories () { return this.$store.state.preloads.categories }
   },
   async created () {
     if (!this.$store.state.server.serverUrl) {
@@ -129,12 +129,23 @@ export default {
       initializeSomeStuff({ store })
     }).then(() => {
       if (this.$store.state.oauth.loggedIn) {
-        // Load sidebar
+        // Preload sidebar
         apiService.getCategories()
           .then((data) => {
-            this.categories = data.data[0]
-            logger.default.info('Categories loaded')
+            this.$store.commit('setCategories', data.data[0])
+            logger.default.info('Categories preloaded')
           })
+        // Preload footprints
+        apiService.getFootprints()
+          .then((data) => {
+            this.$store.commit('setFootprints', data.data)
+            logger.default.info('Footprints preloaded')
+          })
+        // Preload storages
+        // Preload units
+        // Preload part-units
+        // Preload manufacturers
+        // Preload distributors
       }
     })
   }

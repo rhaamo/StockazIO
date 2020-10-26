@@ -6,6 +6,8 @@ const CATEGORIES_URL = '/api/v1/categories'
 
 const APP_INFORMATIONS_URL = '/api/v1/app/informations'
 
+const FOOTPRINTS_URL = '/api/v1/footprints'
+
 const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL)
 }
@@ -18,10 +20,15 @@ const getInformations = () => {
   return Axios.get(APP_INFORMATIONS_URL)
 }
 
+const getFootprints = () => {
+  return Axios.get(FOOTPRINTS_URL)
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
-  getInformations
+  getInformations,
+  getFootprints
 }
 
 export default apiService
