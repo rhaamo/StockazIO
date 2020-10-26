@@ -14,7 +14,7 @@
     "fork-awesome": "^1.1.7",
     "glob-all": "^3.2.1",
     "js-logger": "^1.6.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "sass-loader": "^10.0.4",
     "vue": "^2.6.12",
     "vue-axios": "^2.1.5",
