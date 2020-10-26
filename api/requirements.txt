@@ -20,7 +20,7 @@ flake8==3.7.9
 h11==0.11.0
 httptools==0.1.1
 ipdb==0.12.3
-ipython==7.11.0
+ipython==7.18.1
 ipython-genutils==0.2.0
 jedi==0.15.2
 mccabe==0.6.1
