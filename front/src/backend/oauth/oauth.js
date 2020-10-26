@@ -17,7 +17,7 @@ export const getOrCreateApp = ({ clientId, clientSecret, commit }) => {
   return Axios.post('/oauth/apps/', {
     name: `stockazio_front_${(new Date()).toISOString()}`,
     redirect_uris: REDIRECT_URI,
-    scopes: 'read write read:check_oauth_token'
+    scopes: 'read write read:check_oauth_token read:app'
   })
     .then((app) => ({ clientId: app.data.client_id, clientSecret: app.data.client_secret }))
     .then((app) => commit('setClientData', app) || app)
@@ -32,7 +32,7 @@ const getTokenWithCredentials = ({ clientId, clientSecret, username, password })
     client_id: clientId,
     client_secret: clientSecret,
     grant_type: 'password',
-    scope: 'read write read:check_oauth_token',
+    scope: 'read write read:check_oauth_token read:app',
     username: username,
     password: password
   })
