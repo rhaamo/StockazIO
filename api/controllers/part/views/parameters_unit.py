@@ -62,7 +62,7 @@ class PartsParametersUnitViewSet(ModelViewSet):
         "destroy": "write",
         "update": "write",
         "partial_update": "write",
-        "list": None,
+        "list": "read",
     }
     serializer_class = ParametersUnitSerializer
 
