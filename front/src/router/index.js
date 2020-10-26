@@ -23,13 +23,15 @@ export default (store) => {
     {
       path: '/parts/new',
       name: 'parts-new',
-      component: AddPart
+      component: AddPart,
+      beforeEnter: validateAuthenticatedRoute
     },
     // Views
     {
       path: '/view/infos',
       name: 'view-infos',
-      component: ViewInfos
+      component: ViewInfos,
+      beforeEnter: validateAuthenticatedRoute
     },
     // Other
     {
