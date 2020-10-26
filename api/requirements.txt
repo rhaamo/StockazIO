@@ -10,7 +10,7 @@ decorator==4.4.2
 Django==3.1.2
 django-admin-list-filter-dropdown==1.0.3
 django-appconf==1.0.3
-django-crispy-forms==1.8.1
+django-crispy-forms==1.9.2
 django-debug-toolbar==2.1
 django-imagekit==4.0.2
 django-js-asset==1.2.2
