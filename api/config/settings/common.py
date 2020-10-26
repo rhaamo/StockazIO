@@ -6,6 +6,7 @@ print("Common config included")
 logger = logging.getLogger("stockazio_api.config")
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path("controllers")
+BASE_DIR = environ.Path(__file__) - 3
 
 env = environ.Env()
 
@@ -85,7 +86,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "django.contrib.admin",
+    "django.contrib.admin", 
 ]
 
 THIRD_PARTY_APPS = [
@@ -97,6 +98,7 @@ THIRD_PARTY_APPS = [
     "oauth2_provider",
     "corsheaders",
     "rest_framework",
+    "django_extensions"
 ]
 
 LOCAL_APPS = [
