@@ -1,9 +1,7 @@
 <template>
-  <div class="tree">
-      <ul class="tree-list">
-          <node :node="treeData"></node>
-      </ul>
-  </div>
+  <ul class="cat-list">
+      <node :node="treeData"></node>
+  </ul>
 </template>
 
 <script>
