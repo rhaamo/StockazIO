@@ -42,7 +42,7 @@ PyYAML==5.3.1
 regex==2020.10.23
 six==1.13.0
 sqlparse==0.4.1
-toml==0.10.0
+toml==0.10.1
 traitlets==5.0.5
 typed-ast==1.4.1
 uvicorn==0.11.7
