@@ -29,7 +29,7 @@ pathspec==0.7.0
 pexpect==4.7.0
 pickleshare==0.7.5
 pilkit==2.0
-Pillow==6.2.1
+Pillow==8.0.1
 prompt-toolkit==3.0.2
 psycopg2==2.8.6
 ptyprocess==0.6.0
