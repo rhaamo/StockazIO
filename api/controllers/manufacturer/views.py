@@ -7,9 +7,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.utils.decorators import method_decorator
+from rest_framework.viewsets import ModelViewSet
 
 from .forms import ManufacturerForm, ManufacturerLogoFormSet
 from .models import Manufacturer
+from .serializers import ManufacturersSerializer
 
 
 @login_required
@@ -101,3 +103,20 @@ class ManufacturerUpdate(SuccessMessageMixin, UpdateView):
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
         return super(ManufacturerUpdate, self).dispatch(*args, **kwargs)
+
+
+class ManufacturersViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": None,
+    }
+    serializer_class = ManufacturersSerializer
+
+    def get_queryset(self):
+        queryset = Manufacturer.objects.all()
+        return queryset
