@@ -8616,10 +8616,10 @@ vue-functional-data-merge@^3.1.0:
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz#08a7797583b7f35680587f8a1d51d729aa1dc657"
   integrity sha512-leT4kdJVQyeZNY1kmnS1xiUlQ9z1B/kdBFCILIjYYQDqZgLqCLa0UhjSSeRX6c3mUe6U5qYeM8LrEqkHJ1B4LA==
 
-vue-gettext@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.8.tgz#1d87a694c16c9b114c56bdd5e2bf13c1c8d44fbf"
-  integrity sha512-LzDnD12g/DOqvDcQbwQTeeyS1E8WGs9L2tJoXzISWDinibUsm3fsEaQCo0mTZ0NpDHsk2AK2KzyuWly0Yulp9Q==
+vue-gettext@^2.1.10:
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.10.tgz#6b5cac9a5ed4502d5c7a59e42c824c9bfbf80d6b"
+  integrity sha512-/CWIgIGgnS1KG10dGcoATcS51DhXfPbstIGJIWmklWC8p7PckDyrQXqx/JpI0cVDoxxv4oDzgs5kitwmXDK/uQ==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
