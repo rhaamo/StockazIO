@@ -15,7 +15,7 @@
     "glob-all": "^3.1.0",
     "js-logger": "^1.6.0",
     "node-sass": "^4.13.1",
-    "sass-loader": "^8.0.2",
+    "sass-loader": "^10.0.4",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
     "vue-gettext": "^2.1.8",
