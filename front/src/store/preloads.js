@@ -3,10 +3,10 @@ const preloads = {
     categories: {},
     footprints: [],
     storages: [],
-    parameters_unit: {},
-    part_units: {},
-    manufacturers: {},
-    distributors: {}
+    parameters_unit: [],
+    part_units: [],
+    manufacturers: [],
+    distributors: []
   },
   mutations: {
     setCategories (state, value) {
@@ -28,7 +28,7 @@ const preloads = {
       state.manufacturers = value
     },
     setDistributors (state, value) {
-      state.distributorsz = value
+      state.distributors = value
     }
   },
   getters: {
@@ -42,16 +42,16 @@ const preloads = {
       return state.storages || []
     },
     getParametersUnits: state => () => {
-      return state.parameters_unit || {}
+      return state.parameters_unit || []
     },
     getPartUnits: state => () => {
-      return state.part_units || {}
+      return state.part_units || []
     },
     getManufacturers: state => () => {
-      return state.manufacturers || {}
+      return state.manufacturers || []
     },
     getDistributors: state => () => {
-      return state.distributors || {}
+      return state.distributors || []
     }
   }
 }
