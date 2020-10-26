@@ -6,7 +6,7 @@ backcall==0.1.0
 black==19.10b0
 Click==7.0
 dealer==2.1.0
-decorator==4.4.1
+decorator==4.4.2
 Django==3.0.7
 django-admin-list-filter-dropdown==1.0.3
 django-appconf==1.0.3
