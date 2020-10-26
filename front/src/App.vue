@@ -15,7 +15,7 @@
 
           <b-nav-item-dropdown id="editDropdown">
             <template #button-content>
-              <i class="fa fa-cogs fa-fw"></i> View
+              <i class="fa fa-cogs fa-fw"></i> Edit
             </template>
             <b-dropdown-item :to="{}"><i class="fa fa-paw fa-fw"></i> Footprints</b-dropdown-item>
             <b-dropdown-item :to="{}"><i class="fa fa-home fa-fw"></i> Manufacturers</b-dropdown-item>
