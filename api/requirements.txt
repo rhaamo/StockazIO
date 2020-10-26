@@ -37,7 +37,7 @@ pycodestyle==2.5.0
 pyflakes==2.1.1
 Pygments==2.5.2
 python-magic==0.4.15
-pytz==2019.3
+pytz==2020.1
 PyYAML==5.2
 regex==2019.12.20
 six==1.13.0
