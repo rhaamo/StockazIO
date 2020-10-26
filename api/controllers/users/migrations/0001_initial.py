@@ -83,7 +83,11 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"db_table": "auth_user",},
-            managers=[("objects", django.contrib.auth.models.UserManager()),],
+            options={
+                "db_table": "auth_user",
+            },
+            managers=[
+                ("objects", django.contrib.auth.models.UserManager()),
+            ],
         ),
     ]

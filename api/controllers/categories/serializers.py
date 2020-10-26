@@ -14,4 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 CategorySerializer._declared_fields["parts_count"] = serializers.SerializerMethodField()
 
 
-CategorySerializer._declared_fields["children"] = CategorySerializer(many=True, source="get_children",)
+CategorySerializer._declared_fields["children"] = CategorySerializer(
+    many=True,
+    source="get_children",
+)

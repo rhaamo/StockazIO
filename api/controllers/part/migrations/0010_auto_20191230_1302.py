@@ -12,7 +12,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="part", options={"ordering": ("name",), "verbose_name": "part", "verbose_name_plural": "parts"},
+            name="part",
+            options={"ordering": ("name",), "verbose_name": "part", "verbose_name_plural": "parts"},
         ),
         migrations.AlterField(
             model_name="partattachment",

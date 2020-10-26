@@ -7,6 +7,7 @@ class ParametersUnitSerializer(serializers.ModelSerializer):
         model = ParametersUnit
         fields = ("name", "symbol", "prefix", "description")
 
+
 class PartsUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartUnit

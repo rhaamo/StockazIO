@@ -9,7 +9,15 @@ class FootprintSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Footprint
-        fields = ("id", "name", "picture", "picture_mini", "picture_small", "picture_medium", "description",)
+        fields = (
+            "id",
+            "name",
+            "picture",
+            "picture_mini",
+            "picture_small",
+            "picture_medium",
+            "description",
+        )
 
 
 class FootprintCategorySerializer(serializers.ModelSerializer):

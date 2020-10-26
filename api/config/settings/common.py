@@ -86,7 +86,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "django.contrib.admin", 
+    "django.contrib.admin",
 ]
 
 THIRD_PARTY_APPS = [
@@ -98,7 +98,7 @@ THIRD_PARTY_APPS = [
     "oauth2_provider",
     "corsheaders",
     "rest_framework",
-    "django_extensions"
+    "django_extensions",
 ]
 
 LOCAL_APPS = [
@@ -214,7 +214,10 @@ TEMPLATES = [
             "debug": DEBUG,
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
             # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
-            "loaders": ["django.template.loaders.filesystem.Loader", "django.template.loaders.app_directories.Loader",],
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ],
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
                 "django.template.context_processors.debug",

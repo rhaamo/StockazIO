@@ -30,7 +30,13 @@ class ManufacturerLogoForm(ModelForm):
         self.helper.label_class = "col-sm-3"
         self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
-            Div(Row(Field("logo")),), Row(Field("DELETE"), css_class="formset_row-{}".format(formtag_prefix),),
+            Div(
+                Row(Field("logo")),
+            ),
+            Row(
+                Field("DELETE"),
+                css_class="formset_row-{}".format(formtag_prefix),
+            ),
         )
 
 

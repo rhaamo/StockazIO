@@ -22,6 +22,10 @@ class Migration(migrations.Migration):
                 ("phone", models.CharField(blank=True, help_text="Phone", max_length=255, verbose_name="phone")),
                 ("fax", models.CharField(blank=True, help_text="FAX", max_length=255, verbose_name="fax")),
             ],
-            options={"verbose_name": "distributor", "verbose_name_plural": "distributors", "ordering": ("name",),},
+            options={
+                "verbose_name": "distributor",
+                "verbose_name_plural": "distributors",
+                "ordering": ("name",),
+            },
         ),
     ]

@@ -79,6 +79,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Speed up a bit ImageKit
 # if DEBUG=True, all caching is disabled, and calls to like /api/v1/footprints take ages...
-IMAGEKIT_CACHE_BACKEND = 'default'
-IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.Optimistic'
-IMAGEKIT_DEFAULT_CACHEFILE_BACKEND = 'imagekit.cachefiles.backends.Simple'
+IMAGEKIT_CACHE_BACKEND = "default"
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = "imagekit.cachefiles.strategies.Optimistic"
+IMAGEKIT_DEFAULT_CACHEFILE_BACKEND = "imagekit.cachefiles.backends.Simple"

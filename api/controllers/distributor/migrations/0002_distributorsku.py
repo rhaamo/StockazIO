@@ -38,6 +38,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name": "Distributor", "verbose_name_plural": "Distributors", "ordering": ("sku",),},
+            options={
+                "verbose_name": "Distributor",
+                "verbose_name_plural": "Distributors",
+                "ordering": ("sku",),
+            },
         ),
     ]

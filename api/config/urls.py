@@ -77,7 +77,9 @@ urlpatterns = [
     url(r"^footprints$", mbv_footprint.footprint_category_list, name="footprint_category_list"),
     url(r"^footprints/new$", mbv_footprint.footprint_category_create, name="footprint_category_create"),
     url(
-        r"^footprints/(?P<pk>[0-9]+)/edit$", mbv_footprint.footprint_category_update, name="footprint_category_update",
+        r"^footprints/(?P<pk>[0-9]+)/edit$",
+        mbv_footprint.footprint_category_update,
+        name="footprint_category_update",
     ),
     url(
         r"^footprints/(?P<pk>[0-9]+)/delete$",
@@ -114,7 +116,10 @@ urlpatterns = [
     url(r"^distributors$", mbv_distributor.distributor_list, name="distributor_list"),
     url(
         r"^distributors/(?P<pk>[0-9]+)$",
-        CBVDetailView.as_view(model=Distributor, template_name="distributors/distributor_detail.html",),
+        CBVDetailView.as_view(
+            model=Distributor,
+            template_name="distributors/distributor_detail.html",
+        ),
         name="distributor_detail",
     ),
     url(r"^distributors/new$", mbv_distributor.distributor_create, name="distributor_create"),
@@ -132,7 +137,10 @@ urlpatterns = [
     url(r"^manufacturers$", mbv_manufacturer.manufacturer_list, name="manufacturer_list"),
     url(
         r"^manufacturers/(?P<pk>[0-9]+)$",
-        CBVDetailView.as_view(model=Manufacturer, template_name="manufacturers/manufacturer_detail.html",),
+        CBVDetailView.as_view(
+            model=Manufacturer,
+            template_name="manufacturers/manufacturer_detail.html",
+        ),
         name="manufacturer_detail",
     ),
     url(r"^manufacturers/new$", mbv_manufacturer.ManufacturerCreate.as_view(), name="manufacturer_create"),

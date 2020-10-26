@@ -71,7 +71,10 @@ class ApplicationViewSet(
 
 
 class GrantViewSet(
-    mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
 ):
     """
     This is a viewset that list applications that have access to the request user
@@ -185,12 +188,5 @@ class CheckTokenview(views.APIView):
     def get(self, request, *args, **kwargs):
         # TODO returns: token, expiry, is valid, user
         user = self.request.user
-        payload = {
-            'token': None,
-            'expiry': None,
-            'valid': True,
-            'user': {
-                'username': user.username
-            }
-        }
+        payload = {"token": None, "expiry": None, "valid": True, "user": {"username": user.username}}
         return http.HttpResponse(json.dumps(payload), status=200, content_type="application/json")

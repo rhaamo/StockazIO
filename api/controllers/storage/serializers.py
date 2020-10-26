@@ -7,7 +7,7 @@ class StorageLocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StorageLocation
-        fields = ['name', 'description', 'picture', 'picture_medium', 'uuid']
+        fields = ["name", "description", "picture", "picture_medium", "uuid"]
 
 
 class StorageSerializer(serializers.ModelSerializer):
@@ -18,4 +18,7 @@ class StorageSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "children", "storage_locations"]
 
 
-StorageSerializer._declared_fields["children"] = StorageSerializer(many=True, source="get_children",)
+StorageSerializer._declared_fields["children"] = StorageSerializer(
+    many=True,
+    source="get_children",
+)

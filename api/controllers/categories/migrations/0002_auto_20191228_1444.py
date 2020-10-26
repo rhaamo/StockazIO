@@ -10,6 +10,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(name="category", unique_together=set(),),
-        migrations.RemoveField(model_name="category", name="slug",),
+        migrations.AlterUniqueTogether(
+            name="category",
+            unique_together=set(),
+        ),
+        migrations.RemoveField(
+            model_name="category",
+            name="slug",
+        ),
     ]

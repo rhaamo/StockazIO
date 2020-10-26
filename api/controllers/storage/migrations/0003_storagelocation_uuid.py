@@ -12,6 +12,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="storagelocation", name="uuid", field=models.UUIDField(default=uuid.uuid4, editable=False),
+            model_name="storagelocation",
+            name="uuid",
+            field=models.UUIDField(default=uuid.uuid4, editable=False),
         ),
     ]
