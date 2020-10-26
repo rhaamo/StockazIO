@@ -1,3 +1,4 @@
+import logger from '@/logging'
 import apiService from '../services/api/api.service'
 
 export default {
@@ -9,13 +10,19 @@ export default {
 
   },
   mutations: {
+    setCurrentUser (state, user) {
+      state.currentUser = user
+    }
   },
   actions: {
     loginUser (store, accessToken) {
-      console.log('pls loginUser')
-      // implement a check credentials in backend
-      // call it
-      // and that's it
+      apiService.verifyCredentials()
+        .then((result) => {
+          // TODO FIXME
+          logger.default.info('credentials validated')
+          store.commit('setLoggedIn', true, { root: true })
+          store.commit('setCurrentUser', result.data.user)
+        })
     },
     logout (store) {
       console.log('pls logout')
@@ -27,7 +34,10 @@ export default {
       // Check the token validity
       apiService.verifyCredentials()
         .then((result) => {
-        // TODO FIXME
+          // TODO FIXME
+          logger.default.info('credentials validated')
+          commit('oauth/loggedIn', true)
+          commit('setCurrentUser', result.data.user)
         })
     }
   }

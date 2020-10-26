@@ -5,7 +5,7 @@ const checkOAuthToken = async ({ store }) => {
   return new Promise(async (resolve, reject) => {
     if (store.getters.getUserToken()) {
       try {
-        await store.dispatch('loginUser', store.getters.getUserToken())
+        await store.dispatch('user/loginUser', store.getters.getUserToken())
       } catch (e) {
         logger.default.error(e)
       }

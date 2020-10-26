@@ -17,7 +17,8 @@ const oauth = {
     /* User token is authentication for app with user, this is for every calls
      * that need authorized user to be successful (i.e. posting, liking etc)
      */
-    userToken: false
+    userToken: false,
+    loggedIn: false
   },
   mutations: {
     setClientData (state, { clientId, clientSecret }) {
@@ -36,6 +37,9 @@ const oauth = {
       // state.token is userToken with older name, coming from persistent state
       // let's clear it as well, since it is being used as a fallback of state.userToken
       Vue.delete(state, 'token')
+    },
+    setLoggedIn (state, value) {
+      state.loggedIn = value
     }
   },
   getters: {

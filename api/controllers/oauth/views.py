@@ -183,5 +183,14 @@ class CheckTokenview(views.APIView):
     required_scope = "check_oauth_token"
 
     def get(self, request, *args, **kwargs):
-        # TODO returns: token, expiry, is valid
-        return http.HttpResponse(json.dumps("nya~"), status=200, content_type="application/json")
+        # TODO returns: token, expiry, is valid, user
+        user = self.request.user
+        payload = {
+            'token': None,
+            'expiry': None,
+            'valid': True,
+            'user': {
+                'username': user.username
+            }
+        }
+        return http.HttpResponse(json.dumps(payload), status=200, content_type="application/json")
