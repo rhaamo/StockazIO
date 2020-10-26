@@ -80,7 +80,7 @@
         <div class="row">
             <nav v-if='currentUser' class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
-                    todo nav
+                    <CategoryTree :tree-data="categories"></CategoryTree>
                 </div>
             </nav>
 
@@ -102,9 +102,22 @@
 <style lang="scss" src="./App.scss"></style>
 
 <script>
+import logger from '@/logging'
+
 import initializeSomeStuff from './store/store_init'
+import apiService from './services/api/api.service'
+
+import CategoryTree from './components/categories/tree'
 
 export default {
+  components: {
+    CategoryTree
+  },
+  data () {
+    return {
+      categories: []
+    }
+  },
   computed: {
     backendVersion () { return this.$store.state.server.settings.backendVersion },
     currentUser () { return this.$store.state.user.currentUser }
@@ -122,9 +135,18 @@ export default {
     }
     // Fetch server settings
     this.$store.dispatch('server/fetchSettings').finally(() => {
-    // Start oauth init
+      // Start oauth init
       let store = this.$store
       initializeSomeStuff({ store })
+    }).then(() => {
+      if (this.$store.state.oauth.loggedIn) {
+        // Load sidebar
+        apiService.getCategories()
+          .then((data) => {
+            this.categories = data.data[0]
+            logger.default.info('Categories loaded')
+          })
+      }
     })
   }
 }
