@@ -39,7 +39,7 @@ Pygments==2.5.2
 python-magic==0.4.15
 pytz==2020.1
 PyYAML==5.3.1
-regex==2019.12.20
+regex==2020.10.23
 six==1.15.0
 sqlparse==0.4.1
 toml==0.10.1
