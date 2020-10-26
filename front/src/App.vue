@@ -29,13 +29,13 @@
             <template #button-content>
               <i class="fa fa-list fa-fw"></i> View
             </template>
-            <b-dropdown-item :to="{}"><i class="fa fa-cogs fa-fw"></i> Informations</b-dropdown-item>
+            <b-dropdown-item :to="{name: 'view-infos'}"><i class="fa fa-cogs fa-fw"></i> Informations</b-dropdown-item>
             <b-dropdown-item :to="{}"><i class="fa fa-list-alt fa-fw"></i> Storage tree</b-dropdown-item>
             <b-dropdown-item :to="{}"><i class="fa fa-money fa-fw"></i> Parts to sold</b-dropdown-item>
             <b-dropdown-item :to="{}"><i class="fa fa-list-alt fa-fw"></i> Public parts</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item :to="{name: 'add-part'}"><i class="fa fa-plus fa-fw"></i> Add part</b-nav-item>
+          <b-nav-item :to="{name: 'parts-new'}"><i class="fa fa-plus fa-fw"></i> Add part</b-nav-item>
           <b-nav-item :to="{}"><i class="fa fa-fast-forward fa-fw"></i> Quick add part</b-nav-item>
         </ul>
 

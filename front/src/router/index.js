@@ -1,5 +1,8 @@
 import LoginForm from '../components/login_form/login_form.vue'
 
+import AddPart from '../views/AddPart'
+import ViewInfos from '../views/view/Infos'
+
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
     if (store.state.oauth.loggedIn) {
@@ -16,6 +19,19 @@ export default (store) => {
       name: 'home',
       redirect: _to => { return (store.state.oauth.loggedIn ? '/parts' : '/login') }
     },
+    // Parts
+    {
+      path: '/parts/new',
+      name: 'parts-new',
+      component: AddPart
+    },
+    // Views
+    {
+      path: '/view/infos',
+      name: 'view-infos',
+      component: ViewInfos
+    },
+    // Other
     {
       path: '/about',
       name: 'about',

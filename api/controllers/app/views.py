@@ -2,6 +2,8 @@ from rest_framework import views
 from rest_framework.response import Response
 from django.conf import settings
 from controllers import __version__
+from controllers.part.models import Part
+from controllers.categories.models import Category
 
 
 class AppSettings(views.APIView):
@@ -13,5 +15,18 @@ class AppSettings(views.APIView):
             "version": __version__,
             "part_attachment_allowed_types": settings.PART_ATTACHMENT_ALLOWED_TYPES,
             "pagination": settings.PAGINATION,
+        }
+        return Response(data, status=200)
+
+
+class AppInformations(views.APIView):
+    required_scope = "app"
+    anonymous_policy = True
+
+    def get(self, request, *args, **kwargs):
+        data = {
+            "parts_count": Part.objects.values("id").count(),
+            "categories_count": Category.objects.count(),
+            "version": __version__,
         }
         return Response(data, status=200)
