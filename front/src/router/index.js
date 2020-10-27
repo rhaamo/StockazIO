@@ -1,6 +1,7 @@
 import LoginForm from '../components/login_form/login_form.vue'
 
-import AddPart from '../views/AddPart'
+import PartsAddFull from '../views/parts/AddFull'
+import PartsAddQuick from '../views/parts/AddQuick'
 import ViewInfos from '../views/view/Infos'
 
 export default (store) => {
@@ -23,7 +24,13 @@ export default (store) => {
     {
       path: '/parts/new',
       name: 'parts-new',
-      component: AddPart,
+      component: PartsAddFull,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/parts/quick-new',
+      name: 'parts-quick-new',
+      component: PartsAddQuick,
       beforeEnter: validateAuthenticatedRoute
     },
     // Views

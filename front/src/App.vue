@@ -36,7 +36,7 @@
           </b-nav-item-dropdown>
 
           <b-nav-item :to="{name: 'parts-new'}"><i class="fa fa-plus fa-fw"></i> Add part</b-nav-item>
-          <b-nav-item :to="{}"><i class="fa fa-fast-forward fa-fw"></i> Quick add part</b-nav-item>
+          <b-nav-item :to="{name: 'parts-quick-new'}"><i class="fa fa-fast-forward fa-fw"></i> Quick add part</b-nav-item>
         </ul>
 
         <ul class="navbar-nav">

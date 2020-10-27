@@ -4,7 +4,7 @@
       <div class="col-lg-9">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><router-link :to="{name: 'home'}">StockazIO</router-link></li>
-          <li class="breadcrumb-item active">Add new</li>
+          <li class="breadcrumb-item active">Add new part</li>
         </ol>
       </div>
     </div>
