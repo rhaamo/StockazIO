@@ -101,6 +101,11 @@ export default {
     },
     accountIsConfirmed () { return 'account_confirmed' in this.$route.query }
   },
+  created () {
+    if (this.$store.state.oauth.loggedIn) {
+      this.$router.push({ name: 'home' })
+    }
+  },
   methods: {
     ...mapActions({ login: 'user/login' }),
     submitPassword: function () {
@@ -135,6 +140,7 @@ export default {
               return
             }
             this.login(result.data).then(() => {
+              this.$store.dispatch('preloadStuff')
               this.$router.push({ name: 'home' })
             })
           })

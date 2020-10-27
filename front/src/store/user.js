@@ -37,13 +37,16 @@ export default {
       const { oauth } = store.rootState
 
       logger.default.info('logging out')
+
       Axios.post('/oauth/revoke/', {
         token: oauth.userToken,
         client_id: oauth.clientId,
         client_secret: oauth.clientSecret
       }).then(() => {
-        store.commit('setLoggedIn', false, { root: true })
-        store.commit('setCurrentUser', {})
+        Promise.all([
+          store.commit('setLoggedIn', false, { root: true }),
+          store.commit('setCurrentUser', null)
+        ])
       })
     },
     // eslint-disable-next-line camelcase
