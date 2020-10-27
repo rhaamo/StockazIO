@@ -57,7 +57,7 @@ export default {
       apiService.verifyCredentials()
         .then((result) => {
           logger.default.info('credentials validated')
-          commit('oauth/loggedIn', true)
+          commit('setLoggedIn', true, { root: true })
           commit('setCurrentUser', result.data.user)
         })
     }

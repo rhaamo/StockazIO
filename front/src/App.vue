@@ -115,7 +115,7 @@ export default {
       })
     }
   },
-  async created () {
+  created () {
     if (!this.$store.state.server.serverUrl) {
       // we have several way to guess the API server url. By order of precedence:
       // 1. use the url specified when building via VUE_APP_SERVER_URL

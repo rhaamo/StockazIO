@@ -101,8 +101,9 @@ export default {
     },
     accountIsConfirmed () { return 'account_confirmed' in this.$route.query }
   },
-  created () {
+  mounted () {
     if (this.$store.state.oauth.loggedIn) {
+      logger.default.info('already logged in, redirecting...')
       this.$router.push({ name: 'home' })
     }
   },
