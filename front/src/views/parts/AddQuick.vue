@@ -102,21 +102,21 @@
 
             <b-col>
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
-                <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Select an unit" label="text" track-by="value"></multiselect>
+                <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?" label="text" track-by="value"></multiselect>
               </b-form-group>
 
               <b-form-group id="input-group-category" label="Category:" label-for="category">
-                <treeselect :multiple="false" :options="choicesCategory" v-model="form.category" search-nested :defaultExpandLevel="Infinity" clearable :normalizer="categoriesNormalizer" noChildrenText>
+                <treeselect :multiple="false" :options="choicesCategory" v-model="form.category" search-nested :defaultExpandLevel="Infinity" clearable :normalizer="categoriesNormalizer" noChildrenText placeholder="Film resistors ? MCUS ?">
                 </treeselect>
               </b-form-group>
 
               <b-form-group id="input-group-storage_location" label="Storage location:" label-for="storage_location">
-                <treeselect :multiple="false" :options="choicesStorageLocation" v-model="form.storage_location" search-nested :defaultExpandLevel="Infinity" clearable :normalizer="storagesNormalizer" noChildrenText>
+                <treeselect :multiple="false" :options="choicesStorageLocation" v-model="form.storage_location" search-nested :defaultExpandLevel="Infinity" clearable :normalizer="storagesNormalizer" noChildrenText placeholder="A box under the bench or some drawer ?">
                 </treeselect>
               </b-form-group>
 
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
-                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints" group-label="category" :group-select="true" placeholder="Select a footprint" label="name" track-by="id"></multiselect>
+                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints" group-label="category" :group-select="true" placeholder="PDIP, BGA, SOIC, who knows" label="name" track-by="id"></multiselect>
               </b-form-group>
             </b-col>
           </b-row>
