@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-md-11 mx-auto">
         <h3>Basic parts informations</h3>
-        <b-form @submit="addPart">
+        <b-form @submit.prevent="addPart">
           <b-row>
             <b-col>
               <b-form-group id="input-group-name" label="Name*" label-for="name">
@@ -21,6 +21,7 @@
                   v-model="form.name"
                   required
                   placeholder="PIC42ACHU"
+                  :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
                 ></b-form-input>
               </b-form-group>
               <b-form-group id="input-group-description" label="Description" label-for="description">
@@ -28,6 +29,7 @@
                   id="description"
                   v-model="form.description"
                   placeholder="A cute little mcu"
+                  :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
                 ></b-form-input>
               </b-form-group>
               <b-form-group id="input-group-qty" label="Stock Qty*" label-for="qty">
@@ -36,6 +38,7 @@
                   v-model="form.qty"
                   required
                   type='number'
+                  :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
                 ></b-form-input>
               </b-form-group>
               <b-form-group id="input-group-qty-min" label="Stock Qty min*" label-for="qty-min">
@@ -44,12 +47,14 @@
                   v-model="form.qty_min"
                   required
                   type='number'
+                  :state="$v.form.qty_min.$dirty ? !$v.form.qty_min.$error : null"
                 ></b-form-input>
               </b-form-group>
               <b-form-group id="input-group-sheet-status" label="Sheet status" label-for="sheet-status">
                 <b-form-input
                   id="sheet-status"
                   v-model="form.sheet_status"
+                  :state="$v.form.sheet_status.$dirty ? !$v.form.sheet_status.$error : null"
                 ></b-form-input>
               </b-form-group>
               <b-form-group id="input-group-condition" label="Part condition" label-for="condition">
@@ -57,12 +62,14 @@
                   id="condition"
                   v-model="form.condition"
                   placeholder="Condition of the part"
+                  :state="$v.form.condition.$dirty ? !$v.form.condition.$error : null"
                 ></b-form-input>
               </b-form-group>
               <b-form-group id="input-group-internal-pn" label="Internal part number" label-for="internal-pn">
                 <b-form-input
                   id="internal-pn"
                   v-model="form.internal_pn"
+                  :state="$v.form.internal_pn.$dirty ? !$v.form.internal_pn.$error : null"
                 ></b-form-input>
               </b-form-group>
 
@@ -74,6 +81,7 @@
                 value="true"
                 unchecked-value="false"
                 inline
+                :state="$v.form.needs_review.$dirty ? !$v.form.needs_review.$error : null"
               >
                 This sheet needs review
               </b-form-checkbox>
@@ -84,6 +92,7 @@
                 value="true"
                 unchecked-value="false"
                 inline
+                :state="$v.form.can_be_sold.$dirty ? !$v.form.can_be_sold.$error : null"
               >
                 That part can be sold
               </b-form-checkbox>
@@ -94,6 +103,7 @@
                 value="true"
                 unchecked-value="false"
                 inline
+                :state="$v.form.private.$dirty ? !$v.form.private.$error : null"
               >
                 That part is private
               </b-form-checkbox>
@@ -118,6 +128,8 @@
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
                 <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints" group-label="category" :group-select="true" placeholder="PDIP, BGA, SOIC, who knows" label="name" track-by="id"></multiselect>
               </b-form-group>
+
+              <b-button type="submit" variant="primary">Add part</b-button>
             </b-col>
           </b-row>
         </b-form>
@@ -131,9 +143,16 @@
 <style src="@riophae/vue-treeselect/dist/vue-treeselect.css"></style>
 
 <script>
+import logger from '@/logging'
+
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required, minValue } from 'vuelidate/lib/validators'
 
 export default {
+  mixins: [
+    validationMixin
+  ],
   data: () => ({
     form: {
       name: '',
@@ -152,6 +171,43 @@ export default {
       footprint: null
     }
   }),
+  validations: {
+    form: {
+      name: {
+        required
+      },
+      description: {
+      },
+      qty: {
+        required,
+        minValue: minValue(1)
+      },
+      qty_min: {
+        required,
+        minValue: minValue(0)
+      },
+      sheet_status: {
+      },
+      needs_review: {
+      },
+      condition: {
+      },
+      can_be_sold: {
+      },
+      private: {
+      },
+      internal_pn: {
+      },
+      part_unit: {
+      },
+      category: {
+      },
+      storage_location: {
+      },
+      footprint: {
+      }
+    }
+  },
   computed: {
     ...mapState({
       choicesPartUnit: (state) => {
@@ -166,6 +222,13 @@ export default {
   },
   methods: {
     addPart: function () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        logger.default.error('Form has errors')
+        return
+      }
+
+      console.log('submitting', this.form)
     },
     categoriesNormalizer: function (node) {
       return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
