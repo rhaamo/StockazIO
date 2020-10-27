@@ -58,6 +58,9 @@ const oauth = {
     },
     getClientSecret: state => () => {
       return state.clientSecret
+    },
+    getLoggedIn: state => () => {
+      return state.loggedIn
     }
   }
 }

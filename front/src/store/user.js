@@ -33,20 +33,18 @@ export default {
           })
       })
     },
-    logout (store) {
+    async logout (store) {
       const { oauth } = store.rootState
 
       logger.default.info('logging out')
 
-      Axios.post('/oauth/revoke/', {
+      await Axios.post('/oauth/revoke/', {
         token: oauth.userToken,
         client_id: oauth.clientId,
         client_secret: oauth.clientSecret
       }).then(() => {
-        Promise.all([
-          store.commit('setLoggedIn', false, { root: true }),
-          store.commit('setCurrentUser', null)
-        ])
+        store.commit('setLoggedIn', false, { root: true })
+        store.commit('setCurrentUser', null)
       })
     },
     // eslint-disable-next-line camelcase
@@ -54,7 +52,7 @@ export default {
       // Store token in store
       commit('setToken', access_token, { root: true })
       // Check the token validity
-      apiService.verifyCredentials()
+      await apiService.verifyCredentials()
         .then((result) => {
           logger.default.info('credentials validated')
           commit('setLoggedIn', true, { root: true })
