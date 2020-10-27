@@ -46,7 +46,7 @@
             </template>
             <b-dropdown-item :to="{}"><i class="fa fa-key fa-fw"></i> Change password</b-dropdown-item>
             <b-dropdown-divider/>
-            <b-dropdown-item :to="{}"><i class="fa fa-sign-out fa-fw"></i> Logout</b-dropdown-item>
+            <b-dropdown-item @click.prevent="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </ul>
 
@@ -108,8 +108,14 @@ export default {
   },
   computed: {
     backendVersion () { return this.$store.state.server.settings.backendVersion },
-    currentUser () { return this.$store.state.user.currentUser },
+    currentUser () { return this.$store.state.user.currentUser && this.$store.state.oauth.loggedIn },
     categories () { return this.$store.state.preloads.categories }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('user/logout')
+      this.$router.replace({ name: 'login_form' })
+    }
   },
   async created () {
     if (!this.$store.state.server.serverUrl) {
@@ -126,7 +132,8 @@ export default {
     this.$store.dispatch('server/fetchSettings').finally(() => {
       // Start oauth init
       let store = this.$store
-      initializeSomeStuff({ store })
+      let router = this.$router
+      initializeSomeStuff({ store, router })
     }).then(() => {
       if (this.$store.state.oauth.loggedIn) {
         // Preload sidebar
@@ -135,11 +142,17 @@ export default {
             this.$store.commit('setCategories', data.data[0])
             logger.default.info('Categories preloaded')
           })
+          .catch((error) => {
+            logger.default.error('Cannot preload categories', error.message)
+          })
         // Preload footprints
         apiService.getFootprints()
           .then((data) => {
             this.$store.commit('setFootprints', data.data)
             logger.default.info('Footprints preloaded')
+          })
+          .catch((error) => {
+            logger.default.error('Cannot preload footprints', error.message)
           })
         // Preload storages
         apiService.getStorages()
@@ -147,11 +160,17 @@ export default {
             this.$store.commit('setStorages', data.data)
             logger.default.info('Storages preloaded')
           })
+          .catch((error) => {
+            logger.default.error('Cannot preload storages', error.message)
+          })
         // Preload units
         apiService.getParametersUnits()
           .then((data) => {
             this.$store.commit('setParametersUnits', data.data)
             logger.default.info('Parameters Units preloaded')
+          })
+          .catch((error) => {
+            logger.default.error('Cannot preload parameters units', error.message)
           })
         // Preload part-units
         apiService.getPartUnits()
@@ -159,17 +178,25 @@ export default {
             this.$store.commit('setPartUnits', data.data)
             logger.default.info('Part Units preloaded')
           })
+          .catch((error) => {
+            logger.default.error('Cannot preload part units', error.message)
+          })
         // Preload manufacturers
         apiService.getManufacturers()
           .then((data) => {
             this.$store.commit('setManufacturers', data.data)
             logger.default.info('Manufacturers preloaded')
+          }).catch((error) => {
+            logger.default.error('Cannot preload manufacturers', error.message)
           })
         // Preload distributors
         apiService.getDistributors()
           .then((data) => {
             this.$store.commit('setDistributors', data.data)
             logger.default.info('Distributors preloaded')
+          })
+          .catch((error) => {
+            logger.default.error('Cannot preload distributors', error.message)
           })
       }
     })

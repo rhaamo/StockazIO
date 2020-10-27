@@ -1,4 +1,5 @@
 import logger from '@/logging'
+import Axios from 'axios'
 import apiService from '../services/api/api.service'
 
 export default {
@@ -16,16 +17,34 @@ export default {
   },
   actions: {
     loginUser (store, accessToken) {
-      apiService.verifyCredentials()
-        .then((result) => {
-          // TODO FIXME
-          logger.default.info('credentials validated')
-          store.commit('setLoggedIn', true, { root: true })
-          store.commit('setCurrentUser', result.data.user)
-        })
+      return new Promise((resolve, reject) => {
+        logger.default.info('verifying credentials')
+        apiService.verifyCredentials()
+          .then((result) => {
+            logger.default.info('credentials validated')
+            store.commit('setLoggedIn', true, { root: true })
+            store.commit('setCurrentUser', result.data.user)
+          })
+          .catch((error) => {
+            logger.default.error('cannot verify credentials', error.message)
+            store.commit('setLoggedIn', false, { root: true })
+            store.commit('setCurrentUser', {})
+            reject(error)
+          })
+      })
     },
     logout (store) {
-      console.log('pls logout')
+      const { oauth } = store.rootState
+
+      logger.default.info('logging out')
+      Axios.post('/oauth/revoke/', {
+        token: oauth.userToken,
+        client_id: oauth.clientId,
+        client_secret: oauth.clientSecret
+      }).then(() => {
+        store.commit('setLoggedIn', false, { root: true })
+        store.commit('setCurrentUser', {})
+      })
     },
     // eslint-disable-next-line camelcase
     async login ({ state, dispatch, commit }, { access_token }) {
@@ -34,7 +53,6 @@ export default {
       // Check the token validity
       apiService.verifyCredentials()
         .then((result) => {
-          // TODO FIXME
           logger.default.info('credentials validated')
           commit('oauth/loggedIn', true)
           commit('setCurrentUser', result.data.user)

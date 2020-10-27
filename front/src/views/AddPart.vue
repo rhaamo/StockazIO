@@ -11,7 +11,8 @@
 
     <div class="row">
       <div class="col-md-11 mx-auto">
-        form here
+        <b-form @submit="addPart">
+        </b-form>
       </div>
     </div>
 
