@@ -102,12 +102,7 @@
 
             <b-col>
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
-                <b-form-select
-                  id="part-unit"
-                  v-model="form.part_unit"
-                  :options="choicesPartUnit"
-                  required
-                ></b-form-select>
+                <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Select an unit" label="text" track-by="value"></multiselect>
               </b-form-group>
               <b-form-group id="input-group-category" label="Category:" label-for="category">
                 <b-form-select
@@ -141,6 +136,8 @@
 
   </div>
 </template>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <script>
 import { mapState } from 'vuex'
