@@ -14,6 +14,8 @@ const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units'
 
 const PART_UNITS_URL = '/api/v1/parts/units'
 
+const PART_CREATE = '/api/v1/parts/'
+
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
 
 const DISTRIBUTORS_URL = '/api/v1/distributors'
@@ -54,6 +56,10 @@ const getDistributors = () => {
   return Axios.get(DISTRIBUTORS_URL)
 }
 
+const createPart = (data) => {
+  return Axios.post(PART_CREATE, data)
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -63,7 +69,8 @@ const apiService = {
   getParametersUnits,
   getPartUnits,
   getManufacturers,
-  getDistributors
+  getDistributors,
+  createPart
 }
 
 export default apiService

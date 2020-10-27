@@ -144,6 +144,7 @@
 
 <script>
 import logger from '@/logging'
+import apiService from '@/services/api/api.service'
 
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
@@ -229,6 +230,7 @@ export default {
       }
 
       console.log('submitting', this.form)
+      apiService.createPart(this.form)
     },
     categoriesNormalizer: function (node) {
       return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }

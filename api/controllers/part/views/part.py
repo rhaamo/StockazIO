@@ -19,7 +19,9 @@ from django.utils.decorators import method_decorator
 from .common import query_reverse
 from django.http import JsonResponse
 from django.shortcuts import redirect
+from rest_framework.viewsets import ModelViewSet
 
+from controllers.part.serializers import PartSerializer
 
 @login_required
 def part_list(request, category=None, template_name="parts/part_list.html"):
@@ -331,3 +333,20 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
         return super(PartUpdate, self).dispatch(*args, **kwargs)
+
+
+class PartViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
+    serializer_class = PartSerializer
+
+    def get_queryset(self):
+        queryset = Part.objects.all()
+        return queryset

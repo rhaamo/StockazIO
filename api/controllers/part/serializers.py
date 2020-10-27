@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ParametersUnit, PartUnit
+from .models import ParametersUnit, PartUnit, Part
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
@@ -12,3 +12,9 @@ class PartsUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartUnit
         fields = ("id", "name", "short_name", "description")
+
+
+class PartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Part
+        fields = ("id", "name", "description")
