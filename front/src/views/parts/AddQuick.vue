@@ -168,10 +168,11 @@ export default {
     addPart: function () {
     },
     categoriesNormalizer: function (node) {
-      return { id: node.id, label: node.name, children: node.children }
+      return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
     },
     storagesNormalizer: function (node) {
-      return { id: node.id, label: node.name, children: (node.children || []).concat(node.storage_locations || []) }
+      let childs = (node.children || []).concat(node.storage_locations || [])
+      return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
     }
   }
 }
