@@ -91,7 +91,7 @@
 <style lang="scss" src="./App.scss"></style>
 
 <script>
-import initializeSomeStuff from './store/store_init'
+// import initializeSomeStuff from './store/store_init'
 
 import CategoryTree from './components/categories/tree'
 
@@ -116,27 +116,9 @@ export default {
     }
   },
   created () {
-    if (!this.$store.state.server.serverUrl) {
-      // we have several way to guess the API server url. By order of precedence:
-      // 1. use the url specified when building via VUE_APP_SERVER_URL
-      // 2. use the current url
-      let defaultServerUrl = process.env.VUE_APP_SERVER_URL || this.$store.getters['server/defaultUrl']()
-      this.$store.commit('server/serverUrl', defaultServerUrl)
-    } else {
-      // needed to trigger initialization of axios / service worker
-      this.$store.commit('server/serverUrl', this.$store.state.server.serverUrl)
+    if (this.$store.state.oauth.loggedIn) {
+      this.$store.dispatch('preloadStuff')
     }
-    // Fetch server settings
-    this.$store.dispatch('server/fetchSettings').finally(() => {
-      // Start oauth init
-      let store = this.$store
-      let router = this.$router
-      initializeSomeStuff({ store, router })
-    }).then(() => {
-      if (this.$store.state.oauth.loggedIn) {
-        this.$store.dispatch('preloadStuff')
-      }
-    })
   }
 }
 </script>

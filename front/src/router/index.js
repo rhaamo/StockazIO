@@ -8,7 +8,7 @@ export default (store) => {
     if (store.state.oauth.loggedIn) {
       next()
     } else {
-      next('/login')
+      next('/')
     }
   }
 

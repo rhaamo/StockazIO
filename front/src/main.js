@@ -10,6 +10,7 @@ import VueRouter from 'vue-router'
 import GetTextPlugin from 'vue-gettext'
 import locales from './locales.js'
 import VueAxios from 'vue-axios'
+import initializeSomeStuff from './store/store_init'
 
 logger.default.info('Loading environment:', process.env.NODE_ENV)
 logger.default.debug('Environment variables:', process.env)
@@ -64,6 +65,8 @@ const router = new VueRouter({
 })
 
 sync(store, router)
+
+initializeSomeStuff({ store, router })
 
 new Vue({
   router,
