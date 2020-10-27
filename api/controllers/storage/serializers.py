@@ -7,7 +7,7 @@ class StorageLocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StorageLocation
-        fields = ["name", "description", "picture", "picture_medium", "uuid"]
+        fields = ["id", "name", "description", "picture", "picture_medium", "uuid"]
 
 
 class StorageSerializer(serializers.ModelSerializer):

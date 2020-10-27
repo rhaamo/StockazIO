@@ -5,6 +5,7 @@ import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router'
 import GetTextPlugin from 'vue-gettext'
 import Multiselect from 'vue-multiselect'
+import Treeselect from '@riophae/vue-treeselect'
 import VueAxios from 'vue-axios'
 
 import logger from '@/logging'
@@ -49,6 +50,7 @@ Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.component('multiselect', Multiselect)
+Vue.component('treeselect', Treeselect)
 
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent

@@ -20,7 +20,7 @@ const preloads = {
       state.footprints = value
     },
     setStorages (state, value) {
-      state.strorages = value
+      state.storages = value
     },
     setParametersUnits (state, value) {
       state.parameters_unit = value

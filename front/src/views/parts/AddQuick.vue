@@ -104,29 +104,19 @@
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
                 <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Select an unit" label="text" track-by="value"></multiselect>
               </b-form-group>
+
               <b-form-group id="input-group-category" label="Category:" label-for="category">
-                <b-form-select
-                  id="category"
-                  v-model="form.category"
-                  :options="choicesCategory"
-                  required
-                ></b-form-select>
+                <treeselect :multiple="false" :options="choicesCategory" v-model="form.category" search-nested :defaultExpandLevel="Infinity" clearable :normalizer="categoriesNormalizer" noChildrenText>
+                </treeselect>
               </b-form-group>
+
               <b-form-group id="input-group-storage_location" label="Storage location:" label-for="storage_location">
-                <b-form-select
-                  id="storage_location"
-                  v-model="form.storage_location"
-                  :options="choicesStorageLocation"
-                  required
-                ></b-form-select>
+                <treeselect :multiple="false" :options="choicesStorageLocation" v-model="form.storage_location" search-nested :defaultExpandLevel="Infinity" clearable :normalizer="storagesNormalizer" noChildrenText>
+                </treeselect>
               </b-form-group>
+
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
-                <b-form-select
-                  id="footprint"
-                  v-model="form.footprint"
-                  :options="choicesFootprint"
-                  required
-                ></b-form-select>
+                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints" group-label="category" :group-select="true" placeholder="Select a footprint" label="name" track-by="id"></multiselect>
               </b-form-group>
             </b-col>
           </b-row>
@@ -138,6 +128,7 @@
 </template>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="@riophae/vue-treeselect/dist/vue-treeselect.css"></style>
 
 <script>
 import { mapState } from 'vuex'
@@ -164,15 +155,23 @@ export default {
   computed: {
     ...mapState({
       choicesPartUnit: (state) => {
-        return state.preloads.part_units.map(function (x) { return { value: x.id, text: `${x.name} (${x.short_name})` } })
+        return state.preloads.part_units.map(x => { return { value: x.id, text: `${x.name} (${x.short_name})` } })
       },
-      choicesCategory: state => state.preloads.categories,
-      choicesStorageLocation: state => state.preloads.storages,
-      choicesFootprint: state => state.preloads.footprints
+      choicesCategory: state => { return [state.preloads.categories] },
+      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesFootprint: (state) => {
+        return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
+      }
     })
   },
   methods: {
     addPart: function () {
+    },
+    categoriesNormalizer: function (node) {
+      return { id: node.id, label: node.name, children: node.children }
+    },
+    storagesNormalizer: function (node) {
+      return { id: node.id, label: node.name, children: (node.children || []).concat(node.storage_locations || []) }
     }
   }
 }
