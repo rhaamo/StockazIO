@@ -17,6 +17,7 @@ const PART_UNITS_URL = '/api/v1/parts/units'
 const PARTS_CREATE = '/api/v1/parts/'
 const PARTS_BY_CATEGORY = (categoryId) => `/api/v1/parts/?category_id=${categoryId}`
 const PARTS_LIST = '/api/v1/parts/'
+const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
 
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
 
@@ -70,6 +71,14 @@ const getParts = () => {
   return Axios.get(PARTS_LIST)
 }
 
+const getPart = (partId) => {
+  return Axios.get(PARTS_ITEM(partId))
+}
+
+const deletePart = (partId) => {
+  return Axios.delete(PARTS_ITEM(partId))
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -82,7 +91,9 @@ const apiService = {
   getDistributors,
   createPart,
   getPartsByCategory,
-  getParts
+  getParts,
+  getPart,
+  deletePart
 }
 
 export default apiService

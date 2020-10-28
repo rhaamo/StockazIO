@@ -108,15 +108,19 @@
                 </span>
               </td>
               <td>
-                <a href=""><i
-                  class="fa fa-pencil-square-o"
-                  aria-hidden="true"
-                /></a>
+                <b-button variant="link" @click.prevent="editPart(part)">
+                  <i
+                    class="fa fa-pencil-square-o"
+                    aria-hidden="true"
+                  />
+                </b-button>
                 &nbsp;
-                <a href=""><i
-                  class="fa fa-trash-o"
-                  aria-hidden="true"
-                /></a>
+                <b-button variant="link" @click.prevent="deletePart(part)">
+                  <i
+                    class="fa fa-trash-o"
+                    aria-hidden="true"
+                  />
+                </b-button>
               </td>
             </tr>
           </tbody>
@@ -129,6 +133,7 @@
 <script>
 import apiService from '../../services/api/api.service'
 import QRCode from 'qrcode'
+import logger from '@/logging'
 
 export default {
   props: {
@@ -194,6 +199,47 @@ export default {
             console.log('no cat', res.data)
           })
       }
+    },
+    deletePart (part) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
+        title: 'Plase Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          apiService.deletePart(part.id)
+            .then((val) => {
+              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
+                title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                autoHideDelay: 5000,
+                appendToast: true,
+                variant: 'primary'
+              })
+              this.fetchParts()
+              console.log(val)
+            })
+            .catch((err) => {
+              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                autoHideDelay: 5000,
+                appendToast: true,
+                variant: 'danger'
+              })
+              logger.default.error('Error with part deletion', err)
+              this.fetchParts()
+            })
+        })
+        .catch((err) => {
+          logger.default.error('Error with the delete modal', err)
+        })
     }
   }
 }
