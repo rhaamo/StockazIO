@@ -133,7 +133,7 @@
               </b-form-group>
 
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
-                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints" group-label="category" :group-select="true" placeholder="PDIP, BGA, SOIC, who knows" label="name" track-by="id"></multiselect>
+                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints" group-label="category" placeholder="PDIP, BGA, SOIC, who knows" label="name" track-by="id"></multiselect>
               </b-form-group>
 
               <b-button type="submit" variant="primary">Add part</b-button>
@@ -294,6 +294,7 @@ export default {
       this.form.needs_review = false
       this.form.footprint = null
       this.form.production_remarks = ''
+      this.$v.$reset()
     }
   }
 }
