@@ -1,12 +1,12 @@
 <template>
   <div class="add_part">
-    <b-modal id="modal-manage" ref="modal-manage"
+    <b-modal id="modalManage" ref="modalManage"
              size="xl" @cancel="partModalClose" @close="partModalClose"
              @hidden="partModalClose"
     >
       <template #modal-header="{ close }">
         <h5 id="modalPartTitle">
-          <i title="Private" :class="partDetailsPrivate" /> <span class="modal-title">{{ partDetails.name }}</span>
+          <i title="Private" :class="partDetailsPrivate" /> <span class="modal-title">{{ partDetailsName }}</span>
         </h5>
         <button type="button" class="close" data-dismiss="modal"
                 aria-label="Close" @click="close()"
@@ -331,6 +331,7 @@ export default {
         return ''
       }
     },
+    partDetailsName () { return this.partDetails ? this.partDetails.name : '' },
     partDetailsInternalPn () { return this.partDetails ? this.partDetails.internal_part_number : '' },
     partDetailsComment () { return this.partDetails ? this.partDetails.comment : '' },
     partDetailsProdRemarks () { return this.partDetails ? this.partDetails.production_remarks : '' },
@@ -433,7 +434,7 @@ export default {
       apiService.getPart(part.id)
         .then((val) => {
           this.partDetails = val.data
-          this.$bvModal.show('modal-manage')
+          this.$bvModal.show('modalManage')
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -447,6 +448,7 @@ export default {
         })
     },
     partModalClose () {
+      this.$bvModal.hide('modalManage')
       this.partDetails = null
     }
   }
