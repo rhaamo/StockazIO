@@ -65,6 +65,13 @@
                   :state="$v.form.condition.$dirty ? !$v.form.condition.$error : null"
                 ></b-form-input>
               </b-form-group>
+              <b-form-group id="input-group-production-remarks" label="Production remarks" label-for="production-remarks">
+                <b-form-input
+                  id="production-remarks"
+                  v-model="form.production_remarks"
+                  :state="$v.form.production_remarks.$dirty ? !$v.form.production_remarks.$error : null"
+                ></b-form-input>
+              </b-form-group>
               <b-form-group id="input-group-internal-pn" label="Internal part number" label-for="internal-pn">
                 <b-form-input
                   id="internal-pn"
@@ -165,6 +172,7 @@ export default {
       condition: '',
       can_be_sold: false,
       private: false,
+      production_remarks: '',
       internal_pn: '',
       part_unit: null,
       category: null,
@@ -197,6 +205,8 @@ export default {
       },
       private: {
       },
+      production_remarks: {
+      },
       internal_pn: {
       },
       part_unit: {
@@ -228,9 +238,43 @@ export default {
         logger.default.error('Form has errors')
         return
       }
-
-      console.log('submitting', this.form)
-      apiService.createPart(this.form)
+      let datas = {
+        name: this.form.name,
+        description: this.form.description,
+        stock_qty: this.form.qty,
+        stock_qty_min: this.form.qty_min,
+        status: this.form.sheet_status,
+        needs_review: this.form.needs_review,
+        condition: this.form.condition,
+        can_be_sold: this.form.can_be_sold,
+        private: this.form.private,
+        production_remarks: this.form.production_remarks,
+        internal_part_number: this.form.internal_pn,
+        part_unit: this.form.part_unit ? this.form.part_unit.value : null,
+        category: this.form.category,
+        storage: this.form.storage_location,
+        footprint: this.form.footprint ? this.form.footprint.id : null
+      }
+      console.log('submitting', datas)
+      apiService.createPart(datas)
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Add/Toast/Success/Title', 'Adding part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary'
+          })
+          this.clearForm()
+        })
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Cannot save part', error.message)
+        })
     },
     categoriesNormalizer: function (node) {
       return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
@@ -238,6 +282,18 @@ export default {
     storagesNormalizer: function (node) {
       let childs = (node.children || []).concat(node.storage_locations || [])
       return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
+    },
+    clearForm: function () {
+      this.form.name = ''
+      this.form.description = ''
+      this.form.qty = 1
+      this.form.qty_min = 0
+      this.form.sheet_status = ''
+      this.form.condition = ''
+      this.form.internal_pn = ''
+      this.form.needs_review = false
+      this.form.footprint = null
+      this.form.production_remarks = ''
     }
   }
 }
