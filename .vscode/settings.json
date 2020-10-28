@@ -18,25 +18,15 @@
   "python.pythonPath": "${workspaceFolder}/venv/bin/python",
   "vetur.experimental.templateInterpolationService": true,
   "eslint.validate": [
-    {
-      "language": "vue",
-      "autoFix": true
-    },
-    {
-      "language": "html",
-      "autoFix": true
-    },
-    {
-      "language": "javascript",
-      "autoFix": true
-    },
-    {
-      "language": "typescript",
-      "autoFix": true
-    }
+    "javascript",
+    "javascriptreact",
+    "vue"
   ],
   "vetur.format.defaultFormatter.js": "vscode-typescript",
   "vetur.format.defaultFormatter.html": "js-beautify-html",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-  "restructuredtext.confPath": "${workspaceFolder}/docs"
+  "restructuredtext.confPath": "${workspaceFolder}/docs",
+  "eslint.workingDirectories": [
+    "./front"
+  ]
 }
