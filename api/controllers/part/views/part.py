@@ -19,9 +19,9 @@ from django.utils.decorators import method_decorator
 from .common import query_reverse
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from controllers.viewsets import MultiSerializerViewSet
+from rest_framework.viewsets import ModelViewSet
 
-from controllers.part.serializers import PartSerializer, PartCreateSeralizer
+from controllers.part.serializers import PartSerializer, PartCreateSeralizer, PartRetrieveSerializer
 
 
 @login_required
@@ -336,7 +336,7 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
         return super(PartUpdate, self).dispatch(*args, **kwargs)
 
 
-class PartViewSet(MultiSerializerViewSet):
+class PartViewSet(ModelViewSet):
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -346,9 +346,18 @@ class PartViewSet(MultiSerializerViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    serializers = {"list": PartSerializer, "default": PartCreateSeralizer}
     ordering_fields = ["name", "stock_qty", "stock_min_qty", "footprint", "unit", "storage"]
     ordering = ["name"]
+
+    def get_serializer_class(self):
+        print(f"action: {self.action}")
+        if self.action == "list":
+            return (PartSerializer,)
+        elif self.action == "retrieve":
+            return PartRetrieveSerializer
+        else:
+            print("using default serializer")
+            return PartCreateSeralizer
 
     def get_queryset(self):
         queryset = Part.objects.all()

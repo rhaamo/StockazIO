@@ -80,17 +80,7 @@
                 </div>
               </td>
               <td>
-                <a
-                  title="View part modal"
-                  href=""
-                  :data-name="part.name"
-                  data-edit-url=""
-                  data-delete-url=""
-                  data-page-url=""
-                  :data-id="part.id"
-                  data-toggle="modal"
-                  data-target="#modalPart"
-                >{{ part.name }}</a>
+                <a href="#" @click.prevent="viewPartModal(part)">{{ part.name }}</a>
                 <template v-if="part.description">
                   <br>{{ part.description }}
                 </template>
@@ -144,7 +134,8 @@ export default {
   data: () => ({
     parts: [],
     page: 0, // TODO/FIXME no pagination yet
-    search_query: '' // TODO/FIXME no search yet
+    search_query: '', // TODO/FIXME no search yet
+    partDetails: null
   }),
   computed: {
     categoryId () {
@@ -240,6 +231,26 @@ export default {
         .catch((err) => {
           logger.default.error('Error with the delete modal', err)
         })
+    },
+    viewPartModal (part) {
+      apiService.getPart(part.id)
+        .then((val) => {
+          this.partDetails = val.data
+          console.log(val.data)
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Error fetching part', err)
+          this.partDetails = null
+        })
+    },
+    partModalClosed () {
+      this.partDetails = null
     }
   }
 }
