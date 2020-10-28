@@ -45,3 +45,28 @@ class PartSerializer(serializers.ModelSerializer):
             "comment",
             "production_remarks",
         )
+
+
+class PartCreateSeralizer(serializers.ModelSerializer):
+    class Meta:
+        model = Part
+        fields = (
+            "id",
+            "name",
+            "description",
+            "stock_qty",
+            "stock_qty_min",
+            "status",
+            "needs_review",
+            "condition",
+            "can_be_sold",
+            "private",
+            "internal_part_number",
+            "part_unit",
+            "category",
+            "storage",
+            "footprint",
+            "uuid",
+            "comment",
+            "production_remarks",
+        )

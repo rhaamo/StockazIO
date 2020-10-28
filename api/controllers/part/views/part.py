@@ -21,7 +21,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.viewsets import ModelViewSet
 
-from controllers.part.serializers import PartSerializer
+from controllers.part.serializers import PartSerializer, PartCreateSeralizer
 
 
 @login_required
@@ -336,7 +336,17 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
         return super(PartUpdate, self).dispatch(*args, **kwargs)
 
 
-class PartViewSet(ModelViewSet):
+class MultiSerializerViewSet(ModelViewSet):
+    serializers = {
+        "default": None,
+        # list, detail, create, retrieve, default, update, destroy
+    }
+
+    def get_serializer_class(self):
+        return self.serializers.get(self.action, self.serializers["default"])
+
+
+class PartViewSet(MultiSerializerViewSet):
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -346,7 +356,7 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    serializer_class = PartSerializer
+    serializers = {"list": PartSerializer, "default": PartCreateSeralizer}
     ordering_fields = ["name", "stock_qty", "stock_min_qty", "footprint", "unit", "storage"]
     ordering = ["name"]
 
