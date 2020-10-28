@@ -2,6 +2,7 @@ import LoginForm from '../components/login_form/login_form.vue'
 
 import PartsAddFull from '../views/parts/AddFull'
 import PartsAddQuick from '../views/parts/AddQuick'
+import PartsList from '../views/parts/List'
 import ViewInfos from '../views/view/Infos'
 
 export default (store) => {
@@ -31,6 +32,12 @@ export default (store) => {
       path: '/parts/quick-new',
       name: 'parts-quick-new',
       component: PartsAddQuick,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/parts/category/:categoryId',
+      name: 'parts-category-list',
+      component: PartsList,
       beforeEnter: validateAuthenticatedRoute
     },
     // Views
