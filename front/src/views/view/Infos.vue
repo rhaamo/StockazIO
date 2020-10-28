@@ -3,8 +3,14 @@
     <div class="row">
       <div class="col-lg-9">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><router-link :to="{name: 'home'}">StockazIO</router-link></li>
-          <li class="breadcrumb-item active">Informations</li>
+          <li class="breadcrumb-item">
+            <router-link :to="{name: 'home'}">
+              StockazIO
+            </router-link>
+          </li>
+          <li class="breadcrumb-item active">
+            Informations
+          </li>
         </ol>
       </div>
     </div>
@@ -27,7 +33,6 @@
         </table>
       </div>
     </div>
-
   </div>
 </template>
 

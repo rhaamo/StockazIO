@@ -65,14 +65,19 @@
               :key="part.id"
             >
               <td>
-                <div
-                  :id="qrcodeId(part.id)"
-                  title="click to show bigger QrCode"
-                  :data-uuid="part.uuid"
-                  :data-name="part.name"
-                  data-toggle="modal"
-                  data-target="#modalQrCode"
-                />
+                <div @click="showBigQrCode(part)">
+                  <qrcode
+                    :id="qrcodeId(part.id)"
+                    v-b-tooltip.hover
+                    :value="qrCodePart(part.uuid)"
+                    :options="{ scale: 1 }"
+                    title="click to show bigger QrCode"
+                    :data-uuid="part.uuid"
+                    :data-name="part.name"
+                    data-toggle="modal"
+                    data-target="#modalQrCode"
+                  />
+                </div>
                 <div
                   :id="qrcodeId(part.id, 'big')"
                   style="display: none; position: absolute; left: 6em; margin-top: -5em;"
@@ -98,8 +103,13 @@
               <td>{{ part.stock_qty }}</td>
               <td>{{ part.stock_qty_min }}</td>
               <td>{{ part.part_unit ? part.part_unit.name : '-' }}</td>
-              <td :title="part.footprint ? part.footprint.description : ''">
-                {{ part.footprint ? part.footprint.name : '-' }}
+              <td>
+                <span
+                  v-b-tooltip.hover
+                  :title="part.footprint ? part.footprint.description : ''"
+                >
+                  {{ part.footprint ? part.footprint.name : '-' }}
+                </span>
               </td>
               <td>
                 <a href=""><i
@@ -122,6 +132,7 @@
 
 <script>
 import apiService from '../../services/api/api.service'
+import QRCode from 'qrcode'
 
 export default {
   props: {
@@ -153,6 +164,25 @@ export default {
   methods: {
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
+    },
+    qrCodePart (uuid) {
+      return `stockazio://part/${uuid}`
+    },
+    async showBigQrCode (part) {
+      let qrCodeDataUrl = await QRCode.toDataURL(this.qrCodePart(part.uuid), { width: 300 }).then((url) => { return url })
+
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: `QrCode for: ${part.name}` } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: qrCodeDataUrl } }),
+        h('div', {}, ['The content of the QrCode is:', h('br'), h('code', { class: ['qrCodeText'] }, [this.qrCodePart(part.uuid)])])
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'lg'
+      })
     },
     fetchParts () {
       if (this.categoryId) {

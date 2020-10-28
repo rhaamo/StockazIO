@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.21.0",
     "bootstrap-vue": "^2.18.1",
@@ -16,6 +17,7 @@
     "glob-all": "^3.2.1",
     "js-logger": "^1.6.0",
     "node-sass": "^4.14.1",
+    "qrcode": "^1.4.4",
     "sass-loader": "^10.0.4",
     "vue": "^2.6.12",
     "vue-axios": "^2.1.5",

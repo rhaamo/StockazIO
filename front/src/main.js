@@ -7,6 +7,7 @@ import GetTextPlugin from 'vue-gettext'
 import Multiselect from 'vue-multiselect'
 import Treeselect from '@riophae/vue-treeselect'
 import VueAxios from 'vue-axios'
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 import logger from '@/logging'
 import store from './store'
@@ -49,8 +50,9 @@ Vue.use(GetTextPlugin, {
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
-Vue.component('multiselect', Multiselect)
-Vue.component('treeselect', Treeselect)
+Vue.component('Multiselect', Multiselect)
+Vue.component('Treeselect', Treeselect)
+Vue.component(VueQrcode.name, VueQrcode)
 
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent

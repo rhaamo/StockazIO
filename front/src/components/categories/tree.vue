@@ -1,6 +1,6 @@
 <template>
   <ul class="cat-list">
-      <node :node="treeData"></node>
+    <node :node="treeData" />
   </ul>
 </template>
 
