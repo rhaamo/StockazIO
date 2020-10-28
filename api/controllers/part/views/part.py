@@ -19,7 +19,7 @@ from django.utils.decorators import method_decorator
 from .common import query_reverse
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from rest_framework.viewsets import ModelViewSet
+from controllers.viewsets import MultiSerializerViewSet
 
 from controllers.part.serializers import PartSerializer, PartCreateSeralizer
 
@@ -334,16 +334,6 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
         return super(PartUpdate, self).dispatch(*args, **kwargs)
-
-
-class MultiSerializerViewSet(ModelViewSet):
-    serializers = {
-        "default": None,
-        # list, detail, create, retrieve, default, update, destroy
-    }
-
-    def get_serializer_class(self):
-        return self.serializers.get(self.action, self.serializers["default"])
 
 
 class PartViewSet(MultiSerializerViewSet):
