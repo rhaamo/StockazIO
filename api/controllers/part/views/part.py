@@ -347,7 +347,13 @@ class PartViewSet(ModelViewSet):
         "list": "read",
     }
     serializer_class = PartSerializer
+    ordering_fields = ["name", "stock_qty", "stock_min_qty", "footprint", "unit", "storage"]
+    ordering = ["name"]
 
     def get_queryset(self):
         queryset = Part.objects.all()
+        # category TODO/FIXME: recursivity ?
+        category = self.request.query_params.get("category_id", None)
+        if category is not None:
+            queryset = queryset.filter(category_id=category)
         return queryset

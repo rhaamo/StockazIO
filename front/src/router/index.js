@@ -38,6 +38,14 @@ export default (store) => {
       path: '/parts/category/:categoryId',
       name: 'parts-category-list',
       component: PartsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/parts',
+      name: 'parts-list',
+      component: PartsList,
+      props: true,
       beforeEnter: validateAuthenticatedRoute
     },
     // Views

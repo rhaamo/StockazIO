@@ -14,7 +14,9 @@ const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units'
 
 const PART_UNITS_URL = '/api/v1/parts/units'
 
-const PART_CREATE = '/api/v1/parts/'
+const PARTS_CREATE = '/api/v1/parts/'
+const PARTS_BY_CATEGORY = (categoryId) => `/api/v1/parts/?category_id=${categoryId}`
+const PARTS_LIST = '/api/v1/parts/'
 
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
 
@@ -57,7 +59,15 @@ const getDistributors = () => {
 }
 
 const createPart = (data) => {
-  return Axios.post(PART_CREATE, data)
+  return Axios.post(PARTS_CREATE, data)
+}
+
+const getPartsByCategory = (categoryId) => {
+  return Axios.get(PARTS_BY_CATEGORY(categoryId))
+}
+
+const getParts = () => {
+  return Axios.get(PARTS_LIST)
 }
 
 const apiService = {
@@ -70,7 +80,9 @@ const apiService = {
   getPartUnits,
   getManufacturers,
   getDistributors,
-  createPart
+  createPart,
+  getPartsByCategory,
+  getParts
 }
 
 export default apiService
