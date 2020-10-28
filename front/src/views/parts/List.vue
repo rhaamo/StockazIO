@@ -94,11 +94,13 @@
                   <br>{{ part.description }}
                 </template>
               </td>
-              <td>{{ part.storage || '-' }}</td>
+              <td>{{ part.storage ? part.storage.name : '-' }}</td>
               <td>{{ part.stock_qty }}</td>
               <td>{{ part.stock_qty_min }}</td>
-              <td>{{ part.part_unit || '-' }}</td>
-              <td>{{ part.footprint || '-' }}</td>
+              <td>{{ part.part_unit ? part.part_unit.name : '-' }}</td>
+              <td :title="part.footprint ? part.footprint.description : ''">
+                {{ part.footprint ? part.footprint.name : '-' }}
+              </td>
               <td>
                 <a href=""><i
                   class="fa fa-pencil-square-o"

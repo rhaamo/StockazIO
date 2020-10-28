@@ -18,3 +18,9 @@ CategorySerializer._declared_fields["children"] = CategorySerializer(
     many=True,
     source="get_children",
 )
+
+
+class SingleCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ["id", "name"]

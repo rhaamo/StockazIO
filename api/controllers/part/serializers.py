@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import ParametersUnit, PartUnit, Part
+from controllers.storage.serializers import StorageLocationSerializer
+from controllers.categories.serializers import SingleCategorySerializer
+from controllers.footprints.serializers import FootprintSerializer
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
@@ -15,6 +18,11 @@ class PartsUnitSerializer(serializers.ModelSerializer):
 
 
 class PartSerializer(serializers.ModelSerializer):
+    storage = StorageLocationSerializer(many=False, read_only=True)
+    category = SingleCategorySerializer(many=False, read_only=True)
+    footprint = FootprintSerializer(many=False, read_only=True)
+    part_unit = PartsUnitSerializer(many=False, read_only=True)
+
     class Meta:
         model = Part
         fields = (
