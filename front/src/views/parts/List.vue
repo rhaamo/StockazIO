@@ -32,7 +32,9 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <span class="description">{{ partDetailsDescription }}</span>
+                    <div class="description">
+                      {{ partDetailsDescription }}
+                    </div>
                   </div>
                 </div>
               </div>
