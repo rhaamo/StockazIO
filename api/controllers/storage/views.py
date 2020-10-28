@@ -10,6 +10,7 @@ from .forms import StorageCategoryForm, StorageForm
 from .models import StorageCategory, StorageLocation
 from .serializers import StorageSerializer
 
+
 # Storage Tree
 @login_required
 def storage_tree(request, template_name="storages/tree.html"):

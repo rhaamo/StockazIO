@@ -6,6 +6,7 @@ from controllers.categories.models import Category
 from django.core.paginator import Paginator
 from django.conf import settings
 
+
 # Informations
 @login_required
 def other_informations(request, template_name="other/informations.html"):

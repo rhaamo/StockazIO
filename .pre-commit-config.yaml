@@ -4,13 +4,13 @@ repos:
           - id: black
             name: black
             language: system
-            entry: python3 -m black
+            entry: black --config=api/pyproject.toml
             types: [python]
             files: ^api/
           - id: flake8
             name: flake8
             language: system
-            entry: flake8
+            entry: flake8 --config=api/setup.cfg
             types: [python]
             files: ^api/
           - id: jslint

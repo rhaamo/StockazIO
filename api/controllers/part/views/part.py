@@ -23,6 +23,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from controllers.part.serializers import PartSerializer
 
+
 @login_required
 def part_list(request, category=None, template_name="parts/part_list.html"):
     sort = request.GET.get("sort", "name")
