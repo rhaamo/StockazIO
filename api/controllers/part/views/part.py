@@ -352,7 +352,7 @@ class PartViewSet(ModelViewSet):
     def get_serializer_class(self):
         print(f"action: {self.action}")
         if self.action == "list":
-            return (PartSerializer,)
+            return PartSerializer
         elif self.action == "retrieve":
             return PartRetrieveSerializer
         else:
