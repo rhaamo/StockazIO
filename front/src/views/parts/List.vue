@@ -78,10 +78,6 @@
                     data-target="#modalQrCode"
                   />
                 </div>
-                <div
-                  :id="qrcodeId(part.id, 'big')"
-                  style="display: none; position: absolute; left: 6em; margin-top: -5em;"
-                />
               </td>
               <td>
                 <a
