@@ -145,9 +145,14 @@
         </div>
       </div>
       <template #modal-footer="{ cancel }">
+        <b-button size="sm" variant="outline-primary" :to="{ name: 'parts-details', params: { partId: partDetailsId } }">
+          Show full details
+        </b-button>
+
         <b-button size="sm" variant="danger" @click="deletePart(partDetails)">
           Delete
         </b-button>
+
         <b-button size="sm" variant="success" @click="cancel">
           Close
         </b-button>
@@ -333,6 +338,7 @@ export default {
         return ''
       }
     },
+    partDetailsId () { return this.partDetails ? this.partDetails.id : 0 },
     partDetailsName () { return this.partDetails ? this.partDetails.name : '' },
     partDetailsInternalPn () { return this.partDetails ? this.partDetails.internal_part_number : '' },
     partDetailsComment () { return this.partDetails ? this.partDetails.comment : '' },
@@ -381,13 +387,11 @@ export default {
         apiService.getPartsByCategory(this.categoryId)
           .then((res) => {
             this.parts = res.data
-            console.log('cat', res.data)
           })
       } else {
         apiService.getParts()
           .then((res) => {
             this.parts = res.data
-            console.log('no cat', res.data)
           })
       }
     },
@@ -415,7 +419,6 @@ export default {
                 variant: 'primary'
               })
               this.fetchParts()
-              console.log(val)
             })
             .catch((err) => {
               this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {

@@ -3,6 +3,7 @@ import LoginForm from '../components/login_form/login_form.vue'
 import PartsAddFull from '../views/parts/AddFull'
 import PartsAddQuick from '../views/parts/AddQuick'
 import PartsList from '../views/parts/List'
+import PartsDetails from '../views/parts/Details'
 import ViewInfos from '../views/view/Infos'
 
 export default (store) => {
@@ -45,6 +46,13 @@ export default (store) => {
       path: '/parts',
       name: 'parts-list',
       component: PartsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/parts/:partId',
+      name: 'parts-details',
+      component: PartsDetails,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },
