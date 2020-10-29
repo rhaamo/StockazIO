@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ParametersUnit, PartUnit, Part, PartParameter
+from .models import ParametersUnit, PartUnit, Part, PartParameter, PartAttachment
 
 from controllers.storage.serializers import StorageLocationSerializer
 from controllers.categories.serializers import SingleCategorySerializer
@@ -76,12 +76,17 @@ class PartCreateSeralizer(serializers.ModelSerializer):
 
 
 class PartParameterSerializer(serializers.ModelSerializer):
-    # unit is a FK sur ParametersUnit
     unit = ParametersUnitSerializer(many=False, read_only=True)
 
     class Meta:
         model = PartParameter
         fields = ("id", "name", "description", "value", "unit")
+
+
+class PartAttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PartAttachment
+        fields = ("id", "description", "file")
 
 
 class PartRetrieveSerializer(serializers.ModelSerializer):
@@ -92,6 +97,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     part_parameters_value = PartParameterSerializer(many=True, read_only=True)
     distributors_sku = DistributorSkuSerializer(many=True, read_only=True)
     manufacturers_sku = PartManufacturerSerializer(many=True, read_only=True)
+    part_attachments = PartAttachmentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Part
@@ -117,4 +123,5 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "part_parameters_value",
             "distributors_sku",
             "manufacturers_sku",
+            "part_attachments",
         )
