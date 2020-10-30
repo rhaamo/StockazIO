@@ -249,7 +249,7 @@ export default {
       this.$v.$reset()
     },
     deletePartUnit (partUnit) {
-      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${partUnit.name}' ?`, {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${partUnit.name}' ? Any associated part will loose that information.`, {
         title: 'Plase Confirm',
         size: 'sm',
         buttonSize: 'sm',
@@ -263,26 +263,28 @@ export default {
         .then((value) => {
           if (value === false) { return }
 
-          apiService.deletePartUnit(partUnit.id)
-            .then((val) => {
-              this.$bvToast.toast(this.$pgettext('PartUnit/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('PartUnit/Delete/Toast/Success/Title', 'Deleting part unit'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary'
+          if (value === true) {
+            apiService.deletePartUnit(partUnit.id)
+              .then((val) => {
+                this.$bvToast.toast(this.$pgettext('PartUnit/Delete/Toast/Success/Message', 'Success'), {
+                  title: this.$pgettext('PartUnit/Delete/Toast/Success/Title', 'Deleting part unit'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'primary'
+                })
+                this.fetchPartUnits()
               })
-              this.fetchPartUnits()
-            })
-            .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('PartUnit/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('PartUnit/Delete/Toast/Error/Title', 'Deleting part unit'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger'
+              .catch((err) => {
+                this.$bvToast.toast(this.$pgettext('PartUnit/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                  title: this.$pgettext('PartUnit/Delete/Toast/Error/Title', 'Deleting part unit'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger'
+                })
+                logger.default.error('Error with part unit deletion', err)
+                this.fetchPartUnits()
               })
-              logger.default.error('Error with part unit deletion', err)
-              this.fetchPartUnits()
-            })
+          }
         })
         .catch((err) => {
           logger.default.error('Error with the delete modal', err)

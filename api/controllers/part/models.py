@@ -40,7 +40,7 @@ class Part(models.Model):
     stock_qty = models.IntegerField(
         _("stock quantity"), default=1, unique=False, blank=False, help_text=_("How many do you have now ?")
     )
-    part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.PROTECT)
+    part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.PROTECT)
     storage = models.ForeignKey(StorageLocation, blank=True, null=True, on_delete=models.PROTECT)
     footprint = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.PROTECT)

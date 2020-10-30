@@ -410,26 +410,28 @@ export default {
         .then((value) => {
           if (value === false) { return }
 
-          apiService.deletePart(part.id)
-            .then((val) => {
-              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary'
+          if (value === true) {
+            apiService.deletePart(part.id)
+              .then((val) => {
+                this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
+                  title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'primary'
+                })
+                this.fetchParts()
               })
-              this.fetchParts()
-            })
-            .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger'
+              .catch((err) => {
+                this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                  title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger'
+                })
+                logger.default.error('Error with part deletion', err)
+                this.fetchParts()
               })
-              logger.default.error('Error with part deletion', err)
-              this.fetchParts()
-            })
+          }
         })
         .catch((err) => {
           logger.default.error('Error with the delete modal', err)
