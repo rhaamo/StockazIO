@@ -31,7 +31,7 @@
               <b-dropdown-item :to="{}">
                 <i class="fa fa-archive fa-fw" /> Storage
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{ name: 'part-units-list' }">
                 <i class="fa fa-cogs fa-fw" /> Parts units
               </b-dropdown-item>
               <b-dropdown-item :to="{}">
@@ -122,8 +122,6 @@
   </div>
 </template>
 
-<style lang="scss" src="./App.scss"></style>
-
 <script>
 // import initializeSomeStuff from './store/store_init'
 
@@ -156,3 +154,5 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" src="./App.scss"></style>

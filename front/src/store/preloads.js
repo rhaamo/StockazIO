@@ -59,7 +59,16 @@ const preloads = {
     }
   },
   actions: {
-    preloadStuff ({ commit }) {
+    preloadStuff ({ commit, dispatch }) {
+      dispatch('preloadSidebar')
+      dispatch('preloadFootprints')
+      dispatch('preloadStorages')
+      dispatch('preloadParametersUnits')
+      dispatch('preloadPartUnits')
+      dispatch('preloadManufacturers')
+      dispatch('preloadDistributors')
+    },
+    preloadSidebar ({ commit }) {
       // Preload sidebar
       apiService.getCategories()
         .then((data) => {
@@ -69,6 +78,8 @@ const preloads = {
         .catch((error) => {
           logger.default.error('Cannot preload categories', error.message)
         })
+    },
+    preloadFootprints ({ commit }) {
       // Preload footprints
       apiService.getFootprints()
         .then((data) => {
@@ -78,6 +89,8 @@ const preloads = {
         .catch((error) => {
           logger.default.error('Cannot preload footprints', error.message)
         })
+    },
+    preloadStorages ({ commit }) {
       // Preload storages
       apiService.getStorages()
         .then((data) => {
@@ -87,6 +100,8 @@ const preloads = {
         .catch((error) => {
           logger.default.error('Cannot preload storages', error.message)
         })
+    },
+    preloadParametersUnits ({ commit }) {
       // Preload units
       apiService.getParametersUnits()
         .then((data) => {
@@ -96,6 +111,8 @@ const preloads = {
         .catch((error) => {
           logger.default.error('Cannot preload parameters units', error.message)
         })
+    },
+    preloadPartUnits ({ commit }) {
       // Preload part-units
       apiService.getPartUnits()
         .then((data) => {
@@ -105,6 +122,8 @@ const preloads = {
         .catch((error) => {
           logger.default.error('Cannot preload part units', error.message)
         })
+    },
+    preloadManufacturers ({ commit }) {
       // Preload manufacturers
       apiService.getManufacturers()
         .then((data) => {
@@ -113,6 +132,8 @@ const preloads = {
         }).catch((error) => {
           logger.default.error('Cannot preload manufacturers', error.message)
         })
+    },
+    preloadDistributors ({ commit }) {
       // Preload distributors
       apiService.getDistributors()
         .then((data) => {

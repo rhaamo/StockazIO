@@ -13,6 +13,9 @@ const STORAGES_URL = '/api/v1/storages'
 const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units'
 
 const PART_UNITS_URL = '/api/v1/parts/units'
+const PART_UNITS_CREATE = '/api/v1/parts/units/'
+const PART_UNITS_DELETE = (partUnitId) => `/api/v1/parts/units/${partUnitId}`
+const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 
 const PARTS_CREATE = '/api/v1/parts/'
 const PARTS_BY_CATEGORY = (categoryId) => `/api/v1/parts/?category_id=${categoryId}`
@@ -51,6 +54,18 @@ const getPartUnits = () => {
   return Axios.get(PART_UNITS_URL)
 }
 
+const createPartUnit = (data) => {
+  return Axios.post(PART_UNITS_CREATE, data)
+}
+
+const deletePartUnit = (partUnitId) => {
+  return Axios.delete(PART_UNITS_DELETE(partUnitId))
+}
+
+const updatePartUnit = (partUnitId, data) => {
+  return Axios.put(PART_UNITS_UPDATE(partUnitId), data)
+}
+
 const getManufacturers = () => {
   return Axios.get(MANUFACTURERS_URL)
 }
@@ -87,6 +102,9 @@ const apiService = {
   getStorages,
   getParametersUnits,
   getPartUnits,
+  createPartUnit,
+  deletePartUnit,
+  updatePartUnit,
   getManufacturers,
   getDistributors,
   createPart,
