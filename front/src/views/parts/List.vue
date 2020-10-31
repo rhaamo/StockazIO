@@ -416,7 +416,7 @@ export default {
         page: page,
         size: this.perPage
       }
-      if (this.categoryId) {
+      if (this.categoryId !== null) {
         params.category_id = this.categoryId
       }
       if (sorting) {

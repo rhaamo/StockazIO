@@ -369,9 +369,14 @@ class PartViewSet(ModelViewSet):
             return PartCreateSeralizer
 
     def get_queryset(self):
+        category_id = self.request.query_params.get("category_id", None)
+
         queryset = Part.objects.all()
         # category TODO/FIXME: recursivity ?
-        category = self.request.query_params.get("category_id", None)
-        if category is not None:
-            queryset = queryset.filter(category_id=category)
+        if category_id in ["0", 0]:
+            queryset = queryset.filter(category_id__isnull=True)
+        else:
+            category = self.request.query_params.get("category_id", None)
+            if category is not None:
+                queryset = queryset.filter(category_id=category)
         return queryset
