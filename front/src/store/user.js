@@ -5,10 +5,20 @@ import apiService from '../services/api/api.service'
 export default {
   namespaced: true,
   state: {
-    currentUser: false
+    currentUser: false,
+    settings: {
+      pagination: {
+        parametersUnits: 10
+      }
+    }
   },
   getters: {
-
+    getSettings: state => () => {
+      return state.settings
+    },
+    getPagination: state => () => {
+      return state.settings.pagination
+    }
   },
   mutations: {
     setCurrentUser (state, user) {

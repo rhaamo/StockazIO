@@ -82,10 +82,13 @@
     <b-row>
       <b-col md="6" offset-md="1">
         <b-table
+          id="tableParametersUnits"
           :items="parametersUnits"
           :fields="fields"
           :sort-by.sync="sortBy"
           :sort-desc.sync="sortDesc"
+          :per-page="perPage"
+          :current-page="currentPage"
           responsive="sm"
           striped
         >
@@ -113,6 +116,17 @@
         </b-table>
       </b-col>
     </b-row>
+
+    <b-row>
+      <b-col md="6" offset-md="1">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="tableParametersUnits"
+        />
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -121,6 +135,7 @@ import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [
@@ -130,7 +145,7 @@ export default {
   },
   data: () => ({
     parametersUnits: [],
-    page: 0, // TODO/FIXME no pagination yet
+    currentPage: 1,
     search_query: '', // TODO/FIXME no search yet
     fields: [
       { key: 'name', label: 'Name', sortable: true },
@@ -159,6 +174,15 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      userSettings: state => state.user.settings
+    }),
+    rows () {
+      return this.parametersUnits.length
+    },
+    perPage () {
+      return this.userSettings.pagination.parametersUnits
+    }
   },
   watch: {
   },

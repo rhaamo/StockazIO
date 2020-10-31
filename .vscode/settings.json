@@ -26,5 +26,7 @@
   "restructuredtext.confPath": "${workspaceFolder}/docs",
   "eslint.workingDirectories": [
     "./front"
-  ]
+  ],
+  "vetur.languageFeatures.codeActions": false,
+  "vetur.experimental.templateInterpolationService": true
 }
