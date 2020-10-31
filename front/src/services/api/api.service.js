@@ -92,11 +92,7 @@ const createPart = (data) => {
   return Axios.post(PARTS_CREATE, data)
 }
 
-const getPartsByCategory = (params) => {
-  return Axios.get(PARTS_LIST, { params: params })
-}
-
-const getParts = (page, params) => {
+const getParts = (params) => {
   return Axios.get(PARTS_LIST, { params: params })
 }
 
@@ -125,7 +121,6 @@ const apiService = {
   getManufacturers,
   getDistributors,
   createPart,
-  getPartsByCategory,
   getParts,
   getPart,
   deletePart

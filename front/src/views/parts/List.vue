@@ -413,13 +413,13 @@ export default {
     },
     fetchParts (page, perPage) {
       if (this.categoryId) {
-        apiService.getPartsByCategory({ category_id: this.categoryId, page: page, size: perPage })
+        apiService.getParts({ category_id: this.categoryId, page: page, size: perPage })
           .then((res) => {
             this.parts = res.data.results
             this.partsCount = res.data.count
           })
       } else {
-        apiService.getParts(page, { page: page, size: perPage })
+        apiService.getParts({ page: page, size: perPage })
           .then((res) => {
             this.parts = res.data.results
             this.partsCount = res.data.count
