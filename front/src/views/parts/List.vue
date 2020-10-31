@@ -185,95 +185,70 @@
 
     <div class="row">
       <div class="col-md-12 mx-auto">
-        <table id="tablePartsList" class="table table-condensed table-stripped">
-          <thead>
-            <tr>
-              <th width="25">
-                <i class="fa fa-qrcode" />
-              </th>
-              <th>
-                <a href="">Name</a>
-                <i
-                  v-if="sortBy == 'name'"
-                  class="fa fa-sort-alpha-asc"
-                  aria-hidden="true"
-                />
-                <i
-                  v-else
-                  class="fa fa-sort-alpha-desc"
-                  aria-hidden="true"
-                />
-              </th>
-              <th>Storage</th>
-              <th>Stock</th>
-              <th>Min</th>
-              <th>Unit</th>
-              <th>Footprint</th>
-              <th>
-                <i
-                  class="fa fa-tasks"
-                  aria-hidden="true"
-                />
-              </th>
-            </tr>
-          </thead>
+        <b-table id="tablePartsList" ref="tablePartsList" :items="parts"
+                 :fields="fields"
+                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :per-page="perPage"
+                 :current-page="currentPage"
+                 responsive="sm" condensed striped
+                 sort-icon-left
+                 @sort-changed="sortTableChanged"
+        >
+          <template #cell(qrcode)="data">
+            <div @click="showBigQrCode(data.item)">
+              <qrcode
+                :id="qrcodeId(data.item.id)"
+                v-b-tooltip.hover
+                :value="qrCodePart(data.item.uuid)"
+                :options="{ scale: 1 }"
+                title="click to show bigger QrCode"
+                :data-uuid="data.item.uuid"
+                :data-name="data.item.name"
+                data-toggle="modal"
+                data-target="#modalQrCode"
+              />
+            </div>
+          </template>
 
-          <tbody>
-            <tr
-              v-for="part in parts"
-              :key="part.id"
+          <template #cell(name)="data">
+            <a href="#" @click.prevent="viewPartModal(data.item)">{{ data.item.name }}</a>
+            <template v-if="data.item.description">
+              <br>{{ data.item.description }}
+            </template>
+          </template>
+
+          <template #cell(storage)="data">
+            {{ data.item.storage && data.item.storage.name ? data.item.storage.name : '-' }}
+          </template>
+
+          <template #cell(part_unit)="data">
+            {{ data.item.part_unit && data.item.part_unit.name ? data.item.part_unit.name : '-' }}
+          </template>
+
+          <template #cell(footprint)="data">
+            <span
+              v-b-tooltip.hover
+              :title="data.item.footprint ? data.item.footprint.description : ''"
             >
-              <td>
-                <div @click="showBigQrCode(part)">
-                  <qrcode
-                    :id="qrcodeId(part.id)"
-                    v-b-tooltip.hover
-                    :value="qrCodePart(part.uuid)"
-                    :options="{ scale: 1 }"
-                    title="click to show bigger QrCode"
-                    :data-uuid="part.uuid"
-                    :data-name="part.name"
-                    data-toggle="modal"
-                    data-target="#modalQrCode"
-                  />
-                </div>
-              </td>
-              <td>
-                <a href="#" @click.prevent="viewPartModal(part)">{{ part.name }}</a>
-                <template v-if="part.description">
-                  <br>{{ part.description }}
-                </template>
-              </td>
-              <td>{{ part.storage ? part.storage.name : '-' }}</td>
-              <td>{{ part.stock_qty }}</td>
-              <td>{{ part.stock_qty_min }}</td>
-              <td>{{ part.part_unit ? part.part_unit.name : '-' }}</td>
-              <td>
-                <span
-                  v-b-tooltip.hover
-                  :title="part.footprint ? part.footprint.description : ''"
-                >
-                  {{ part.footprint ? part.footprint.name : '-' }}
-                </span>
-              </td>
-              <td>
-                <b-button variant="link" @click.prevent="editPart(part)">
-                  <i
-                    class="fa fa-pencil-square-o"
-                    aria-hidden="true"
-                  />
-                </b-button>
+              {{ data.item.footprint ? data.item.footprint.name : '-' }}
+            </span>
+          </template>
+
+          <template #cell(actions)="data">
+            <b-button variant="link" @click.prevent="editPart(data.item)">
+              <i
+                class="fa fa-pencil-square-o"
+                aria-hidden="true"
+              />
+            </b-button>
                 &nbsp;
-                <b-button variant="link" @click.prevent="deletePart(part)">
-                  <i
-                    class="fa fa-trash-o"
-                    aria-hidden="true"
-                  />
-                </b-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <b-button variant="link" @click.prevent="deletePart(data.item)">
+              <i
+                class="fa fa-trash-o"
+                aria-hidden="true"
+              />
+            </b-button>
+          </template>
+        </b-table>
       </div>
     </div>
 
@@ -305,23 +280,32 @@ export default {
   },
   data: () => ({
     parts: [],
-    currentPage: 1, // TODO/FIXME no pagination yet
+    currentPage: 1,
     search_query: '', // TODO/FIXME no search yet
     partDetails: null,
-    partsCount: 0
+    partsCount: 0,
+    fields: [
+      { key: 'qrcode', label: 'QrCode' },
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'storage', label: 'Storage', sortable: true },
+      { key: 'stock_qty', label: 'Stock', sortable: true },
+      { key: 'stock_qty_min', label: 'Min', sortable: true },
+      { key: 'part_unit', label: 'Unit', sortable: true },
+      { key: 'footprint', label: 'Footprint', sortable: true },
+      { key: 'actions', label: 'Actions' }
+    ],
+    sortBy: 'name',
+    sortDesc: false
   }),
   computed: {
     ...mapState({
       serverSettings: state => state.server.settings
     }),
     perPage () {
-      return this.serverSettings.pagination.PARTS
+      return this.serverSettings.pagination.PARTS || 10
     },
     categoryId () {
       return this.$route.params.categoryId
-    },
-    sortBy () {
-      return (this.$route.params.sort === 'name' || this.$route.params.sort === '-name') ? 'name' : null
     },
     partDetailsQty () { return this.partDetails ? this.partDetails.stock_qty : 0 },
     partDetailsQtyMin () { return this.partDetails ? this.partDetails.stock_qty_min : 0 },
@@ -373,22 +357,27 @@ export default {
   },
   watch: {
     'categoryId': function () {
-      this.fetchParts(1, this.perPage)
+      this.fetchParts(1, null)
       this.categoryChanged()
     }
   },
   created () {
-    this.fetchParts(1, this.perPage)
-    this.categoryChanged()
+    this.$nextTick(() => {
+      this.fetchParts(1, null)
+      this.categoryChanged()
+    })
   },
   methods: {
     categoryChanged () {
       this.$store.commit('setCurrentCategory', { id: this.categoryId })
     },
     pageChanged (page) {
-      this.fetchParts(page, this.perPage)
+      this.fetchParts(page, null)
     },
-
+    sortTableChanged (ctx) {
+      // When changing the sorting order, reset the pagination to page 1
+      this.fetchParts(1, ctx)
+    },
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
     },
@@ -411,20 +400,24 @@ export default {
         size: 'lg'
       })
     },
-    fetchParts (page, perPage) {
-      if (this.categoryId) {
-        apiService.getParts({ category_id: this.categoryId, page: page, size: perPage })
-          .then((res) => {
-            this.parts = res.data.results
-            this.partsCount = res.data.count
-          })
-      } else {
-        apiService.getParts({ page: page, size: perPage })
-          .then((res) => {
-            this.parts = res.data.results
-            this.partsCount = res.data.count
-          })
+    fetchParts (page, sorting) {
+      let params = {
+        page: page,
+        size: this.perPage
       }
+      if (this.categoryId) {
+        params.category_id = this.categoryId
+      }
+      if (sorting) {
+        params.ordering = sorting.sortDesc ? `-${sorting.sortBy}` : sorting.sortBy
+      }
+      apiService.getParts(params)
+        .then((res) => {
+          this.parts = res.data.results
+          this.partsCount = res.data.count
+          // eslint-disable-next-line vue/custom-event-name-casing
+          this.$root.$emit('bv::refresh::table', 'tablePartsList')
+        })
     },
     deletePart (part) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
@@ -450,7 +443,7 @@ export default {
                   appendToast: true,
                   variant: 'primary'
                 })
-                this.fetchParts()
+                this.fetchParts(1, null)
               })
               .catch((err) => {
                 this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -460,7 +453,7 @@ export default {
                   variant: 'danger'
                 })
                 logger.default.error('Error with part deletion', err)
-                this.fetchParts()
+                this.fetchParts(1, null)
               })
           }
         })
