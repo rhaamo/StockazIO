@@ -16,7 +16,7 @@
               data-target="#modalQrCode"
             />
           </span>
-          <i :class="partDetailsPrivate" /> {{ part.name }}
+          <i :class="partDetailsPrivate" /> {{ form.name }}
         </h3>
       </div>
       <div class="col-lg-3">
@@ -222,7 +222,7 @@ export default {
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
       },
-      partDetailsPrivate () { return this.part && this.part.private ? 'fa icon-private fa-lock' : '' }
+      partDetailsPrivate () { return this.form && this.form.private === 'true' ? 'fa icon-private fa-lock' : '' }
     }),
     partId () {
       return this.$route.params.partId
