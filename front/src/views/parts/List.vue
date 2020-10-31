@@ -201,7 +201,7 @@
                 :id="qrcodeId(data.item.id)"
                 v-b-tooltip.hover
                 :value="qrCodePart(data.item.uuid)"
-                :options="{ scale: 1 }"
+                :options="{ scale: 1, color: {dark: '#000000', light:'#0000'} }"
                 title="click to show bigger QrCode"
                 :data-uuid="data.item.uuid"
                 :data-name="data.item.name"
