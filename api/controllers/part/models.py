@@ -106,7 +106,7 @@ class PartParameter(models.Model):
     name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
     description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
     value = models.CharField(_("value"), max_length=255, unique=False, blank=False)
-    unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.PROTECT)
+    unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.SET_NULL)
 
     part = models.ForeignKey(
         Part, related_name="part_parameters_value", blank=False, null=False, on_delete=models.CASCADE

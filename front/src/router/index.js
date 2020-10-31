@@ -6,6 +6,7 @@ import PartsList from '../views/parts/List'
 import PartsDetails from '../views/parts/Details'
 import ViewInfos from '../views/view/Infos'
 import PartUnitsList from '../views/PartUnit/List'
+import ParametersUnitsList from '../views/ParametersUnits'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -62,6 +63,14 @@ export default (store) => {
       path: '/part_units',
       name: 'part-units-list',
       component: PartUnitsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    // PartUnits
+    {
+      path: '/partameters_units',
+      name: 'parameters-units-list',
+      component: ParametersUnitsList,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },

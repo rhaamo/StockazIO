@@ -11,6 +11,9 @@ const FOOTPRINTS_URL = '/api/v1/footprints'
 const STORAGES_URL = '/api/v1/storages'
 
 const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units'
+const PARAMETERS_UNITS_CREATE = '/api/v1/parts/parameters/units/'
+const PARAMETERS_UNITS_DELETE = (id) => `/api/v1/parts/parameters/units/${id}`
+const PARAMETERS_UNITS_UPDATE = (id) => `/api/v1/parts/parameters/units/${id}/`
 
 const PART_UNITS_URL = '/api/v1/parts/units'
 const PART_UNITS_CREATE = '/api/v1/parts/units/'
@@ -48,6 +51,18 @@ const getStorages = () => {
 
 const getParametersUnits = () => {
   return Axios.get(PARAMETERS_UNITS_URL)
+}
+
+const createParametersUnits = (data) => {
+  return Axios.post(PARAMETERS_UNITS_CREATE, data)
+}
+
+const deleteParametersUnits = (id) => {
+  return Axios.delete(PARAMETERS_UNITS_DELETE(id))
+}
+
+const updateParametersUnits = (id, data) => {
+  return Axios.put(PARAMETERS_UNITS_UPDATE(id), data)
 }
 
 const getPartUnits = () => {
@@ -101,6 +116,9 @@ const apiService = {
   getFootprints,
   getStorages,
   getParametersUnits,
+  createParametersUnits,
+  deleteParametersUnits,
+  updateParametersUnits,
   getPartUnits,
   createPartUnit,
   deletePartUnit,

@@ -34,7 +34,7 @@
               <b-dropdown-item :to="{ name: 'part-units-list' }">
                 <i class="fa fa-cogs fa-fw" /> Parts units
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{ name: 'parameters-units-list' }">
                 <i class="fa fa-cogs fa-fw" /> Parameters Units
               </b-dropdown-item>
             </b-nav-item-dropdown>
