@@ -7,17 +7,11 @@ export default {
   state: {
     currentUser: false,
     settings: {
-      pagination: {
-        parametersUnits: 10
-      }
     }
   },
   getters: {
     getSettings: state => () => {
       return state.settings
-    },
-    getPagination: state => () => {
-      return state.settings.pagination
     }
   },
   mutations: {

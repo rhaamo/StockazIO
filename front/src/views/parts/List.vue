@@ -292,7 +292,7 @@ export default {
   },
   data: () => ({
     parts: [],
-    page: 0, // TODO/FIXME no pagination yet
+    currentPage: 0, // TODO/FIXME no pagination yet
     search_query: '', // TODO/FIXME no search yet
     partDetails: null
   }),

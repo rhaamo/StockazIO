@@ -175,13 +175,13 @@ export default {
   },
   computed: {
     ...mapState({
-      userSettings: state => state.user.settings
+      serverSettings: state => state.server.settings
     }),
     rows () {
       return this.parametersUnits.length
     },
     perPage () {
-      return this.userSettings.pagination.parametersUnits
+      return this.serverSettings.pagination.PARAMETERS_UNITS
     }
   },
   watch: {

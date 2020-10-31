@@ -32,7 +32,7 @@ EMAIL_PORT = 25
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
 
-INTERNAL_IPS = ["127.0.0.1"]
+INTERNAL_IPS = ["127.0.0.1", "0.0.0.0", "192.168.10.167"]
 ALLOWED_HOSTS = INTERNAL_IPS + ALLOWED_HOSTS
 
 DEBUG_TOOLBAR_CONFIG = {
