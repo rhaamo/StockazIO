@@ -226,6 +226,13 @@
             {{ data.item.part_unit && data.item.part_unit.name ? data.item.part_unit.name : '-' }}
           </template>
 
+          <template #cell(stock_qty)="data">
+            <span v-if="data.item.stock_qty < data.item.stock_qty_min" v-b-tooltip.hover class="qtyMinWarning"
+                  title="Current stock is below minimum stock quantity"
+            >{{ data.item.stock_qty }}</span>
+            <span v-else>{{ data.item.stock_qty }}</span>
+          </template>
+
           <template #cell(footprint)="data">
             <span
               v-b-tooltip.hover
