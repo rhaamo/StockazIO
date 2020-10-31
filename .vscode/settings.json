@@ -16,10 +16,8 @@
     "source.fixAll": true
   },
   "python.pythonPath": "${workspaceFolder}/venv/bin/python",
-  "vetur.experimental.templateInterpolationService": true,
   "eslint.validate": [
     "javascript",
-    "javascriptreact",
     "vue"
   ],
   "vetur.format.defaultFormatter.js": "vscode-typescript",
