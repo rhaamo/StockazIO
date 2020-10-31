@@ -185,7 +185,7 @@
 
     <div class="row">
       <div class="col-md-12 mx-auto">
-        <table class="table table-condensed table-stripped">
+        <table id="tablePartsList" class="table table-condensed table-stripped">
           <thead>
             <tr>
               <th width="25">
@@ -276,6 +276,18 @@
         </table>
       </div>
     </div>
+
+    <b-row>
+      <b-col md="6" offset-md="1">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="partsCount"
+          :per-page="perPage"
+          aria-controls="tablePartsList"
+          @change="pageChanged"
+        />
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -283,6 +295,7 @@
 import apiService from '../../services/api/api.service'
 import QRCode from 'qrcode'
 import logger from '@/logging'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -292,11 +305,18 @@ export default {
   },
   data: () => ({
     parts: [],
-    currentPage: 0, // TODO/FIXME no pagination yet
+    currentPage: 1, // TODO/FIXME no pagination yet
     search_query: '', // TODO/FIXME no search yet
-    partDetails: null
+    partDetails: null,
+    partsCount: 0
   }),
   computed: {
+    ...mapState({
+      serverSettings: state => state.server.settings
+    }),
+    perPage () {
+      return this.serverSettings.pagination.PARTS
+    },
     categoryId () {
       return this.$route.params.categoryId
     },
@@ -353,18 +373,22 @@ export default {
   },
   watch: {
     'categoryId': function () {
-      this.fetchParts()
+      this.fetchParts(1, this.perPage)
       this.categoryChanged()
     }
   },
   created () {
-    this.fetchParts()
+    this.fetchParts(1, this.perPage)
     this.categoryChanged()
   },
   methods: {
     categoryChanged () {
       this.$store.commit('setCurrentCategory', { id: this.categoryId })
     },
+    pageChanged (page) {
+      this.fetchParts(page, this.perPage)
+    },
+
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
     },
@@ -387,16 +411,18 @@ export default {
         size: 'lg'
       })
     },
-    fetchParts () {
+    fetchParts (page, perPage) {
       if (this.categoryId) {
-        apiService.getPartsByCategory(this.categoryId)
+        apiService.getPartsByCategory(this.categoryId, page, perPage)
           .then((res) => {
-            this.parts = res.data
+            this.parts = res.data.results
+            this.partsCount = res.data.count
           })
       } else {
-        apiService.getParts()
+        apiService.getParts(page, perPage)
           .then((res) => {
-            this.parts = res.data
+            this.parts = res.data.results
+            this.partsCount = res.data.count
           })
       }
     },

@@ -93,12 +93,14 @@ const createPart = (data) => {
   return Axios.post(PARTS_CREATE, data)
 }
 
-const getPartsByCategory = (categoryId) => {
-  return Axios.get(PARTS_BY_CATEGORY(categoryId))
+const getPartsByCategory = (categoryId, page, perPage) => {
+  let params = `&page=${page}&size=${perPage}`
+  return Axios.get(PARTS_BY_CATEGORY(categoryId) + params)
 }
 
-const getParts = () => {
-  return Axios.get(PARTS_LIST)
+const getParts = (page, perPage) => {
+  let params = `?page=${page}&size=${perPage}`
+  return Axios.get(PARTS_LIST + params)
 }
 
 const getPart = (partId) => {

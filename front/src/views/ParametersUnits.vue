@@ -181,7 +181,7 @@ export default {
       return this.parametersUnits.length
     },
     perPage () {
-      return this.serverSettings.pagination.PARAMETERS_UNITS
+      return this.serverSettings.pagination.PARAMETERS_UNITS || 10
     }
   },
   watch: {

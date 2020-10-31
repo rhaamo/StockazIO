@@ -20,6 +20,7 @@ from .common import query_reverse
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.pagination import PageNumberPagination
 
 from controllers.part.serializers import PartSerializer, PartCreateSeralizer, PartRetrieveSerializer
 
@@ -336,6 +337,11 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
         return super(PartUpdate, self).dispatch(*args, **kwargs)
 
 
+class PartViewSetPagination(PageNumberPagination):
+    page_size = settings.PAGINATION["PARTS"]
+    page_size_query_param = "page_size"
+
+
 class PartViewSet(ModelViewSet):
     anonymous_policy = True
     required_scope = {
@@ -348,6 +354,7 @@ class PartViewSet(ModelViewSet):
     }
     ordering_fields = ["name", "stock_qty", "stock_min_qty", "footprint", "unit", "storage"]
     ordering = ["name"]
+    pagination_class = PartViewSetPagination
 
     def get_serializer_class(self):
         print(f"action: {self.action}")
