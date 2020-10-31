@@ -413,7 +413,7 @@ export default {
     },
     fetchParts (page, perPage) {
       if (this.categoryId) {
-        apiService.getPartsByCategory(this.categoryId, { page: page, size: perPage })
+        apiService.getPartsByCategory({ category_id: this.categoryId, page: page, size: perPage })
           .then((res) => {
             this.parts = res.data.results
             this.partsCount = res.data.count

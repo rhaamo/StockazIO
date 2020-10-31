@@ -21,7 +21,6 @@ const PART_UNITS_DELETE = (partUnitId) => `/api/v1/parts/units/${partUnitId}`
 const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 
 const PARTS_CREATE = '/api/v1/parts/'
-const PARTS_BY_CATEGORY = (categoryId) => `/api/v1/parts/?category_id=${categoryId}`
 const PARTS_LIST = '/api/v1/parts/'
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
 
@@ -93,8 +92,8 @@ const createPart = (data) => {
   return Axios.post(PARTS_CREATE, data)
 }
 
-const getPartsByCategory = (categoryId, params) => {
-  return Axios.get(PARTS_BY_CATEGORY(categoryId), { params: params })
+const getPartsByCategory = (params) => {
+  return Axios.get(PARTS_LIST, { params: params })
 }
 
 const getParts = (page, params) => {
