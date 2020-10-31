@@ -4,6 +4,7 @@ import PartsAddFull from '../views/parts/AddFull'
 import PartsAddQuick from '../views/parts/AddQuick'
 import PartsList from '../views/parts/List'
 import PartsDetails from '../views/parts/Details'
+import PartsEdit from '../views/parts/Edit'
 import ViewInfos from '../views/view/Infos'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
@@ -55,6 +56,13 @@ export default (store) => {
       path: '/parts/:partId',
       name: 'parts-details',
       component: PartsDetails,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/parts/:partId/edit',
+      name: 'parts-edit',
+      component: PartsEdit,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },

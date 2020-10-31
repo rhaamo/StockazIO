@@ -22,6 +22,7 @@ const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 
 const PARTS_CREATE = '/api/v1/parts/'
 const PARTS_LIST = '/api/v1/parts/'
+const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
 
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
@@ -92,6 +93,10 @@ const createPart = (data) => {
   return Axios.post(PARTS_CREATE, data)
 }
 
+const updatePart = (id, data) => {
+  return Axios.put(PARTS_UPDATE(id), data)
+}
+
 const getParts = (params) => {
   return Axios.get(PARTS_LIST, { params: params })
 }
@@ -121,6 +126,7 @@ const apiService = {
   getManufacturers,
   getDistributors,
   createPart,
+  updatePart,
   getParts,
   getPart,
   deletePart

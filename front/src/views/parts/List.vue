@@ -244,7 +244,7 @@
           </template>
 
           <template #cell(actions)="data">
-            <b-button variant="link" @click.prevent="editPart(data.item)">
+            <b-button variant="link" :to="{ name: 'parts-edit', params: { partId: data.item.id } }">
               <i
                 class="fa fa-pencil-square-o"
                 aria-hidden="true"

@@ -20,7 +20,7 @@
         </h3>
       </div>
       <div class="col-lg-3">
-        <b-button variant="link" @click.prevent="editPart(part)">
+        <b-button variant="link" :to="{ name: 'parts-edit', params: { partId: part.id } }">
           <i
             class="fa fa-pencil-square-o"
             aria-hidden="true"
