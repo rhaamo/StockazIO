@@ -11,7 +11,9 @@ const preloads = {
     part_units: [],
     manufacturers: [],
     distributors: [],
-    currentCategory: {}
+    currentCategory: {
+      id: null
+    }
   },
   mutations: {
     setCategories (state, value) {
@@ -62,7 +64,7 @@ const preloads = {
       return state.distributors || []
     },
     getCurrentCategory: state => () => {
-      return state.currentCategory || {}
+      return state.currentCategory || { id: null }
     }
   },
   actions: {
