@@ -354,12 +354,17 @@ export default {
   watch: {
     'categoryId': function () {
       this.fetchParts()
+      this.categoryChanged()
     }
   },
   created () {
     this.fetchParts()
+    this.categoryChanged()
   },
   methods: {
+    categoryChanged () {
+      this.$store.commit('setCurrentCategory', { id: this.categoryId })
+    },
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
     },

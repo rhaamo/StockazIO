@@ -1,12 +1,12 @@
 <template>
   <li>
     <template v-if="node.parts_count >0">
-      <i class="fa fa-folder" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: node.id, category: node } }" :title="node.name">
+      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: node.id, category: node } }" :title="node.name">
         <b>{{ node.name }} <small>({{ node.parts_count }})</small></b>
       </router-link>
     </template>
     <template v-else>
-      <i class="fa fa-folder" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: node.id, category: node } }" :title="node.name">
+      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: node.id, category: node } }" :title="node.name">
         {{ node.name }} <small>({{ node.parts_count }})</small>
       </router-link>
     </template>
@@ -18,8 +18,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Node',
-  props: ['node']
+  props: ['node'],
+  computed: {
+    ...mapState({ currentCategory: state => { return state.preloads.currentCategory } })
+  },
+  methods: {
+    categoryFolderClass (category) {
+      return category.id === this.currentCategory.id ? 'fa fa-folder-open-o' : 'fa fa-folder'
+    }
+  }
 }
 </script>
