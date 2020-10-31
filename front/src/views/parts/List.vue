@@ -193,6 +193,7 @@
                  sort-icon-left
                  show-empty
                  primary-key="uuid"
+                 no-local-sorting="true"
                  @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">
@@ -424,7 +425,7 @@ export default {
       this.busy = true
       apiService.getParts(params)
         .then((res) => {
-          this.parts = Array.from(res.data.results)
+          this.parts = res.data.results
           this.partsCount = res.data.count
           this.busy = false
           // eslint-disable-next-line vue/custom-event-name-casing

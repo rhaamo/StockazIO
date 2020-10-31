@@ -21,6 +21,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import filters
 
 from controllers.part.serializers import PartSerializer, PartCreateSeralizer, PartRetrieveSerializer
 
@@ -352,7 +353,8 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    ordering_fields = ["name", "stock_qty", "stock_min_qty", "footprint", "unit", "storage"]
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
     ordering = ["name"]
     pagination_class = PartViewSetPagination
 
