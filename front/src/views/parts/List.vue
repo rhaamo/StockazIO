@@ -187,10 +187,12 @@
       <div class="col-md-12 mx-auto">
         <b-table id="tablePartsList" ref="tablePartsList" :items="parts"
                  :fields="fields"
-                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :per-page="perPage"
-                 :current-page="currentPage"
-                 responsive="sm" condensed striped
+                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
+                 :current-page="currentPage" :busy.sync="busy"
+                 condensed striped
                  sort-icon-left
+                 show-empty
+                 primary-key="uuid"
                  @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">
@@ -285,7 +287,7 @@ export default {
     partDetails: null,
     partsCount: 0,
     fields: [
-      { key: 'qrcode', label: 'QrCode' },
+      { key: 'qrcode', label: 'QrCode', tdClass: 'qrCode' },
       { key: 'name', label: 'Name', sortable: true },
       { key: 'storage', label: 'Storage', sortable: true },
       { key: 'stock_qty', label: 'Stock', sortable: true },
@@ -295,7 +297,8 @@ export default {
       { key: 'actions', label: 'Actions' }
     ],
     sortBy: 'name',
-    sortDesc: false
+    sortDesc: false,
+    busy: false
   }),
   computed: {
     ...mapState({
@@ -411,10 +414,12 @@ export default {
       if (sorting) {
         params.ordering = sorting.sortDesc ? `-${sorting.sortBy}` : sorting.sortBy
       }
+      this.busy = true
       apiService.getParts(params)
         .then((res) => {
-          this.parts = res.data.results
+          this.parts = Array.from(res.data.results)
           this.partsCount = res.data.count
+          this.busy = false
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::refresh::table', 'tablePartsList')
         })
