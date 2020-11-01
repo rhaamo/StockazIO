@@ -89,6 +89,20 @@ export default (store) => {
       component: ViewInfos,
       beforeEnter: validateAuthenticatedRoute
     },
+    {
+      path: '/views/storage-tree',
+      name: 'view-storage-tree',
+      beforeEnter: validateAuthenticatedRoute
+    },
+    // Public
+    {
+      path: '/public/parts',
+      name: 'public-parts'
+    },
+    {
+      path: '/public/parts/selling',
+      name: 'public-parts-selling'
+    },
     // Other
     {
       path: '/about',

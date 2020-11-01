@@ -46,13 +46,13 @@
               <b-dropdown-item :to="{name: 'view-infos'}">
                 <i class="fa fa-cogs fa-fw" /> Informations
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{name: 'view-storage-tree'}">
                 <i class="fa fa-list-alt fa-fw" /> Storage tree
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
-                <i class="fa fa-money fa-fw" /> Parts to sold
+              <b-dropdown-item :to="{name: 'public-parts-selling'}">
+                <i class="fa fa-money fa-fw" /> Parts to sell
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{name: 'public-parts'}">
                 <i class="fa fa-list-alt fa-fw" /> Public parts
               </b-dropdown-item>
             </b-nav-item-dropdown>
