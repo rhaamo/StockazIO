@@ -134,9 +134,7 @@
                   That part is private
                 </b-form-checkbox>
               </b-form-group>
-            </b-col>
 
-            <b-col>
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
                 <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?"
                              label="text"
@@ -167,6 +165,122 @@
               <b-button type="submit" variant="primary">
                 Update part
               </b-button>
+            </b-col>
+
+            <b-col>
+              <b-tabs content-class="mt-3">
+                <b-tab title="Parameters">
+                  <div v-for="(_, i) in form.part_parameters_value" :key="i">
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="ppvId('name', i)" label="Name*" :label-for="ppvId('name', i)">
+                          <b-form-input
+                            :id="ppvId('name', i)"
+                            v-model="form.part_parameters_value[i].name"
+                            required
+                          />
+                        </b-form-group>
+                      </b-col>
+                      <b-col>
+                        <b-form-group :id="ppvId('description', i)" label="Description" :label-for="ppvId('description', i)">
+                          <b-form-input
+                            :id="ppvId('description', i)"
+                            v-model="form.part_parameters_value[i].description"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="ppvId('value', i)" label="Value*" :label-for="ppvId('value', i)">
+                          <b-form-input
+                            :id="ppvId('value', i)"
+                            v-model="form.part_parameters_value[i].value"
+                            required
+                          />
+                        </b-form-group>
+                      </b-col>
+                      <b-col>
+                        <b-form-group :id="ppvId('unit', i)" label="Unit:" :label-for="ppvId('unit', i)">
+                          <multiselect v-model="form.part_parameters_value[i].unit"
+                                       :options="choicesPartParametersUnit"
+                                       label="text" track-by="value"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <div @click.prevent="deletePpv(i)">
+                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
+                    </div>
+                    <hr>
+                  </div>
+                  <div @click.prevent="addPpv">
+                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
+                  </div>
+                </b-tab>
+
+                <b-tab title="Manufacturers">
+                  <div v-for="(_, i) in form.manufacturers_sku" :key="i">
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="pManufId('sku', i)" label="SKU*" :label-for="pManufId('sku', i)">
+                          <b-form-input
+                            :id="pManufId('sku', i)"
+                            v-model="form.manufacturers_sku[i].sku"
+                            required
+                          />
+                        </b-form-group>
+                      </b-col>
+
+                      <b-col>
+                        <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer*:" :label-for="pManufId('manufacturer', i)">
+                          <multiselect v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
+                                       label="text" track-by="value"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <div @click.prevent="deletePmanufs(i)">
+                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
+                    </div>
+                    <hr>
+                  </div>
+                  <div @click.prevent="addPmanufs">
+                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
+                  </div>
+                </b-tab>
+
+                <b-tab title="Distributors">
+                  <div v-for="(_, i) in form.distributors_sku" :key="i">
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="pDistId('sku', i)" label="SKU*" :label-for="pDistId('sku', i)">
+                          <b-form-input
+                            :id="pDistId('sku', i)"
+                            v-model="form.distributors_sku[i].sku"
+                            required
+                          />
+                        </b-form-group>
+                      </b-col>
+
+                      <b-col>
+                        <b-form-group :id="pDistId('distributor', i)" label="Distributor*:" :label-for="pDistId('distributor', i)">
+                          <multiselect v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
+                                       label="text" track-by="value"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <div @click.prevent="deletePdist(i)">
+                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
+                    </div>
+                    <hr>
+                  </div>
+                  <div @click.prevent="addPdist">
+                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
+                  </div>
+                </b-tab>
+              </b-tabs>
             </b-col>
           </b-row>
         </b-form>
@@ -209,7 +323,10 @@ export default {
       part_unit: null,
       category: null,
       storage_location: null,
-      footprint: null
+      footprint: null,
+      part_parameters_value: [],
+      manufacturers_sku: [],
+      distributors_sku: []
     }
   }),
   computed: {
@@ -219,10 +336,19 @@ export default {
       },
       choicesCategory: state => { return [state.preloads.categories] },
       choicesStorageLocation: (state) => state.preloads.storages,
+      choicesPartParametersUnit: (state) => {
+        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.prefix}${x.symbol})` } })
+      },
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
       },
-      partDetailsPrivate () { return this.form && this.form.private === 'true' ? 'fa icon-private fa-lock' : '' }
+      partDetailsPrivate () { return this.form && this.form.private === 'true' ? 'fa icon-private fa-lock' : '' },
+      choicesManufacturers: (state) => {
+        return state.preloads.manufacturers.map(x => { return { value: x.id, text: x.name } })
+      },
+      choicesDistributors: (state) => {
+        return state.preloads.distributors.map(x => { return { value: x.id, text: x.name } })
+      }
     }),
     partId () {
       return this.$route.params.partId
@@ -310,6 +436,38 @@ export default {
           this.form.private = this.part.private
           this.form.production_remarks = this.part.production_remarks
           this.form.internal_pn = this.part.internal_part_number
+          this.form.part_parameters_value = this.part.part_parameters_value.map(x => {
+            return {
+              id: x.id,
+              name: x.name,
+              description: x.description,
+              value: x.value,
+              unit: {
+                text: `${x.unit.name} (${x.unit.symbol})`,
+                value: x.unit.id
+              }
+            }
+          })
+          this.form.manufacturers_sku = this.part.manufacturers_sku.map(x => {
+            return {
+              id: x.id,
+              sku: x.sku,
+              manufacturer: {
+                text: x.manufacturer.name,
+                value: x.manufacturer.id
+              }
+            }
+          })
+          this.form.distributors_sku = this.part.distributors_sku.map(x => {
+            return {
+              id: x.id,
+              sku: x.sku,
+              distributor: {
+                text: x.distributor.name,
+                value: x.distributor.id
+              }
+            }
+          })
 
           this.form.part_unit = this.part.part_unit ? { value: this.part.part_unit.id, text: `${this.part.part_unit.name} (${this.part.part_unit.short_name})` } : null
           this.form.category = this.part.category ? this.part.category.id : null
@@ -387,7 +545,22 @@ export default {
         part_unit: this.form.part_unit ? this.form.part_unit.value : null,
         category: this.form.category,
         storage: this.form.storage_location,
-        footprint: this.form.footprint ? this.form.footprint.id : null
+        footprint: this.form.footprint ? this.form.footprint.id : null,
+        part_parameters_value: this.form.part_parameters_value.map(x => {
+          if (x.name !== '' && x.value !== '') {
+            return { name: x.name, description: x.description, value: x.value, unit: x.unit ? x.unit.value : null }
+          }
+        }),
+        manufacturers_sku: this.form.manufacturers_sku.map(x => {
+          if (x.sku !== '') {
+            return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null }
+          }
+        }),
+        distributors_sku: this.form.distributors_sku.map(x => {
+          if (x.sku !== '') {
+            return { sku: x.sku, distributor: x.distributor ? x.distributor.value : null }
+          }
+        })
       }
       apiService.updatePart(this.part.id, datas)
         .then(() => {
@@ -415,6 +588,44 @@ export default {
     storagesNormalizer: function (node) {
       let childs = (node.children || []).concat(node.storage_locations || [])
       return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
+    },
+    ppvId (func, idx) {
+      return `input-ppv-${func}-${idx}`
+    },
+    pManufId (func, idx) {
+      return `input-pmanuf-${func}-${idx}`
+    },
+    pDistId (func, idx) {
+      return `input-pdist-${func}-${idx}`
+    },
+    addPpv () {
+      this.form.part_parameters_value.push({
+        name: '',
+        description: '',
+        value: '',
+        unit: null
+      })
+    },
+    deletePpv (idx) {
+      this.$delete(this.form.part_parameters_value, idx)
+    },
+    addPmanufs () {
+      this.form.manufacturers_sku.push({
+        sku: '',
+        manufacturer: null
+      })
+    },
+    deletePmanufs (idx) {
+      this.$delete(this.form.manufacturers_sku, idx)
+    },
+    addPdist () {
+      this.form.distributors_sku.push({
+        sku: '',
+        distributor: null
+      })
+    },
+    deletePdist (idx) {
+      this.$delete(this.form.distributors_sku, idx)
     }
   }
 }
