@@ -6,6 +6,7 @@ import PartsList from '../views/parts/List'
 import PartsDetails from '../views/parts/Details'
 import PartsEdit from '../views/parts/Edit'
 import ViewInfos from '../views/view/Infos'
+import ViewStorageTree from '../views/view/StorageTree'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
 
@@ -92,6 +93,7 @@ export default (store) => {
     {
       path: '/views/storage-tree',
       name: 'view-storage-tree',
+      component: ViewStorageTree,
       beforeEnter: validateAuthenticatedRoute
     },
     // Public
