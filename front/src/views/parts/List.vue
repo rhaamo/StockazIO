@@ -181,6 +181,19 @@
           </template>
         </ol>
       </div>
+      <div class="col-lg-1">
+        <multiselect v-model="filter.footprint" :options="choicesFootprint"
+                     group-values="footprints" group-label="category" placeholder="Filter footprint"
+                     label="name" track-by="id" @input="filterFootprintChanged"
+        />
+      </div>
+      <div class="col-lg-1">
+        <treeselect v-model="filter.storage" :multiple="false"
+                    :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
+                    clearable :normalizer="storagesNormalizer" no-children-text
+                    placeholder="Filter storage" @input="filterStorageChanged"
+        />
+      </div>
     </div>
 
     <div class="row">
@@ -360,11 +373,19 @@ export default {
     sortBy: 'name',
     sortDesc: false,
     busy: false,
-    popoverStockQtyShow: false
+    popoverStockQtyShow: false,
+    filter: {
+      footprint: null,
+      storage: null
+    }
   }),
   computed: {
     ...mapState({
-      serverSettings: state => state.server.settings
+      serverSettings: state => state.server.settings,
+      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesFootprint: (state) => {
+        return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
+      }
     }),
     perPage () {
       return this.serverSettings.pagination.PARTS || 10
@@ -491,7 +512,8 @@ export default {
     },
     sortTableChanged (ctx) {
       // When changing the sorting order, reset the pagination to page 1
-      this.fetchParts(1, ctx)
+      let opts = ctx.sortDesc ? `-${ctx.sortBy}` : ctx.sortBy
+      this.fetchParts(1, opts)
     },
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
@@ -515,17 +537,16 @@ export default {
         size: 'lg'
       })
     },
-    fetchParts (page, sorting) {
+    fetchParts (page, opts) {
       let params = {
         page: page,
-        size: this.perPage
+        size: this.perPage,
+        ...opts
       }
       if (this.categoryId !== null) {
         params.category_id = this.categoryId
       }
-      if (sorting) {
-        params.ordering = sorting.sortDesc ? `-${sorting.sortBy}` : sorting.sortBy
-      }
+
       this.busy = true
       apiService.getParts(params)
         .then((res) => {
@@ -598,6 +619,24 @@ export default {
     partModalClose () {
       this.$bvModal.hide('modalManage')
       this.partDetails = null
+    },
+    storagesNormalizer: function (node) {
+      let childs = (node.children || []).concat(node.storage_locations || [])
+      return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
+    },
+    filterFootprintChanged (value, id) {
+      if (value) {
+        this.fetchParts(1, { footprint_id: value.id })
+      } else {
+        this.fetchParts(1, null)
+      }
+    },
+    filterStorageChanged (value, id) {
+      if (value) {
+        this.fetchParts(1, { storage_id: value })
+      } else {
+        this.fetchParts(1, null)
+      }
     }
   }
 }

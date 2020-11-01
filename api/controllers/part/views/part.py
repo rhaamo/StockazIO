@@ -370,8 +370,11 @@ class PartViewSet(ModelViewSet):
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
+        footprint_id = self.request.query_params.get("footprint_id", None)
+        storage_id = self.request.query_params.get("storage_id", None)
 
         queryset = Part.objects.all()
+
         # category TODO/FIXME: recursivity ?
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
@@ -379,4 +382,11 @@ class PartViewSet(ModelViewSet):
             category = self.request.query_params.get("category_id", None)
             if category is not None:
                 queryset = queryset.filter(category_id=category)
+
+        if footprint_id:
+            queryset = queryset.filter(footprint_id=footprint_id)
+
+        if storage_id:
+            queryset = queryset.filter(storage_id=storage_id)
+
         return queryset

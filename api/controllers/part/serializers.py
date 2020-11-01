@@ -6,8 +6,7 @@ from controllers.categories.serializers import SingleCategorySerializer
 from controllers.footprints.serializers import FootprintSerializer
 from controllers.distributor.serializers import DistributorSkuSerializer, DistributorSkuCreateSerializer
 from controllers.manufacturer.serializers import PartManufacturerSerializer, PartManufacturerCreateSerializer
-from controllers.manufacturer.models import PartManufacturer
-from controllers.distributor.models import DistributorSku
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
@@ -66,7 +65,7 @@ class PartParameterCreateSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "description", "value", "unit")
 
 
-class PartCreateSeralizer(serializers.ModelSerializer):
+class PartCreateSeralizer(WritableNestedModelSerializer):
     part_parameters_value = PartParameterCreateSerializer(many=True)
     manufacturers_sku = PartManufacturerCreateSerializer(many=True)
     distributors_sku = DistributorSkuCreateSerializer(many=True)
@@ -96,22 +95,6 @@ class PartCreateSeralizer(serializers.ModelSerializer):
             "manufacturers_sku",
             "distributors_sku",
         )
-
-    def create(self, validated_data):
-        part_parameters_value_data = validated_data.pop("part_parameters_value")
-        manufacturers_sku_data = validated_data.pop("manufacturers_sku")
-        distributors_sku_data = validated_data.pop("distributors_sku")
-
-        part = Part.objects.create(**validated_data)
-
-        for ppvd in part_parameters_value_data:
-            PartParameter.objects.create(part=part, **ppvd)
-        for pms in manufacturers_sku_data:
-            PartManufacturer.objects.create(part=part, **pms)
-        for pdk in distributors_sku_data:
-            DistributorSku.objects.create(part=part, **pdk)
-
-        return part
 
 
 class PartAttachmentSerializer(serializers.ModelSerializer):
