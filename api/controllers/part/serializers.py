@@ -5,7 +5,8 @@ from controllers.storage.serializers import StorageLocationSerializer
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.footprints.serializers import FootprintSerializer
 from controllers.distributor.serializers import DistributorSkuSerializer
-from controllers.manufacturer.serializers import PartManufacturerSerializer
+from controllers.manufacturer.serializers import PartManufacturerSerializer, PartManufacturerCreateSerializer
+from controllers.manufacturer.models import PartManufacturer
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
@@ -66,6 +67,7 @@ class PartParameterCreateSerializer(serializers.ModelSerializer):
 
 class PartCreateSeralizer(serializers.ModelSerializer):
     part_parameters_value = PartParameterCreateSerializer(many=True)
+    manufacturers_sku = PartManufacturerCreateSerializer(many=True)
 
     class Meta:
         model = Part
@@ -89,13 +91,20 @@ class PartCreateSeralizer(serializers.ModelSerializer):
             "comment",
             "production_remarks",
             "part_parameters_value",
+            "manufacturers_sku",
         )
 
     def create(self, validated_data):
         part_parameters_value_data = validated_data.pop("part_parameters_value")
+        manufacturers_sku_data = validated_data.pop("manufacturers_sku")
+
         part = Part.objects.create(**validated_data)
+
         for ppvd in part_parameters_value_data:
             PartParameter.objects.create(part=part, **ppvd)
+        for pms in manufacturers_sku_data:
+            PartManufacturer.objects.create(part=part, **pms)
+
         return part
 
 

@@ -9,8 +9,14 @@ class ManufacturersSerializer(serializers.ModelSerializer):
 
 
 class PartManufacturerSerializer(serializers.ModelSerializer):
-    manufacturer = ManufacturersSerializer(many=False, read_only=True)
+    manufacturer = ManufacturersSerializer(many=False)
 
+    class Meta:
+        model = PartManufacturer
+        fields = ["id", "sku", "part", "manufacturer"]
+
+
+class PartManufacturerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartManufacturer
         fields = ["id", "sku", "part", "manufacturer"]

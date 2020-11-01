@@ -207,7 +207,33 @@
                 </b-tab>
 
                 <b-tab title="Manufacturers">
-                  coin
+                  <div v-for="(_, i) in form.manufacturers_sku" :key="i">
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="pManufId('sku', i)" label="SKU*" :label-for="pManufId('sku', i)">
+                          <b-form-input
+                            :id="pManufId('sku', i)"
+                            v-model="form.manufacturers_sku[i].sku"
+                          />
+                        </b-form-group>
+                      </b-col>
+
+                      <b-col>
+                        <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer:" :label-for="pManufId('manufacturer', i)">
+                          <multiselect v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
+                                       label="text" track-by="value"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <div @click.prevent="deletePmanufs(i)">
+                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
+                    </div>
+                    <hr>
+                  </div>
+                  <div @click.prevent="addPmanufs">
+                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
+                  </div>
                 </b-tab>
 
                 <b-tab title="Distributors">
@@ -251,7 +277,8 @@ export default {
       category: null,
       storage_location: null,
       footprint: null,
-      part_parameters_value: []
+      part_parameters_value: [],
+      manufacturers_sku: []
     }
   }),
   validations: {
@@ -305,6 +332,9 @@ export default {
       },
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
+      },
+      choicesManufacturers: (state) => {
+        return state.preloads.manufacturers.map(x => { return { value: x.id, text: x.name } })
       }
     })
   },
@@ -334,6 +364,11 @@ export default {
         part_parameters_value: this.form.part_parameters_value.map(x => {
           if (x.name !== '' && x.value !== '') {
             return { name: x.name, description: x.description, value: x.value, unit: x.unit ? x.unit.value : null }
+          }
+        }),
+        manufacturers_sku: this.form.manufacturers_sku.map(x => {
+          if (x.sku !== '') {
+            return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null }
           }
         })
       }
@@ -377,10 +412,14 @@ export default {
       this.form.footprint = null
       this.form.production_remarks = ''
       this.form.part_parameters_value = []
+      this.form.manufacturers_sku = []
       this.$v.$reset()
     },
     ppvId (func, idx) {
       return `input-ppv-${func}-${idx}`
+    },
+    pManufId (func, idx) {
+      return `input-pmanuf-${func}-${idx}`
     },
     addPpv () {
       this.form.part_parameters_value.push({
@@ -392,6 +431,15 @@ export default {
     },
     deletePpv (idx) {
       this.$delete(this.form.part_parameters_value, idx)
+    },
+    addPmanufs () {
+      this.form.manufacturers_sku.push({
+        sku: '',
+        manufacturer: null
+      })
+    },
+    deletePmanufs (idx) {
+      this.$delete(this.form.manufacturers_sku, idx)
     }
   }
 }
