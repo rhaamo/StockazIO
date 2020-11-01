@@ -1,6 +1,10 @@
 <template>
   <li>
-    {{ node.name }}
+    {{ node.name }}<template v-if="node.uuid">
+      &nbsp;<i v-b-tooltip.hover class="fa fa-barcode" aria-hidden="true"
+               title="Show QrCode" @click="showBigQrCode(node)"
+      />
+    </template>
 
     <ul v-if="node.children && node.children.length" class="children">
       <node v-for="child in node.children" :key="child.id" :node="child" />
@@ -13,8 +17,31 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
+
 export default {
   name: 'Node',
-  props: ['node']
+  props: ['node'],
+  methods: {
+    qrCodeStorage (uuid) {
+      return `stockazio://storageLocation/${uuid}`
+    },
+    async showBigQrCode (storage) {
+      let qrCodeDataUrl = await QRCode.toDataURL(this.qrCodeStorage(storage.uuid), { width: 300 }).then((url) => { return url })
+
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: `QrCode for: ${storage.name}` } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: qrCodeDataUrl } }),
+        h('div', {}, ['The content of the QrCode is:', h('br'), h('code', { class: ['qrCodeText'] }, [this.qrCodeStorage(storage.uuid)])])
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'lg'
+      })
+    }
+  }
 }
 </script>
