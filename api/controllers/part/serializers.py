@@ -50,7 +50,23 @@ class PartSerializer(serializers.ModelSerializer):
         )
 
 
+class PartParameterSerializer(serializers.ModelSerializer):
+    unit = ParametersUnitSerializer(many=False)
+
+    class Meta:
+        model = PartParameter
+        fields = ("id", "name", "description", "value", "unit")
+
+
+class PartParameterCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PartParameter
+        fields = ("id", "name", "description", "value", "unit")
+
+
 class PartCreateSeralizer(serializers.ModelSerializer):
+    part_parameters_value = PartParameterCreateSerializer(many=True)
+
     class Meta:
         model = Part
         fields = (
@@ -72,15 +88,15 @@ class PartCreateSeralizer(serializers.ModelSerializer):
             "uuid",
             "comment",
             "production_remarks",
+            "part_parameters_value",
         )
 
-
-class PartParameterSerializer(serializers.ModelSerializer):
-    unit = ParametersUnitSerializer(many=False, read_only=True)
-
-    class Meta:
-        model = PartParameter
-        fields = ("id", "name", "description", "value", "unit")
+    def create(self, validated_data):
+        part_parameters_value_data = validated_data.pop("part_parameters_value")
+        part = Part.objects.create(**validated_data)
+        for ppvd in part_parameters_value_data:
+            PartParameter.objects.create(part=part, **ppvd)
+        return part
 
 
 class PartAttachmentSerializer(serializers.ModelSerializer):
