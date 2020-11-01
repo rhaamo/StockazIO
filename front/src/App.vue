@@ -80,14 +80,16 @@
             </b-nav-item-dropdown>
           </ul>
 
-          <form class="form-inline my-2 my-lg-0" :to="{}" method="GET">
-            <input id="q" class="form-control mr-sm-2" type="search"
-                   placeholder="Search" aria-label="Search" name="q"
-            >
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-              Search
-            </button>
-          </form>
+          <b-form @submit="doSearch">
+            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
+              <b-input id="inline-form-input-search" v-model="searchTerm" placeholder="Search" />
+              <b-input-group-append>
+                <b-button title="Search">
+                  Search
+                </b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form>
         </template>
         <template v-else>
           <ul class="navbar-nav mr-auto">
@@ -133,6 +135,7 @@ export default {
   },
   data () {
     return {
+      searchTerm: ''
     }
   },
   computed: {
@@ -150,6 +153,12 @@ export default {
       this.$store.dispatch('user/logout').then(() => {
         this.$router.replace({ name: 'login_form' })
       })
+    },
+    doSearch (event) {
+      event.preventDefault()
+      let search = this.searchTerm
+      this.searchTerm = ''
+      this.$router.replace({ name: 'parts-list', query: { q: search } }).catch(() => {})
     }
   }
 }

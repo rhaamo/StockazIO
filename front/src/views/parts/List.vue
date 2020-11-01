@@ -357,7 +357,6 @@ export default {
   data: () => ({
     parts: [],
     currentPage: 1,
-    search_query: '', // TODO/FIXME no search yet
     partDetails: null,
     partsCount: 0,
     fields: [
@@ -392,6 +391,9 @@ export default {
     },
     categoryId () {
       return this.$route.params.categoryId
+    },
+    searchQuery () {
+      return this.$route.query.q
     },
     partDetailsQty () { return this.partDetails ? this.partDetails.stock_qty : 0 },
     partDetailsQtyMin () { return this.partDetails ? this.partDetails.stock_qty_min : 0 },
@@ -445,11 +447,18 @@ export default {
     'categoryId': function () {
       this.fetchParts(1, null)
       this.categoryChanged()
+    },
+    'searchQuery': function () {
+      this.fetchParts(1, { search: this.searchQuery })
     }
   },
   created () {
     this.$nextTick(() => {
-      this.fetchParts(1, null)
+      if (this.searchQuery) {
+        this.fetchParts(1, { search: this.searchQuery })
+      } else {
+        this.fetchParts(1, null)
+      }
       this.categoryChanged()
     })
   },
@@ -545,6 +554,9 @@ export default {
       }
       if (this.categoryId !== null) {
         params.category_id = this.categoryId
+      }
+      if (this.searchQuery) {
+        params.search = this.searchQuery
       }
 
       this.busy = true

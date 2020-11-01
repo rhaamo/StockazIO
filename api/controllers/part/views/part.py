@@ -353,10 +353,21 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    filter_backends = [filters.OrderingFilter]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
     ordering = ["name"]
     pagination_class = PartViewSetPagination
+    # ^starts-with, =exact, @FTS, $regex
+    search_fields = [
+        "name",
+        "description",
+        "comment",
+        "production_remarks",
+        "status",
+        "condition",
+        "internal_part_number",
+        "uuid",
+    ]
 
     def get_serializer_class(self):
         print(f"action: {self.action}")
