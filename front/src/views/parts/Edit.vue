@@ -237,7 +237,7 @@ export default {
       },
       qty: {
         required,
-        minValue: minValue(1)
+        minValue: minValue(0)
       },
       qty_min: {
         required,
