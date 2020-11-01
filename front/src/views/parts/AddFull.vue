@@ -214,12 +214,13 @@
                           <b-form-input
                             :id="pManufId('sku', i)"
                             v-model="form.manufacturers_sku[i].sku"
+                            required
                           />
                         </b-form-group>
                       </b-col>
 
                       <b-col>
-                        <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer:" :label-for="pManufId('manufacturer', i)">
+                        <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer*:" :label-for="pManufId('manufacturer', i)">
                           <multiselect v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
                                        label="text" track-by="value"
                           />
@@ -237,7 +238,34 @@
                 </b-tab>
 
                 <b-tab title="Distributors">
-                  coin
+                  <div v-for="(_, i) in form.distributors_sku" :key="i">
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="pDistId('sku', i)" label="SKU*" :label-for="pDistId('sku', i)">
+                          <b-form-input
+                            :id="pDistId('sku', i)"
+                            v-model="form.distributors_sku[i].sku"
+                            required
+                          />
+                        </b-form-group>
+                      </b-col>
+
+                      <b-col>
+                        <b-form-group :id="pDistId('distributor', i)" label="Distributor*:" :label-for="pDistId('distributor', i)">
+                          <multiselect v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
+                                       label="text" track-by="value"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <div @click.prevent="deletePdist(i)">
+                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
+                    </div>
+                    <hr>
+                  </div>
+                  <div @click.prevent="addPdist">
+                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
+                  </div>
                 </b-tab>
               </b-tabs>
             </b-col>
@@ -278,7 +306,8 @@ export default {
       storage_location: null,
       footprint: null,
       part_parameters_value: [],
-      manufacturers_sku: []
+      manufacturers_sku: [],
+      distributors_sku: []
     }
   }),
   validations: {
@@ -335,6 +364,9 @@ export default {
       },
       choicesManufacturers: (state) => {
         return state.preloads.manufacturers.map(x => { return { value: x.id, text: x.name } })
+      },
+      choicesDistributors: (state) => {
+        return state.preloads.distributors.map(x => { return { value: x.id, text: x.name } })
       }
     })
   },
@@ -369,6 +401,11 @@ export default {
         manufacturers_sku: this.form.manufacturers_sku.map(x => {
           if (x.sku !== '') {
             return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null }
+          }
+        }),
+        distributors_sku: this.form.distributors_sku.map(x => {
+          if (x.sku !== '') {
+            return { sku: x.sku, distributor: x.distributor ? x.distributor.value : null }
           }
         })
       }
@@ -413,6 +450,7 @@ export default {
       this.form.production_remarks = ''
       this.form.part_parameters_value = []
       this.form.manufacturers_sku = []
+      this.form.distributors_sku = []
       this.$v.$reset()
     },
     ppvId (func, idx) {
@@ -420,6 +458,9 @@ export default {
     },
     pManufId (func, idx) {
       return `input-pmanuf-${func}-${idx}`
+    },
+    pDistId (func, idx) {
+      return `input-pdist-${func}-${idx}`
     },
     addPpv () {
       this.form.part_parameters_value.push({
@@ -440,6 +481,15 @@ export default {
     },
     deletePmanufs (idx) {
       this.$delete(this.form.manufacturers_sku, idx)
+    },
+    addPdist () {
+      this.form.distributors_sku.push({
+        sku: '',
+        distributor: null
+      })
+    },
+    deletePdist (idx) {
+      this.$delete(this.form.distributors_sku, idx)
     }
   }
 }
