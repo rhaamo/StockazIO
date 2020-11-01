@@ -228,10 +228,14 @@
           </template>
 
           <template #cell(stock_qty)="data">
-            <span v-if="data.item.stock_qty < data.item.stock_qty_min" :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
+            <span v-if="data.item.stock_qty < data.item.stock_qty_min" :id="popoverStockQtyClass(data.item.id)"
                   class="qtyMinWarning"
-                  title="Current stock is below minimum stock quantity"
-            >{{ data.item.stock_qty }}</span>
+            >{{ data.item.stock_qty }}
+              <i v-b-tooltip.hover class="fa fa-circle"
+                 aria-hidden="true"
+                 title="Current stock is below minimum stock quantity"
+              />
+            </span>
             <span v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
                   title="click to change qty"
             >{{ data.item.stock_qty }}</span>
