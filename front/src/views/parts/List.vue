@@ -259,7 +259,28 @@
           </template>
 
           <template #cell(stock_qty_min)="data">
-            {{ data.item.stock_qty_min }}
+            <span :id="popoverStockQtyMinClass(data.item.id)">{{ data.item.stock_qty_min }}</span>
+
+            <b-popover
+              :target="popoverStockQtyMinClass(data.item.id)"
+              triggers="click"
+              placement="auto"
+              container="tablePartsList"
+            >
+              <template #title>
+                Change stock min qty
+              </template>
+
+              <div align="center">
+                <b-form-spinbutton v-model="data.item.stock_qty_min" min="0" />
+                <br>
+                <b-button size="sm" type="submit" variant="primary"
+                          @click.prevent="popoverQtyMinUpdatePart(data.item.id, data.item.stock_qty_min)"
+                >
+                  update
+                </b-button>
+              </div>
+            </b-popover>
           </template>
 
           <template #cell(footprint)="data">
@@ -432,6 +453,31 @@ export default {
     },
     popoverStockQtyClass (id) {
       return `popover-stock-qty-${id}`
+    },
+    popoverQtyMinUpdatePart (id, qty) {
+      apiService.updatePartialPart(id, { stock_qty_min: qty })
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating min part qty'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary'
+          })
+          // eslint-disable-next-line vue/custom-event-name-casing
+          this.$root.$emit('bv::hide::popover', this.popoverStockQtyClass(id))
+        })
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating min part qty'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Cannot update min part qty', error.message)
+        })
+    },
+    popoverStockQtyMinClass (id) {
+      return `popover-stock-qty-min-${id}`
     },
     categoryChanged () {
       this.$store.commit('setCurrentCategory', { id: this.categoryId })
