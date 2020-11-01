@@ -97,6 +97,10 @@ const updatePart = (id, data) => {
   return Axios.put(PARTS_UPDATE(id), data)
 }
 
+const updatePartialPart = (id, data) => {
+  return Axios.patch(PARTS_UPDATE(id), data)
+}
+
 const getParts = (params) => {
   return Axios.get(PARTS_LIST, { params: params })
 }
@@ -127,6 +131,7 @@ const apiService = {
   getDistributors,
   createPart,
   updatePart,
+  updatePartialPart,
   getParts,
   getPart,
   deletePart

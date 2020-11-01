@@ -18,6 +18,7 @@
   "python.pythonPath": "${workspaceFolder}/venv/bin/python",
   "eslint.validate": [
     "javascript",
+    "javascriptreact",
     "vue"
   ],
   "vetur.format.defaultFormatter.js": "vscode-typescript",
@@ -27,6 +28,7 @@
   "eslint.workingDirectories": [
     "./front"
   ],
-  "vetur.languageFeatures.codeActions": false,
-  "vetur.experimental.templateInterpolationService": true
+  "vetur.languageFeatures.codeActions": true,
+  "vetur.experimental.templateInterpolationService": true,
+  "vetur.validation.template": false
 }

@@ -193,7 +193,7 @@
                  sort-icon-left
                  show-empty
                  primary-key="uuid"
-                 no-local-sorting="true"
+                 :no-local-sorting="true"
                  @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">
@@ -228,10 +228,38 @@
           </template>
 
           <template #cell(stock_qty)="data">
-            <span v-if="data.item.stock_qty < data.item.stock_qty_min" v-b-tooltip.hover class="qtyMinWarning"
+            <span v-if="data.item.stock_qty < data.item.stock_qty_min" :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
+                  class="qtyMinWarning"
                   title="Current stock is below minimum stock quantity"
             >{{ data.item.stock_qty }}</span>
-            <span v-else>{{ data.item.stock_qty }}</span>
+            <span v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
+                  title="click to change qty"
+            >{{ data.item.stock_qty }}</span>
+
+            <b-popover
+              :target="popoverStockQtyClass(data.item.id)"
+              triggers="click"
+              placement="auto"
+              container="tablePartsList"
+            >
+              <template #title>
+                Change stock qty
+              </template>
+
+              <div align="center">
+                <b-form-spinbutton v-model="data.item.stock_qty" min="0" />
+                <br>
+                <b-button size="sm" type="submit" variant="primary"
+                          @click.prevent="popoverQtyUpdatePart(data.item.id, data.item.stock_qty)"
+                >
+                  update
+                </b-button>
+              </div>
+            </b-popover>
+          </template>
+
+          <template #cell(stock_qty_min)="data">
+            {{ data.item.stock_qty_min }}
           </template>
 
           <template #cell(footprint)="data">
@@ -306,7 +334,8 @@ export default {
     ],
     sortBy: 'name',
     sortDesc: false,
-    busy: false
+    busy: false,
+    popoverStockQtyShow: false
   }),
   computed: {
     ...mapState({
@@ -379,6 +408,31 @@ export default {
     })
   },
   methods: {
+    popoverQtyUpdatePart (id, qty) {
+      apiService.updatePartialPart(id, { stock_qty: qty })
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part qty'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary'
+          })
+          // eslint-disable-next-line vue/custom-event-name-casing
+          this.$root.$emit('bv::hide::popover', this.popoverStockQtyClass(id))
+        })
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part qty'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Cannot update part qty', error.message)
+        })
+    },
+    popoverStockQtyClass (id) {
+      return `popover-stock-qty-${id}`
+    },
     categoryChanged () {
       this.$store.commit('setCurrentCategory', { id: this.categoryId })
     },
