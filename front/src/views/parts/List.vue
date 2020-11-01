@@ -464,7 +464,7 @@ export default {
             variant: 'primary'
           })
           // eslint-disable-next-line vue/custom-event-name-casing
-          this.$root.$emit('bv::hide::popover', this.popoverStockQtyClass(id))
+          this.$root.$emit('bv::hide::popover', this.popoverStockQtyMinClass(id))
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
