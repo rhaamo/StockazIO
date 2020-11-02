@@ -309,8 +309,9 @@ OAUTH2_PROVIDER = {
     "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https", "urn"],
     # we keep expired tokens for 15 days, for tracability
     "REFRESH_TOKEN_EXPIRE_SECONDS": 3600 * 24 * 15,
+    # 30 days
+    "ACCESS_TOKEN_EXPIRE_SECONDS": 3600 * 24 * 30,
     "AUTHORIZATION_CODE_EXPIRE_SECONDS": 5 * 60,
-    "ACCESS_TOKEN_EXPIRE_SECONDS": 60 * 60 * 10,
     "OAUTH2_SERVER_CLASS": "controllers.oauth.server.OAuth2Server",
     "OAUTH2_BACKEND_CLASS": "controllers.oauth.backend.JsonAndHtml",
 }
