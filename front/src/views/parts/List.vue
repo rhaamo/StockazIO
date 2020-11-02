@@ -241,6 +241,9 @@ export default {
     categoryId () {
       return this.$route.params.categoryId
     },
+    storageId () {
+      return this.$route.query.storage
+    },
     searchQuery () {
       return this.$route.query.q
     }
@@ -359,6 +362,9 @@ export default {
       }
       if (this.searchQuery) {
         params.search = this.searchQuery
+      }
+      if (this.storageId && !this.filter.storage) {
+        params.storage_id = this.storageId
       }
 
       this.busy = true

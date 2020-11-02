@@ -1,6 +1,12 @@
 <template>
   <li>
-    {{ node.name }}<template v-if="node.uuid">
+    <router-link v-if="node.uuid" :to="{ name: 'parts-list', query: { storage: node.id } }">
+      {{ node.name }}
+    </router-link>
+    <template v-else>
+      {{ node.name }}
+    </template>
+    <template v-if="node.uuid">
       &nbsp;<i v-b-tooltip.hover class="fa fa-barcode" aria-hidden="true"
                title="Show QrCode" @click="showBigQrCode(node)"
       />
