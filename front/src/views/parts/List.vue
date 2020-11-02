@@ -39,6 +39,25 @@
                     placeholder="Filter storage" @input="filterStorageChanged"
         />
       </div>
+      <div class="col-lg-1">
+        <b-form-checkbox
+          v-model="filter.qty"
+          value="qty"
+          :unchecked-value="null"
+          inline
+        >
+          Only out of stock
+        </b-form-checkbox>
+        <br>
+        <b-form-checkbox
+          v-model="filter.qty"
+          value="qtyMin"
+          :unchecked-value="null"
+          inline
+        >
+          Only qty < min
+        </b-form-checkbox>
+      </div>
     </div>
 
     <div class="row">
@@ -224,7 +243,8 @@ export default {
     popoverStockQtyShow: false,
     filter: {
       footprint: null,
-      storage: null
+      storage: null,
+      qty: null
     }
   }),
   computed: {
@@ -255,6 +275,15 @@ export default {
     },
     'searchQuery': function () {
       this.fetchParts(1, { search: this.searchQuery })
+    },
+    'filter.qty': function () {
+      if (this.filter.qty === 'qty') {
+        this.fetchParts(1, { qtyType: 'qty' })
+      } else if (this.filter.qty === 'qtyMin') {
+        this.fetchParts(1, { qtyType: 'qtyMin' })
+      } else {
+        this.fetchParts(1, null)
+      }
     }
   },
   created () {
@@ -365,6 +394,14 @@ export default {
       }
       if (this.storageId && !this.filter.storage) {
         params.storage_id = this.storageId
+      }
+      if (this.filter.footprint) {
+        params.footprint_id = this.filter.footprint.id
+      }
+      if (this.filter.qty === 'qty') {
+        params.qtyType = 'qty'
+      } else if (this.filter.qty === 'qtyMin') {
+        params.qtyType = 'qtyMin'
       }
 
       this.busy = true

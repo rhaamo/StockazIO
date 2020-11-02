@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from django.db.models import F
 
 from controllers.part.models import Part, PartUnit
 from controllers.footprints.models import Footprint
@@ -383,6 +384,7 @@ class PartViewSet(ModelViewSet):
         category_id = self.request.query_params.get("category_id", None)
         footprint_id = self.request.query_params.get("footprint_id", None)
         storage_id = self.request.query_params.get("storage_id", None)
+        qty_type = self.request.query_params.get("qtyType", None)
 
         queryset = Part.objects.all()
 
@@ -399,5 +401,11 @@ class PartViewSet(ModelViewSet):
 
         if storage_id:
             queryset = queryset.filter(storage_id=storage_id)
+
+        if qty_type == "qty":
+            queryset = queryset.filter(stock_qty=0)
+
+        if qty_type == "qtyMin":
+            queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
         return queryset
