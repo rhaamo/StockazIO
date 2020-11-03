@@ -23,6 +23,7 @@ from django.shortcuts import redirect
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
+from rest_framework.response import Response
 
 from controllers.part.serializers import PartSerializer, PartCreateSeralizer, PartRetrieveSerializer
 
@@ -358,6 +359,7 @@ class PartViewSet(ModelViewSet):
     ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
     ordering = ["name"]
     pagination_class = PartViewSetPagination
+    lookup_fields = ("id", "uuid")
     # ^starts-with, =exact, @FTS, $regex
     search_fields = [
         "name",
@@ -409,3 +411,17 @@ class PartViewSet(ModelViewSet):
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
         return queryset
+
+    # Allows fetching a part by 'id' or 'uuid'
+    def retrieve(self, request, *args, **kwargs):
+        if kwargs["pk"].isdigit():
+            print("Lookup default")
+            # ID
+            return super(PartViewSet, self).retrieve(self, *args, **kwargs)
+        else:
+            print("Lookup by UUID")
+            # UUID
+            queryset = Part.objects.all()
+            obj = get_object_or_404(queryset, uuid=kwargs["pk"])
+            serializer = PartRetrieveSerializer(obj)
+            return Response(serializer.data)
