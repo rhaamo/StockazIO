@@ -28,10 +28,8 @@ def flatten(*scopes):
 
 SCOPES_BY_ID = {s.id: s for s in flatten(*SCOPES)}
 
-ANONYMOUS_SCOPES = {"read:app", "read:categories", "read:parts"}  # shouldn't have read:parts
+ANONYMOUS_SCOPES = {"read:app", "read:categories"}
 
-COMMON_SCOPES = ANONYMOUS_SCOPES | {"read", "write", "read:check_oauth_token"}
-
-LOGGED_IN_SCOPES = COMMON_SCOPES | {"read", "write"}
+COMMON_SCOPES = ANONYMOUS_SCOPES | {"read", "write", "read:check_oauth_token", "read:parts"}
 
 OAUTH_APP_SCOPES = COMMON_SCOPES

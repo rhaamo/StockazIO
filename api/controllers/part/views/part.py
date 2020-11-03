@@ -433,7 +433,7 @@ class PartViewSet(ModelViewSet):
 
 class PartQuickAutocompletion(views.APIView):
     required_scope = "parts"
-    anonymous_policy = True  # shouldn't be true
+    anonymous_policy = False
 
     def get(self, request, *args, **kwargs):
         obj = get_list_or_404(Part, name=kwargs["name"])
