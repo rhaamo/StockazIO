@@ -1,5 +1,9 @@
 <template>
   <div class="add_part">
+    <ViewModal :part="partDetails" :can-delete="false"
+               @view-part-modal-closed="onPartModalClosed"
+    />
+
     <div class="row">
       <div class="col-lg-9">
         <ol class="breadcrumb">
@@ -28,8 +32,16 @@
                   required
                   placeholder="PIC42ACHU"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  @blur="checkPartExists"
                 />
               </b-form-group>
+              <div v-if="partsExists && partsExists.length">
+                One or more parts exists with this name: <div v-for="p in partsExists" :key="p.uuid">
+                  <a href="#" @click.prevent="viewPartModal(p)">{{ p.name }}</a>&nbsp;
+                </div>
+                <br><br>
+              </div>
+
               <b-form-group id="input-group-description" label="Description" label-for="description">
                 <b-form-input
                   id="description"
@@ -165,12 +177,16 @@
 <script>
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
+import ViewModal from '@/components/parts/view_modal'
 
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, minValue } from 'vuelidate/lib/validators'
 
 export default {
+  components: {
+    ViewModal
+  },
   mixins: [
     validationMixin
   ],
@@ -191,7 +207,9 @@ export default {
       category: null,
       storage_location: null,
       footprint: null
-    }
+    },
+    partsExists: [],
+    partDetails: null
   }),
   validations: {
     form: {
@@ -308,6 +326,24 @@ export default {
       this.form.footprint = null
       this.form.production_remarks = ''
       this.$v.$reset()
+    },
+    checkPartExists (event) {
+      if (this.form.name === '') { return }
+      apiService.partsAutocompleteQuick(this.form.name)
+        .then((res) => {
+          this.partsExists = res.data
+        })
+        .catch((err) => {
+          console.logger.error('Got an error from the autocompleter', err.message)
+          this.partsExists = []
+        })
+    },
+    viewPartModal (part) {
+      this.partDetails = part
+      this.$bvModal.show('modalManage')
+    },
+    onPartModalClosed () {
+      this.partDetails = null
     }
   }
 }
