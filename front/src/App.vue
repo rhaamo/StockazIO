@@ -84,7 +84,7 @@
             <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
               <b-input id="inline-form-input-search" v-model="searchTerm" placeholder="Search" />
               <b-input-group-append>
-                <b-button title="Search">
+                <b-button type="submit" title="Search">
                   Search
                 </b-button>
               </b-input-group-append>
