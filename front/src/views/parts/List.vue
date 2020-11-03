@@ -264,6 +264,9 @@ export default {
     storageId () {
       return this.$route.query.storage
     },
+    storageUuid () {
+      return this.$route.query.storage_uuid
+    },
     searchQuery () {
       return this.$route.query.q
     }
@@ -290,6 +293,8 @@ export default {
     this.$nextTick(() => {
       if (this.searchQuery) {
         this.fetchParts(1, { search: this.searchQuery })
+      } else if (this.storageUuid) {
+        this.fetchParts(1, { storage_uuid: this.storageUuid })
       } else {
         this.fetchParts(1, null)
       }
@@ -394,6 +399,9 @@ export default {
       }
       if (this.storageId && !this.filter.storage) {
         params.storage_id = this.storageId
+      }
+      if (this.storageUuid && !this.filter.storage) {
+        params.storage_uuid = this.storageUuid
       }
       if (this.filter.footprint) {
         params.footprint_id = this.filter.footprint.id

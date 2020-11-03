@@ -386,6 +386,7 @@ class PartViewSet(ModelViewSet):
         category_id = self.request.query_params.get("category_id", None)
         footprint_id = self.request.query_params.get("footprint_id", None)
         storage_id = self.request.query_params.get("storage_id", None)
+        storage_uuid = self.request.query_params.get("storage_uuid", None)
         qty_type = self.request.query_params.get("qtyType", None)
 
         queryset = Part.objects.all()
@@ -403,6 +404,9 @@ class PartViewSet(ModelViewSet):
 
         if storage_id:
             queryset = queryset.filter(storage_id=storage_id)
+
+        if storage_uuid:
+            queryset = queryset.filter(storage__uuid=storage_uuid)
 
         if qty_type == "qty":
             queryset = queryset.filter(stock_qty=0)
