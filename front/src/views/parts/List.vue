@@ -287,6 +287,9 @@ export default {
       } else {
         this.fetchParts(1, null)
       }
+    },
+    'storageUuid': function () {
+      this.fetchParts(1, { storage_uuid: this.storageUuid })
     }
   },
   created () {
