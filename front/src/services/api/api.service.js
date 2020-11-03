@@ -25,6 +25,8 @@ const PARTS_LIST = '/api/v1/parts/'
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
 
+const PARTS_AUTOCOMPLETE_QUICK = (name) => `/api/v1/parts/autocomplete/quick_by_name/${name}`
+
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
 
 const DISTRIBUTORS_URL = '/api/v1/distributors'
@@ -113,6 +115,10 @@ const deletePart = (partId) => {
   return Axios.delete(PARTS_ITEM(partId))
 }
 
+const partsAutocompleteQuick = (name) => {
+  return Axios.get(PARTS_AUTOCOMPLETE_QUICK(name))
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -134,7 +140,8 @@ const apiService = {
   updatePartialPart,
   getParts,
   getPart,
-  deletePart
+  deletePart,
+  partsAutocompleteQuick
 }
 
 export default apiService

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.db.models import F
 
 from controllers.part.models import Part, PartUnit
@@ -22,7 +22,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import filters
+from rest_framework import filters, views
 from rest_framework.response import Response
 
 from controllers.part.serializers import PartSerializer, PartCreateSeralizer, PartRetrieveSerializer
@@ -429,3 +429,13 @@ class PartViewSet(ModelViewSet):
             obj = get_object_or_404(queryset, uuid=kwargs["pk"])
             serializer = PartRetrieveSerializer(obj)
             return Response(serializer.data)
+
+
+class PartQuickAutocompletion(views.APIView):
+    required_scope = "parts"
+    anonymous_policy = True  # shouldn't be true
+
+    def get(self, request, *args, **kwargs):
+        obj = get_list_or_404(Part, name=kwargs["name"])
+        serializer = PartRetrieveSerializer(obj, many=True)
+        return Response(serializer.data, status=200)

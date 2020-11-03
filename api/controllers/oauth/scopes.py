@@ -8,7 +8,7 @@ class Scope:
         return Scope("{}:{}".format(prefix, self.id))
 
 
-BASE_SCOPES = [Scope("app"), Scope("categories")]
+BASE_SCOPES = [Scope("app"), Scope("categories"), Scope("parts")]
 
 SCOPES = [
     Scope("read", children=[s.copy("read") for s in BASE_SCOPES]),
@@ -28,7 +28,7 @@ def flatten(*scopes):
 
 SCOPES_BY_ID = {s.id: s for s in flatten(*SCOPES)}
 
-ANONYMOUS_SCOPES = {"read:app", "read:categories"}
+ANONYMOUS_SCOPES = {"read:app", "read:categories", "read:parts"}  # shouldn't have read:parts
 
 COMMON_SCOPES = ANONYMOUS_SCOPES | {"read", "write", "read:check_oauth_token"}
 
