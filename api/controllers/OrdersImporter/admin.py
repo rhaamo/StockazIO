@@ -21,9 +21,18 @@ class OrderAdmin(CommonAdmin):
 
 
 class ItemAdmin(CommonAdmin):
-    list_display = ("vendor_part_number", "mfr_part_number", "manufacturer", "description", "quantity", "order")
+    list_display = (
+        "vendor_part_number",
+        "mfr_part_number",
+        "manufacturer",
+        "description",
+        "quantity",
+        "order",
+        "ignore",
+    )
     search_fields = ("vendor_part_number", "mfr_part_number", "description")
     list_filter = ("manufacturer", "order")
+    autocomplete_fields = ("category",)
 
 
 admin.site.register(Order, OrderAdmin)

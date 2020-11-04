@@ -1,4 +1,5 @@
 from django.db import models
+from controllers.categories.models import Category
 
 
 class Order(models.Model):
@@ -20,6 +21,6 @@ class Item(models.Model):
     description = models.CharField("description", max_length=255, unique=False, blank=False)
     quantity = models.IntegerField("quantity", default=0)
     order = models.ForeignKey(Order, blank=False, null=False, on_delete=models.CASCADE)
-    # TODO
-    # FK loose to Category
-    # Add a boolean [ignore]
+
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
+    ignore = models.BooleanField("ignore import", default=False)
