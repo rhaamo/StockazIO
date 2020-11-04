@@ -112,6 +112,7 @@ LOCAL_APPS = [
     "controllers.categories",
     "controllers.manufacturer",
     "controllers.distributor",
+    "controllers.OrdersImporter",
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -354,3 +355,8 @@ PART_ATTACHMENT_ALLOWED_TYPES = [
     "application/vnd.oasis.opendocument.text",
     "application/vnd.oasis.opendocument.spreadsheet",
 ]
+
+# Mouser specific
+MOUSER_API_KEY = env("MOUSER_API_KEY", default=None)
+# Usuable values: None, All, Today, Yesterday, ThisWeek, LastWeek, ThisMonth, LastMonth, ThisQuarter, LastQuarter, ThisYear, LastYear or YearToDate
+MOUSER_IMPORT_FILTER = env("MOUSER_IMPORT_FILTER", default="LastMonth")
