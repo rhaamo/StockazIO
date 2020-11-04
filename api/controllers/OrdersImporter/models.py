@@ -3,7 +3,7 @@ from django.db import models
 
 class Order(models.Model):
     IMPORT_STATE_CHOICES = ((0, "Unknown"), (1, "Fetched"), (2, "Imported"), (99, "Error"))
-    date = models.DateField("date")
+    date = models.DateTimeField("date")
     # In case of Mouser, the sales order number is different than the web order, and the one to use is the web order
     order_number = models.CharField("order number", max_length=255, unique=True, blank=False)
     status = models.CharField("status of order", max_length=20, default="UNKNOWN")  # UNKNOWN, COMPLETE, etc.
@@ -20,3 +20,6 @@ class Item(models.Model):
     description = models.CharField("description", max_length=255, unique=False, blank=False)
     quantity = models.IntegerField("quantity", default=0)
     order = models.ForeignKey(Order, blank=False, null=False, on_delete=models.CASCADE)
+    # TODO
+    # FK loose to Category
+    # Add a boolean [ignore]

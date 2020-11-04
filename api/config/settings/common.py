@@ -359,4 +359,4 @@ PART_ATTACHMENT_ALLOWED_TYPES = [
 # Mouser specific
 MOUSER_API_KEY = env("MOUSER_API_KEY", default=None)
 # Usuable values: None, All, Today, Yesterday, ThisWeek, LastWeek, ThisMonth, LastMonth, ThisQuarter, LastQuarter, ThisYear, LastYear or YearToDate
-MOUSER_IMPORT_FILTER = env("MOUSER_IMPORT_FILTER", default="LastMonth")
+MOUSER_IMPORT_FILTER = env("MOUSER_IMPORT_FILTER", default="ThisMonth")
