@@ -96,6 +96,11 @@ export default (store) => {
       component: ViewStorageTree,
       beforeEnter: validateAuthenticatedRoute
     },
+    {
+      path: '/views/orders/importer',
+      name: 'view-orders-importer',
+      beforeEnter: validateAuthenticatedRoute
+    },
     // Public
     {
       path: '/public/parts',

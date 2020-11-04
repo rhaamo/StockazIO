@@ -28,6 +28,10 @@ v1_patterns += [
     url(r"parts/", include(("controllers.part.urls", "part"), namespace="parts")),
     url(r"manufacturers/", include(("controllers.manufacturer.urls", "manufacturer"), namespace="manufacturers")),
     url(r"distributors/", include(("controllers.distributor.urls", "distributor"), namespace="distributors")),
+    url(
+        r"orders_importer/",
+        include(("controllers.OrdersImporter.urls", "orders_importer"), namespace="orders_importer"),
+    ),
 ]
 
 swagger = [

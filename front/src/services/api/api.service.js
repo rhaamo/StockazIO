@@ -31,6 +31,10 @@ const MANUFACTURERS_URL = '/api/v1/manufacturers'
 
 const DISTRIBUTORS_URL = '/api/v1/distributors'
 
+const ORDERS_IMPORTER_LIST = '/api/v1/orders_importer/'
+const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}`
+const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}`
+
 const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL)
 }
@@ -119,6 +123,24 @@ const partsAutocompleteQuick = (name) => {
   return Axios.get(PARTS_AUTOCOMPLETE_QUICK(name))
 }
 
+/* Order Importer */
+
+const getOrderImporter = (id) => {
+  return Axios.get(ORDERS_IMPORTER_DETAILS(id))
+}
+
+const updateOrderImporter = (id, data) => {
+  return Axios.put(ORDERS_IMPORTER_UPDATE(id), data)
+}
+
+const updatePartialOrderImporter = (id, data) => {
+  return Axios.patch(ORDERS_IMPORTER_UPDATE(id), data)
+}
+
+const getOrderImporters = () => {
+  return Axios.get(ORDERS_IMPORTER_LIST)
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -141,7 +163,11 @@ const apiService = {
   getParts,
   getPart,
   deletePart,
-  partsAutocompleteQuick
+  partsAutocompleteQuick,
+  getOrderImporters,
+  getOrderImporter,
+  updateOrderImporter,
+  updatePartialOrderImporter
 }
 
 export default apiService

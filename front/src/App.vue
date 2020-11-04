@@ -46,6 +46,9 @@
               <b-dropdown-item :to="{name: 'view-infos'}">
                 <i class="fa fa-cogs fa-fw" /> Informations
               </b-dropdown-item>
+              <b-dropdown-item :to="{name: 'view-orders-importer'}">
+                <i class="fa fa-shopping-cart fa-fw" /> Orders importer
+              </b-dropdown-item>
               <b-dropdown-item :to="{name: 'view-storage-tree'}">
                 <i class="fa fa-list-alt fa-fw" /> Storage tree
               </b-dropdown-item>
