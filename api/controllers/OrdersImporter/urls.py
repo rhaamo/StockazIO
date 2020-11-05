@@ -17,6 +17,11 @@ urlpatterns = [
         views.CategoryMatcherBatchRematcher.as_view(),
         name="category_matcher_rematch",
     ),
+    path(
+        r"import_to_inventory",
+        views.OrderImporterToInventory.as_view(),
+        name="import_to_inventory",
+    ),
 ]
 
 urlpatterns = router.urls + urlpatterns

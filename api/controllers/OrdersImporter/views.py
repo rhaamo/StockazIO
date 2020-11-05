@@ -90,3 +90,12 @@ class CategoryMatcherBatchRematcher(views.APIView):
         rematch_orders(orders)
 
         return Response({"detail": "done"})
+
+
+class OrderImporterToInventory(views.APIView):
+    required_scope = "parts"
+    anonymous_policy = False
+
+    def get(self, req):
+        # TODO FIXME
+        return Response({"detail": "done"})

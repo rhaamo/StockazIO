@@ -47,10 +47,14 @@
             {{ data.item.items.length }}
           </template>
 
+          <template #cell(import_state)="data">
+            {{ importStateText(data.item.import_state) }}
+          </template>
+
           <template #cell(actions)="data">
-            <b-button
-              variant="info"
-              @click.prevent="importOrder(data.item)"
+            <b-button v-if="data.item.import_state == 1"
+                      variant="info"
+                      @click.prevent="importOrder(data.item)"
             >
               import
             </b-button>
@@ -105,6 +109,15 @@ export default {
     this.fetchOrders()
   },
   methods: {
+    importStateText (state) {
+      let states = {
+        0: 'Unknown',
+        1: 'Fetched',
+        2: 'Imported',
+        99: 'Error'
+      }
+      return states[state]
+    },
     fetchOrders () {
       apiService.getOrdersImporter()
         .then((val) => {
@@ -135,7 +148,25 @@ export default {
         .then((value) => {
           if (value === false) { return }
           if (value === true) {
-            console.log(item)
+            apiService.importOrderToInventory()
+              .then(() => {
+                this.$bvToast.toast(this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Message', 'Success'), {
+                  title: this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Title', 'Import to inventory'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'primary'
+                })
+                this.fetchOrders()
+              })
+              .catch((error) => {
+                this.$bvToast.toast(this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+                  title: this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Title', 'Import to inventory'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger'
+                })
+                logger.default.error('Cannot import to inventory', error.message)
+              })
           }
         })
         .catch((err) => {
