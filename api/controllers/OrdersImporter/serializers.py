@@ -2,12 +2,14 @@ from rest_framework import serializers
 from .models import Order, Item, CategoryMatcher
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.distributor.serializers import DistributorsSerializer
+from controllers.manufacturer.serializers import ManufacturersSerializer
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 
 class ItemSerializer(serializers.ModelSerializer):
     category = SingleCategorySerializer(many=False, read_only=False)
+    manufacturer_db = ManufacturersSerializer(many=False, read_only=True)
 
     class Meta:
         model = Item

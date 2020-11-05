@@ -52,6 +52,13 @@
               />
             </template>
 
+            <template #cell(manufacturer)="data">
+              {{ data.item.manufacturer }}<br>
+              <multiselect v-model="data.item.manufacturer_db" :options="choicesManufacturers"
+                           label="text" track-by="value" placeholder="match known one"
+              />
+            </template>
+
             <template #cell(ignore)="data">
               <b-form-checkbox
                 :id="ignoreIdCbox(data.item.id)"
@@ -103,6 +110,9 @@ export default {
       choicesCategory: state => { return [state.preloads.categories] },
       choicesDistributors: (state) => {
         return state.preloads.distributors.map(x => { return { value: x.id, text: x.name } })
+      },
+      choicesManufacturers: (state) => {
+        return state.preloads.manufacturers.map(x => { return { value: x.id, text: x.name } })
       }
     }),
     rows () {
@@ -145,7 +155,8 @@ export default {
                 quantity: y.quantity,
                 order: y.order,
                 ignore: y.ignore,
-                category: y.category ? y.category.id : null
+                category: y.category ? y.category.id : null,
+                manufacturer_db: y.manufacturer_db ? { value: y.manufacturer_db.id, text: y.manufacturer_db.name } : null
               }
             })
           }
@@ -178,7 +189,8 @@ export default {
       datas.items = datas.items.map(x => {
         return {
           ...x,
-          category: x.category ? x.category : null
+          category: x.category ? x.category : null,
+          manufacturer_db: x.manufacturer_db ? x.manufacturer_db.value : null
         }
       })
       apiService.updateOrderImporter(this.order.id, datas)
