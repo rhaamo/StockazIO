@@ -91,8 +91,12 @@
 
           <template #cell(name)="data">
             <a href="#" @click.prevent="viewPartModal(data.item)">{{ data.item.name }}</a>
+            <br>
             <template v-if="data.item.description">
-              <br>{{ data.item.description }}
+              {{ data.item.category ? data.item.category.name : 'No category' }}: {{ data.item.description }}
+            </template>
+            <template v-else>
+              {{ data.item.category ? data.item.category.name : 'No category' }}
             </template>
           </template>
 
