@@ -395,9 +395,9 @@ class PartViewSet(ModelViewSet):
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
         else:
-            category = self.request.query_params.get("category_id", None)
+            category = Category.objects.get(id=category_id).get_descendants(include_self=True)
             if category is not None:
-                queryset = queryset.filter(category_id=category)
+                queryset = queryset.filter(category__in=category)
 
         if footprint_id:
             queryset = queryset.filter(footprint_id=footprint_id)
