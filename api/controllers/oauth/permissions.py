@@ -74,6 +74,9 @@ class ScopePermission(permissions.BasePermission):
             required_scope = scope_config[action]
         else:
             # we have a dict with explicit viewset actions / scopes
+            if not view.action:
+                print("`view.action` is None")
+                return False
             required_scope = scope_config[view.action]
 
         # Fetch token

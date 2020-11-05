@@ -9,6 +9,9 @@ import ViewInfos from '../views/view/Infos'
 import ViewStorageTree from '../views/view/StorageTree'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
+import OrdersImporter from '../views/view/OrdersImporter'
+import OrdersImporterDetails from '../views/view/OrdersImporterDetails'
+import OrdersCategoryMatchers from '../views/view/OrdersCategoryMatchers'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -96,9 +99,25 @@ export default (store) => {
       component: ViewStorageTree,
       beforeEnter: validateAuthenticatedRoute
     },
+    // OrdersImporter
     {
-      path: '/views/orders/importer',
-      name: 'view-orders-importer',
+      // this one needs to be before orders-importer-details for props reasons
+      path: '/orders/importer/category_matcher',
+      name: 'orders-importer-category-matcher',
+      component: OrdersCategoryMatchers,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/orders/importer',
+      name: 'orders-importer',
+      component: OrdersImporter,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/orders/importer/:id',
+      name: 'orders-importer-details',
+      component: OrdersImporterDetails,
+      props: true,
       beforeEnter: validateAuthenticatedRoute
     },
     // Public

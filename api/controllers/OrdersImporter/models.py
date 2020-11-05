@@ -24,3 +24,8 @@ class Item(models.Model):
 
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     ignore = models.BooleanField("ignore import", default=False)
+
+
+class CategoryMatcher(models.Model):
+    regexp = models.CharField("regexp", max_length=255, blank=False, unique=False)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.CASCADE)

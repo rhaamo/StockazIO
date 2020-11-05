@@ -30,6 +30,6 @@ SCOPES_BY_ID = {s.id: s for s in flatten(*SCOPES)}
 
 ANONYMOUS_SCOPES = {"read:app", "read:categories"}
 
-COMMON_SCOPES = ANONYMOUS_SCOPES | {"read", "write", "read:check_oauth_token", "read:parts"}
+COMMON_SCOPES = ANONYMOUS_SCOPES | {"read", "write", "read:check_oauth_token", "read:parts", "write:parts"}
 
 OAUTH_APP_SCOPES = COMMON_SCOPES

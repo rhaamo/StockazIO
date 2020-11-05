@@ -1,6 +1,6 @@
 from django.contrib import admin
 from config.admin import CommonAdmin
-from .models import Order, Item
+from .models import Order, Item, CategoryMatcher
 
 
 class ItemInLine(admin.TabularInline):
@@ -35,5 +35,11 @@ class ItemAdmin(CommonAdmin):
     autocomplete_fields = ("category",)
 
 
+class CategoryMatcherAdmin(CommonAdmin):
+    list_display = ("regexp",)
+    autocomplete_fields = ("category",)
+
+
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(CategoryMatcher, CategoryMatcherAdmin)

@@ -16,6 +16,7 @@
     "fork-awesome": "^1.1.7",
     "glob-all": "^3.2.1",
     "js-logger": "^1.6.0",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "qrcode": "^1.4.4",
     "sass-loader": "^10.0.4",

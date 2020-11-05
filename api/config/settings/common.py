@@ -299,6 +299,7 @@ PAGINATION = {
     "PART_UNITS": 10,
     "PARAMETERS_UNITS": 10,
     "PARTS": 10,
+    "ORDERS_IMPORTER": 10,
 }
 
 # OAuth configuration

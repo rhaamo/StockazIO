@@ -35,6 +35,9 @@ const ORDERS_IMPORTER_LIST = '/api/v1/orders_importer/'
 const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}`
 const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}`
 
+const CATEGORIES_MATCHERS_LIST = '/api/v1/orders_importer/category_matcher/'
+const CATEGORIES_MATCHERS_BATCH_UPDATE = '/api/v1/orders_importer/category_matcher/batch_update'
+
 const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL)
 }
@@ -137,8 +140,16 @@ const updatePartialOrderImporter = (id, data) => {
   return Axios.patch(ORDERS_IMPORTER_UPDATE(id), data)
 }
 
-const getOrderImporters = () => {
+const getOrdersImporter = () => {
   return Axios.get(ORDERS_IMPORTER_LIST)
+}
+
+const getCategoryMatchers = () => {
+  return Axios.get(CATEGORIES_MATCHERS_LIST)
+}
+
+const updateCategoryMatchers = (data) => {
+  return Axios.patch(CATEGORIES_MATCHERS_BATCH_UPDATE, data)
 }
 
 const apiService = {
@@ -164,10 +175,12 @@ const apiService = {
   getPart,
   deletePart,
   partsAutocompleteQuick,
-  getOrderImporters,
+  getOrdersImporter,
   getOrderImporter,
   updateOrderImporter,
-  updatePartialOrderImporter
+  updatePartialOrderImporter,
+  getCategoryMatchers,
+  updateCategoryMatchers
 }
 
 export default apiService
