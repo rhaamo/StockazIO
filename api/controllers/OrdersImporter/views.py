@@ -6,6 +6,8 @@ from .serializers import OrderSerializer, CategoryMatcherSerializer
 from .models import CategoryMatcher, Order
 from controllers.categories.models import Category
 
+import re
+
 
 class OrderViewSet(ModelViewSet):
     anonymous_policy = False
@@ -73,3 +75,33 @@ class CategoryMatcherBatchUpdater(views.APIView):
             new_items.append(db_item)
         serializer = CategoryMatcherSerializer(new_items, many=True)
         return Response(serializer.data, status=200)
+
+
+class CategoryMatcherBatchRematcher(views.APIView):
+    required_scope = "parts"
+    anonymous_policy = False
+
+    def get(self, req):
+        # fetch orders
+        orders = Order.objects.all().filter(import_state=1).prefetch_related("items")
+        if not orders:
+            return Response({"details": "ok"}, 200)
+
+        # compile our regexes
+        matchers = []
+        for cm in CategoryMatcher.objects.all():
+            matcher = {"regexp": re.compile(cm.regexp, re.IGNORECASE), "string": cm.regexp, "category": cm.category}
+            matchers.append(matcher)
+
+        # rematch
+        for order in orders:
+            for item in order.items.all():
+                matched = False
+                for m in matchers:
+                    if not matched:
+                        if re.match(m["regexp"], item.description):
+                            # print('matched', m['string'], 'with', item.description)
+                            item.category = m["category"]
+                            item.save()
+                            matched = True
+        return Response({"detail": "done"})

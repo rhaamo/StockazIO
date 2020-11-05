@@ -24,11 +24,11 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(WritableNestedModelSerializer):
-    item_set = ItemSerializer(many=True)
+    items = ItemSerializer(many=True)
 
     class Meta:
         model = Order
-        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "item_set")
+        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items")
 
 
 class CategoryMatcherSerializer(serializers.ModelSerializer):

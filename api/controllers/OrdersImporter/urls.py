@@ -11,7 +11,12 @@ urlpatterns = [
         r"category_matcher/batch_update",
         views.CategoryMatcherBatchUpdater.as_view(),
         name="category_matcher_batch_update",
-    )
+    ),
+    path(
+        r"category_matcher/rematch",
+        views.CategoryMatcherBatchRematcher.as_view(),
+        name="category_matcher_rematch",
+    ),
 ]
 
 urlpatterns = router.urls + urlpatterns

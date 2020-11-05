@@ -37,6 +37,7 @@ const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}`
 
 const CATEGORIES_MATCHERS_LIST = '/api/v1/orders_importer/category_matcher/'
 const CATEGORIES_MATCHERS_BATCH_UPDATE = '/api/v1/orders_importer/category_matcher/batch_update'
+const CATEGORIES_MATCHERS_REMATCH = '/api/v1/orders_importer/category_matcher/rematch'
 
 const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL)
@@ -152,6 +153,10 @@ const updateCategoryMatchers = (data) => {
   return Axios.patch(CATEGORIES_MATCHERS_BATCH_UPDATE, data)
 }
 
+const rematchOrderItems = () => {
+  return Axios.get(CATEGORIES_MATCHERS_REMATCH)
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -180,7 +185,8 @@ const apiService = {
   updateOrderImporter,
   updatePartialOrderImporter,
   getCategoryMatchers,
-  updateCategoryMatchers
+  updateCategoryMatchers,
+  rematchOrderItems
 }
 
 export default apiService

@@ -34,7 +34,7 @@
         <b-col md="10">
           <b-table
             id="tableOrderItems"
-            :items="order.item_set"
+            :items="order.items"
             :fields="fields"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
@@ -100,7 +100,7 @@ export default {
       choicesCategory: state => { return [state.preloads.categories] }
     }),
     rows () {
-      return this.order && this.order.item_set ? this.order.item_set.length : 0
+      return this.order && this.order.items ? this.order.items.length : 0
     },
     orderId () {
       return this.$route.params.id
@@ -121,7 +121,27 @@ export default {
     fetchOrder (orderId) {
       apiService.getOrderImporter(orderId)
         .then((val) => {
-          this.order = val.data
+          this.order = {
+            id: val.data.id,
+            date: val.data.date,
+            order_number: val.data.order_number,
+            status: val.data.status,
+            vendor: val.data.vendor,
+            import_state: val.data.import_state,
+            items: val.data.items.map(y => {
+              return {
+                id: y.id,
+                vendor_part_number: y.vendor_part_number,
+                mfr_part_number: y.mfr_part_number,
+                manufacturer: y.manufacturer,
+                description: y.description,
+                quantity: y.quantity,
+                order: y.order,
+                ignore: y.ignore,
+                category: y.category ? y.category.id : null
+              }
+            })
+          }
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('OrdersImporterDetails/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -149,7 +169,25 @@ export default {
       console.log('nya~')
     },
     rematchCategories () {
-      console.log('aaa')
+      apiService.rematchOrderItems()
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('RematchOrderItems/Add/Toast/Success/Title', 'Updating categories'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary'
+          })
+          this.fetchOrder(this.orderId)
+        })
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('RematchOrderItems/Add/Toast/Error/Title', 'Updating categories'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Cannot rematch items', error.message)
+        })
     }
   }
 }

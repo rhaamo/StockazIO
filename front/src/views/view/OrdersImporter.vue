@@ -44,7 +44,7 @@
           </template>
 
           <template #cell(items)="data">
-            {{ data.item.item_set.length }}
+            {{ data.item.items.length }}
           </template>
 
           <template #cell(actions)="data">

@@ -20,10 +20,10 @@
             update
           </b-button>
         </b-col>
-        <b-col md="5">
+        <b-col md="8">
           <div v-for="(_, i) in matchers" :key="i">
             <b-row>
-              <b-col>
+              <b-col md="7">
                 <b-form-group :id="pmId('regexp', i)" label="Regexp compatible string*" :label-for="pmId('regexp', i)">
                   <b-input-group prepend="/" append="/i">
                     <b-form-input
@@ -45,10 +45,10 @@
                 </b-form-group>
                 </b-form-group>
               </b-col>
-              <b-col>
+              <b-col md="1">
                 <br><br>
                 <div @click.prevent="deletePm(i)">
-                  <i class="fa fa-minus-square" aria-hidden="true" /> remove matcher
+                  <i class="fa fa-minus-square" aria-hidden="true" /> remove
                 </div>
               </b-col>
             </b-row>

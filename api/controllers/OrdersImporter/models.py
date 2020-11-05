@@ -20,7 +20,7 @@ class Item(models.Model):
     manufacturer = models.CharField("manufacturer", max_length=255, unique=False, blank=False)
     description = models.CharField("description", max_length=255, unique=False, blank=False)
     quantity = models.IntegerField("quantity", default=0)
-    order = models.ForeignKey(Order, blank=False, null=False, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, blank=False, null=False, on_delete=models.CASCADE, related_name="items")
 
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     ignore = models.BooleanField("ignore import", default=False)
