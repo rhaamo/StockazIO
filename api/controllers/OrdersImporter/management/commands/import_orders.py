@@ -2,11 +2,15 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from libs.mouser.mouser import Mouser
 from controllers.OrdersImporter.models import Order, Item
+from controllers.OrdersImporter.utils import rematch_orders
 
 
 def import_from_mouser(api_key, filter):
     print(f"Importing {filter} from Mouser")
     squeak = Mouser(api_key=api_key)
+
+    db_orders = []
+
     # Get all orders matching the filter
     orders = squeak.order_history_by_date_filter(filter)
     if orders["NumberOfOrders"] == 0:
@@ -54,6 +58,10 @@ def import_from_mouser(api_key, filter):
         # Update order to Fetched
         db_order.import_state = 1
         db_order.save()
+        db_orders.append(db_order)
+
+    # (re)match orders
+    rematch_orders(db_orders)
 
 
 class Command(BaseCommand):
