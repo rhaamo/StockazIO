@@ -146,8 +146,8 @@ const getOrdersImporter = () => {
   return Axios.get(ORDERS_IMPORTER_LIST)
 }
 
-const importOrderToInventory = () => {
-  return Axios.get(ORDERS_IMPORTER_TO_INVENTORY)
+const importOrderToInventory = (id) => {
+  return Axios.post(ORDERS_IMPORTER_TO_INVENTORY, { 'id': id })
 }
 
 const getCategoryMatchers = () => {

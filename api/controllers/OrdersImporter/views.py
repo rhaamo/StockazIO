@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import views
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from .serializers import OrderSerializer, CategoryMatcherSerializer
 from .models import CategoryMatcher, Order
@@ -96,6 +97,18 @@ class OrderImporterToInventory(views.APIView):
     required_scope = "parts"
     anonymous_policy = False
 
-    def get(self, req):
-        # TODO FIXME
+    def post(self, req):
+        if "id" not in req.data:
+            return Response({"detail": "id is missing"}, 503)
+
+        order = get_object_or_404(Order, id=req.data["id"])
+
+        if order.import_state != 1:  # refuse if import state isn't 1/fetched
+            return Response({"detail": f"order import state {order.import_state} isn't valid for importing"})
+
+        for item in order.items:
+            # Try to see if we already have an item in db
+            pass
+
+        # final, set import_state to 2
         return Response({"detail": "done"})

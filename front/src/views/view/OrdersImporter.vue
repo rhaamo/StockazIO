@@ -148,7 +148,7 @@ export default {
         .then((value) => {
           if (value === false) { return }
           if (value === true) {
-            apiService.importOrderToInventory()
+            apiService.importOrderToInventory(item.id)
               .then(() => {
                 this.$bvToast.toast(this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Message', 'Success'), {
                   title: this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Title', 'Import to inventory'),
