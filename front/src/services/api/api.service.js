@@ -33,7 +33,7 @@ const DISTRIBUTORS_URL = '/api/v1/distributors'
 
 const ORDERS_IMPORTER_LIST = '/api/v1/orders_importer/'
 const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}`
-const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}`
+const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}/`
 const ORDERS_IMPORTER_TO_INVENTORY = '/api/v1/orders_importer/import_to_inventory'
 
 const CATEGORIES_MATCHERS_LIST = '/api/v1/orders_importer/category_matcher/'

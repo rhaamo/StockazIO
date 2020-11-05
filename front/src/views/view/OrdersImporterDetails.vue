@@ -20,6 +20,9 @@
           <b>Number:</b> {{ order.order_number }}<br>
           <b>Items:</b> {{ rows }}<br>
           <b>From:</b> {{ order.vendor }}<br>
+          <multiselect v-model="order.vendor_db" :options="choicesDistributors"
+                       label="text" track-by="value" placeholder="match known one"
+          /><br>
           <b>Import:</b> {{ importStateText(order.import_state) }}<br>
           <br>
           <b-button variant="primary" @click.prevent="rematchCategories">
@@ -97,7 +100,10 @@ export default {
   computed: {
     ...mapState({
       serverSettings: state => state.server.settings,
-      choicesCategory: state => { return [state.preloads.categories] }
+      choicesCategory: state => { return [state.preloads.categories] },
+      choicesDistributors: (state) => {
+        return state.preloads.distributors.map(x => { return { value: x.id, text: x.name } })
+      }
     }),
     rows () {
       return this.order && this.order.items ? this.order.items.length : 0
@@ -127,6 +133,7 @@ export default {
             order_number: val.data.order_number,
             status: val.data.status,
             vendor: val.data.vendor,
+            vendor_db: val.data.vendor_db ? { value: val.data.vendor_db.id, text: val.data.vendor_db.name } : null,
             import_state: val.data.import_state,
             items: val.data.items.map(y => {
               return {
@@ -166,13 +173,39 @@ export default {
       return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
     },
     updateOrder () {
-      console.log('nya~')
+      let datas = this.order
+      datas.vendor_db = datas.vendor_db ? datas.vendor_db.value : null
+      datas.items = datas.items.map(x => {
+        return {
+          ...x,
+          category: x.category ? x.category : null
+        }
+      })
+      apiService.updateOrderImporter(this.order.id, datas)
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Title', 'Updating order'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary'
+          })
+          this.fetchOrder(this.orderId)
+        })
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Title', 'Updating order'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Cannot rematch items', error.message)
+        })
     },
     rematchCategories () {
       apiService.rematchOrderItems()
         .then(() => {
           this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('RematchOrderItems/Add/Toast/Success/Title', 'Updating categories'),
+            title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating categories'),
             autoHideDelay: 5000,
             appendToast: true,
             variant: 'primary'
@@ -181,7 +214,7 @@ export default {
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('RematchOrderItems/Add/Toast/Error/Title', 'Updating categories'),
+            title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating categories'),
             autoHideDelay: 5000,
             appendToast: true,
             variant: 'danger'

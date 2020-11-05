@@ -3,7 +3,7 @@ from rest_framework import views
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
-from .serializers import OrderSerializer, CategoryMatcherSerializer
+from .serializers import OrderSerializer, CategoryMatcherSerializer, OrderCreateSerializer
 from .models import CategoryMatcher, Order
 from controllers.categories.models import Category
 from .utils import rematch_orders
@@ -19,9 +19,14 @@ class OrderViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    serializer_class = OrderSerializer
     ordering_fields = ["date", "order_number", "status", "vendor", "import_state"]
     ordering = ["date"]
+
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return OrderSerializer
+        else:
+            return OrderCreateSerializer
 
     def get_queryset(self):
         queryset = Order.objects.all()
