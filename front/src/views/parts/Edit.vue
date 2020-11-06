@@ -235,7 +235,7 @@
                       <b-col>
                         <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer*:" :label-for="pManufId('manufacturer', i)">
                           <multiselect v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
-                                       label="text" track-by="value"
+                                       label="text" track-by="value" :allow-empty="true"
                           />
                         </b-form-group>
                       </b-col>
@@ -453,8 +453,8 @@ export default {
               id: x.id,
               sku: x.sku,
               manufacturer: {
-                text: x.manufacturer.name,
-                value: x.manufacturer.id
+                text: x.manufacturer ? x.manufacturer.name : null,
+                value: x.manufacturer ? x.manufacturer.id : null
               }
             }
           })
@@ -481,7 +481,7 @@ export default {
             appendToast: true,
             variant: 'danger'
           })
-          logger.default.error('Error with part deletion', err.message)
+          logger.default.error('Error with fetching part', err.message)
         })
     },
     deletePart (part) {
