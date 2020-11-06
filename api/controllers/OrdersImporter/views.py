@@ -174,6 +174,9 @@ class OrderImporterToInventory(views.APIView):
 
                 part.save()
                 stats["created"] += 1
+
         # finally, set import_state to 2
+        order.import_state = 2
+        order.save()
 
         return Response({"detail": "done", "stats": stats})
