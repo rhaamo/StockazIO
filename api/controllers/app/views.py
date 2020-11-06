@@ -15,6 +15,7 @@ class AppSettings(views.APIView):
             "version": __version__,
             "part_attachment_allowed_types": settings.PART_ATTACHMENT_ALLOWED_TYPES,
             "pagination": settings.PAGINATION,
+            "parts_uncategorized_count": Part.objects.filter(category_id__isnull=True).values("id").count(),
         }
         return Response(data, status=200)
 

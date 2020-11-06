@@ -18,7 +18,8 @@ export default {
       partAttachmentAllowedTypes: [],
       backendVersion: '',
       registrationEnabled: false
-    }
+    },
+    parts_uncategorized_count: 0
   },
   mutations: {
     serverUrl: (state, value) => {
@@ -36,6 +37,9 @@ export default {
     settings: (state, value) => {
       logger.default.info('Merging settings with', value)
       _.merge(state.settings, value)
+    },
+    parts_uncategorized_count: (state, value) => {
+      state.parts_uncategorized_count = value
     }
   },
   getters: {
@@ -60,6 +64,7 @@ export default {
         sections.backendVersion = response.data.version
         sections.registrationEnabled = false // TODO
         commit('settings', sections)
+        commit('parts_uncategorized_count', response.data.parts_uncategorized_count)
       }, response => {
         logger.default.error('Error while fetching settings', response.data)
       })
