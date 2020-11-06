@@ -149,8 +149,9 @@ export default {
           if (value === false) { return }
           if (value === true) {
             apiService.importOrderToInventory(item.id)
-              .then(() => {
-                this.$bvToast.toast(this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Message', 'Success'), {
+              .then((val) => {
+                const msg = this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Message', 'Success, created: %{created}, updated: %{updated}, total: %{total}.')
+                this.$bvToast.toast(this.$gettextInterpolate(msg, { created: val.data.stats.created, updated: val.data.stats.updated, total: val.data.stats.created + val.data.stats.updated }), {
                   title: this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Title', 'Import to inventory'),
                   autoHideDelay: 5000,
                   appendToast: true,
