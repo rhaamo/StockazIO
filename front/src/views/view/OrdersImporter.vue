@@ -157,6 +157,7 @@ export default {
                   variant: 'primary'
                 })
                 this.fetchOrders()
+                this.$store.dispatch('preloadSidebar')
               })
               .catch((error) => {
                 this.$bvToast.toast(this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Message', 'An error occured, please try again later'), {

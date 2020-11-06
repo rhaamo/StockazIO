@@ -125,13 +125,33 @@ class OrderImporterToInventory(views.APIView):
                 part = None
 
             if part:
-                # TODO/FIXME add a manufacturer sku if not; add a distributor sku if not
                 part.stock_qty += item.quantity
                 if not part.category:
                     part.category = item.category
                 if not part.description:
                     part.description = item.description
                 part.save()
+
+                try:
+                    manuf_sku = part.manufacturers_sku.get(sku=item.mfr_part_number, manufacturer=item.manufacturer_db)
+                except PartManufacturer.DoesNotExist:
+                    manuf_sku = PartManufacturer(sku=item.mfr_part_number, manufacturer=item.manufacturer_db, part=part)
+                    manuf_sku.save()
+
+                if not manuf_sku:
+                    part.manufacturers_sku.add(manuf_sku)
+
+                try:
+                    distri_sku = part.distributors_sku.get(sku=item.vendor_part_number, distributor=order.vendor_db)
+                except DistributorSku.DoesNotExist:
+                    distri_sku = DistributorSku(sku=item.vendor_part_number, distributor=order.vendor_db, part=part)
+                    distri_sku.save()
+
+                if not distri_sku:
+                    part.distributors_sku.add(distri_sku)
+
+                part.save()
+
             else:
                 part = Part(
                     name=item.mfr_part_number,
@@ -149,7 +169,6 @@ class OrderImporterToInventory(views.APIView):
                 distri_sku.save()
                 part.distributors_sku.add(distri_sku)
 
-                # TODO/FIXME add a manufacturer sku; add a distributor sku
                 part.save()
         # finally, set import_state to 2
 
