@@ -114,6 +114,8 @@ class OrderImporterToInventory(views.APIView):
         if order.import_state != 1:  # refuse if import state isn't 1/fetched
             return Response({"detail": f"order import state {order.import_state} isn't valid for importing"})
 
+        stats = {"created": 0, "updated": 0}
+
         for item in order.items.all():
             if item.ignore:
                 continue
@@ -151,6 +153,7 @@ class OrderImporterToInventory(views.APIView):
                     part.distributors_sku.add(distri_sku)
 
                 part.save()
+                stats["updated"] += 1
 
             else:
                 part = Part(
@@ -170,6 +173,7 @@ class OrderImporterToInventory(views.APIView):
                 part.distributors_sku.add(distri_sku)
 
                 part.save()
+                stats["created"] += 1
         # finally, set import_state to 2
 
-        return Response({"detail": "done"})
+        return Response({"detail": "done", "stats": stats})
