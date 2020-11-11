@@ -331,8 +331,8 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        "rest_framework.authentication.BasicAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.BasicAuthentication",  # disable thoses or we will have
+        # "rest_framework.authentication.SessionAuthentication",  # some annoying CSRF issues
     ),
     "DEFAULT_PERMISSION_CLASSES": ("controllers.oauth.permissions.ScopePermission",),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
