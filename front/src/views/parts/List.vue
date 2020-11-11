@@ -31,6 +31,15 @@
                      group-values="footprints" group-label="category" placeholder="Filter footprint"
                      label="name" track-by="id" @input="filterFootprintChanged"
         />
+        <b-form-checkbox
+          v-model="filter.footprint"
+          :value="{id: 0}"
+          :unchecked-value="null"
+          inline
+          @input="filterFootprintChanged"
+        >
+          No footprint
+        </b-form-checkbox>
       </div>
       <div class="col-lg-1">
         <treeselect v-model="filter.storage" :multiple="false"
@@ -38,6 +47,15 @@
                     clearable :normalizer="storagesNormalizer" no-children-text
                     placeholder="Filter storage" @input="filterStorageChanged"
         />
+        <b-form-checkbox
+          v-model="filter.storage"
+          :value="0"
+          :unchecked-value="null"
+          inline
+          @input="filterStorageChanged"
+        >
+          No storage
+        </b-form-checkbox>
       </div>
       <div class="col-lg-1">
         <b-form-checkbox
@@ -500,7 +518,7 @@ export default {
       }
     },
     filterStorageChanged (value, id) {
-      if (value) {
+      if (value || value === 0) {
         this.fetchParts(1, { storage_id: value })
       } else {
         this.fetchParts(1, null)

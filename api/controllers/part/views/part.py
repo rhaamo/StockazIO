@@ -398,10 +398,14 @@ class PartViewSet(ModelViewSet):
             if category is not None:
                 queryset = queryset.filter(category__in=category)
 
-        if footprint_id:
+        if footprint_id in ["0", 0]:
+            queryset = queryset.filter(footprint_id__isnull=True)
+        elif footprint_id:
             queryset = queryset.filter(footprint_id=footprint_id)
 
-        if storage_id:
+        if storage_id in ["0", 0]:
+            queryset = queryset.filter(storage_id__isnull=True)
+        elif storage_id:
             queryset = queryset.filter(storage_id=storage_id)
 
         if storage_uuid:
