@@ -11,11 +11,18 @@ class AppSettings(views.APIView):
     anonymous_policy = True
 
     def get(self, request, *args, **kwargs):
+        if self.request.auth:
+            parts_uncategorized_count = Part.objects.filter(category_id__isnull=True).values("id").count()
+        else:
+            parts_uncategorized_count = (
+                Part.objects.filter(category_id__isnull=True, private=False).values("id").count()
+            )
+
         data = {
             "version": __version__,
             "part_attachment_allowed_types": settings.PART_ATTACHMENT_ALLOWED_TYPES,
             "pagination": settings.PAGINATION,
-            "parts_uncategorized_count": Part.objects.filter(category_id__isnull=True).values("id").count(),
+            "parts_uncategorized_count": parts_uncategorized_count,
         }
         return Response(data, status=200)
 

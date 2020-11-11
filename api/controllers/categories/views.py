@@ -1,7 +1,7 @@
 from .serializers import CategorySerializer
 from rest_framework.viewsets import ModelViewSet
 from .models import Category
-from django.db.models import Count
+from django.db.models import Count, Sum, Case, When, IntegerField
 
 # not sure about anonymous access for categories list
 # maybe set the to-sell and public parts without categories sidebar
@@ -21,6 +21,11 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        queryset = Category.objects.all().annotate(parts_count=Count("part"))
+        if self.request.auth:
+            queryset = Category.objects.all().annotate(parts_count=Count("part"))
+        else:
+            queryset = Category.objects.all().annotate(
+                parts_count=Sum(Case(When(part__private=False, then=1), default=0, output_field=IntegerField()))
+            )
         queryset = queryset.get_cached_trees()
         return queryset
