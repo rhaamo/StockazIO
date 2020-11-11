@@ -91,3 +91,5 @@ api/config/settings/dev.py
 api/config/settings/development.py
 api/config/settings/prod.py
 api/config/settings/production.py
+
+api/test-reports
