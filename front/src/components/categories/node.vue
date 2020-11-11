@@ -22,7 +22,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Node',
-  props: ['node'],
+  props: {
+    'node': Object
+  },
   computed: {
     ...mapState({ currentCategory: state => { return state.preloads.currentCategory } })
   },

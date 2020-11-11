@@ -18,7 +18,9 @@ export default {
   components: {
     node
   },
-  props: ['treeData'],
+  props: {
+    'treeData': Object
+  },
   computed: {
     ...mapState({
       serverInfos: state => state.server

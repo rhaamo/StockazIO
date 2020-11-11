@@ -19,7 +19,7 @@
       <div class="col-lg-2">
         <ul>
           <li v-for="storage in storages" :key="storage.id">
-            <node :node="storage" /></node>
+            <node :node="storage" />
           </li>
         </ul>
       </div>

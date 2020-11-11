@@ -43,7 +43,6 @@
                               placeholder="Film resistors ? MCUS ?"
                   />
                 </b-form-group>
-                </b-form-group>
               </b-col>
               <b-col md="1">
                 <br><br>

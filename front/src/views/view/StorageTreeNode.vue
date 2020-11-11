@@ -27,7 +27,9 @@ import QRCode from 'qrcode'
 
 export default {
   name: 'Node',
-  props: ['node'],
+  props: {
+    'node': Object
+  },
   methods: {
     qrCodeStorage (uuid) {
       return `stockazio://storageLocation/${uuid}`
