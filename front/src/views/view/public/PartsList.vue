@@ -126,9 +126,7 @@
                  title="Current stock is below minimum stock quantity or exhausted"
               />
             </span>
-            <span v-else v-b-tooltip.hover
-                  title="click to change qty"
-            >{{ data.item.stock_qty }}</span>
+            <span v-else>{{ data.item.stock_qty }}</span>
           </template>
 
           <template #cell(stock_qty_min)="data">
