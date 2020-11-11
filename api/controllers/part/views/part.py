@@ -388,6 +388,7 @@ class PartViewSet(ModelViewSet):
         storage_id = self.request.query_params.get("storage_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
         qty_type = self.request.query_params.get("qtyType", None)
+        sellable = self.request.query_params.get("sellable", None)
 
         queryset = Part.objects.all()
 
@@ -413,6 +414,9 @@ class PartViewSet(ModelViewSet):
 
         if qty_type == "qtyMin":
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
+
+        if sellable:
+            queryset = queryset.filter(can_be_sold=True)
 
         return queryset
 

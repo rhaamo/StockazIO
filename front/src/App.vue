@@ -52,9 +52,6 @@
               <b-dropdown-item :to="{name: 'view-storage-tree'}">
                 <i class="fa fa-list-alt fa-fw" /> Storage tree
               </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'public-parts-selling'}">
-                <i class="fa fa-money fa-fw" /> Parts to sell
-              </b-dropdown-item>
               <b-dropdown-item :to="{name: 'public-parts'}">
                 <i class="fa fa-list-alt fa-fw" /> Public parts
               </b-dropdown-item>

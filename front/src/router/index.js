@@ -12,6 +12,7 @@ import ParametersUnitsList from '../views/ParametersUnits'
 import OrdersImporter from '../views/view/OrdersImporter'
 import OrdersImporterDetails from '../views/view/OrdersImporterDetails'
 import OrdersCategoryMatchers from '../views/view/OrdersCategoryMatchers'
+import PublicPartsList from '../views/view/public/PartsList'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -123,11 +124,9 @@ export default (store) => {
     // Public
     {
       path: '/public/parts',
-      name: 'public-parts'
-    },
-    {
-      path: '/public/parts/selling',
-      name: 'public-parts-selling'
+      name: 'public-parts',
+      component: PublicPartsList,
+      props: true
     },
     // Other
     {
