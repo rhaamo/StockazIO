@@ -1,12 +1,12 @@
 <template>
   <li>
     <template v-if="node.parts_count >0">
-      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: node.id, category: node } }" :title="node.name">
+      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: node.id, category: node } }" :title="node.name">
         <b>{{ node.name }} <small>({{ node.parts_count }})</small></b>
       </router-link>
     </template>
     <template v-else>
-      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: node.id, category: node } }" :title="node.name">
+      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: node.id, category: node } }" :title="node.name">
         {{ node.name }} <small>({{ node.parts_count }})</small>
       </router-link>
     </template>
@@ -26,7 +26,9 @@ export default {
     'node': Object
   },
   computed: {
-    ...mapState({ currentCategory: state => { return state.preloads.currentCategory } })
+    ...mapState({ currentCategory: state => { return state.preloads.currentCategory } }),
+    currentUser () { return this.$store.state.user.currentUser && this.$store.state.oauth.loggedIn },
+    categoriesRouteName () { return this.currentUser ? 'parts-category-list' : 'public-parts-category-list' }
   },
   methods: {
     categoryFolderClass (category) {

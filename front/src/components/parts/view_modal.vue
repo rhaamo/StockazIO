@@ -118,7 +118,7 @@
                 <tbody v-if="partDetailsDistributors && partDetailsDistributors.length">
                   <tr v-for="dist in partDetailsDistributors" :key="dist.id">
                     <td>{{ dist.sku }}</td>
-                    <td>{{ dist.distributor.name }}</td>
+                    <td>{{ dist.distributor ? dist.distributor.name : '-' }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -134,7 +134,7 @@
                 <tbody v-if="partDetailsManufacturers && partDetailsManufacturers.length">
                   <tr v-for="manuf in partDetailsManufacturers" :key="manuf.id">
                     <td>{{ manuf.sku }}</td>
-                    <td>{{ manuf.manufacturer.name }}</td>
+                    <td>{{ manuf.manufacturer ? manuf.manufacturer.name : '-' }}</td>
                   </tr>
                 </tbody>
               </table>

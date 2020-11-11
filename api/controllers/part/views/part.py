@@ -373,13 +373,11 @@ class PartViewSet(ModelViewSet):
     ]
 
     def get_serializer_class(self):
-        print(f"action: {self.action}")
         if self.action == "list":
             return PartSerializer
         elif self.action == "retrieve":
             return PartRetrieveSerializer
         else:
-            print("using default serializer")
             return PartCreateSeralizer
 
     def get_queryset(self):
@@ -423,11 +421,9 @@ class PartViewSet(ModelViewSet):
     # Allows fetching a part by 'id' or 'uuid'
     def retrieve(self, request, *args, **kwargs):
         if kwargs["pk"].isdigit():
-            print("Lookup default")
             # ID
             return super(PartViewSet, self).retrieve(self, *args, **kwargs)
         else:
-            print("Lookup by UUID")
             # UUID
             queryset = Part.objects.all()
             obj = get_object_or_404(queryset, uuid=kwargs["pk"])
@@ -443,3 +439,95 @@ class PartQuickAutocompletion(views.APIView):
         obj = get_list_or_404(Part, name=kwargs["name"])
         serializer = PartRetrieveSerializer(obj, many=True)
         return Response(serializer.data, status=200)
+
+
+class PartsPublic(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": None,
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": None,
+    }
+
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
+    ordering = ["name"]
+    pagination_class = PartViewSetPagination
+    lookup_fields = ("id", "uuid")
+    # ^starts-with, =exact, @FTS, $regex
+    search_fields = [
+        "name",
+        "description",
+        "comment",
+        "production_remarks",
+        "status",
+        "condition",
+        "internal_part_number",
+        "uuid",
+    ]
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PartSerializer
+        elif self.action == "retrieve":
+            return PartRetrieveSerializer
+        else:
+            return PartSerializer
+
+    def get_queryset(self):
+        category_id = self.request.query_params.get("category_id", None)
+        footprint_id = self.request.query_params.get("footprint_id", None)
+        storage_id = self.request.query_params.get("storage_id", None)
+        storage_uuid = self.request.query_params.get("storage_uuid", None)
+        qty_type = self.request.query_params.get("qtyType", None)
+        sellable = self.request.query_params.get("sellable", None)
+
+        queryset = Part.objects.all()
+        # fixed field for public parts
+        queryset = queryset.filter(private=False)
+
+        # category TODO/FIXME: recursivity ?
+        if category_id in ["0", 0]:
+            queryset = queryset.filter(category_id__isnull=True)
+        elif category_id:
+            category = Category.objects.get(id=category_id).get_descendants(include_self=True)
+            if category is not None:
+                queryset = queryset.filter(category__in=category)
+
+        if footprint_id:
+            queryset = queryset.filter(footprint_id=footprint_id)
+
+        if storage_id:
+            queryset = queryset.filter(storage_id=storage_id)
+
+        if storage_uuid:
+            queryset = queryset.filter(storage__uuid=storage_uuid)
+
+        if qty_type == "qty":
+            queryset = queryset.filter(stock_qty=0)
+
+        if qty_type == "qtyMin":
+            queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
+
+        if sellable:
+            queryset = queryset.filter(can_be_sold=True)
+
+        return queryset
+
+    # Allows fetching a part by 'id' or 'uuid'
+    def retrieve(self, request, *args, **kwargs):
+        if kwargs["pk"].isdigit():
+            # ID
+            return super(PartsPublic, self).retrieve(self, *args, **kwargs)
+        else:
+            # UUID
+            queryset = Part.objects.all()
+            # fixed field for public parts
+            queryset = queryset.filter(private=False)
+
+            obj = get_object_or_404(queryset, uuid=kwargs["pk"])
+            serializer = PartRetrieveSerializer(obj)
+            return Response(serializer.data)

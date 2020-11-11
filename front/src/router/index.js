@@ -128,6 +128,13 @@ export default (store) => {
       component: PublicPartsList,
       props: true
     },
+    {
+      path: '/public/parts/category/:categoryId',
+      name: 'public-parts-category-list',
+      component: PublicPartsList,
+      props: true
+    },
+
     // Other
     {
       path: '/about',

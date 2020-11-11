@@ -98,6 +98,8 @@ class ScopePermission(permissions.BasePermission):
             allowed = should_allow(required_scope=required_scope, request_scopes=user_scopes)
             if not allowed:
                 print(f"DENIED, no token; required_scopes={required_scope!r}, user_scopes={user_scopes!r}")
+            else:
+                print(f"ALLOWED, no token; required_scopes={required_scope!r}, user_scopes={user_scopes!r}")
             return allowed
 
     def has_permission_token(self, token, required_scope):

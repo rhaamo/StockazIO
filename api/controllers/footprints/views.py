@@ -123,7 +123,7 @@ class FootprintViewSet(ModelViewSet):
         "destroy": "write",
         "update": "write",
         "partial_update": "write",
-        "list": "read",
+        "list": None,
     }
     serializer_class = FootprintCategorySerializer
 

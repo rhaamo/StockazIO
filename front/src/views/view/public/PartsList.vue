@@ -326,7 +326,7 @@ export default {
       }
 
       this.busy = true
-      apiService.getParts(params)
+      apiService.getPublicParts(params)
         .then((res) => {
           this.parts = res.data.results
           this.partsCount = res.data.count
@@ -336,7 +336,7 @@ export default {
         })
     },
     viewPartModal (part) {
-      apiService.getPart(part.id)
+      apiService.getPublicPart(part.id)
         .then((val) => {
           this.partDetails = val.data
           this.$bvModal.show('modalManage')

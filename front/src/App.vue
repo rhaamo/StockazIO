@@ -92,18 +92,18 @@
           </b-form>
         </template>
         <template v-else>
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" :to="{}">Login</a>
-            </li>
-          </ul>
+          <b-navbar-nav class="mr-auto">
+            <b-nav-item :to="{name: 'login_form'}">
+              Login
+            </b-nav-item>
+          </b-navbar-nav>
         </template>
       </div>
     </b-navbar>
 
-    <div v-if="currentUser" class="container-fluid">
+    <div v-if="shouldDisplayCategories" class="container-fluid">
       <div class="row">
-        <nav v-if="currentUser" class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav v-if="shouldDisplayCategories" class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <CategoryTree :tree-data="categories" />
           </div>
@@ -141,11 +141,21 @@ export default {
   computed: {
     backendVersion () { return this.$store.state.server.settings.backendVersion },
     currentUser () { return this.$store.state.user.currentUser && this.$store.state.oauth.loggedIn },
-    categories () { return this.$store.state.preloads.categories }
+    categories () { return this.$store.state.preloads.categories },
+    shouldDisplayCategories () {
+      if (this.currentUser) { return true }
+      if (this.$route.name === 'public-parts' || this.$route.name === 'public-parts-category-list') { return true }
+      return false
+    }
   },
   created () {
     if (this.$store.state.oauth.loggedIn) {
       this.$store.dispatch('preloadStuff')
+    } else {
+      // Only preload stuff needed for unauthenticated views
+      this.$store.dispatch('preloadSidebar')
+      this.$store.dispatch('preloadFootprints')
+      this.$store.dispatch('preloadStorages')
     }
   },
   methods: {

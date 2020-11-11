@@ -1,7 +1,7 @@
 <template>
   <ul class="cat-list">
     <li>
-      <i class="fa fa-folder-o" /> <router-link :to="{ name: 'parts-category-list', params: { categoryId: 0, category: {} } }" title="Uncategorized parts">
+      <i class="fa fa-folder-o" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: 0, category: {} } }" title="Uncategorized parts">
         Uncategorized parts <small>({{ serverInfos.parts_uncategorized_count }})</small>
       </router-link>
     </li>
@@ -24,7 +24,9 @@ export default {
   computed: {
     ...mapState({
       serverInfos: state => state.server
-    })
+    }),
+    currentUser () { return this.$store.state.user.currentUser && this.$store.state.oauth.loggedIn },
+    categoriesRouteName () { return this.currentUser ? 'parts-category-list' : 'public-parts-category-list' }
   }
 }
 </script>

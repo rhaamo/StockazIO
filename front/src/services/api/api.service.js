@@ -25,6 +25,9 @@ const PARTS_LIST = '/api/v1/parts/'
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
 
+const PARTS_PUBLIC_LIST = '/api/v1/parts/public/'
+const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}`
+
 const PARTS_AUTOCOMPLETE_QUICK = (name) => `/api/v1/parts/autocomplete/quick_by_name/${name}`
 
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
@@ -128,6 +131,14 @@ const partsAutocompleteQuick = (name) => {
   return Axios.get(PARTS_AUTOCOMPLETE_QUICK(name))
 }
 
+const getPublicParts = (params) => {
+  return Axios.get(PARTS_PUBLIC_LIST, { params: params })
+}
+
+const getPublicPart = (partId) => {
+  return Axios.get(PARTS_PUBLIC_ITEM(partId))
+}
+
 /* Order Importer */
 
 const getOrderImporter = (id) => {
@@ -185,6 +196,8 @@ const apiService = {
   getPart,
   deletePart,
   partsAutocompleteQuick,
+  getPublicParts,
+  getPublicPart,
   getOrdersImporter,
   getOrderImporter,
   importOrderToInventory,

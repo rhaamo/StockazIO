@@ -12,7 +12,10 @@ urlpatterns = [
         r"autocomplete/quick_by_name/<str:name>",
         views.part.PartQuickAutocompletion.as_view(),
         name="parts_autocompletion",
-    )
+    ),
+    path(r"public/", views.part.PartsPublic.as_view({"get": "list"}), name="parts_public"),
+    path(r"public/<str:pk>/", views.part.PartsPublic.as_view({"get": "retrieve"}), name="parts_public_pk"),
 ]
 
-urlpatterns = router.urls + urlpatterns
+# NOTE: router.urls has to be last or it will override the urlpatterns in the lookup order
+urlpatterns = urlpatterns + router.urls
