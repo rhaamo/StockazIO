@@ -3,9 +3,9 @@ from .models import FootprintCategory, Footprint
 
 
 class FootprintSerializer(serializers.ModelSerializer):
-    picture_mini = serializers.ReadOnlyField(source="picture_mini.url")
-    picture_small = serializers.ReadOnlyField(source="picture_small.url")
-    picture_medium = serializers.ReadOnlyField(source="picture_medium.url")
+    picture_mini = serializers.ImageField(source="picture_mini.url")
+    picture_small = serializers.ImageField(source="picture_small.url")
+    picture_medium = serializers.ImageField(source="picture_medium.url")
 
     class Meta:
         model = Footprint
