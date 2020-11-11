@@ -96,6 +96,9 @@
             <b-nav-item :to="{name: 'login_form'}">
               Login
             </b-nav-item>
+            <b-nav-item :to="{name: 'public-parts'}">
+              Public parts list
+            </b-nav-item>
           </b-navbar-nav>
         </template>
       </div>
