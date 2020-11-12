@@ -12,7 +12,7 @@
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.21.0",
     "bootstrap-vue": "^2.19.0",
-    "core-js": "^3.6.5",
+    "core-js": "^3.7.0",
     "fork-awesome": "^1.1.7",
     "glob-all": "^3.2.1",
     "js-logger": "^1.6.0",
