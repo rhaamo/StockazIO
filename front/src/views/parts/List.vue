@@ -73,7 +73,7 @@
           :unchecked-value="null"
           inline
         >
-          Only qty < min
+          Only qty &lt; min
         </b-form-checkbox>
       </div>
     </div>
