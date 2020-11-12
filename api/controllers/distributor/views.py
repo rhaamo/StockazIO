@@ -3,9 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.viewsets import ModelViewSet
 
 from .forms import DistributorForm
 from .models import Distributor
+from .serializers import DistributorsSerializer
 
 
 @login_required
@@ -48,3 +50,20 @@ def distributor_update(request, pk, template_name="distributors/distributor_upda
         messages.success(request, "Distributor successfully updated.")
         return redirect("distributor_list")
     return render(request, template_name, {"form": form, "object": distributor})
+
+
+class DistributorsViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
+    serializer_class = DistributorsSerializer
+
+    def get_queryset(self):
+        queryset = Distributor.objects.all()
+        return queryset

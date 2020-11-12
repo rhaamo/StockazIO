@@ -32,7 +32,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name_plural": "storage categories",},
+            options={
+                "verbose_name_plural": "storage categories",
+            },
         ),
         migrations.CreateModel(
             name="StorageLocation",

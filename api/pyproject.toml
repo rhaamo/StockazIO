@@ -8,6 +8,8 @@ exclude = '''
   | \__pycache__
   | venv
   | front
+  | controllers/part/static/django-dynamic-formset
+  | controllers/part/static/qrcode-generator
 )/
 '''
 skip-numeric-underscore-normalization = true

@@ -16,6 +16,8 @@ class Migration(migrations.Migration):
             options={"ordering": ("name",), "verbose_name": "Part parameter", "verbose_name_plural": "Part parameters"},
         ),
         migrations.AddField(
-            model_name="part", name="uuid", field=models.UUIDField(default=uuid.uuid4, editable=False),
+            model_name="part",
+            name="uuid",
+            field=models.UUIDField(default=uuid.uuid4, editable=False),
         ),
     ]

@@ -1,0 +1,34 @@
+{
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modueles": true,
+    "**/__pycache__": true,
+    "**/*.egg-info": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "python.pythonPath": "${workspaceFolder}/venv/bin/python",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "restructuredtext.confPath": "${workspaceFolder}/docs",
+  "eslint.workingDirectories": [
+    "./front"
+  ],
+  "vetur.languageFeatures.codeActions": true,
+  "vetur.experimental.templateInterpolationService": true,
+  "vetur.validation.template": false
+}

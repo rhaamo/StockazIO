@@ -28,6 +28,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name_plural": "categories", "unique_together": {("slug", "parent")},},
+            options={
+                "verbose_name_plural": "categories",
+                "unique_together": {("slug", "parent")},
+            },
         ),
     ]

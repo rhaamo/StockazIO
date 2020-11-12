@@ -51,5 +51,7 @@ class FootprintForm(ModelForm):
             Field("name"),
             Field("description"),
             Field("picture"),
-            FormActions(Submit("footprint_create", "Save changes", css_class="btn-primary"),),
+            FormActions(
+                Submit("footprint_create", "Save changes", css_class="btn-primary"),
+            ),
         )

@@ -1,0 +1,15 @@
+# .tmuxinator.yml
+
+name: dev
+root: .
+
+windows:
+  - backend:
+      - export DJANGO_SETTINGS_MODULE=config.settings.local
+      - source venv/bin/activate
+      - cd api
+      - python3 manage.py runserver 0.0.0.0:8000
+  - frontend:
+      - cd front
+      - VUE_APP_SERVER_URL=http://127.0.0.1:8000 yarn serve
+

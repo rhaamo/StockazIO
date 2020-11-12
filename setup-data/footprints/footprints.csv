@@ -64,3 +64,4 @@ SIP;SIP;4,8,9,10,14,24;;yes;{cat};{name}-{size};{size}-Lead Single In-Line Packa
 SOJ;SOJ;16,18,24,28,32,36,40;;yes;{cat};{name}-{size};Small Outline J-Lead Package;Ic-package-SOJ.png;;{description}
 SIP;HexDIP;4;;yes;{cat};{name}-{size};Small In-Line Package;Ic-package-HEXDIP.png;;{description}
 QIL;QIL;;;no;{cat};{name};Quad In-Line Package;qip-component-package-photo.jpg;SVG needed;{description}
+SMC;SMC;01005 (0402 Metric),0201 (0603 Metric), 0402 (1005 Metric),0603 (1608 Metric),0805 (2012 Metric),1008 (2520 Metric),1206 (3216 Metric),1210 (3225 Metric),1806 (4516 Metric),1812 (4532 Metric),2010 (5025 Metric),2512 (6332 Metric);"";yes;{cat};{name}-{size};Surface Mount Component;"";"";{description}

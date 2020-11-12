@@ -1,24 +1,31 @@
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: "/api"
+- directory: "/api"
   schedule:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target-branch: "api"
-- package-ecosystem: npm
-  directory: "/front"
+  target_branch: "api"
+  package_manager: "python"
+- directory: "/front"
   schedule:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target-branch: "api"
-  
-- package-ecosystem: pip
-  directory: "/api"
+  target_branch: "api"
+  package_manager: "javascript"
+
+- directory: "/api"
   schedule:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target-branch: "master"
+  target_branch: "master"
+  package_manager: "python"
+- directory: "/front"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  target_branch: "master"
+  package_manager: "javascript"
