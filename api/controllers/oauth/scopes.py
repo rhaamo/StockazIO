@@ -13,10 +13,11 @@ BASE_SCOPES = [Scope("app"), Scope("categories"), Scope("parts")]
 SCOPES = [
     Scope("read", children=[s.copy("read") for s in BASE_SCOPES]),
     Scope("write", children=[s.copy("write") for s in BASE_SCOPES]),
-    #    Scope("read"),
-    #    Scope("write"),
-    #    Scope("read:check_oauth_token"),
-    #    Scope("admin"),
+    # TODO FIXME why are thoses four ones required here ?
+    Scope("read"),
+    Scope("write"),
+    Scope("read:check_oauth_token"),
+    Scope("admin"),
 ]
 
 
