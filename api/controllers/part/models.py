@@ -41,7 +41,7 @@ class Part(models.Model):
         _("stock quantity"), default=1, unique=False, blank=False, help_text=_("How many do you have now ?")
     )
     part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.SET_NULL)
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     storage = models.ForeignKey(StorageLocation, blank=True, null=True, on_delete=models.PROTECT)
     footprint = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.PROTECT)
     comment = models.CharField(
