@@ -100,6 +100,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "django_extensions",
     "drf_yasg",
+    "silk",
 ]
 
 LOCAL_APPS = [
@@ -133,6 +134,7 @@ MIDDLEWARE = ADDITIONAL_MIDDLEWARES_BEFORE + [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "silk.middleware.SilkyMiddleware",
 ]
 
 # FIXTURE CONFIGURATION

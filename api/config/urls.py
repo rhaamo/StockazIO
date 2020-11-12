@@ -257,3 +257,4 @@ if settings.DEBUG:
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns = [url(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
