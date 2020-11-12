@@ -359,6 +359,9 @@ PART_ATTACHMENT_ALLOWED_TYPES = [
     "application/vnd.oasis.opendocument.spreadsheet",
 ]
 
+# https://github.com/jazzband/django-silk/issues/449
+SILKY_INTERCEPT_FUNC = lambda r: DEBUG  # noqa: E731
+
 # Mouser specific
 MOUSER_API_KEY = env("MOUSER_API_KEY", default=None)
 # Usuable values: None, All, Today, Yesterday, ThisWeek, LastWeek, ThisMonth, LastMonth, ThisQuarter, LastQuarter, ThisYear, LastYear or YearToDate

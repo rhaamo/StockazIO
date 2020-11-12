@@ -250,6 +250,9 @@ admin.site.site_header = "StockazIO Inventory"
 admin.site.site_title = "StockazIO Admin Portal"
 admin.site.index_title = "Welcome to StockazIO"
 
+# we don't really have choice, silk really wants to have them...
+urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
+
 if settings.DEBUG:
     print("Debug URLs enabled")
     import debug_toolbar
@@ -257,4 +260,3 @@ if settings.DEBUG:
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns = [url(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
-    urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
