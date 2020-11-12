@@ -16,6 +16,9 @@ class Order(models.Model):
         "import state", default=0, choices=IMPORT_STATE_CHOICES
     )  # 0=unknown, 1=fetched, 2=imported, 99=error
 
+    class Meta(object):
+        ordering = ["-date"]
+
 
 class Item(models.Model):
     vendor_part_number = models.CharField("vendor part number", max_length=255, unique=False, blank=False)

@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import views
+from rest_framework import views, filters
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
@@ -23,8 +23,9 @@ class OrderViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
+    filter_backends = [filters.OrderingFilter]
     ordering_fields = ["date", "order_number", "status", "vendor", "import_state"]
-    ordering = ["date"]
+    ordering = ["-date"]
 
     def get_serializer_class(self):
         if self.action in ["list"]:
