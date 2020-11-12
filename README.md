@@ -2,20 +2,41 @@
 
 Manage your inventory of electronic stuff
 
+# V2 Caveats
+
+The following is not implemented and needs to be accessed through django admin `/admin`:
+- Edition of:
+  - Footprints
+  - Manufacturers
+  - Distributors
+  - Storages
+
+# Requirements
+- Python 3.8
+- A pretty decent NodeJS + Yarn
+- Nginx
+- PostgreSQL
+
 # Install
 
+We assume in here you are installing under the `stockazio` user with default home directory `/home/stockazio`, like by doing:
 ```
-git clone https://github.com/rhaamo/StockazIO/
-cd StockazIO
-git submodule init
-git submodule update
-python3 -m virtualenv -p python3 venv
+useradd -m -s /bin/bash stockazio
+```
+
+## API Backend
+
+```shell
+sudo su - stockazio
+git clone --recursive https://github.com/rhaamo/StockazIO/ stockazio
+cd stockazio
+python3.8 -m virtualenv -p python3.8 venv
 source venv/bin/activate
 pip install --requirement api/requirements.txt
 # For production environment
 cp deploy/env.prod.sample .env
 $EDITOR .env
-# For local development see bellow
+# For local development see the other section
 cd api
 python manage.py collectstatic
 # edit config, uses a gunicorn, whatever
@@ -23,6 +44,21 @@ python manage.py collectstatic
 # don't forget to run migrations and then
 python manage.py seeds_database
 ```
+
+You can uses `deploy/stockazio-server.service` for your systemd service. 
+
+## Frontend
+```shell
+sudo su - stockazio
+cd stockazio/front
+yarn install
+yarn build
+```
+
+## Nginx
+See the file `deploy/stockazio-nginx.conf` for a sample, don't forget you need all the `location /xxx` as the example to make it works.
+
+## Development
 
 For local development, you always needs to export `DJANGO_SETTINGS_MODULE=config.settings.local` to have the right config:
 ```
@@ -79,3 +115,10 @@ You then will have to navigate to 'View - Order importer' in the web ui to manag
     - qip-component-package-photo.jpg [here](https://blog.mbedded.ninja/pcb-design/component-packages/qip-component-package/#&gid=1&pid=1)
 - Manufacturers
     - \*shrug*
+
+# Contact
+- Fedivers: dashie at pleroma.otter.sh
+- Email: stockazio at squeaky dot tech
+
+# License
+AGPL v3
