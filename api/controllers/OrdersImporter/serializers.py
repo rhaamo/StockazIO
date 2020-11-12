@@ -53,6 +53,18 @@ class OrderSerializer(WritableNestedModelSerializer):
         fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items", "vendor_db")
 
 
+class OrderListSerializer(WritableNestedModelSerializer):
+    vendor_db = DistributorsSerializer(many=False, read_only=True)
+    items_count = serializers.SerializerMethodField()
+
+    def get_items_count(self, obj):
+        return obj.items_count
+
+    class Meta:
+        model = Order
+        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items_count", "vendor_db")
+
+
 class OrderCreateSerializer(WritableNestedModelSerializer):
     items = ItemCreateSerializer(many=True, read_only=False)
 

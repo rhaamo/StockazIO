@@ -43,8 +43,8 @@
             </router-link>
           </template>
 
-          <template #cell(items)="data">
-            {{ data.item.items.length }}
+          <template #cell(items_count)="data">
+            {{ data.item.items_count }}
           </template>
 
           <template #cell(import_state)="data">
@@ -81,7 +81,7 @@ export default {
     fields: [
       { key: 'date', label: 'Date', sortable: true },
       { key: 'order_number', label: 'Order Number' },
-      { key: 'items', label: 'Items qty' },
+      { key: 'items_count', label: 'Items qty' },
       { key: 'status', label: 'Status (vendor)', sortable: true },
       { key: 'vendor', label: 'Vendor', sortable: true },
       { key: 'import_state', label: 'Import state', sortable: true },

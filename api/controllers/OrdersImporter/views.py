@@ -2,8 +2,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import views
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 
-from .serializers import OrderSerializer, CategoryMatcherSerializer, OrderCreateSerializer
+from .serializers import OrderSerializer, CategoryMatcherSerializer, OrderCreateSerializer, OrderListSerializer
 from .models import CategoryMatcher, Order
 from controllers.categories.models import Category
 from controllers.part.models import Part
@@ -26,13 +27,15 @@ class OrderViewSet(ModelViewSet):
     ordering = ["date"]
 
     def get_serializer_class(self):
-        if self.action in ["list", "retrieve"]:
+        if self.action in ["list"]:
+            return OrderListSerializer
+        elif self.action in ["retrieve"]:
             return OrderSerializer
         else:
             return OrderCreateSerializer
 
     def get_queryset(self):
-        queryset = Order.objects.all()
+        queryset = Order.objects.all().annotate(items_count=Count("items"))
         return queryset
 
 
