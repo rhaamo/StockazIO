@@ -16,7 +16,9 @@
               data-target="#modalQrCode"
             />
           </span>
-          <i :class="partDetailsPrivate" /> {{ form.name }}
+          <i :class="partDetailsPrivate" /> <router-link v-b-tooltip.hover title="Back to part details" :to="{ name: 'parts-details', params: { partId: part.id } }">
+            <i class="fa fa-angle-double-left" aria-hidden="true" />
+          </router-link> {{ form.name }}
         </h3>
       </div>
       <div class="col-lg-3">

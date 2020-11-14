@@ -151,12 +151,16 @@
                 <tr>
                   <th>SKU</th>
                   <th>Manufacturer</th>
+                  <th />
                 </tr>
               </thead>
               <tbody v-if="part.manufacturers_sku && part.manufacturers_sku.length">
                 <tr v-for="manuf in part.manufacturers_sku" :key="manuf.id">
                   <td>{{ manuf.sku }}</td>
                   <td>{{ manuf.manufacturer ? manuf.manufacturer.name : '-' }}</td>
+                  <td>
+                    <img v-if="manuf.manufacturer.logo" :src="manuf.manufacturer.logo_mini" style="max-width:100px;">
+                  </td>
                 </tr>
               </tbody>
             </table>
