@@ -65,10 +65,19 @@ class PartParameterCreateSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "description", "value", "unit")
 
 
+class PartAttachmentSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+
+    class Meta:
+        model = PartAttachment
+        fields = ("id", "description", "file")
+
+
 class PartCreateSeralizer(WritableNestedModelSerializer):
     part_parameters_value = PartParameterCreateSerializer(many=True)
     manufacturers_sku = PartManufacturerCreateSerializer(many=True)
     distributors_sku = DistributorSkuCreateSerializer(many=True)
+    part_attachments = PartAttachmentSerializer(many=True, required=False)
 
     class Meta:
         model = Part
@@ -94,13 +103,8 @@ class PartCreateSeralizer(WritableNestedModelSerializer):
             "part_parameters_value",
             "manufacturers_sku",
             "distributors_sku",
+            "part_attachments",
         )
-
-
-class PartAttachmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PartAttachment
-        fields = ("id", "description", "file")
 
 
 class PartRetrieveSerializer(serializers.ModelSerializer):
