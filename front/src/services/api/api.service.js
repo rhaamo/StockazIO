@@ -33,6 +33,9 @@ const PARTS_AUTOCOMPLETE_QUICK = (name) => `/api/v1/parts/autocomplete/quick_by_
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
 
 const DISTRIBUTORS_URL = '/api/v1/distributors'
+const DISTRIBUTORS_CREATE = '/api/v1/distributors/'
+const DISTRIBUTORS_DELETE = (id) => `/api/v1/distributors/${id}`
+const DISTRIBUTORS_UPDATE = (id) => `/api/v1/distributors/${id}/`
 
 const ORDERS_IMPORTER_LIST = '/api/v1/orders_importer/'
 const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}`
@@ -43,25 +46,36 @@ const CATEGORIES_MATCHERS_LIST = '/api/v1/orders_importer/category_matcher/'
 const CATEGORIES_MATCHERS_BATCH_UPDATE = '/api/v1/orders_importer/category_matcher/batch_update'
 const CATEGORIES_MATCHERS_REMATCH = '/api/v1/orders_importer/category_matcher/rematch'
 
+// Auth
 const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL)
 }
+
+// Categories
 
 const getCategories = () => {
   return Axios.get(CATEGORIES_URL)
 }
 
+// Informations
+
 const getInformations = () => {
   return Axios.get(APP_INFORMATIONS_URL)
 }
+
+// Footprints
 
 const getFootprints = () => {
   return Axios.get(FOOTPRINTS_URL)
 }
 
+// Storages
+
 const getStorages = () => {
   return Axios.get(STORAGES_URL)
 }
+
+// Parameters units
 
 const getParametersUnits = () => {
   return Axios.get(PARAMETERS_UNITS_URL)
@@ -79,6 +93,8 @@ const updateParametersUnits = (id, data) => {
   return Axios.put(PARAMETERS_UNITS_UPDATE(id), data)
 }
 
+// Part units
+
 const getPartUnits = () => {
   return Axios.get(PART_UNITS_URL)
 }
@@ -95,13 +111,31 @@ const updatePartUnit = (partUnitId, data) => {
   return Axios.put(PART_UNITS_UPDATE(partUnitId), data)
 }
 
+// Manufacturers
+
 const getManufacturers = () => {
   return Axios.get(MANUFACTURERS_URL)
 }
 
+// Distributors
+
 const getDistributors = () => {
   return Axios.get(DISTRIBUTORS_URL)
 }
+
+const createDistributor = (data) => {
+  return Axios.post(DISTRIBUTORS_CREATE, data)
+}
+
+const updateDistributor = (id, data) => {
+  return Axios.put(DISTRIBUTORS_UPDATE(id), data)
+}
+
+const deleteDistributor = (id) => {
+  return Axios.delete(DISTRIBUTORS_DELETE(id))
+}
+
+// Part
 
 const createPart = (data) => {
   return Axios.post(PARTS_CREATE, data)
@@ -139,7 +173,7 @@ const getPublicPart = (partId) => {
   return Axios.get(PARTS_PUBLIC_ITEM(partId))
 }
 
-/* Order Importer */
+// Order Importer
 
 const getOrderImporter = (id) => {
   return Axios.get(ORDERS_IMPORTER_DETAILS(id))
@@ -189,6 +223,9 @@ const apiService = {
   updatePartUnit,
   getManufacturers,
   getDistributors,
+  createDistributor,
+  updateDistributor,
+  deleteDistributor,
   createPart,
   updatePart,
   updatePartialPart,

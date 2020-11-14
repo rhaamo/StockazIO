@@ -8,7 +8,6 @@ The following is not implemented and needs to be accessed through django admin `
 - Edition of:
   - Footprints
   - Manufacturers
-  - Distributors
   - Storages
 
 # Requirements

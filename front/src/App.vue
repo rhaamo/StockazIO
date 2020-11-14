@@ -25,7 +25,7 @@
               <b-dropdown-item :to="{}">
                 <i class="fa fa-home fa-fw" /> Manufacturers
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{name: 'distributors-list'}">
                 <i class="fa fa-car fa-fw" /> Distributors
               </b-dropdown-item>
               <b-dropdown-item :to="{}">
