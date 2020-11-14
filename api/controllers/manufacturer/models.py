@@ -14,21 +14,7 @@ class Manufacturer(models.Model):
     phone = models.CharField(_("phone"), max_length=255, blank=True, unique=False, help_text=_("Phone"))
     fax = models.CharField(_("fax"), max_length=255, blank=True, unique=False, help_text=_("FAX"))
 
-    class Meta(object):
-        ordering = ("name",)
-        verbose_name = _("Manufacturer")
-        verbose_name_plural = _("Manufacturers")
-
-    def __str__(self):
-        return self.name
-
-
-class ManufacturerLogo(models.Model):
-    manufacturer = models.ForeignKey(
-        Manufacturer, related_name="logos", blank=False, null=False, on_delete=models.PROTECT
-    )
-
-    logo = models.ImageField(upload_to="manufacturers/", verbose_name=_("Manufacturer logo"), blank=False, null=False)
+    logo = models.ImageField(upload_to="manufacturers/", verbose_name=_("Manufacturer logo"), blank=True, null=True)
     logo_mini = ImageSpecField(
         source="logo", processors=[ResizeToFit(50, 50, upscale=False)], format="JPEG", options={"quality": 80}
     )
@@ -40,9 +26,12 @@ class ManufacturerLogo(models.Model):
     )
 
     class Meta(object):
-        ordering = ("id",)
-        verbose_name = _("Manufacturer Logo")
-        verbose_name_plural = _("Manufacturer Logos")
+        ordering = ("name",)
+        verbose_name = _("Manufacturer")
+        verbose_name_plural = _("Manufacturers")
+
+    def __str__(self):
+        return self.name
 
 
 class PartManufacturer(models.Model):

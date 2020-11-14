@@ -114,8 +114,8 @@
           striped
         >
           <template #cell(logo)="data">
-            <template v-if="data.item.logos && data.item.logos.length">
-              <img :src="data.item.logos[0].logo_mini" style="max-width: 100px;">
+            <template v-if="data.item.logo">
+              <img :src="data.item.logo_mini" style="max-width: 100px;">
             </template>
           </template>
 

@@ -9,7 +9,7 @@ import csv
 from controllers.part.models import PartUnit, ParametersUnit
 from controllers.footprints.models import Footprint, FootprintCategory
 from controllers.categories.models import Category
-from controllers.manufacturer.models import Manufacturer, ManufacturerLogo
+from controllers.manufacturer.models import Manufacturer
 from controllers.distributor.models import Distributor
 
 
@@ -190,13 +190,11 @@ def seed_manufacturers():
             man = Manufacturer.objects.get(name=name)
         except Manufacturer.DoesNotExist:
             man = Manufacturer(name=name)
-            man.save()
 
-            for logo in manufacturers[name]:
-                f = ManufacturerLogo(manufacturer=man)
-                fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
-                f.logo.save(path.basename(logo), fi, save=False)
-                f.save()
+            logo = manufacturers[name][0]  # take first
+            fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
+            man.logo.save(path.basename(logo), fi, save=False)
+            man.save()
 
         except Manufacturer.MultipleObjectsReturned:
             print(f"WARNING: Multiple entries returned for {name!r}, skipping")

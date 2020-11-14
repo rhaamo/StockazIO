@@ -15,7 +15,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db import transaction
 from controllers.distributor.forms import DistributorSkuFormSet
-from controllers.manufacturer.forms import PartManufacturerFormSet
 from django.utils.decorators import method_decorator
 from .common import query_reverse
 from django.http import JsonResponse
@@ -214,11 +213,9 @@ class PartCreate(SuccessMessageMixin, CreateView):
         if self.request.POST:
             data["part_parameters"] = PartParameterFormSet(self.request.POST)
             data["distributors_sku"] = DistributorSkuFormSet(self.request.POST)
-            data["part_manufacturers"] = PartManufacturerFormSet(self.request.POST)
         else:
             data["part_parameters"] = PartParameterFormSet()
             data["distributors_sku"] = DistributorSkuFormSet()
-            data["part_manufacturers"] = PartManufacturerFormSet()
         return data
 
     def form_valid(self, form):
@@ -269,11 +266,9 @@ class PartUpdate(SuccessMessageMixin, UpdateView):
         if self.request.POST:
             data["part_parameters"] = PartParameterFormSet(self.request.POST, instance=self.object)
             data["distributors_sku"] = DistributorSkuFormSet(self.request.POST, instance=self.object)
-            data["part_manufacturers"] = PartManufacturerFormSet(self.request.POST, instance=self.object)
         else:
             data["part_parameters"] = PartParameterFormSet(instance=self.object)
             data["distributors_sku"] = DistributorSkuFormSet(instance=self.object)
-            data["part_manufacturers"] = PartManufacturerFormSet(instance=self.object)
         return data
 
     def get_initial(self):

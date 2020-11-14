@@ -23,7 +23,6 @@ import controllers.part.views.parameters_unit as mbv_parameters_unit
 import controllers.part.views.other as mbv_other
 import controllers.part.views.part as mbv_part
 import controllers.distributor.views as mbv_distributor
-import controllers.manufacturer.views as mbv_manufacturer
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
 from controllers.part.views.common import CBVDeleteView, CBVDetailView
@@ -31,7 +30,6 @@ from django.urls import reverse_lazy
 from controllers.footprints.models import FootprintCategory, Footprint
 from controllers.storage.models import StorageCategory, StorageLocation
 from controllers.part.models import PartUnit, ParametersUnit, Part
-from controllers.manufacturer.models import Manufacturer
 from controllers.distributor.models import Distributor
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -132,31 +130,6 @@ urlpatterns = [
             success_message="Distributor deleted successfully",
         ),
         name="distributor_delete",
-    ),
-    # Manufacturers
-    url(r"^manufacturers$", mbv_manufacturer.manufacturer_list, name="manufacturer_list"),
-    url(
-        r"^manufacturers/(?P<pk>[0-9]+)$",
-        CBVDetailView.as_view(
-            model=Manufacturer,
-            template_name="manufacturers/manufacturer_detail.html",
-        ),
-        name="manufacturer_detail",
-    ),
-    url(r"^manufacturers/new$", mbv_manufacturer.ManufacturerCreate.as_view(), name="manufacturer_create"),
-    url(
-        r"^manufacturers/(?P<pk>[0-9]+)/edit$",
-        mbv_manufacturer.ManufacturerUpdate.as_view(),
-        name="manufacturer_update",
-    ),
-    url(
-        r"^manufacturers/(?P<pk>[0-9]+)/delete$",
-        CBVDeleteView.as_view(
-            model=Manufacturer,
-            success_url=reverse_lazy("manufacturer_list"),
-            success_message="Manufacturer deleted successfully",
-        ),
-        name="manufacturer_delete",
     ),
     # Storages Categories
     url(r"^storages$", mbv_storage.storage_category_list, name="storage_category_list"),

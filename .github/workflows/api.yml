@@ -49,6 +49,10 @@ jobs:
       run: |
         cd api
         python manage.py migrate
+    - name: Test database seeds
+      run: |
+        cd api
+        python manage.py seeds_database
     - name: Test with pytest
       run: |
         cd api
