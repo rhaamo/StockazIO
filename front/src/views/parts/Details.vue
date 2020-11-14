@@ -159,7 +159,7 @@
                   <td>{{ manuf.sku }}</td>
                   <td>{{ manuf.manufacturer ? manuf.manufacturer.name : '-' }}</td>
                   <td>
-                    <img v-if="manuf.manufacturer.logo" :src="manuf.manufacturer.logo_mini" style="max-width:100px;">
+                    <img v-if="manuf.manufacturer && manuf.manufacturer.logo" :src="manuf.manufacturer.logo_mini" style="max-width:100px;">
                   </td>
                 </tr>
               </tbody>
