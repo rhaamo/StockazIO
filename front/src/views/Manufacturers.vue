@@ -113,6 +113,12 @@
           responsive="sm"
           striped
         >
+          <template #cell(logo)="data">
+            <template v-if="data.item.logos && data.item.logos.length">
+              <img :src="data.item.logos[0].logo_mini" style="max-width: 100px;">
+            </template>
+          </template>
+
           <template #cell(url)="data">
             <template v-if="data.item.url">
               <a :href="data.item.url" target="_blank">{{ data.item.url }}</a>
@@ -193,6 +199,7 @@ export default {
     currentPage: 1,
     fields: [
       { key: 'name', label: 'Name', sortable: true },
+      { key: 'logo', label: 'Logo' },
       { key: 'address', label: 'Address' },
       { key: 'url', label: 'URL' }, // includes email
       { key: 'comment', label: 'Comment' },
