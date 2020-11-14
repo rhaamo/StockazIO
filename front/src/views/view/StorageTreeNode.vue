@@ -9,7 +9,13 @@
     <template v-if="node.uuid">
       &nbsp;<i v-b-tooltip.hover class="fa fa-barcode" aria-hidden="true"
                title="Show QrCode" @click="showBigQrCode(node)"
-      />
+            />
+      <template v-if="node.picture">
+      &nbsp;
+        <i v-b-tooltip.hover class="fa fa-picture-o" title="Show location picture"
+           aria-hidden="true" @click="showLocationPicture(node)"
+        />
+      </template>
     </template>
 
     <ul v-if="node.children && node.children.length" class="children">
@@ -42,6 +48,21 @@ export default {
       const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
         h('img', { domProps: { src: qrCodeDataUrl } }),
         h('div', {}, ['The content of the QrCode is:', h('br'), h('code', { class: ['qrCodeText'] }, [this.qrCodeStorage(storage.uuid)])])
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'lg'
+      })
+    },
+    showLocationPicture (storage) {
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: `Location picture for: ${storage.name}` } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: storage.picture_medium } }),
+        h('br'),
+        h('a', { domProps: { href: storage.picture, innerHTML: 'link to original', target: '_blank' } })
       ])
       this.$bvModal.msgBoxOk([messageVNode], {
         title: [titleVNode],

@@ -3,7 +3,7 @@ from .models import StorageCategory, StorageLocation
 
 
 class StorageLocationSerializer(serializers.ModelSerializer):
-    # picture_medium = serializers.ImageField(read_only=True)
+    picture_medium = serializers.ImageField(read_only=True)
 
     class Meta:
         model = StorageLocation
@@ -12,7 +12,7 @@ class StorageLocationSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "picture",
-            # "picture_medium",
+            "picture_medium",
             "uuid",
         ]
 
