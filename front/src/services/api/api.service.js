@@ -31,6 +31,9 @@ const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}`
 const PARTS_AUTOCOMPLETE_QUICK = (name) => `/api/v1/parts/autocomplete/quick_by_name/${name}`
 
 const MANUFACTURERS_URL = '/api/v1/manufacturers'
+const MANUFACTURERS_CREATE = '/api/v1/manufacturers/'
+const MANUFACTURERS_DELETE = (id) => `/api/v1/manufacturers/${id}`
+const MANUFACTURERS_UPDATE = (id) => `/api/v1/manufacturers/${id}/`
 
 const DISTRIBUTORS_URL = '/api/v1/distributors'
 const DISTRIBUTORS_CREATE = '/api/v1/distributors/'
@@ -115,6 +118,18 @@ const updatePartUnit = (partUnitId, data) => {
 
 const getManufacturers = () => {
   return Axios.get(MANUFACTURERS_URL)
+}
+
+const createManufacturer = (data) => {
+  return Axios.post(MANUFACTURERS_CREATE, data)
+}
+
+const updateManufacturer = (id, data) => {
+  return Axios.put(MANUFACTURERS_UPDATE(id), data)
+}
+
+const deleteManufacturer = (id) => {
+  return Axios.delete(MANUFACTURERS_DELETE(id))
 }
 
 // Distributors
@@ -222,6 +237,9 @@ const apiService = {
   deletePartUnit,
   updatePartUnit,
   getManufacturers,
+  createManufacturer,
+  updateManufacturer,
+  deleteManufacturer,
   getDistributors,
   createDistributor,
   updateDistributor,

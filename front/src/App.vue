@@ -22,7 +22,7 @@
               <b-dropdown-item :to="{}">
                 <i class="fa fa-paw fa-fw" /> Footprints
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{name: 'manufacturers-list'}">
                 <i class="fa fa-home fa-fw" /> Manufacturers
               </b-dropdown-item>
               <b-dropdown-item :to="{name: 'distributors-list'}">

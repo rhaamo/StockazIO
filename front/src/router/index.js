@@ -10,6 +10,7 @@ import ViewStorageTree from '../views/view/StorageTree'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
 import Distributors from '../views/Distributors'
+import Manufacturers from '../views/Manufacturers'
 import OrdersImporter from '../views/view/OrdersImporter'
 import OrdersImporterDetails from '../views/view/OrdersImporterDetails'
 import OrdersCategoryMatchers from '../views/view/OrdersCategoryMatchers'
@@ -93,6 +94,14 @@ export default (store) => {
       path: '/distributors',
       name: 'distributors-list',
       component: Distributors,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    // Manufacturers
+    {
+      path: '/manufacturers',
+      name: 'manufacturers-list',
+      component: Manufacturers,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },

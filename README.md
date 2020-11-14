@@ -7,11 +7,11 @@ Manage your inventory of electronic stuff
 The following is not implemented and needs to be accessed through django admin `/admin`:
 - Edition of:
   - Footprints
-  - Manufacturers
   - Storages
+  - Categories
 
 # Requirements
-- Python 3.8
+- Python 3.8 (minimum !)
 - A pretty decent NodeJS + Yarn
 - Nginx
 - PostgreSQL

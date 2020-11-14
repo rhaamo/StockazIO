@@ -5,7 +5,7 @@ from .models import Manufacturer, PartManufacturer
 class ManufacturersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manufacturer
-        fields = ["id", "name"]
+        fields = ["id", "name", "address", "url", "email", "comment", "phone", "fax"]
 
 
 class PartManufacturerSerializer(serializers.ModelSerializer):
