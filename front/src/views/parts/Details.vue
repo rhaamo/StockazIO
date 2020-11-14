@@ -71,7 +71,12 @@
                 </tr>
                 <tr>
                   <td>Storage:</td>
-                  <td><span class="storage">{{ partDetailsStorage }}</span></td>
+                  <td>
+                    <span class="storage">{{ partDetailsStorage }}</span>
+                    &nbsp;<i v-b-tooltip.hover class="fa fa-picture-o" title="Show location picture"
+                             aria-hidden="true" @click="showLocationPicture"
+                    />
+                  </td>
                 </tr>
                 <tr>
                   <td>Category:</td>
@@ -329,6 +334,22 @@ export default {
         .catch((err) => {
           logger.default.error('Error with the delete modal', err)
         })
+    },
+    showLocationPicture () {
+      let storage = this.part.storage
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: `Location picture for: ${storage.name}` } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: storage.picture_medium } }),
+        h('br'),
+        h('a', { domProps: { href: storage.picture, innerHTML: 'link to original', target: '_blank' } })
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'lg'
+      })
     }
   }
 }
