@@ -19,7 +19,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <b-form @submit.prevent="saveManufacturer">
+            <b-form enctype="multipart/form-data" @submit.prevent="saveManufacturer">
               <b-form-group id="input-group-name" label="Name*" label-for="name">
                 <b-form-input
                   id="name"
@@ -73,6 +73,19 @@
                   type="tel"
                   :state="$v.modalManufacturer.fax.$dirty ? !$v.modalManufacturer.fax.$error : null"
                 />
+              </b-form-group>
+
+              <b-form-group id="input-group-logo" label="Logo" label-for="logo">
+                <b-form-file
+                  id="logo"
+                  ref="file"
+                  v-model="modalManufacturer.logo"
+                  :accept="allowedUploadTypes"
+                  :state="$v.modalManufacturer.logo.$dirty ? !$v.modalManufacturer.logo.$error : null"
+                />
+                <template v-if="modalAction==='edit' && typeof modalManufacturer.logo === 'string'">
+                  Current <a :href="modalManufacturer.logo" target="_blank">file</a>.
+                </template>
               </b-form-group>
 
               <b-button type="submit" variant="primary">
@@ -216,7 +229,8 @@ export default {
       email: '',
       comment: '',
       phone: '',
-      fax: ''
+      fax: '',
+      logo: ''
     },
     modalAction: 'create'
   }),
@@ -228,7 +242,8 @@ export default {
       email: { email },
       comment: {},
       phone: {},
-      fax: {}
+      fax: {},
+      logo: {}
     }
   },
   computed: {
@@ -240,6 +255,10 @@ export default {
     },
     perPage () {
       return this.serverSettings.pagination.MANUFACTURERS || 10
+    },
+    allowedUploadTypes () {
+      let types = this.serverSettings.partAttachmentAllowedTypes || ['application/pdf', 'image/jpeg']
+      return types.join(', ')
     }
   },
   watch: {
