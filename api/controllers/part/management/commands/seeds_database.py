@@ -212,6 +212,7 @@ def seed_distributors():
         ["TME", "https://www.tme.eu/"],
         ["Arrow", "https://www.arrow.com/"],
         ["UtSource", "https://www.utsource.net/"],
+        ["LCSC Electronics", "https://lcsc.com/"],
     ]
     for name, url in distributors:
         try:
