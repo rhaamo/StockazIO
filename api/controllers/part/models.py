@@ -177,7 +177,7 @@ class PartStockHistory(models.Model):
     part = models.ForeignKey(Part, related_name="part_stock_history", blank=False, null=False, on_delete=models.CASCADE)
 
     class Meta(object):
-        ordering = ("created_at",)
+        ordering = ("-created_at",)
         verbose_name = _("Part stock history")
         verbose_name_plural = _("Part stock history")
 

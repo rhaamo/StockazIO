@@ -152,7 +152,7 @@
                 </tbody>
               </table>
             </b-tab>
-            <b-tab title="Files attachments">
+            <b-tab title="Files">
               <table id="table-files-attachments" class="table table-sm">
                 <thead>
                   <tr>
@@ -166,6 +166,26 @@
                       <a target="_blank" :href="file.file">link to file</a>
                     </td>
                     <td>{{ file.description }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </b-tab>
+
+            <b-tab title="Stock history">
+              <table id="table-stock-history" class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody v-if="partDetailsStockHistory && partDetailsStockHistory.length">
+                  <tr v-for="psh in partDetailsStockHistory" :key="psh.id">
+                    <td style="width: 15em;">
+                      {{ formatDate(psh.created_at) }}
+                    </td>
+                    <td>{{ psh.diff }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -255,13 +275,19 @@ export default {
     partDetailsManufacturers () { return this.part ? this.part.manufacturers_sku : [] },
     partDetailsAttachments () { return this.part ? this.part.part_attachments : [] },
     partDetailsAddedOn () {
-      return this.part && this.part.created_at ? moment(this.part.created_at).format('ddd MMM D YYYY HH:mm zz') : ''
+      return this.part && this.part.created_at ? this.formatDate(this.part.created_at) : ''
     },
     partDetailsUpdatedOn () {
-      return this.part && this.part.updated_at ? moment(this.part.updated_at).format('ddd MMM D YYYY HH:mm zz') : ''
+      return this.part && this.part.updated_at ? this.formatDate(this.part.updated_at) : ''
+    },
+    partDetailsStockHistory () {
+      return this.part && this.part.part_stock_history ? this.part.part_stock_history : []
     }
   },
   methods: {
+    formatDate (date) {
+      return moment(date).format('ddd MMM D YYYY HH:mm zz')
+    },
     partModalClose () {
       this.$bvModal.hide('modalManage')
       this.$emit('view-part-modal-closed')

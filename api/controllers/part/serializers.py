@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ParametersUnit, PartUnit, Part, PartParameter, PartAttachment
+from .models import ParametersUnit, PartUnit, Part, PartParameter, PartAttachment, PartStockHistory
 from django.conf import settings
 
 from controllers.storage.serializers import StorageLocationSerializer
@@ -23,11 +23,18 @@ class PartsUnitSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "short_name", "description")
 
 
+class PartStockHistory(serializers.ModelSerializer):
+    class Meta:
+        model = PartStockHistory
+        fields = ("id", "diff", "created_at")
+
+
 class PartSerializer(serializers.ModelSerializer):
     storage = StorageLocationSerializer(many=False, read_only=True)
     category = SingleCategorySerializer(many=False, read_only=True)
     footprint = FootprintSerializer(many=False, read_only=True)
     part_unit = PartsUnitSerializer(many=False, read_only=True)
+    part_stock_history = PartStockHistory(many=True, read_only=True)
 
     class Meta:
         model = Part
@@ -52,6 +59,7 @@ class PartSerializer(serializers.ModelSerializer):
             "production_remarks",
             "created_at",
             "updated_at",
+            "part_stock_history",
         )
 
 
@@ -129,6 +137,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     distributors_sku = DistributorSkuSerializer(many=True, read_only=True)
     manufacturers_sku = PartManufacturerSerializer(many=True, read_only=True)
     part_attachments = PartAttachmentSerializer(many=True, read_only=True)
+    part_stock_history = PartStockHistory(many=True, read_only=True)
 
     class Meta:
         model = Part
@@ -157,4 +166,5 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "part_attachments",
             "created_at",
             "updated_at",
+            "part_stock_history",
         )

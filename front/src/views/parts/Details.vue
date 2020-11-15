@@ -231,6 +231,26 @@
               </tbody>
             </table>
           </b-tab>
+
+          <b-tab title="Stock history">
+            <table id="table-stock-history" class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody v-if="part.part_stock_history && part.part_stock_history.length">
+                <tr v-for="psh in part.part_stock_history" :key="psh.id">
+                  <td style="width: 15em;">
+                    {{ formatDate(psh.created_at) }}
+                  </td>
+                  <td>{{ psh.diff }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </b-tab>
         </b-tabs>
       </div>
     </div>
@@ -309,10 +329,10 @@ export default {
       return types.join(', ')
     },
     partDetailsAddedOn () {
-      return this.part && this.part.created_at ? moment(this.part.created_at).format('ddd MMM D YYYY HH:mm zz') : ''
+      return this.part && this.part.created_at ? this.formatDate(this.part.created_at) : ''
     },
     partDetailsUpdatedOn () {
-      return this.part && this.part.updated_at ? moment(this.part.updated_at).format('ddd MMM D YYYY HH:mm zz') : ''
+      return this.part && this.part.updated_at ? this.formatDate(this.part.updated_at) : ''
     }
   },
   watch: {
@@ -321,6 +341,9 @@ export default {
     this.fetchPart()
   },
   methods: {
+    formatDate (date) {
+      return moment(date).format('ddd MMM D YYYY HH:mm zz')
+    },
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
     },
