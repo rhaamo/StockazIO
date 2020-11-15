@@ -171,17 +171,53 @@
             </table>
           </b-tab>
           <b-tab title="Files attachments">
+            <b-form enctype="multipart/form-data" inline @submit.prevent="addAttachment">
+              <label class="sr-only" for="description">Description</label>
+              <b-form-input
+                id="description"
+                v-model="addAttachmentForm.description"
+                required
+                placeholder="File description"
+                class="mb-2 mr-sm-2 mb-sm-0"
+              />
+
+              <label class="sr-only" for="file">File</label>
+              <b-form-group id="input-group-file" label-for="file" class="mb-2 mr-sm-2 mb-sm-0">
+                <b-form-file
+                  id="file"
+                  ref="file"
+                  v-model="addAttachmentForm.file"
+                  :accept="allowedUploadTypes"
+                  required
+                />
+              </b-form-group>
+
+              <b-button type="submit" variant="primary">
+                Add
+              </b-button>
+            </b-form>
+            <hr>
+
             <table id="table-files-attachments" class="table table-sm">
               <thead>
                 <tr>
                   <th>Link</th>
                   <th>Description</th>
+                  <th />
                 </tr>
               </thead>
               <tbody v-if="part.part_attachments && part.part_attachments.length">
                 <tr v-for="file in part.part_attachments" :key="file.id">
                   <td><a target="_blank" :href="file.file">{{ file.file }}</a></td>
                   <td>{{ file.description }}</td>
+                  <td>
+                    <b-button variant="link" @click.prevent="deleteAttachment(file)">
+                      <i
+                        class="fa fa-trash-o"
+                        aria-hidden="true"
+                      />
+                    </b-button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -201,6 +237,7 @@
 import apiService from '../../services/api/api.service'
 import QRCode from 'qrcode'
 import logger from '@/logging'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -209,9 +246,16 @@ export default {
     }
   },
   data: () => ({
-    part: null
+    part: null,
+    addAttachmentForm: {
+      description: '',
+      file: null
+    }
   }),
   computed: {
+    ...mapState({
+      serverSettings: state => state.server.settings
+    }),
     partId () {
       return this.$route.params.partId
     },
@@ -249,6 +293,10 @@ export default {
       } else {
         return ''
       }
+    },
+    allowedUploadTypes () {
+      let types = this.serverSettings.partAttachmentAllowedTypes || ['application/pdf', 'image/jpeg']
+      return types.join(', ')
     }
   },
   watch: {
@@ -317,8 +365,7 @@ export default {
                 appendToast: true,
                 variant: 'primary'
               })
-              this.fetchParts()
-              console.log(val)
+              this.$router.push({ name: 'home' })
             })
             .catch((err) => {
               this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -328,7 +375,7 @@ export default {
                 variant: 'danger'
               })
               logger.default.error('Error with part deletion', err)
-              this.fetchParts()
+              this.fetchPart()
             })
         })
         .catch((err) => {
@@ -350,6 +397,68 @@ export default {
         centered: true,
         size: 'lg'
       })
+    },
+    addAttachment () {
+      apiService.partAttachmentCreate(this.part.id, this.addAttachmentForm)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/Create/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('PartAttachment/Create/Toast/Success/Title', 'Saving part attachment'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary'
+          })
+          this.fetchPart()
+          this.addAttachmentForm = { description: '', file: null }
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/Create/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('PartAttachment/Create/Toast/Error/Title', 'Saving part attachment'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          logger.default.error('Error with part attachment deletion', err)
+        })
+    },
+    deleteAttachment (attachment) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the attachment '${attachment.description}' ?`, {
+        title: 'Plase Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          apiService.partAttachmentDelete(this.part.id, attachment.id)
+            .then((val) => {
+              this.$bvToast.toast(this.$pgettext('PartAttachment/Delete/Toast/Success/Message', 'Success'), {
+                title: this.$pgettext('PartAttachment/Delete/Toast/Success/Title', 'Deleting part attachment'),
+                autoHideDelay: 5000,
+                appendToast: true,
+                variant: 'primary'
+              })
+              this.fetchPart()
+            })
+            .catch((err) => {
+              this.$bvToast.toast(this.$pgettext('PartAttachment/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                title: this.$pgettext('PartAttachment/Delete/Toast/Error/Title', 'Deleting part attachment'),
+                autoHideDelay: 5000,
+                appendToast: true,
+                variant: 'danger'
+              })
+              logger.default.error('Error with part attachment deletion', err)
+              this.fetchPart()
+            })
+        })
+        .catch((err) => {
+          logger.default.error('Error with the delete attachment modal', err)
+        })
     }
   }
 }

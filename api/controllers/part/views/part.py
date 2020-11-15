@@ -3,21 +3,14 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
 
 from controllers.categories.models import Category
-from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment
+from controllers.part.models import Part
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters, views
 from rest_framework.response import Response
 
-from controllers.part.serializers import (
-    PartSerializer,
-    PartCreateSeralizer,
-    PartRetrieveSerializer,
-    PartsUnitSerializer,
-    ParametersUnitSerializer,
-    PartAttachmentCreateSerializer,
-)
+from controllers.part.serializers import PartSerializer, PartCreateSeralizer, PartRetrieveSerializer
 
 
 class PartViewSetPagination(PageNumberPagination):
@@ -126,20 +119,15 @@ class PartQuickAutocompletion(views.APIView):
 
 
 class PartAttachmentsStandalone(views.APIView):
-    required_scope = "parts"
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
     anonymous_policy = False
-
-    def post(self, request, part_id, format=None):
-        serializer = PartAttachmentCreateSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-
-    def delete(self, request, part_id, pk, format=None):
-        attachment = get_object_or_404(PartAttachment, id=pk)
-        attachment.delete()
-        return Response(status=204)
 
 
 class PartsPublic(ModelViewSet):
@@ -232,37 +220,3 @@ class PartsPublic(ModelViewSet):
             obj = get_object_or_404(queryset, uuid=kwargs["pk"])
             serializer = PartRetrieveSerializer(obj)
             return Response(serializer.data)
-
-
-class PartsUnitViewSet(ModelViewSet):
-    anonymous_policy = True
-    required_scope = {
-        "retrieve": "read",
-        "create": "write",
-        "destroy": "write",
-        "update": "write",
-        "partial_update": "write",
-        "list": "read",
-    }
-    serializer_class = PartsUnitSerializer
-
-    def get_queryset(self):
-        queryset = PartUnit.objects.all()
-        return queryset
-
-
-class PartsParametersUnitViewSet(ModelViewSet):
-    anonymous_policy = True
-    required_scope = {
-        "retrieve": "read",
-        "create": "write",
-        "destroy": "write",
-        "update": "write",
-        "partial_update": "write",
-        "list": "read",
-    }
-    serializer_class = ParametersUnitSerializer
-
-    def get_queryset(self):
-        queryset = ParametersUnit.objects.all()
-        return queryset

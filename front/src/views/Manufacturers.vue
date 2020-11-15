@@ -230,7 +230,7 @@ export default {
       comment: '',
       phone: '',
       fax: '',
-      logo: ''
+      logo: null
     },
     modalAction: 'create'
   }),

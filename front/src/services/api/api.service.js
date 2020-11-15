@@ -24,6 +24,8 @@ const PARTS_CREATE = '/api/v1/parts/'
 const PARTS_LIST = '/api/v1/parts/'
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
+const PARTS_ATTACHMENTS_CREATE = (partId) => `/api/v1/parts/${partId}/attachments/`
+const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}`
 
 const PARTS_PUBLIC_LIST = '/api/v1/parts/public/'
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}`
@@ -238,6 +240,18 @@ const getPublicPart = (partId) => {
   return Axios.get(PARTS_PUBLIC_ITEM(partId))
 }
 
+const partAttachmentCreate = (partId, data) => {
+  let formData = new FormData()
+  formData.append('file', data.file)
+  formData.append('description', data.description)
+  formData.append('part', data.part_id ? data.part_id : partId)
+  return Axios.post(PARTS_ATTACHMENTS_CREATE(partId), formData)
+}
+
+const partAttachmentDelete = (partId, partAttachmentId) => {
+  return Axios.delete(PARTS_ATTACHMENTS_DELETE(partId, partAttachmentId))
+}
+
 // Order Importer
 
 const getOrderImporter = (id) => {
@@ -303,6 +317,8 @@ const apiService = {
   partsAutocompleteQuick,
   getPublicParts,
   getPublicPart,
+  partAttachmentCreate,
+  partAttachmentDelete,
   getOrdersImporter,
   getOrderImporter,
   importOrderToInventory,

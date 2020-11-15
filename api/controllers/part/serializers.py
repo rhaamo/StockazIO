@@ -73,6 +73,15 @@ class PartAttachmentSerializer(serializers.ModelSerializer):
         fields = ("id", "description", "file")
 
 
+class PartAttachmentCreateSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+    part = serializers.PrimaryKeyRelatedField(queryset=Part.objects.all())
+
+    class Meta:
+        model = PartAttachment
+        fields = ("id", "description", "file", "part")
+
+
 class PartCreateSeralizer(WritableNestedModelSerializer):
     part_parameters_value = PartParameterCreateSerializer(many=True)
     manufacturers_sku = PartManufacturerCreateSerializer(many=True)
