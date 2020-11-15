@@ -136,9 +136,27 @@
                   <tr v-for="manuf in partDetailsManufacturers" :key="manuf.id">
                     <td>{{ manuf.sku }}</td>
                     <td>{{ manuf.manufacturer ? manuf.manufacturer.name : '-' }}</td>
-                    <td>
+                    <td v-if="manuf.manufacturer">
                       <img v-if="manuf.manufacturer.logo" :src="manuf.manufacturer.logo_mini" style="max-width:100px;">
                     </td>
+                  </tr>
+                </tbody>
+              </table>
+            </b-tab>
+            <b-tab title="Files attachments">
+              <table id="table-files-attachments" class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Link</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody v-if="partDetailsAttachments && partDetailsAttachments.length">
+                  <tr v-for="file in partDetailsAttachments" :key="file.id">
+                    <td style="width: 10em;">
+                      <a target="_blank" :href="file.file">link to file</a>
+                    </td>
+                    <td>{{ file.description }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -223,7 +241,8 @@ export default {
     partDetailsCondition () { return this.part ? this.part.condition : '' },
     partDetailsParameters () { return this.part ? this.part.part_parameters_value : [] },
     partDetailsDistributors () { return this.part ? this.part.distributors_sku : [] },
-    partDetailsManufacturers () { return this.part ? this.part.manufacturers_sku : [] }
+    partDetailsManufacturers () { return this.part ? this.part.manufacturers_sku : [] },
+    partDetailsAttachments () { return this.part ? this.part.part_attachments : [] }
   },
   methods: {
     partModalClose () {
