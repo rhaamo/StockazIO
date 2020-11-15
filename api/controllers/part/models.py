@@ -5,6 +5,8 @@ from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation
 from controllers.part.validators import validate_file_type
 import uuid
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class PartUnit(models.Model):
@@ -82,6 +84,28 @@ class Part(models.Model):
     def __str__(self):
         return self.name
 
+    """
+    This absolutely sucks and the Part Stock History is going to be saved before our part
+    but by using a post_save signal we won't get the updated fields change
+    django models sucks
+    also this save() only handle updates, create are in a post_save signal
+    """
+
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            orig = Part.objects.get(pk=self.pk)
+            if orig.stock_qty != self.stock_qty:
+                psh = PartStockHistory(diff=self.stock_qty - orig.stock_qty, part=orig)
+                psh.save()
+        super(Part, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=Part)
+def post_save(sender, instance, created, **kwargs):
+    if created:
+        psh = PartStockHistory(diff=instance.stock_qty, part=instance)
+        psh.save()
+
 
 class ParametersUnit(models.Model):
     name = models.CharField(_("name"), max_length=255, unique=False, blank=False, help_text=_("ex. Ampere"))
@@ -144,3 +168,18 @@ class PartAttachment(models.Model):
 
     def __str__(self):
         return self.description
+
+
+class PartStockHistory(models.Model):
+    diff = models.IntegerField(_("difference"), unique=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    part = models.ForeignKey(Part, related_name="part_stock_history", blank=False, null=False, on_delete=models.CASCADE)
+
+    class Meta(object):
+        ordering = ("created_at",)
+        verbose_name = _("Part stock history")
+        verbose_name_plural = _("Part stock history")
+
+    def __str__(self):
+        return self.name
