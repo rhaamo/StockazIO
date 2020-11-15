@@ -106,6 +106,15 @@
                   <td>Can be sold:</td>
                   <td><i title="Can be sold" :class="partDetailsCanBeSoldClasses" /> <span class="can-be-sold" /></td>
                 </tr>
+
+                <tr>
+                  <td>Added:</td>
+                  <td>{{ partDetailsAddedOn }}</td>
+                </tr>
+                <tr>
+                  <td>Updated:</td>
+                  <td>{{ partDetailsUpdatedOn }}</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -238,6 +247,7 @@ import apiService from '../../services/api/api.service'
 import QRCode from 'qrcode'
 import logger from '@/logging'
 import { mapState } from 'vuex'
+import moment from 'moment'
 
 export default {
   props: {
@@ -297,6 +307,12 @@ export default {
     allowedUploadTypes () {
       let types = this.serverSettings.partAttachmentAllowedTypes || ['application/pdf', 'image/jpeg']
       return types.join(', ')
+    },
+    partDetailsAddedOn () {
+      return this.part && this.part.created_at ? moment(this.part.created_at).format('ddd MMM D YYYY HH:mm zz') : ''
+    },
+    partDetailsUpdatedOn () {
+      return this.part && this.part.updated_at ? moment(this.part.updated_at).format('ddd MMM D YYYY HH:mm zz') : ''
     }
   },
   watch: {

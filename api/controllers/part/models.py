@@ -69,6 +69,8 @@ class Part(models.Model):
         _("internal part number"), max_length=255, unique=False, blank=True, help_text=_("Internal part number")
     )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # Search vector
 

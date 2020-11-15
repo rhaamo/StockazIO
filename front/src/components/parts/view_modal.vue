@@ -79,6 +79,15 @@
                     <td>Can be sold:</td>
                     <td><i title="Can be sold" :class="partDetailsCanBeSoldClasses" /> <span class="can-be-sold" /></td>
                   </tr>
+
+                  <tr>
+                    <td>Added:</td>
+                    <td>{{ partDetailsAddedOn }}</td>
+                  </tr>
+                  <tr>
+                    <td>Updated:</td>
+                    <td>{{ partDetailsUpdatedOn }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -184,6 +193,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     part: {
@@ -242,7 +253,13 @@ export default {
     partDetailsParameters () { return this.part ? this.part.part_parameters_value : [] },
     partDetailsDistributors () { return this.part ? this.part.distributors_sku : [] },
     partDetailsManufacturers () { return this.part ? this.part.manufacturers_sku : [] },
-    partDetailsAttachments () { return this.part ? this.part.part_attachments : [] }
+    partDetailsAttachments () { return this.part ? this.part.part_attachments : [] },
+    partDetailsAddedOn () {
+      return this.part && this.part.created_at ? moment(this.part.created_at).format('ddd MMM D YYYY HH:mm zz') : ''
+    },
+    partDetailsUpdatedOn () {
+      return this.part && this.part.updated_at ? moment(this.part.updated_at).format('ddd MMM D YYYY HH:mm zz') : ''
+    }
   },
   methods: {
     partModalClose () {

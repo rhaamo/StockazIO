@@ -50,6 +50,8 @@ class PartSerializer(serializers.ModelSerializer):
             "uuid",
             "comment",
             "production_remarks",
+            "created_at",
+            "updated_at",
         )
 
 
@@ -153,4 +155,6 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "distributors_sku",
             "manufacturers_sku",
             "part_attachments",
+            "created_at",
+            "updated_at",
         )
