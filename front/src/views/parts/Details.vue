@@ -411,7 +411,7 @@ export default {
           this.addAttachmentForm = { description: '', file: null }
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('PartAttachment/Create/Toast/Error/Message', 'An error occured, please try again later'), {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/Create/Toast/Error/Message', 'Error occured or file type not allowed.'), {
             title: this.$pgettext('PartAttachment/Create/Toast/Error/Title', 'Saving part attachment'),
             autoHideDelay: 5000,
             appendToast: true,

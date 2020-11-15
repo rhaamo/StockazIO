@@ -365,3 +365,7 @@ SILKY_INTERCEPT_FUNC = lambda r: DEBUG  # noqa: E731
 MOUSER_API_KEY = env("MOUSER_API_KEY", default=None)
 # Usuable values: None, All, Today, Yesterday, ThisWeek, LastWeek, ThisMonth, LastMonth, ThisQuarter, LastQuarter, ThisYear, LastYear or YearToDate
 MOUSER_IMPORT_FILTER = env("MOUSER_IMPORT_FILTER", default="ThisMonth")
+
+# 50M (50*1024*1024)
+FILE_UPLOAD_MAX_MEMORY_SIZE = env("FILE_UPLOAD_MAX_MEMORY_SIZE", default=50 * 1024 * 1024)
+DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE

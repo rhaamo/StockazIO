@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import ParametersUnit, PartUnit, Part, PartParameter, PartAttachment
+from django.conf import settings
 
 from controllers.storage.serializers import StorageLocationSerializer
 from controllers.categories.serializers import SingleCategorySerializer
@@ -7,6 +8,7 @@ from controllers.footprints.serializers import FootprintSerializer
 from controllers.distributor.serializers import DistributorSkuSerializer, DistributorSkuCreateSerializer
 from controllers.manufacturer.serializers import PartManufacturerSerializer, PartManufacturerCreateSerializer
 from drf_writable_nested.serializers import WritableNestedModelSerializer
+from upload_validator import FileTypeValidator
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
@@ -74,7 +76,7 @@ class PartAttachmentSerializer(serializers.ModelSerializer):
 
 
 class PartAttachmentCreateSerializer(serializers.ModelSerializer):
-    file = serializers.FileField()
+    file = serializers.FileField(validators=[FileTypeValidator(allowed_types=settings.PART_ATTACHMENT_ALLOWED_TYPES)])
     part = serializers.PrimaryKeyRelatedField(queryset=Part.objects.all())
 
     class Meta:
