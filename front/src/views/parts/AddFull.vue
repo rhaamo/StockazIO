@@ -28,6 +28,7 @@
               <b-form-group id="input-group-name" label="Name*" label-for="name">
                 <b-form-input
                   id="name"
+                  ref="inputname"
                   v-model="form.name"
                   required
                   placeholder="PIC42ACHU"
@@ -439,6 +440,7 @@ export default {
             variant: 'primary'
           })
           this.clearForm()
+          this.$refs.inputname.focus()
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Error/Message', 'An error occured, please try again later'), {
