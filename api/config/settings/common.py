@@ -291,20 +291,17 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 AUTH_USER_MODEL = "users.User"
 
 # AAA
-PAGINATION = env(
-    "PAGINATION",
-    default={
-        "DEFAULT": 25,
-        "FOOTPRINTS": 5,
-        "MANUFACTURERS": 10,
-        "DISTRIBUTORS": 10,
-        "STORAGES": 10,
-        "PART_UNITS": 10,
-        "PARAMETERS_UNITS": 10,
-        "PARTS": 10,
-        "ORDERS_IMPORTER": 10,
-    },
-)
+PAGINATION = {
+    "DEFAULT": env("PAGINATION_DEFAULT", 25),
+    "FOOTPRINTS": env("PAGINATION_FOOTPRINTS", 5),
+    "MANUFACTURERS": env("PAGINATION_MANUFACTURERS", 10),
+    "DISTRIBUTORS": env("PAGINATION_DISTRIBUTORS", 10),
+    "STORAGES": env("PAGINATION_STORAGES", 10),
+    "PART_UNITS": env("PAGINATION_PART_UNITS", 10),
+    "PARAMETERS_UNITS": env("PAGINATION_PARAMETERS_UNITS", 10),
+    "PARTS": env("PAGINATION_PARTS", 10),
+    "ORDERS_IMPORTER": env("PAGINATION_ORDERS_IMPORTER", 10),
+}
 
 # OAuth configuration
 # ------------------------------------------------------------------------------
@@ -345,24 +342,21 @@ REST_FRAMEWORK = {
 
 
 # Various other things
-PART_ATTACHMENT_ALLOWED_TYPES = env(
-    "PART_ATTACHMENT_ALLOWED_TYPES",
-    default=[
-        "application/pdf",
-        "application/xml",
-        "image/gif",
-        "image/jpeg",
-        "image/png",
-        "image/svg+xml",
-        "text/html",
-        "text/plain",
-        "text/xml",
-        "application/msword",
-        "application/vnd.ms-excel",
-        "application/vnd.oasis.opendocument.text",
-        "application/vnd.oasis.opendocument.spreadsheet",
-    ],
-)
+PART_ATTACHMENT_ALLOWED_TYPES = [
+    "application/pdf",
+    "application/xml",
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+    "image/svg+xml",
+    "text/html",
+    "text/plain",
+    "text/xml",
+    "application/msword",
+    "application/vnd.ms-excel",
+    "application/vnd.oasis.opendocument.text",
+    "application/vnd.oasis.opendocument.spreadsheet",
+]
 
 # https://github.com/jazzband/django-silk/issues/449
 SILKY_INTERCEPT_FUNC = lambda r: DEBUG  # noqa: E731
