@@ -120,7 +120,7 @@ class PartQuickAutocompletion(views.APIView):
     anonymous_policy = False
 
     def get(self, request, *args, **kwargs):
-        obj = get_list_or_404(Part, name=kwargs["name"])
+        obj = get_list_or_404(Part, name__iexact=kwargs["name"])
         serializer = PartRetrieveSerializer(obj, many=True)
         return Response(serializer.data, status=200)
 

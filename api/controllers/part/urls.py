@@ -9,7 +9,7 @@ router.register(r"", views.PartViewSet, basename="Part")
 
 urlpatterns = [
     path(
-        r"autocomplete/quick_by_name/<str:name>",
+        r"autocomplete/quick_by_name/<name>",
         views.PartQuickAutocompletion.as_view(),
         name="parts_autocompletion",
     ),
