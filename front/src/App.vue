@@ -109,20 +109,20 @@
 
     <div v-if="shouldDisplayCategories" class="container-fluid">
       <div class="row">
-        <nav v-if="shouldDisplayCategories" class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav v-if="shouldDisplayCategories" class="col-md-3 col-xl-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <CategoryTree :tree-data="categories" />
           </div>
         </nav>
 
-        <div role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div role="main" class="col-md-9 ml-auto col-xl-10">
           <router-view />
         </div>
       </div>
     </div>
     <div v-else class="container-fluid">
       <div class="row justify-content-md-center">
-        <div role="main" class="col-md-10 col-lg-10 px-4">
+        <div role="main" class="col-md-10 col-lg-10">
           <router-view />
         </div>
       </div>

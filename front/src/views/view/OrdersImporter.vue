@@ -1,7 +1,7 @@
 <template>
   <div class="list_part_unit">
     <b-row>
-      <b-col md="9">
+      <b-col cols="12">
         <b-breadcrumb>
           <b-breadcrumb-item :to="{name: 'orders-importer'}">
             Orders Importer
@@ -11,7 +11,7 @@
     </b-row>
 
     <b-row>
-      <b-col md="1">
+      <b-col cols="2" xl="1">
         <b-button
           variant="primary"
           :to="{'name': 'orders-importer-category-matcher'}"
@@ -20,7 +20,7 @@
         </b-button>
       </b-col>
 
-      <b-col md="6">
+      <b-col cols="10" xl="10">
         <b-table
           id="tableOrders"
           :items="orders"
@@ -34,7 +34,7 @@
         >
           <template #cell(date)="data">
             <router-link v-b-tooltip.hover title="Edit order details" :to="{name: 'orders-importer-details', params: {id: data.item.id}}">
-              {{ data.item.date }}
+              {{ formatDate(data.item.date) }}
             </router-link>
           </template>
           <template #cell(order_number)="data">
@@ -69,6 +69,7 @@
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
+import moment from 'moment'
 
 export default {
   mixins: [
@@ -109,6 +110,9 @@ export default {
     this.fetchOrders()
   },
   methods: {
+    formatDate (date) {
+      return moment(date).format('ddd MMM D YYYY')
+    },
     importStateText (state) {
       let states = {
         0: 'Unknown',

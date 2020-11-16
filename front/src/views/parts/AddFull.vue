@@ -5,7 +5,7 @@
     />
 
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-12">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <router-link :to="{name: 'home'}">
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-4">
       <div class="col-md-11 mx-auto">
         <h3>Basic parts informations</h3>
         <b-form @submit.prevent="addPart">
@@ -56,6 +56,7 @@
                   v-model="form.qty"
                   required
                   type="number"
+                  inputmode="numeric"
                   :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
                 />
               </b-form-group>
@@ -65,6 +66,7 @@
                   v-model="form.qty_min"
                   required
                   type="number"
+                  inputmode="numeric"
                   :state="$v.form.qty_min.$dirty ? !$v.form.qty_min.$error : null"
                 />
               </b-form-group>

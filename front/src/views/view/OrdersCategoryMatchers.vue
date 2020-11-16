@@ -15,12 +15,12 @@
 
     <b-form @submit.prevent="updateMatchers">
       <b-row>
-        <b-col md="1">
+        <b-col cols="2" xl="1">
           <b-button type="submit" variant="primary">
             update
           </b-button>
         </b-col>
-        <b-col md="8">
+        <b-col cols="9" xl="8">
           <div v-for="(_, i) in matchers" :key="i">
             <b-row>
               <b-col md="7">
@@ -44,7 +44,7 @@
                   />
                 </b-form-group>
               </b-col>
-              <b-col md="1">
+              <b-col cols="2">
                 <br><br>
                 <div @click.prevent="deletePm(i)">
                   <i class="fa fa-minus-square" aria-hidden="true" /> remove

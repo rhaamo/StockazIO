@@ -1,7 +1,7 @@
 <template>
   <div class="list_part_unit">
     <b-modal id="modalAddPartUnit" ref="modalAddPartUnit"
-             size="sm" :hide-footer="true"
+             size="md" :hide-footer="true"
              @cancel="modalAddPartUnitClose"
              @close="modalAddPartUnitClose"
              @hidden="modalAddPartUnitClose"
@@ -57,12 +57,12 @@
     </b-modal>
 
     <b-row>
-      <b-col md="9">
+      <b-col xl="9" cols="7">
         <b-breadcrumb>
           <b-breadcrumb-item>Part Units</b-breadcrumb-item>
         </b-breadcrumb>
       </b-col>
-      <b-col md="2">
+      <b-col xl="2" cols="4">
         <b-button
           variant="info"
           @click.prevent="showAddPartUnitModal"
@@ -73,7 +73,7 @@
     </b-row>
 
     <b-row>
-      <b-col md="6" offset-md="1">
+      <b-col cols="10">
         <b-table
           :items="partUnits"
           :fields="fields"
@@ -81,6 +81,7 @@
           :sort-desc.sync="sortDesc"
           responsive="sm"
           striped
+          small
         >
           <template #cell(actions)="data">
             <b-button

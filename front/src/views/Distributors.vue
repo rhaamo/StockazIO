@@ -1,7 +1,7 @@
 <template>
   <div class="list_distributors">
     <b-modal id="modalAddDistributor" ref="modalAddDistributor"
-             size="sm" :hide-footer="true"
+             size="md" :hide-footer="true"
              @cancel="modalAddDistributorClose"
              @close="modalAddDistributorClose"
              @hidden="modalAddDistributorClose"
@@ -85,12 +85,12 @@
     </b-modal>
 
     <b-row>
-      <b-col md="9">
+      <b-col xl="9" cols="7">
         <b-breadcrumb>
           <b-breadcrumb-item>Distributors</b-breadcrumb-item>
         </b-breadcrumb>
       </b-col>
-      <b-col md="2">
+      <b-col xl="2" cols="4">
         <b-button
           variant="info"
           @click.prevent="showAddDistributorModal"
@@ -101,7 +101,7 @@
     </b-row>
 
     <b-row>
-      <b-col md="6" offset-md="1">
+      <b-col cols="10">
         <b-table
           id="tableDistributors"
           :items="distributors"
@@ -112,6 +112,7 @@
           :current-page="currentPage"
           responsive="sm"
           striped
+          small
         >
           <template #cell(url)="data">
             <template v-if="data.item.url">

@@ -1,55 +1,55 @@
 import Axios from 'axios'
 
-const CHECK_TOKEN_URL = '/oauth/check_token'
+const CHECK_TOKEN_URL = '/oauth/check_token/'
 
-const CATEGORIES_URL = '/api/v1/categories'
+const CATEGORIES_URL = '/api/v1/categories/'
 
 const APP_INFORMATIONS_URL = '/api/v1/app/informations'
 
-const FOOTPRINTS_URL = '/api/v1/footprints'
+const FOOTPRINTS_URL = '/api/v1/footprints/'
 
-const STORAGES_URL = '/api/v1/storages'
+const STORAGES_URL = '/api/v1/storages/'
 
-const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units'
+const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units/'
 const PARAMETERS_UNITS_CREATE = '/api/v1/parts/parameters/units/'
-const PARAMETERS_UNITS_DELETE = (id) => `/api/v1/parts/parameters/units/${id}`
+const PARAMETERS_UNITS_DELETE = (id) => `/api/v1/parts/parameters/units/${id}/`
 const PARAMETERS_UNITS_UPDATE = (id) => `/api/v1/parts/parameters/units/${id}/`
 
-const PART_UNITS_URL = '/api/v1/parts/units'
+const PART_UNITS_URL = '/api/v1/parts/units/'
 const PART_UNITS_CREATE = '/api/v1/parts/units/'
-const PART_UNITS_DELETE = (partUnitId) => `/api/v1/parts/units/${partUnitId}`
+const PART_UNITS_DELETE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 
 const PARTS_CREATE = '/api/v1/parts/'
 const PARTS_LIST = '/api/v1/parts/'
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
-const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}`
+const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}/`
 const PARTS_ATTACHMENTS_CREATE = (partId) => `/api/v1/parts/${partId}/attachments/`
-const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}`
+const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}/`
 
 const PARTS_PUBLIC_LIST = '/api/v1/parts/public/'
-const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}`
+const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`
 
-const PARTS_AUTOCOMPLETE_QUICK = (name) => `/api/v1/parts/autocomplete/quick_by_name/${name}`
+const PARTS_AUTOCOMPLETE_QUICK = (name) => `/api/v1/parts/autocomplete/quick_by_name/${name}` // no final /
 
-const MANUFACTURERS_URL = '/api/v1/manufacturers'
+const MANUFACTURERS_URL = '/api/v1/manufacturers/'
 const MANUFACTURERS_CREATE = '/api/v1/manufacturers/'
-const MANUFACTURERS_DELETE = (id) => `/api/v1/manufacturers/${id}`
+const MANUFACTURERS_DELETE = (id) => `/api/v1/manufacturers/${id}/`
 const MANUFACTURERS_UPDATE = (id) => `/api/v1/manufacturers/${id}/`
 
-const DISTRIBUTORS_URL = '/api/v1/distributors'
+const DISTRIBUTORS_URL = '/api/v1/distributors/'
 const DISTRIBUTORS_CREATE = '/api/v1/distributors/'
-const DISTRIBUTORS_DELETE = (id) => `/api/v1/distributors/${id}`
+const DISTRIBUTORS_DELETE = (id) => `/api/v1/distributors/${id}/`
 const DISTRIBUTORS_UPDATE = (id) => `/api/v1/distributors/${id}/`
 
 const ORDERS_IMPORTER_LIST = '/api/v1/orders_importer/'
-const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}`
+const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}/`
 const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}/`
-const ORDERS_IMPORTER_TO_INVENTORY = '/api/v1/orders_importer/import_to_inventory'
+const ORDERS_IMPORTER_TO_INVENTORY = '/api/v1/orders_importer/import_to_inventory' // no final /
 
 const CATEGORIES_MATCHERS_LIST = '/api/v1/orders_importer/category_matcher/'
-const CATEGORIES_MATCHERS_BATCH_UPDATE = '/api/v1/orders_importer/category_matcher/batch_update'
-const CATEGORIES_MATCHERS_REMATCH = '/api/v1/orders_importer/category_matcher/rematch'
+const CATEGORIES_MATCHERS_BATCH_UPDATE = '/api/v1/orders_importer/category_matcher/batch_update' // no final /
+const CATEGORIES_MATCHERS_REMATCH = '/api/v1/orders_importer/category_matcher/rematch' // no final /
 
 // Auth
 const verifyCredentials = () => {

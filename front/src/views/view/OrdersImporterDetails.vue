@@ -1,7 +1,7 @@
 <template>
   <div class="list_part_unit">
     <b-row>
-      <b-col md="9">
+      <b-col cols="12">
         <b-breadcrumb>
           <b-breadcrumb-item :to="{name: 'orders-importer'}">
             Orders Importer
@@ -15,7 +15,7 @@
 
     <b-form @submit.prevent="updateOrder">
       <b-row>
-        <b-col md="1">
+        <b-col xl="1" cols="2">
           <b>Ordered:</b> {{ formatDate(order.date) }}<br>
           <b>Number:</b> {{ order.order_number }}<br>
           <b>Items:</b> {{ rows }}<br>

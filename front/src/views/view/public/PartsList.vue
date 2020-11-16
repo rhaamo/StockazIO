@@ -5,7 +5,7 @@
     />
 
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-12">
         <ol class="breadcrumb">
           <template v-if="category">
             <li class="breadcrumb-item">
@@ -26,20 +26,23 @@
           </template>
         </ol>
       </div>
-      <div class="col-lg-1">
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-xl-2 col-3">
         <multiselect v-model="filter.footprint" :options="choicesFootprint"
                      group-values="footprints" group-label="category" placeholder="Filter footprint"
                      label="name" track-by="id" @input="filterFootprintChanged"
         />
       </div>
-      <div class="col-lg-1">
+      <div class="col-xl-2 col-3">
         <treeselect v-model="filter.storage" :multiple="false"
                     :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
                     clearable :normalizer="storagesNormalizer" no-children-text
                     placeholder="Filter storage" @input="filterStorageChanged"
         />
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-2">
         <b-form-checkbox
           v-model="filter.qty"
           value="qty"
@@ -48,7 +51,8 @@
         >
           Only out of stock
         </b-form-checkbox>
-        <br>
+      </div>
+      <div class="col-lg-2">
         <b-form-checkbox
           v-model="filter.qty"
           value="qtyMin"
@@ -57,7 +61,8 @@
         >
           Only qty &lt; min
         </b-form-checkbox>
-        <br>
+      </div>
+      <div class="col-lg-2">
         <b-form-checkbox
           v-model="filter.sellable"
           value="sellable"
@@ -80,6 +85,7 @@
                  show-empty
                  primary-key="uuid"
                  :no-local-sorting="true"
+                 small
                  @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">

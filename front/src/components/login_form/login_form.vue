@@ -14,6 +14,7 @@
             <b-form-input
               id="username"
               v-model="user.username"
+              autocapitalize="off"
               type="text"
               :placeholder="labels.usernamePlaceholder"
               :state="$v.user.username.$dirty ? !$v.user.username.$error : null"
@@ -35,6 +36,7 @@
               id="password"
               v-model="user.password"
               type="password"
+              autocapitalize="off"
               :placeholder="labels.passwordPlaceholder"
               :state="$v.user.password.$dirty ? !$v.user.password.$error : null"
               aria-describedby="password-live-feedback"

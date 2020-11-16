@@ -63,7 +63,7 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <table class="table table-sm">
+            <table class="table table-sm table-striped">
               <tbody>
                 <tr>
                   <td>Footprint:</td>
@@ -124,7 +124,7 @@
       <div class="col-md-6">
         <b-tabs content-class="mt-3">
           <b-tab title="Parameters">
-            <table id="table-parameters" class="table table-sm">
+            <table id="table-parameters" class="table table-sm table-striped">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -144,7 +144,7 @@
             </table>
           </b-tab>
           <b-tab title="Distributors">
-            <table id="table-distributors" class="table table-sm">
+            <table id="table-distributors" class="table table-sm table-striped">
               <thead>
                 <tr>
                   <th>SKU</th>
@@ -160,7 +160,7 @@
             </table>
           </b-tab>
           <b-tab title="Manufacturers">
-            <table id="table-manufacturers" class="table table-sm">
+            <table id="table-manufacturers" class="table table-sm table-striped">
               <thead>
                 <tr>
                   <th>SKU</th>
@@ -207,7 +207,7 @@
             </b-form>
             <hr>
 
-            <table id="table-files-attachments" class="table table-sm">
+            <table id="table-files-attachments" class="table table-sm table-striped">
               <thead>
                 <tr>
                   <th>Link</th>
@@ -233,7 +233,7 @@
           </b-tab>
 
           <b-tab title="Stock history">
-            <table id="table-stock-history" class="table table-sm">
+            <table id="table-stock-history" class="table table-sm table-striped">
               <thead>
                 <tr>
                   <th>Date</th>

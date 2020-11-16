@@ -1,7 +1,7 @@
 <template>
   <div class="list_manufacturers">
     <b-modal id="modalAddManufacturer" ref="modalAddManufacturer"
-             size="sm" :hide-footer="true"
+             size="md" :hide-footer="true"
              @cancel="modalAddManufacturerClose"
              @close="modalAddManufacturerClose"
              @hidden="modalAddManufacturerClose"
@@ -98,12 +98,12 @@
     </b-modal>
 
     <b-row>
-      <b-col md="9">
+      <b-col xl="9" cols="7">
         <b-breadcrumb>
           <b-breadcrumb-item>Manufacturers</b-breadcrumb-item>
         </b-breadcrumb>
       </b-col>
-      <b-col md="2">
+      <b-col xl="2" cols="4">
         <b-button
           variant="info"
           @click.prevent="showAddManufacturerModal"
@@ -114,7 +114,7 @@
     </b-row>
 
     <b-row>
-      <b-col md="6" offset-md="1">
+      <b-col cols="10">
         <b-table
           id="tableManufacturers"
           :items="manufacturers"
@@ -125,6 +125,7 @@
           :current-page="currentPage"
           responsive="sm"
           striped
+          small
         >
           <template #cell(logo)="data">
             <template v-if="data.item.logo">

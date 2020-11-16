@@ -1,7 +1,7 @@
 <template>
   <div class="add_part">
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-12">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <router-link :to="{name: 'home'}">
