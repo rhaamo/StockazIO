@@ -203,7 +203,8 @@ export default {
             title: this.$pgettext('ParametersUnits/Fetch/Toast/Error/Title', 'Fetching part units'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting part units', err)
         })
@@ -238,7 +239,8 @@ export default {
               title: this.$pgettext('ParametersUnit/Add/Toast/Success/Title', 'Adding part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddParametersUnit')
             this.clearForm()
@@ -249,7 +251,8 @@ export default {
               title: this.$pgettext('ParametersUnit/Add/Toast/Error/Title', 'Adding part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot save part unit', error.message)
           })
@@ -260,7 +263,8 @@ export default {
               title: this.$pgettext('ParametersUnit/Update/Toast/Success/Title', 'Updating part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddParametersUnit')
             this.clearForm()
@@ -271,7 +275,8 @@ export default {
               title: this.$pgettext('ParametersUnit/Update/Toast/Error/Title', 'Updating part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot update part unit', error.message)
           })
@@ -305,7 +310,8 @@ export default {
                   title: this.$pgettext('ParametersUnit/Delete/Toast/Success/Title', 'Deleting part unit'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'primary'
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
                 })
                 this.fetchParametersUnits()
               })
@@ -314,7 +320,8 @@ export default {
                   title: this.$pgettext('ParametersUnit/Delete/Toast/Error/Title', 'Deleting part unit'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'danger'
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with part unit deletion', err)
                 this.fetchParametersUnits()

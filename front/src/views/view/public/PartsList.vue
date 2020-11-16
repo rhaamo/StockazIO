@@ -350,7 +350,8 @@ export default {
             title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error fetching part', err)
           this.partDetails = null

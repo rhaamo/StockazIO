@@ -113,7 +113,8 @@ export default {
             title: this.$pgettext('CategoryMatchers/Fetch/Toast/Error/Title', 'Fetching categories matchers'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting categories matcher', err)
         })
@@ -128,7 +129,8 @@ export default {
             title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating matchers'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
         })
         .catch((error) => {
@@ -136,7 +138,8 @@ export default {
             title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating matchers'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot update matchers', error.message)
         })

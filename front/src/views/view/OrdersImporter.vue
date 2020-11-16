@@ -132,7 +132,8 @@ export default {
             title: this.$pgettext('OrdersImporter/Fetch/Toast/Error/Title', 'Fetching orders'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting orders', err)
         })
@@ -159,7 +160,8 @@ export default {
                   title: this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Title', 'Import to inventory'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'primary'
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
                 })
                 this.fetchOrders()
                 this.$store.dispatch('preloadSidebar')
@@ -169,7 +171,8 @@ export default {
                   title: this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Title', 'Import to inventory'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'danger'
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Cannot import to inventory', error.message)
               })

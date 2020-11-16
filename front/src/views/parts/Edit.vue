@@ -481,7 +481,8 @@ export default {
             title: this.$pgettext('Part/Details/Toast/Error/Title', 'Fetching part details'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error with fetching part', err.message)
         })
@@ -507,7 +508,8 @@ export default {
                 title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
                 autoHideDelay: 5000,
                 appendToast: true,
-                variant: 'primary'
+                variant: 'primary',
+                toaster: 'b-toaster-top-center'
               })
               this.fetchParts()
               console.log(val)
@@ -517,7 +519,8 @@ export default {
                 title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
                 autoHideDelay: 5000,
                 appendToast: true,
-                variant: 'danger'
+                variant: 'danger',
+                toaster: 'b-toaster-top-center'
               })
               logger.default.error('Error with part deletion', err)
               this.fetchParts()
@@ -570,7 +573,8 @@ export default {
             title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           this.$v.$reset()
         })
@@ -579,7 +583,8 @@ export default {
             title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot update part', error.message)
         })

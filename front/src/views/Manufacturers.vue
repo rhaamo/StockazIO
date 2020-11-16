@@ -279,7 +279,8 @@ export default {
             title: this.$pgettext('Manufacturers/Fetch/Toast/Error/Title', 'Fetching manufacturers'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting manufacturers', err)
         })
@@ -314,7 +315,8 @@ export default {
               title: this.$pgettext('Manufacturer/Add/Toast/Success/Title', 'Adding manufacturer'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddManufacturer')
             this.clearForm()
@@ -325,7 +327,8 @@ export default {
               title: this.$pgettext('Manufacturer/Add/Toast/Error/Title', 'Adding manufacturer'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot save distributor', error.message)
           })
@@ -336,7 +339,8 @@ export default {
               title: this.$pgettext('Manufacturer/Update/Toast/Success/Title', 'Updating manufacturer'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddManufacturer')
             this.clearForm()
@@ -347,7 +351,8 @@ export default {
               title: this.$pgettext('Distributor/Update/Toast/Error/Title', 'Updating manufacturer'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot update manufacturer', error.message)
           })
@@ -381,7 +386,8 @@ export default {
                   title: this.$pgettext('Manufacturer/Delete/Toast/Success/Title', 'Deleting manufacturer'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'primary'
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
                 })
                 this.fetchManufacturers()
               })
@@ -390,7 +396,8 @@ export default {
                   title: this.$pgettext('Manufacturer/Delete/Toast/Error/Title', 'Deleting manufacturer'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'danger'
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with manufacturer deletion', err)
                 this.fetchManufacturers()

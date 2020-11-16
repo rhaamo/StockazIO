@@ -342,7 +342,8 @@ export default {
             title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part qty'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::hide::popover', this.popoverStockQtyClass(id))
@@ -352,7 +353,8 @@ export default {
             title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part qty'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot update part qty', error.message)
         })
@@ -367,7 +369,8 @@ export default {
             title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating min part qty'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::hide::popover', this.popoverStockQtyMinClass(id))
@@ -377,7 +380,8 @@ export default {
             title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating min part qty'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot update min part qty', error.message)
         })
@@ -477,7 +481,8 @@ export default {
                   title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'primary'
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
                 })
                 this.fetchParts(1, null)
               })
@@ -486,7 +491,8 @@ export default {
                   title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'danger'
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with part deletion', err)
                 this.fetchParts(1, null)
@@ -508,7 +514,8 @@ export default {
             title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error fetching part', err)
           this.partDetails = null

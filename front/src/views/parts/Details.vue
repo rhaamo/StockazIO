@@ -378,7 +378,8 @@ export default {
             title: this.$pgettext('Part/Details/Toast/Error/Title', 'Fetching part details'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error with part deletion', err.message)
         })
@@ -404,7 +405,8 @@ export default {
                 title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
                 autoHideDelay: 5000,
                 appendToast: true,
-                variant: 'primary'
+                variant: 'primary',
+                toaster: 'b-toaster-top-center'
               })
               this.$router.push({ name: 'home' })
             })
@@ -413,7 +415,8 @@ export default {
                 title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
                 autoHideDelay: 5000,
                 appendToast: true,
-                variant: 'danger'
+                variant: 'danger',
+                toaster: 'b-toaster-top-center'
               })
               logger.default.error('Error with part deletion', err)
               this.fetchPart()
@@ -446,7 +449,8 @@ export default {
             title: this.$pgettext('PartAttachment/Create/Toast/Success/Title', 'Saving part attachment'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           this.fetchPart()
           this.addAttachmentForm = { description: '', file: null }
@@ -456,7 +460,8 @@ export default {
             title: this.$pgettext('PartAttachment/Create/Toast/Error/Title', 'Saving part attachment'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error with part attachment deletion', err)
         })
@@ -482,7 +487,8 @@ export default {
                 title: this.$pgettext('PartAttachment/Delete/Toast/Success/Title', 'Deleting part attachment'),
                 autoHideDelay: 5000,
                 appendToast: true,
-                variant: 'primary'
+                variant: 'primary',
+                toaster: 'b-toaster-top-center'
               })
               this.fetchPart()
             })
@@ -491,7 +497,8 @@ export default {
                 title: this.$pgettext('PartAttachment/Delete/Toast/Error/Title', 'Deleting part attachment'),
                 autoHideDelay: 5000,
                 appendToast: true,
-                variant: 'danger'
+                variant: 'danger',
+                toaster: 'b-toaster-top-center'
               })
               logger.default.error('Error with part attachment deletion', err)
               this.fetchPart()

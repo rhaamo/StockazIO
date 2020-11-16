@@ -166,7 +166,8 @@ export default {
             title: this.$pgettext('OrdersImporterDetails/Fetch/Toast/Error/Title', 'Fetching order'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting order', err)
         })
@@ -199,7 +200,8 @@ export default {
             title: this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Title', 'Updating order'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           this.fetchOrder(this.orderId)
         })
@@ -208,7 +210,8 @@ export default {
             title: this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Title', 'Updating order'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot rematch items', error.message)
         })
@@ -220,7 +223,8 @@ export default {
             title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating categories'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           this.fetchOrder(this.orderId)
         })
@@ -229,7 +233,8 @@ export default {
             title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating categories'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot rematch items', error.message)
         })

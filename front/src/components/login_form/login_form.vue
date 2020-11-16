@@ -154,7 +154,8 @@ export default {
               title: this.$pgettext('Content/Login/Toast/Error/Title', 'Login'),
               autoHideDelay: 5000,
               appendToast: false,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
           })
       })

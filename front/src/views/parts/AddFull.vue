@@ -437,7 +437,8 @@ export default {
             title: this.$pgettext('Part/Add/Toast/Success/Title', 'Adding part'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'primary'
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
           })
           this.clearForm()
           this.$refs.inputname.focus()
@@ -447,7 +448,8 @@ export default {
             title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Cannot save part', error.message)
         })

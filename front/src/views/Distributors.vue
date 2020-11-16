@@ -253,7 +253,8 @@ export default {
             title: this.$pgettext('distributors/Fetch/Toast/Error/Title', 'Fetching distributors'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting distributors', err)
         })
@@ -288,7 +289,8 @@ export default {
               title: this.$pgettext('Distributor/Add/Toast/Success/Title', 'Adding distributor'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddDistributor')
             this.clearForm()
@@ -299,7 +301,8 @@ export default {
               title: this.$pgettext('Distributor/Add/Toast/Error/Title', 'Adding distributor'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot save distributor', error.message)
           })
@@ -310,7 +313,8 @@ export default {
               title: this.$pgettext('Distributor/Update/Toast/Success/Title', 'Updating distributor'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddDistributor')
             this.clearForm()
@@ -321,7 +325,8 @@ export default {
               title: this.$pgettext('Distributor/Update/Toast/Error/Title', 'Updating distributor'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot update distributor', error.message)
           })
@@ -355,7 +360,8 @@ export default {
                   title: this.$pgettext('Distributor/Delete/Toast/Success/Title', 'Deleting distributor'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'primary'
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
                 })
                 this.fetchDistributors()
               })
@@ -364,7 +370,8 @@ export default {
                   title: this.$pgettext('Distributor/Delete/Toast/Error/Title', 'Deleting distributor'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'danger'
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with distributor deletion', err)
                 this.fetchDistributors()

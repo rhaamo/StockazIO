@@ -168,7 +168,8 @@ export default {
             title: this.$pgettext('PartUnits/Fetch/Toast/Error/Title', 'Fetching part units'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'danger'
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error getting part units', err)
         })
@@ -203,7 +204,8 @@ export default {
               title: this.$pgettext('PartUnit/Add/Toast/Success/Title', 'Adding part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddPartUnit')
             this.clearForm()
@@ -214,7 +216,8 @@ export default {
               title: this.$pgettext('PartUnit/Add/Toast/Error/Title', 'Adding part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot save part unit', error.message)
           })
@@ -225,7 +228,8 @@ export default {
               title: this.$pgettext('PartUnit/Update/Toast/Success/Title', 'Updating part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'primary'
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
             })
             this.$bvModal.hide('modalAddPartUnit')
             this.clearForm()
@@ -236,7 +240,8 @@ export default {
               title: this.$pgettext('PartUnit/Update/Toast/Error/Title', 'Updating part unit'),
               autoHideDelay: 5000,
               appendToast: true,
-              variant: 'danger'
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
             })
             logger.default.error('Cannot update part unit', error.message)
           })
@@ -270,7 +275,8 @@ export default {
                   title: this.$pgettext('PartUnit/Delete/Toast/Success/Title', 'Deleting part unit'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'primary'
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
                 })
                 this.fetchPartUnits()
               })
@@ -279,7 +285,8 @@ export default {
                   title: this.$pgettext('PartUnit/Delete/Toast/Error/Title', 'Deleting part unit'),
                   autoHideDelay: 5000,
                   appendToast: true,
-                  variant: 'danger'
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with part unit deletion', err)
                 this.fetchPartUnits()
