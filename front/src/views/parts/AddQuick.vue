@@ -35,11 +35,10 @@
                   @blur="checkPartExists"
                 />
               </b-form-group>
-              <div v-if="partsExists && partsExists.length">
+              <div v-if="partsExists && partsExists.length" class="mb-3">
                 One or more parts exists with this name: <div v-for="p in partsExists" :key="p.uuid">
                   <a href="#" @click.prevent="viewPartModal(p)">{{ p.name }}</a>&nbsp;
                 </div>
-                <br><br>
               </div>
 
               <b-form-group id="input-group-description" label="Description" label-for="description">
@@ -333,10 +332,11 @@ export default {
       if (this.form.name === '') { return }
       apiService.partsAutocompleteQuick(this.form.name)
         .then((res) => {
+          console.log(res)
           this.partsExists = res.data
         })
         .catch((err) => {
-          console.logger.error('Got an error from the autocompleter', err.message)
+          logger.default.error('Got an error from the autocompleter', err.message)
           this.partsExists = []
         })
     },

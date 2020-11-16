@@ -35,7 +35,7 @@
                   @blur="checkPartExists"
                 />
               </b-form-group>
-              <div v-if="partsExists && partsExists.length">
+              <div v-if="partsExists && partsExists.length" class="mb-3">
                 One or more parts exists with this name: <div v-for="p in partsExists" :key="p.uuid">
                   <a href="#" @click.prevent="viewPartModal(p)">{{ p.name }}</a>&nbsp;
                 </div>
@@ -518,7 +518,7 @@ export default {
           this.partsExists = res.data
         })
         .catch((err) => {
-          console.logger.error('Got an error from the autocompleter', err.message)
+          logger.default.error('Got an error from the autocompleter', err.message)
           this.partsExists = []
         })
     },
