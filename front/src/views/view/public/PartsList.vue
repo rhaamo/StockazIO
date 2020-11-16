@@ -39,7 +39,8 @@
         <treeselect v-model="filter.storage" :multiple="false"
                     :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
                     clearable :normalizer="storagesNormalizer" no-children-text
-                    placeholder="Filter storage" @input="filterStorageChanged"
+                    placeholder="Filter storage" :disable-branch-nodes="true"
+                    @input="filterStorageChanged"
         />
       </div>
       <div class="col-lg-2">
@@ -359,7 +360,8 @@ export default {
     },
     storagesNormalizer: function (node) {
       let childs = (node.children || []).concat(node.storage_locations || [])
-      return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
+      let id = node.uuid ? node.id : `cat_${node.id}`
+      return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
     },
     filterFootprintChanged (value, id) {
       if (value) {

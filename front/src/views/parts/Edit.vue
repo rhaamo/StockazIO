@@ -154,6 +154,7 @@
                 <treeselect v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
                             search-nested :default-expand-level="Infinity" clearable
                             :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
+                            :disable-branch-nodes="true"
                 />
               </b-form-group>
 
@@ -594,7 +595,8 @@ export default {
     },
     storagesNormalizer: function (node) {
       let childs = (node.children || []).concat(node.storage_locations || [])
-      return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
+      let id = node.uuid ? node.id : `cat_${node.id}`
+      return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
     },
     ppvId (func, idx) {
       return `input-ppv-${func}-${idx}`
