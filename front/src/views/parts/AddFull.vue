@@ -460,7 +460,8 @@ export default {
     },
     storagesNormalizer: function (node) {
       let childs = (node.children || []).concat(node.storage_locations || [])
-      return { id: node.id, label: node.name, children: childs && childs.length ? childs : 0 }
+      let id = node.uuid ? node.id : `cat_${node.id}`
+      return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
     },
     clearForm: function () {
       this.form.name = ''
