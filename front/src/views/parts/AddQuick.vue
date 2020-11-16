@@ -336,11 +336,14 @@ export default {
       if (this.form.name === '') { return }
       apiService.partsAutocompleteQuick(this.form.name)
         .then((res) => {
-          console.log(res)
           this.partsExists = res.data
         })
         .catch((err) => {
-          logger.default.error('Got an error from the autocompleter', err.message)
+          if (err.response.status === 404) {
+            logger.default.info('Autocompleter said part not found')
+          } else {
+            logger.default.error('Got an error from the autocompleter', err.message)
+          }
           this.partsExists = []
         })
     },
