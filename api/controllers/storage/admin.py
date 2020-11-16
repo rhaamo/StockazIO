@@ -21,7 +21,7 @@ class StorageLocationAdmin(CommonAdmin):
         if obj.picture:
             return mark_safe(
                 "<a href='{url_img}' target='_blank'><img src='{url_img}' width='100px'/></a>".format(
-                    url_img=obj.picture_small.url
+                    url_img=obj.picture_medium.url
                 )
             )
 

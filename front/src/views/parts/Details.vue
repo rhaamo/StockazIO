@@ -73,9 +73,11 @@
                   <td>Storage:</td>
                   <td>
                     <span class="storage">{{ partDetailsStorage }}</span>
-                    &nbsp;<i v-b-tooltip.hover class="fa fa-picture-o" title="Show location picture"
-                             aria-hidden="true" @click="showLocationPicture"
-                    />
+                    <template v-if="part.storage.picture">
+                      &nbsp;<i v-b-tooltip.hover class="fa fa-picture-o" title="Show location picture"
+                               aria-hidden="true" @click="showLocationPicture"
+                      />
+                    </template>
                   </td>
                 </tr>
                 <tr>
