@@ -2,20 +2,20 @@
   <div class="details_part">
     <div v-if="part" class="row">
       <div class="col-lg-9">
+        <div class="float-left" @click="showBigQrCode(part)">
+          <qrcode
+            :id="qrcodeId(part.id)"
+            v-b-tooltip.hover
+            :value="qrCodePart(part.uuid)"
+            :options="{ scale: 1 }"
+            title="click to show bigger QrCode"
+            :data-uuid="part.uuid"
+            :data-name="part.name"
+            data-toggle="modal"
+            data-target="#modalQrCode"
+          />
+        </div>
         <h3>
-          <span @click="showBigQrCode(part)">
-            <qrcode
-              :id="qrcodeId(part.id)"
-              v-b-tooltip.hover
-              :value="qrCodePart(part.uuid)"
-              :options="{ scale: 1 }"
-              title="click to show bigger QrCode"
-              :data-uuid="part.uuid"
-              :data-name="part.name"
-              data-toggle="modal"
-              data-target="#modalQrCode"
-            />
-          </span>
           <i :class="partDetailsPrivate" /> <router-link v-b-tooltip.hover title="Back to part details" :to="{ name: 'parts-details', params: { partId: part.id } }">
             <i class="fa fa-angle-double-left" aria-hidden="true" />
           </router-link> {{ form.name }}
