@@ -155,6 +155,7 @@
                 <treeselect v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
                             search-nested :default-expand-level="Infinity" clearable
                             :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
+                            :disable-branch-nodes="true"
                 />
               </b-form-group>
 
