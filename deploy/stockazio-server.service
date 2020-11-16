@@ -4,9 +4,9 @@ After=redis.service postgresql.service
 
 [Service]
 User=stockazio
-WorkingDirectory=/home/stockazio/StockazIO/api
-EnvironmentFile=/home/stockazio/StockazIO/.env
-ExecStart=/home/stockazio/StockazIO/venv/bin/gunicorn config.asgi:application -w ${STOCKAZIO_WEB_WORKERS} -k uvicorn.workers.UvicornWorker -b ${STOCKAZIO_API_IP}:${STOCKAZIO_API_PORT}
+WorkingDirectory=/home/stockazio/stockazio/api
+EnvironmentFile=/home/stockazio/stockazio/.env
+ExecStart=/home/stockazio/stockazio/venv/bin/gunicorn config.asgi:application -w ${STOCKAZIO_WEB_WORKERS} -k uvicorn.workers.UvicornWorker -b ${STOCKAZIO_API_IP}:${STOCKAZIO_API_PORT}
 
 [Install]
 WantedBy=multi-user.target

@@ -95,9 +95,9 @@ class PartAttachmentCreateSerializer(serializers.ModelSerializer):
 
 
 class PartCreateSeralizer(WritableNestedModelSerializer):
-    part_parameters_value = PartParameterCreateSerializer(many=True)
-    manufacturers_sku = PartManufacturerCreateSerializer(many=True)
-    distributors_sku = DistributorSkuCreateSerializer(many=True)
+    part_parameters_value = PartParameterCreateSerializer(many=True, required=False)
+    manufacturers_sku = PartManufacturerCreateSerializer(many=True, required=False)
+    distributors_sku = DistributorSkuCreateSerializer(many=True, required=False)
     part_attachments = PartAttachmentSerializer(many=True, required=False)
 
     class Meta:
