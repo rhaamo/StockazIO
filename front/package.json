@@ -41,5 +41,8 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^7.1.0",
     "vue-template-compiler": "^2.6.12"
+  },
+  "resolutions": {
+    "webpack-dev-server/**/selfsigned": "^1.10.8"
   }
 }
