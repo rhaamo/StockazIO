@@ -441,6 +441,7 @@ export default {
             variant: 'primary',
             toaster: 'b-toaster-top-center'
           })
+          this.$store.commit('incrementCategoryPartsCount', this.form.category)
           this.clearForm()
           this.$refs.inputname.focus()
         })

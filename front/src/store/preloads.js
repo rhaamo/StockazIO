@@ -39,6 +39,30 @@ const preloads = {
     },
     setCurrentCategory (state, value) {
       state.currentCategory = value
+    },
+    incrementCategoryPartsCount (state, nodeId) {
+      function incrementNode (node, nodeId) {
+        if (node.id === nodeId) {
+          node.parts_count += 1
+        } else if (node.children && node.children.length) {
+          for (let i = 0; i < node.children.length; i++) {
+            incrementNode(node.children[i], nodeId)
+          }
+        }
+      }
+      if (nodeId !== null) { incrementNode(state.categories, nodeId) }
+    },
+    decrementCategoryPartsCount (state, nodeId) {
+      function decrementNode (node, nodeId) {
+        if (node.id === nodeId) {
+          node.parts_count -= 1
+        } else if (node.children && node.children.length) {
+          for (let i = 0; i < node.children.length; i++) {
+            decrementNode(node.children[i], nodeId)
+          }
+        }
+      }
+      if (nodeId !== null) { decrementNode(state.categories, nodeId) }
     }
   },
   getters: {

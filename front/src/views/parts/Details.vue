@@ -385,6 +385,8 @@ export default {
         })
     },
     deletePart (part) {
+      let categoryId = part.category ? part.category.id : null
+
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
         title: 'Plase Confirm',
         size: 'sm',
@@ -408,6 +410,7 @@ export default {
                 variant: 'primary',
                 toaster: 'b-toaster-top-center'
               })
+              this.$store.commit('decrementCategoryPartsCount', categoryId)
               this.$router.push({ name: 'home' })
             })
             .catch((err) => {

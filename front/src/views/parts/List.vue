@@ -461,6 +461,8 @@ export default {
         })
     },
     deletePart (part) {
+      let categoryId = part.category ? part.category.id : null
+
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
         title: 'Plase Confirm',
         size: 'sm',
@@ -486,6 +488,7 @@ export default {
                   toaster: 'b-toaster-top-center'
                 })
                 this.fetchParts(1, null)
+                this.$store.commit('decrementCategoryPartsCount', categoryId)
               })
               .catch((err) => {
                 this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {

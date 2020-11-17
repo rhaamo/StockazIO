@@ -330,7 +330,8 @@ export default {
       part_parameters_value: [],
       manufacturers_sku: [],
       distributors_sku: []
-    }
+    },
+    origCategory: null
   }),
   computed: {
     ...mapState({
@@ -476,6 +477,7 @@ export default {
           this.form.category = this.part.category ? this.part.category.id : null
           this.form.storage_location = this.part.storage ? this.part.storage.id : null
           this.form.footprint = this.part.footprint
+          this.origCategory = this.form.category
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('Part/Details/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -489,6 +491,8 @@ export default {
         })
     },
     deletePart (part) {
+      let categoryId = part.category ? part.category.id : null
+
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
         title: 'Plase Confirm',
         size: 'sm',
@@ -512,8 +516,8 @@ export default {
                 variant: 'primary',
                 toaster: 'b-toaster-top-center'
               })
-              this.fetchParts()
-              console.log(val)
+              this.$store.commit('decrementCategoryPartsCount', categoryId)
+              this.$router.push({ name: 'home' })
             })
             .catch((err) => {
               this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -524,7 +528,6 @@ export default {
                 toaster: 'b-toaster-top-center'
               })
               logger.default.error('Error with part deletion', err)
-              this.fetchParts()
             })
         })
         .catch((err) => {
@@ -532,6 +535,8 @@ export default {
         })
     },
     updatePart () {
+      let newCategoryId = this.form.category
+
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('Form has errors')
@@ -578,6 +583,13 @@ export default {
             toaster: 'b-toaster-top-center'
           })
           this.$v.$reset()
+          if (this.origCategory !== newCategoryId) {
+            // only do the in/de crements if the category changed
+            this.$store.commit('decrementCategoryPartsCount', this.origCategory)
+            this.$store.commit('incrementCategoryPartsCount', newCategoryId)
+            // then update the 'original category' to the new one
+            this.origCategory = newCategoryId
+          }
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
