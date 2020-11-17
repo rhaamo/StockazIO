@@ -71,6 +71,24 @@ export DJANGO_SETTINGS_MODULE=config.settings.local
 python manage.py ...
 ```
 
+## Updating
+Look at release changes first if anything is needed.
+
+```
+sudo su - stockazio
+cd stockazio
+source venv/bin/activate
+git pull
+cd front
+yarn install
+yarn build
+cd ../api
+pip install -r requirements.txt
+python manage.py migrate
+```
+
+Then restart your `stockazio-server` service.
+
 # Features
 
 - yummy bugs
