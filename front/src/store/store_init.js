@@ -39,7 +39,7 @@ const initializeSomeStuff = async ({ store }) => {
     // initializeSomeStuff({ store, router })
   })
 
-  Promise.all([
+  Promise.allSettled([
     // Check token and try to log user if found
     checkOAuthToken({ store }),
     // Try to get or create oauth2 app and token thingy
@@ -48,6 +48,7 @@ const initializeSomeStuff = async ({ store }) => {
     .catch(function (error) {
       logger.default.error('Error while doing initialization', error)
     })
+  logger.default.info('Initialization done.')
 }
 
 export default initializeSomeStuff
