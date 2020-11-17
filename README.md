@@ -27,7 +27,7 @@ useradd -m -s /bin/bash stockazio
 
 ```shell
 sudo su - stockazio
-git clone --recursive https://github.com/rhaamo/StockazIO/ stockazio
+git clone https://github.com/rhaamo/StockazIO/ stockazio
 cd stockazio
 python3.8 -m virtualenv -p python3.8 venv
 source venv/bin/activate
