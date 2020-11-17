@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Part, PartUnit, PartParameter, ParametersUnit, PartAttachment
+from .models import Part, PartUnit, PartParameter, ParametersUnit, PartAttachment, PartStockHistory
 from config.admin import CommonAdmin
 from controllers.distributor.models import DistributorSku
 from controllers.manufacturer.models import PartManufacturer
@@ -72,7 +72,12 @@ class PartAttachmentAdmin(CommonAdmin):
     list_display = ("description",)
 
 
+class PartStockHistoryAdmin(CommonAdmin):
+    list_display = ("created_at", "diff", "part")
+
+
 admin.site.register(PartUnit, PartUnitAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(ParametersUnit, ParametersUnitAdmin)
 admin.site.register(PartAttachment, PartAttachmentAdmin)
+admin.site.register(PartStockHistory, PartStockHistoryAdmin)

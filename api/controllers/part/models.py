@@ -182,4 +182,4 @@ class PartStockHistory(models.Model):
         verbose_name_plural = _("Part stock history")
 
     def __str__(self):
-        return self.name
+        return f"History of ${self.part.name}"
