@@ -43,6 +43,8 @@ python manage.py collectstatic
 python manage.py migrate
 # don't forget to run migrations and then
 python manage.py seeds_database
+# create a superuser
+python manage.py createsuperuser
 ```
 
 You can uses `deploy/stockazio-server.service` for your systemd service. 
