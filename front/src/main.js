@@ -73,10 +73,10 @@ const router = new VueRouter({
 
 sync(store, router)
 
-initializeSomeStuff({ store, router })
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+initializeSomeStuff({ store, router }).then(() => {
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+})

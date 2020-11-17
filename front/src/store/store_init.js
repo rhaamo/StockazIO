@@ -30,9 +30,9 @@ const initializeSomeStuff = async ({ store }) => {
   // 2. use the current url
   let defaultServerUrl = process.env.VUE_APP_SERVER_URL || store.getters['server/defaultUrl']()
   logger.default.info('Detected server url:', defaultServerUrl)
-  store.commit('server/serverUrl', defaultServerUrl)
+  await store.commit('server/serverUrl', defaultServerUrl)
   // Fetch server settings
-  store.dispatch('server/fetchSettings').finally(() => {
+  await store.dispatch('server/fetchSettings').finally(() => {
     // Start oauth init
     // let store = this.$store
     // let router = this.$router

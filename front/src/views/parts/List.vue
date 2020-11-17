@@ -424,6 +424,7 @@ export default {
       })
     },
     fetchParts (page, opts) {
+      console.log('we have', this.perPage, 'per page')
       let params = {
         page: page,
         size: this.perPage,
