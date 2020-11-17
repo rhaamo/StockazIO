@@ -38,10 +38,9 @@ $EDITOR .env
 # For local development see the other section
 cd api
 python manage.py collectstatic
-# edit config, uses a gunicorn, whatever
-# eg.: pip install gunicorn uvicorn
+# don't forget to run migrations
 python manage.py migrate
-# don't forget to run migrations and then
+# and then seed some initial datas (categories, manufacturers, footprints, ...)
 python manage.py seeds_database
 # create a superuser
 python manage.py createsuperuser
