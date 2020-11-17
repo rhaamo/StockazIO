@@ -92,9 +92,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "mptt",
     "imagekit",
-    "crispy_forms",
     "django_admin_listfilter_dropdown",
-    "bootstrap4",
     "oauth2_provider",
     "corsheaders",
     "rest_framework",
@@ -239,10 +237,6 @@ TEMPLATES = [
         },
     }
 ]
-
-# See: http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap4"
-CRISPY_FAIL_SILENTLY = not DEBUG
 
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
