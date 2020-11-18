@@ -32,6 +32,7 @@ v1_patterns += [
         r"orders_importer/",
         include(("controllers.OrdersImporter.urls", "orders_importer"), namespace="orders_importer"),
     ),
+    url(r"projects/", include(("controllers.project.urls", "project"), namespace="projects")),
 ]
 
 swagger = [
