@@ -195,7 +195,7 @@ export default {
             variant: 'primary',
             toaster: 'b-toaster-top-center'
           })
-          this.$router.push({ name: 'projects-details', params: { projectId: this.project.id } })
+          // TODO redir to project details page
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('Project/Update/Toast/Error/Message', 'An error occured, please try again later'), {

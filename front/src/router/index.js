@@ -18,6 +18,7 @@ import PublicPartsList from '../views/view/public/PartsList'
 import ProjectsList from '../views/projects/list'
 import ProjectsAdd from '../views/projects/add'
 import ProjectsEdit from '../views/projects/edit'
+import ProjectsDetails from '../views/projects/details'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -169,9 +170,16 @@ export default (store) => {
       beforeEnter: validateAuthenticatedRoute
     },
     {
-      path: '/projects/:projectId',
+      path: '/projects/:projectId/edit',
       name: 'projects-edit',
       component: ProjectsEdit,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/projects/:projectId',
+      name: 'projects-details',
+      component: ProjectsDetails,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },
