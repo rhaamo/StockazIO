@@ -17,6 +17,7 @@ import OrdersCategoryMatchers from '../views/view/OrdersCategoryMatchers'
 import PublicPartsList from '../views/view/public/PartsList'
 import ProjectsList from '../views/projects/list'
 import ProjectsAdd from '../views/projects/add'
+import ProjectsEdit from '../views/projects/edit'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -165,6 +166,13 @@ export default (store) => {
       path: '/projects/new',
       name: 'projects-new',
       component: ProjectsAdd,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/projects/:projectId',
+      name: 'projects-edit',
+      component: ProjectsEdit,
+      props: true,
       beforeEnter: validateAuthenticatedRoute
     },
     // Other

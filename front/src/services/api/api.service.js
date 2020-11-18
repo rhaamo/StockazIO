@@ -53,6 +53,7 @@ const CATEGORIES_MATCHERS_REMATCH = '/api/v1/orders_importer/category_matcher/re
 
 const PROJECTS_LIST = '/api/v1/projects/'
 const PROJECT_CREATE = '/api/v1/projects/'
+const PROJECT_GET = (id) => `/api/v1/projects/${id}/`
 const PROJECT_UPDATE = (id) => `/api/v1/projects/${id}/`
 const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`
 
@@ -297,6 +298,10 @@ const getProjects = (params) => {
   return Axios.get(PROJECTS_LIST, { params: params })
 }
 
+const getProject = (id) => {
+  return Axios.get(PROJECT_GET(id))
+}
+
 const createProject = (data) => {
   return Axios.post(PROJECT_CREATE, data)
 }
@@ -351,6 +356,7 @@ const apiService = {
   updateCategoryMatchers,
   rematchOrderItems,
   getProjects,
+  getProject,
   createProject,
   updateProject,
   deleteProject
