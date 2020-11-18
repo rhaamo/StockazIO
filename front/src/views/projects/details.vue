@@ -42,7 +42,7 @@
 
         <div class="row my-4">
           <div class="col-md-12">
-            Description:
+            <b>Description:</b>
             <div class="description">
               {{ project.description || 'None' }}
             </div>
@@ -51,7 +51,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            Notes:
+            <b>Notes:</b>
             <div class="description">
               {{ project.notes || 'None' }}
             </div>
@@ -64,10 +64,18 @@
           <b-tab title="Parts">
             <b-button variant="primary" @click.prevent="addInventoryPart">
               Add part from inventory
-            </b-button>&nbsp;
+            </b-button>
+            &nbsp;
             <b-button variant="info" @click.prevent="addExternalPart">
               Add external part
             </b-button>
+
+            <div>
+              <label for="boardsCount">Boards:</label>
+              <b-form-spinbutton id="boardsCount" v-model="boards" min="1"
+                                 class="w-25 ml-1"
+              />
+            </div>
             <hr>
 
             <b-table
@@ -105,6 +113,21 @@
                   <span v-else>{{ data.item.qty }}</span>
                 </template>
                 <span v-else>{{ data.item.qty }}</span>
+              </template>
+
+              <template #cell(qty_total)="data">
+                <template v-if="data.item.part">
+                  <span v-if="(data.item.part.stock_qty < data.item.qty*boards)"
+                        class="qtyMinWarning"
+                  >{{ data.item.qty*boards }}
+                    <i v-b-tooltip.hover class="fa fa-circle"
+                       aria-hidden="true"
+                       :title="currentStockQuantityWarning(data.item.part.stock_qty)"
+                    />
+                  </span>
+                  <span v-else>{{ data.item.qty*boards }}</span>
+                </template>
+                <span v-else>{{ data.item.qty*boards }}</span>
               </template>
             </b-table>
           </b-tab>
@@ -204,11 +227,13 @@ export default {
       { value: null, text: 'Filter by state' }
     ],
     partsFields: [
-      { key: 'part_name', label: 'Part name' },
-      { key: 'qty', label: 'Quantity' },
-      { key: 'sourced', label: 'Sourced' }
+      { key: 'part_name', label: 'Part name', tdClass: 'part_name' },
+      { key: 'qty', label: 'Quantity x1', tdClass: 'qty' },
+      { key: 'qty_total', label: 'Quantity total', tdClass: 'qty_total' },
+      { key: 'sourced', label: 'Sourced', tdClass: 'sourced' }
     ],
-    partDetails: null
+    partDetails: null,
+    boards: 1
   }),
   computed: {
     ...mapState({
@@ -380,3 +405,17 @@ export default {
   }
 }
 </script>
+
+<style>
+table#tableParts td.qty {
+  width: 8em;
+}
+
+table#tableParts td.qty_total {
+  width: 8em;
+}
+
+table#tableParts td.sourced {
+  width: 8em;
+}
+</style>
