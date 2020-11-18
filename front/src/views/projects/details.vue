@@ -2,6 +2,9 @@
   <div class="project_details">
     <AddPartInventoryModal />
     <AddPartExternalModal :project="project" @add-part-external-saved="onPartExternalSaved" />
+    <ViewModal :part="partDetails" :can-delete="false"
+               @view-part-modal-closed="onPartModalClosed"
+    />
 
     <div v-if="project" class="row">
       <div class="col-lg-9">
@@ -66,6 +69,44 @@
               Add external part
             </b-button>
             <hr>
+
+            <b-table
+              id="tableParts"
+              :items="project.project_parts"
+              :fields="partsFields"
+              responsive="sm"
+              striped
+              small
+            >
+              <template #cell(part_name)="data">
+                <a v-if="data.item.part" href="#" @click.prevent="viewPartModal(data.item.part)">{{ data.item.part.name }}</a>
+                <span v-else>{{ data.item.part_name }}</span>
+              </template>
+
+              <template #cell(sourced)="data">
+                <i v-if="data.item.sourced" style="color: green;" class="fa fa-check"
+                   aria-hidden="true"
+                />
+                <i v-else class="fa fa-close" style="color: red;"
+                   aria-hidden="true"
+                />
+              </template>
+
+              <template #cell(qty)="data">
+                <template v-if="data.item.part">
+                  <span v-if="(data.item.part.stock_qty < data.item.qty)"
+                        class="qtyMinWarning"
+                  >{{ data.item.qty }}
+                    <i v-b-tooltip.hover class="fa fa-circle"
+                       aria-hidden="true"
+                       :title="currentStockQuantityWarning(data.item.part.stock_qty)"
+                    />
+                  </span>
+                  <span v-else>{{ data.item.qty }}</span>
+                </template>
+                <span v-else>{{ data.item.qty }}</span>
+              </template>
+            </b-table>
           </b-tab>
 
           <b-tab title="Files attachments">
@@ -134,6 +175,7 @@
 <script>
 import AddPartInventoryModal from '@/components/parts/project_add_inventory_modal'
 import AddPartExternalModal from '@/components/parts/project_add_external_modal'
+import ViewModal from '@/components/parts/view_modal'
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
@@ -141,7 +183,8 @@ import { mapState } from 'vuex'
 export default {
   components: {
     AddPartInventoryModal,
-    AddPartExternalModal
+    AddPartExternalModal,
+    ViewModal
   },
   props: {
   },
@@ -159,7 +202,13 @@ export default {
       { value: 5, text: 'Abandonned' },
       { value: 99, text: 'Unknown' },
       { value: null, text: 'Filter by state' }
-    ]
+    ],
+    partsFields: [
+      { key: 'part_name', label: 'Part name' },
+      { key: 'qty', label: 'Quantity' },
+      { key: 'sourced', label: 'Sourced' }
+    ],
+    partDetails: null
   }),
   computed: {
     ...mapState({
@@ -180,6 +229,9 @@ export default {
     this.fetchProject()
   },
   methods: {
+    currentStockQuantityWarning (qty) {
+      return `Current stock is below needed project quantity (${qty})`
+    },
     projectStateText (value) {
       let a = this.projectStates.filter(function (e) { return e.value === value })
       return a && a.length ? a[0].text : 'Error'
@@ -317,6 +369,13 @@ export default {
     onPartExternalSaved () {
       logger.default.info('Part saved, reloading project.')
       this.fetchProject()
+    },
+    onPartModalClosed () {
+      this.partDetails = null
+    },
+    viewPartModal (part) {
+      this.partDetails = part
+      this.$bvModal.show('modalManage')
     }
   }
 }
