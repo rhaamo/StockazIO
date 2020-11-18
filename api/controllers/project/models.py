@@ -22,10 +22,13 @@ class Project(models.Model):
 
 
 class ProjectPart(models.Model):
-    project = models.ForeignKey(Project, blank=False, null=False, on_delete=models.CASCADE)
+    project = models.ForeignKey(
+        Project, related_name="project_parts", blank=False, null=False, on_delete=models.CASCADE
+    )
     part = models.ForeignKey(Part, blank=True, null=True, on_delete=models.SET_NULL)
     part_name = models.CharField("part name", max_length=255, blank=True)
     qty = models.IntegerField("part quantity", default=1)
+    sourced = models.BooleanField("sourced", default=False)
 
     def __str__(self):
         if self.part:

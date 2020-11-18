@@ -15,6 +15,7 @@ import OrdersImporter from '../views/view/OrdersImporter'
 import OrdersImporterDetails from '../views/view/OrdersImporterDetails'
 import OrdersCategoryMatchers from '../views/view/OrdersCategoryMatchers'
 import PublicPartsList from '../views/view/public/PartsList'
+import ProjectsList from '../views/projects/list'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -152,7 +153,13 @@ export default (store) => {
       component: PublicPartsList,
       props: true
     },
-
+    // Projects
+    {
+      path: '/projects',
+      name: 'projects-list',
+      component: ProjectsList,
+      beforeEnter: validateAuthenticatedRoute
+    },
     // Other
     {
       path: '/about',

@@ -10,7 +10,7 @@ class ProjectPartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectPart
-        fields = ("id", "part", "part_name", "qty")
+        fields = ("id", "part", "part_name", "qty", "sourced")
 
 
 class ProjectAttachmentsSerializer(serializers.ModelSerializer):
@@ -23,7 +23,24 @@ class ProjectAttachmentsSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    project_part = ProjectPartSerializer(many=True)
+    class Meta:
+        model = Project
+        fields = (
+            "id",
+            "name",
+            "description",
+            "notes",
+            "ibom_url",
+            "state",
+            "public",
+            "created_at",
+            "project_parts",
+            "project_attachments",
+        )
+
+
+class ProjectRetrieveSerializer(serializers.ModelSerializer):
+    project_parts = ProjectPartSerializer(many=True)
     project_attachments = ProjectAttachmentsSerializer(many=True, required=False)
 
     class Meta:
@@ -37,5 +54,6 @@ class ProjectSerializer(serializers.ModelSerializer):
             "state",
             "public",
             "created_at",
-            "project_part" "project_attachments",
+            "project_parts",
+            "project_attachments",
         )
