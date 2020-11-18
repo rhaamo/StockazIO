@@ -54,6 +54,7 @@ const CATEGORIES_MATCHERS_REMATCH = '/api/v1/orders_importer/category_matcher/re
 const PROJECTS_LIST = '/api/v1/projects/'
 const PROJECT_CREATE = '/api/v1/projects/'
 const PROJECT_UPDATE = (id) => `/api/v1/projects/${id}/`
+const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`
 
 // Auth
 const verifyCredentials = () => {
@@ -304,6 +305,10 @@ const updateProject = (id, data) => {
   return Axios.put(PROJECT_UPDATE(id), data)
 }
 
+const deleteProject = (id) => {
+  return Axios.delete(PROJECT_DELETE(id))
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -347,7 +352,8 @@ const apiService = {
   rematchOrderItems,
   getProjects,
   createProject,
-  updateProject
+  updateProject,
+  deleteProject
 }
 
 export default apiService

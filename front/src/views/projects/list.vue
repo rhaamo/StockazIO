@@ -48,6 +48,22 @@
             <i v-if="data.item.public" class="fa fa-unlock" aria-hidden="true" />
             <i v-else class="fa fa-lock" aria-hidden="true" />
           </template>
+
+          <template #cell(actions)="data">
+            <b-button variant="link" :to="{ name: 'projects-edit', params: { projectId: data.item.id } }">
+              <i
+                class="fa fa-pencil-square-o"
+                aria-hidden="true"
+              />
+            </b-button>
+                &nbsp;
+            <b-button variant="link" @click.prevent="deleteProject(data.item)">
+              <i
+                class="fa fa-trash-o"
+                aria-hidden="true"
+              />
+            </b-button>
+          </template>
         </b-table>
       </div>
     </div>
@@ -68,6 +84,7 @@
 
 <script>
 import apiService from '@/services/api/api.service'
+import logger from '@/logging'
 
 export default {
   data: () => ({
@@ -76,7 +93,8 @@ export default {
       { key: 'name', label: 'Name', sortable: true },
       { key: 'description', label: 'Description' },
       { key: 'state', label: 'State', sortable: true, tdClass: 'state' },
-      { key: 'public', label: 'Public', sortable: true, tdClass: 'public' }
+      { key: 'public', label: 'Public', sortable: true, tdClass: 'public' },
+      { key: 'actions', label: 'Actions', tdClass: 'actions' }
     ],
     sortBy: 'name',
     sortDesc: false,
@@ -139,6 +157,50 @@ export default {
     projectStateText (value) {
       let a = this.projectStates.filter(function (e) { return e.value === value })
       return a && a.length ? a[0].text : 'Error'
+    },
+    deleteProject (project) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the project '${project.name}' ?`, {
+        title: 'Plase Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          if (value === true) {
+            apiService.deleteProject(project.id)
+              .then((val) => {
+                this.$bvToast.toast(this.$pgettext('Project/Delete/Toast/Success/Message', 'Success'), {
+                  title: this.$pgettext('Project/Delete/Toast/Success/Title', 'Deleting project'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
+                })
+                this.fetchProjects(this.currentPage, null)
+              })
+              .catch((err) => {
+                this.$bvToast.toast(this.$pgettext('Project/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                  title: this.$pgettext('Project/Delete/Toast/Error/Title', 'Deleting project'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
+                })
+                logger.default.error('Error with project deletion', err)
+                this.fetchParts(1, null)
+              })
+          }
+        })
+        .catch((err) => {
+          logger.default.error('Error with the delete modal', err)
+        })
     }
   }
 }
@@ -151,5 +213,9 @@ table#tableProjectsList td.state {
 
 table#tableProjectsList td.public {
   width: 5em;
+}
+
+table#tableProjectsList td.actions {
+  width: 8em;
 }
 </style>
