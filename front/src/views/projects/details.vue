@@ -1,5 +1,8 @@
 <template>
   <div class="project_details">
+    <AddPartInventoryModal />
+    <AddPartExternalModal @add-part-external-saved="onPartExternalSaved" />
+
     <div v-if="project" class="row">
       <div class="col-lg-9">
         <h3>
@@ -55,6 +58,16 @@
 
       <div class="col-md-8">
         <b-tabs content-class="mt-3">
+          <b-tab title="Parts">
+            <b-button variant="primary" @click.prevent="addInventoryPart">
+              Add part from inventory
+            </b-button>&nbsp;
+            <b-button variant="info" @click.prevent="addExternalPart">
+              Add external part
+            </b-button>
+            <hr>
+          </b-tab>
+
           <b-tab title="Files attachments">
             <b-form enctype="multipart/form-data" inline @submit.prevent="addAttachment">
               <label class="sr-only" for="description">Description</label>
@@ -119,11 +132,17 @@
 </template>
 
 <script>
+import AddPartInventoryModal from '@/components/parts/project_add_inventory_modal'
+import AddPartExternalModal from '@/components/parts/project_add_external_modal'
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 
 export default {
+  components: {
+    AddPartInventoryModal,
+    AddPartExternalModal
+  },
   props: {
   },
   data: () => ({
@@ -288,6 +307,16 @@ export default {
         .catch((err) => {
           logger.default.error('Error with the delete attachment modal', err)
         })
+    },
+    addInventoryPart () {
+      this.$bvModal.show('modalAddInventoryPart')
+    },
+    addExternalPart () {
+      this.$bvModal.show('modalAddExternalPart')
+    },
+    onPartExternalSaved () {
+      logger.default.info('Part saved, reloading project.')
+      this.fetchProject()
     }
   }
 }
