@@ -58,6 +58,8 @@ const PROJECT_UPDATE = (id) => `/api/v1/projects/${id}/`
 const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`
 const PROJECT_ATTACHMENTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/attachments/`
 const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/attachments/${pk}` // no final /
+const PROJECT_PARTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/parts/`
+const PROJECT_PARTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}` // no final /
 
 // Auth
 const verifyCredentials = () => {
@@ -312,6 +314,10 @@ const updateProject = (id, data) => {
   return Axios.put(PROJECT_UPDATE(id), data)
 }
 
+const updatePartialProject = (id, data) => {
+  return Axios.patch(PROJECT_UPDATE(id), data)
+}
+
 const deleteProject = (id) => {
   return Axios.delete(PROJECT_DELETE(id))
 }
@@ -326,6 +332,14 @@ const projectAttachmentCreate = (projectId, data) => {
 
 const projectAttachmentDelete = (projectId, partAttachmentId) => {
   return Axios.delete(PROJECT_ATTACHMENTS_DELETE(projectId, partAttachmentId))
+}
+
+const projectAddPart = (id, data) => {
+  return Axios.post(PROJECT_PARTS_CREATE(id), data)
+}
+
+const projectDeletePart = (id, data) => {
+  return Axios.delete(PROJECT_PARTS_DELETE(id), data)
 }
 
 const apiService = {
@@ -373,9 +387,12 @@ const apiService = {
   getProject,
   createProject,
   updateProject,
+  updatePartialProject,
   deleteProject,
   projectAttachmentCreate,
-  projectAttachmentDelete
+  projectAttachmentDelete,
+  projectAddPart,
+  projectDeletePart
 }
 
 export default apiService

@@ -13,6 +13,15 @@ class ProjectPartSerializer(serializers.ModelSerializer):
         fields = ("id", "part", "part_name", "qty", "sourced", "notes")
 
 
+class ProjectPartStandaloneSerializer(serializers.ModelSerializer):
+    part = PartSerializer(many=False, required=False)
+    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+
+    class Meta:
+        model = ProjectPart
+        fields = ("id", "part", "part_name", "qty", "sourced", "notes", "project")
+
+
 class ProjectAttachmentsSerializer(serializers.ModelSerializer):
     file = serializers.FileField(validators=[FileTypeValidator(allowed_types=settings.PART_ATTACHMENT_ALLOWED_TYPES)])
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())

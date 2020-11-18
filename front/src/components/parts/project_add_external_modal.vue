@@ -76,12 +76,17 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minValue } from 'vuelidate/lib/validators'
+import apiService from '@/services/api/api.service'
+import logger from '@/logging'
 
 export default {
   mixins: [
     validationMixin
   ],
   props: {
+    project: {
+      type: Object
+    }
   },
   data: () => ({
     form: {
@@ -110,9 +115,50 @@ export default {
       this.$emit('add-part-external-modal-closed')
     },
     save () {
-      // todo check form + api call
-      this.$bvModal.hide('modalAddExternalPart')
-      this.$emit('add-part-external-saved')
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        logger.default.error('form has errors')
+        return
+      }
+
+      let part = {
+        part_name: this.form.part_name,
+        qty: this.form.qty,
+        sourced: this.form.sourced,
+        notes: this.form.notes,
+        project: this.project.id
+      }
+
+      apiService.projectAddPart(this.project.id, part)
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Adding external part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.clearForm()
+          this.$bvModal.hide('modalAddExternalPart')
+          this.$emit('add-part-external-saved')
+        })
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Adding external part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Cannot add external part', error.message)
+        })
+    },
+    clearForm () {
+      this.form.part_name = ''
+      this.form.qty = 1
+      this.form.sourced = false
+      this.form.notes = ''
+      this.$v.$reset()
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="project_details">
     <AddPartInventoryModal />
-    <AddPartExternalModal @add-part-external-saved="onPartExternalSaved" />
+    <AddPartExternalModal :project="project" @add-part-external-saved="onPartExternalSaved" />
 
     <div v-if="project" class="row">
       <div class="col-lg-9">
