@@ -228,6 +228,7 @@ export default {
     ],
     partsFields: [
       { key: 'part_name', label: 'Part name', tdClass: 'part_name' },
+      { key: 'notes', label: 'Notes', tdClass: 'notes' },
       { key: 'qty', label: 'Quantity x1', tdClass: 'qty' },
       { key: 'qty_total', label: 'Quantity total', tdClass: 'qty_total' },
       { key: 'sourced', label: 'Sourced', tdClass: 'sourced' }
@@ -407,6 +408,11 @@ export default {
 </script>
 
 <style>
+table#tableParts td.notes {
+  width: 30em;
+  overflow: hidden;
+}
+
 table#tableParts td.qty {
   width: 8em;
 }
