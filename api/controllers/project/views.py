@@ -34,7 +34,7 @@ class ProjectsViewSet(ModelViewSet):
         elif self.action == "retrieve":
             return ProjectRetrieveSerializer
         else:
-            return ProjectSerializer
+            return ProjectRetrieveSerializer
 
     def get_queryset(self):
         state = self.request.query_params.get("state", None)

@@ -40,7 +40,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class ProjectRetrieveSerializer(serializers.ModelSerializer):
-    project_parts = ProjectPartSerializer(many=True)
+    project_parts = ProjectPartSerializer(many=True, required=False)
     project_attachments = ProjectAttachmentsSerializer(many=True, required=False)
 
     class Meta:

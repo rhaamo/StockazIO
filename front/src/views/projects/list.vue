@@ -1,7 +1,7 @@
 <template>
   <div class="projects_list">
     <div class="row">
-      <div class="col-10">
+      <div class="col-8">
         <ol class="breadcrumb">
           <li class="breadcrumb-item active">
             <router-link :to="{ name: 'projects-list' }">
@@ -9,6 +9,12 @@
             </router-link>
           </li>
         </ol>
+      </div>
+
+      <div class="col-xl-1 col-2">
+        <b-btn :to="{name: 'projects-new'}">
+          New
+        </b-btn>
       </div>
 
       <div class="col-xl-2 col-3">
@@ -39,8 +45,8 @@
             <span>{{ projectStateText(data.item.state) }}</span>
           </template>
           <template #cell(public)="data">
-            <i v-if="data.item.public" class="fa fa-lock" aria-hidden="true" />
-            <i v-else class="fa fa-unlock" aria-hidden="true" />
+            <i v-if="data.item.public" class="fa fa-unlock" aria-hidden="true" />
+            <i v-else class="fa fa-lock" aria-hidden="true" />
           </template>
         </b-table>
       </div>
