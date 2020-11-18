@@ -10,7 +10,7 @@ class ProjectPartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectPart
-        fields = ("id", "part", "part_name", "qty", "sourced")
+        fields = ("id", "part", "part_name", "qty", "sourced", "notes")
 
 
 class ProjectAttachmentsSerializer(serializers.ModelSerializer):

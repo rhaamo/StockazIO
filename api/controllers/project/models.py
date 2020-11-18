@@ -29,6 +29,7 @@ class ProjectPart(models.Model):
     part_name = models.CharField("part name", max_length=255, blank=True)
     qty = models.IntegerField("part quantity", default=1)
     sourced = models.BooleanField("sourced", default=False)
+    notes = models.CharField("notes", max_length=255, blank=True)
 
     def __str__(self):
         if self.part:
