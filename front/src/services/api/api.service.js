@@ -25,7 +25,7 @@ const PARTS_LIST = '/api/v1/parts/'
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}/`
 const PARTS_ATTACHMENTS_CREATE = (partId) => `/api/v1/parts/${partId}/attachments/`
-const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}/`
+const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}` // no final /
 
 const PARTS_PUBLIC_LIST = '/api/v1/parts/public/'
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`
@@ -56,6 +56,8 @@ const PROJECT_CREATE = '/api/v1/projects/'
 const PROJECT_GET = (id) => `/api/v1/projects/${id}/`
 const PROJECT_UPDATE = (id) => `/api/v1/projects/${id}/`
 const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`
+const PROJECT_ATTACHMENTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/attachments/`
+const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/attachments/${pk}` // no final /
 
 // Auth
 const verifyCredentials = () => {
@@ -314,6 +316,18 @@ const deleteProject = (id) => {
   return Axios.delete(PROJECT_DELETE(id))
 }
 
+const projectAttachmentCreate = (projectId, data) => {
+  let formData = new FormData()
+  formData.append('file', data.file)
+  formData.append('description', data.description)
+  formData.append('project', data.project_id ? data.project_id : projectId)
+  return Axios.post(PROJECT_ATTACHMENTS_CREATE(projectId), formData)
+}
+
+const projectAttachmentDelete = (projectId, partAttachmentId) => {
+  return Axios.delete(PROJECT_ATTACHMENTS_DELETE(projectId, partAttachmentId))
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -359,7 +373,9 @@ const apiService = {
   getProject,
   createProject,
   updateProject,
-  deleteProject
+  deleteProject,
+  projectAttachmentCreate,
+  projectAttachmentDelete
 }
 
 export default apiService

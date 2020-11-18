@@ -1,9 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import filters
+from rest_framework import filters, views
 from rest_framework.pagination import PageNumberPagination
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 
-from .models import Project
-from .serializers import ProjectRetrieveSerializer, ProjectSerializer
+from .models import Project, ProjectAttachment
+from .serializers import ProjectRetrieveSerializer, ProjectSerializer, ProjectAttachmentsSerializer
 
 
 class ProjectViewSetPagination(PageNumberPagination):
@@ -45,3 +47,20 @@ class ProjectsViewSet(ModelViewSet):
             queryset = queryset.filter(state=state)
 
         return queryset
+
+
+class ProjectAttachmentsStandalone(views.APIView):
+    required_scope = "projects"
+    anonymous_policy = False
+
+    def post(self, request, project_id, format=None):
+        serializer = ProjectAttachmentsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, project_id, pk, format=None):
+        attachment = get_object_or_404(ProjectAttachment, id=pk)
+        attachment.delete()
+        return Response(status=204)

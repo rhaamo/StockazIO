@@ -36,6 +36,14 @@
                  small
                  @sort-changed="sortTableChanged"
         >
+          <template #cell(name)="data">
+            <p style="white-space: pre-line;">
+              <router-link :to="{name: 'projects-details', params: { projectId: data.item.id }}">
+                {{ data.item.name }}
+              </router-link>
+            </p>
+          </template>
+
           <template #cell(description)="data">
             <p style="white-space: pre-line;">
               {{ data.item.description }}
