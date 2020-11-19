@@ -22,7 +22,7 @@ from controllers.part.serializers import (
 
 class PartViewSetPagination(PageNumberPagination):
     page_size = settings.PAGINATION["PARTS"]
-    page_size_query_param = "page_size"
+    page_size_query_param = "size"
 
 
 class PartViewSet(ModelViewSet):
