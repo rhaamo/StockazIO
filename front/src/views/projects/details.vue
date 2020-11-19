@@ -1,7 +1,7 @@
 <template>
   <div class="project_details">
-    <AddPartInventoryModal />
-    <AddPartExternalModal :project="project" @add-part-external-saved="onPartExternalSaved" />
+    <AddPartInventoryModal :project="project" @add-part-inventory-saved="onPartSaved" />
+    <AddPartExternalModal :project="project" @add-part-external-saved="onPartSaved" />
     <ViewModal :part="partDetails" :can-delete="false"
                @view-part-modal-closed="onPartModalClosed"
     />
@@ -84,11 +84,16 @@
               :fields="partsFields"
               responsive="sm"
               striped
+              primary-key="uuid"
               small
             >
               <template #cell(part_name)="data">
                 <a v-if="data.item.part" href="#" @click.prevent="viewPartModal(data.item.part)">{{ data.item.part.name }}</a>
                 <span v-else>{{ data.item.part_name }}</span>
+                <template v-if="data.item.part && data.item.part.description">
+                  <br>
+                  {{ data.item.part.description }}
+                </template>
               </template>
 
               <template #cell(sourced)="data">
@@ -98,6 +103,21 @@
                 <i v-else class="fa fa-close" style="color: red;"
                    aria-hidden="true"
                 />
+              </template>
+
+              <template #cell(stock_qty)="data">
+                <template v-if="data.item.part">
+                  <span v-if="(data.item.part.stock_qty < data.item.qty)"
+                        class="qtyMinWarning"
+                  >{{ data.item.part.stock_qty }}
+                    <i v-b-tooltip.hover class="fa fa-circle"
+                       aria-hidden="true"
+                       :title="currentStockQuantityWarning(data.item.qty)"
+                    />
+                  </span>
+                  <span v-else>{{ data.item.part.stock_qty }}</span>
+                </template>
+                <span v-else>-</span>
               </template>
 
               <template #cell(qty)="data">
@@ -229,6 +249,7 @@ export default {
     partsFields: [
       { key: 'part_name', label: 'Part name', tdClass: 'part_name' },
       { key: 'notes', label: 'Notes', tdClass: 'notes' },
+      { key: 'stock_qty', label: 'Stock', tdClass: 'stock_qty' },
       { key: 'qty', label: 'Quantity x1', tdClass: 'qty' },
       { key: 'qty_total', label: 'Quantity total', tdClass: 'qty_total' },
       { key: 'sourced', label: 'Sourced', tdClass: 'sourced' }
@@ -392,7 +413,7 @@ export default {
     addExternalPart () {
       this.$bvModal.show('modalAddExternalPart')
     },
-    onPartExternalSaved () {
+    onPartSaved () {
       logger.default.info('Part saved, reloading project.')
       this.fetchProject()
     },
@@ -411,6 +432,10 @@ export default {
 table#tableParts td.notes {
   width: 30em;
   overflow: hidden;
+}
+
+table#tableParts td.stock_qty {
+  width: 6em;
 }
 
 table#tableParts td.qty {

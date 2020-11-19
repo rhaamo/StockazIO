@@ -275,7 +275,7 @@ export default {
     },
     sortTableChanged (ctx) {
       // When changing the sorting order, reset the pagination to page 1
-      let opts = ctx.sortDesc ? `-${ctx.sortBy}` : ctx.sortBy
+      let opts = { ordering: ctx.sortDesc ? `-${ctx.sortBy}` : ctx.sortBy }
       this.fetchParts(1, opts)
     },
     qrcodeId (id, size) {

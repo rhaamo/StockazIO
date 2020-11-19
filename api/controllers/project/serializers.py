@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Project, ProjectAttachment, ProjectPart
 from controllers.part.serializers import PartSerializer
+from controllers.part.models import Part
 from upload_validator import FileTypeValidator
 from django.conf import settings
 
@@ -14,7 +15,7 @@ class ProjectPartSerializer(serializers.ModelSerializer):
 
 
 class ProjectPartStandaloneSerializer(serializers.ModelSerializer):
-    part = PartSerializer(many=False, required=False)
+    part = serializers.PrimaryKeyRelatedField(queryset=Part.objects.all(), required=False)
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
 
     class Meta:
