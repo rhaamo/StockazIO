@@ -9,7 +9,7 @@ class Project(models.Model):
     name = models.CharField("name", max_length=255, unique=False, blank=False)
     description = models.TextField("description", blank=True)
     notes = models.TextField("notes", blank=True)
-    ibom_url = models.URLField("ibom url")
+    ibom_url = models.URLField("ibom url", blank=True)
     state = models.IntegerField("state", default=99, choices=STATES)
     public = models.BooleanField("public", default=False)
     created_at = models.DateTimeField(auto_now_add=True)
