@@ -115,9 +115,6 @@ Available realistic and useful values for filtering: Today, ThisWeek, ThisMonth,
 You then will have to navigate to 'View - Order importer' in the web ui to manage orders: set a default vendor matching the ones in the db, set categories, manage the categories matchers, etc.
 
 # TODO List
-- KISS Project management
-- Project BOM state
-- Export of project BOM
 - Export of all components or a category or search
 - ???
 
