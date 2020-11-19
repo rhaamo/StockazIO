@@ -40,6 +40,12 @@ const oauth = {
     },
     setLoggedIn (state, value) {
       state.loggedIn = value
+    },
+    clearTokens (state) {
+      state.clientId = false
+      state.clientSecret = false
+      state.appToken = false
+      state.userToken = false
     }
   },
   getters: {

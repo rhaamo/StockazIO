@@ -49,6 +49,7 @@ export default {
       }).then(() => {
         store.commit('setLoggedIn', false, { root: true })
         store.commit('setCurrentUser', null)
+        store.commit('clearTokens')
       })
     },
     // eslint-disable-next-line camelcase
