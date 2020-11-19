@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import fileDownload from 'js-file-download'
 
 const CHECK_TOKEN_URL = '/oauth/check_token/'
 
@@ -61,6 +62,9 @@ const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) => `/api/v1/projects/${projec
 const PROJECT_PARTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/parts/`
 const PROJECT_PARTS_UPDATE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}` // no final /
 const PROJECT_PARTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}` // no final /
+const PROJECT_EXPORT_INFOS_TXT = (projectId) => `/api/v1/projects/${projectId}/exports/infos.txt`
+const PROJECT_EXPORT_BOM_CSV = (projectId) => `/api/v1/projects/${projectId}/exports/bom.csv`
+const PROJECT_EXPORT_BOM_XLSX = (projectId) => `/api/v1/projects/${projectId}/exports/bom.xlsx`
 
 // Auth
 const verifyCredentials = () => {
@@ -347,6 +351,33 @@ const projectUpdatePart = (id, partId, data) => {
   return Axios.post(PROJECT_PARTS_UPDATE(id, partId), data)
 }
 
+const projectExportInfosTxt = (id, filename) => {
+  return Axios.get(PROJECT_EXPORT_INFOS_TXT(id), {
+    responseType: 'blob'
+  })
+    .then((res) => {
+      fileDownload(res.data, filename)
+    })
+}
+
+const projectExportBomCSV = (id, filename) => {
+  return Axios.get(PROJECT_EXPORT_BOM_CSV(id), {
+    responseType: 'blob'
+  })
+    .then((res) => {
+      fileDownload(res.data, filename)
+    })
+}
+
+const projectExportBomXLSX = (id, filename) => {
+  return Axios.get(PROJECT_EXPORT_BOM_XLSX(id), {
+    responseType: 'blob'
+  })
+    .then((res) => {
+      fileDownload(res.data, filename)
+    })
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -398,7 +429,10 @@ const apiService = {
   projectAttachmentDelete,
   projectAddPart,
   projectDeletePart,
-  projectUpdatePart
+  projectUpdatePart,
+  projectExportInfosTxt,
+  projectExportBomCSV,
+  projectExportBomXLSX
 }
 
 export default apiService

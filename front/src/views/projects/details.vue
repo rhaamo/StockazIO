@@ -224,6 +224,23 @@
               </tbody>
             </table>
           </b-tab>
+
+          <b-tab title="Exports">
+            <h4>Project infos</h4>
+            <b-button variant="info" @click.prevent="exportProject('infos_txt')">
+              Text
+            </b-button>
+
+            <h4 class="mt-4">
+              BOM
+            </h4>
+            <b-button variant="info" class="mr-2" @click.prevent="exportProject('bom_csv')">
+              CSV
+            </b-button>
+            <b-button variant="info" @click.prevent="exportProject('bom_xlsx')">
+              Excel
+            </b-button>
+          </b-tab>
         </b-tabs>
       </div>
     </div>
@@ -502,6 +519,15 @@ export default {
     },
     clearPartToEdit () {
       this.partToEdit = null
+    },
+    exportProject (kind) {
+      if (kind === 'infos_txt') {
+        apiService.projectExportInfosTxt(this.project.id, `${this.project.name}.txt`)
+      } else if (kind === 'bom_csv') {
+        apiService.projectExportBomCSV(this.project.id, `${this.project.name}__bom.csv`)
+      } else if (kind === 'bom_xlsx') {
+        apiService.projectExportBomXLSX(this.project.id, `${this.project.name}__bom.xlsx`)
+      }
     }
   }
 }

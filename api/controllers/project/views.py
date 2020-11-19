@@ -3,9 +3,15 @@ from rest_framework import filters, views
 from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from datetime import datetime
+from controllers.app.renderers import PlainTextRenderer
+from rest_framework_csv.renderers import CSVRenderer
+from drf_renderer_xlsx.renderers import XLSXRenderer
+import urllib
 
 from .models import Project, ProjectAttachment, ProjectPart
 from .serializers import (
+    ProjectPartSerializer,
     ProjectPartStandaloneSerializer,
     ProjectRetrieveSerializer,
     ProjectSerializer,
@@ -91,3 +97,59 @@ class ProjectPartsStandalone(views.APIView):
         attachment = get_object_or_404(ProjectPart, id=pk)
         attachment.delete()
         return Response(status=204)
+
+
+class ExportTextInfos(views.APIView):
+    required_scope = "projects"
+    anonymous_policy = False
+
+    renderer_classes = [PlainTextRenderer]
+
+    def get(self, request, project_id, format=None):
+        project = get_object_or_404(Project, id=project_id)
+        txt = f"""File generated on {datetime.now()}
+
+Name: {project.name}
+State: {dict(Project.STATES)[project.state]}
+External BOM URL: {project.ibom_url}
+Public project: {'yes' if project.public else 'no'}
+
+Description:
+{project.description or 'No description'}
+
+Notes:
+{project.notes or 'No notes'}
+"""
+        return Response(txt)
+
+
+class ExportBomCSV(views.APIView):
+    required_scope = "projects"
+    anonymous_policy = False
+
+    renderer_classes = [CSVRenderer]
+
+    # def get_renderer_context(self):
+    #     context = super().get_renderer_context()
+    #     context['header'] = ('id', 'part.id', 'part_name',)
+    #     return context
+
+    def get(self, request, project_id, format=None):
+        project = get_object_or_404(Project, id=project_id)
+        serializer = ProjectPartSerializer(project.project_parts, many=True)
+        return Response(serializer.data)
+
+
+class ExportBomXLSX(views.APIView):
+    required_scope = "projects"
+    anonymous_policy = False
+
+    renderer_classes = [XLSXRenderer]
+
+    def get(self, request, project_id, format=None):
+        project = get_object_or_404(Project, id=project_id)
+        serializer = ProjectPartSerializer(project.project_parts, many=True)
+        filename = f"{urllib.parse.quote(project.name)}.xlsx"
+        r = Response(serializer.data)
+        r["Content-Disposition"] = f"attachment; filename={filename}"
+        return r
