@@ -1,7 +1,8 @@
 <template>
-  <b-modal id="modalAddExternalPart" ref="modalAddExternalPart"
+  <b-modal id="modalManageExternalPart" ref="modalManageExternalPart"
            size="lg" hide-footer @cancel="partModalClose"
            @close="partModalClose" @hidden="partModalClose"
+           @shown="fillPart"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
@@ -64,7 +65,7 @@
             </b-form-group>
 
             <b-button type="submit" variant="primary">
-              Add part
+              Save part
             </b-button>
           </b-form>
         </div>
@@ -85,6 +86,9 @@ export default {
   ],
   props: {
     project: {
+      type: Object
+    },
+    partToEdit: {
       type: Object
     }
   },
@@ -129,29 +133,55 @@ export default {
         project: this.project.id
       }
 
-      apiService.projectAddPart(this.project.id, part)
-        .then(() => {
-          this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Adding external part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+      if (this.partToEdit) {
+        apiService.projectUpdatePart(this.project.id, this.partToEdit.id, part)
+          .then(() => {
+            this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Success/Message', 'Success'), {
+              title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Adding external part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
+            })
+            this.clearForm()
+            this.$bvModal.hide('modalManageExternalPart')
+            this.$emit('manage-part-external-saved')
           })
-          this.clearForm()
-          this.$bvModal.hide('modalAddExternalPart')
-          this.$emit('add-part-external-saved')
-        })
-        .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Adding external part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          .catch((error) => {
+            this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+              title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Adding external part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
+            })
+            logger.default.error('Cannot add external part', error.message)
           })
-          logger.default.error('Cannot add external part', error.message)
-        })
+      } else {
+        apiService.projectAddPart(this.project.id, part)
+          .then(() => {
+            this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Success/Message', 'Success'), {
+              title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Adding external part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
+            })
+            this.clearForm()
+            this.$bvModal.hide('modalManageExternalPart')
+            this.$emit('manage-part-external-saved')
+          })
+          .catch((error) => {
+            this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+              title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Adding external part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
+            })
+            logger.default.error('Cannot add external part', error.message)
+          })
+      }
     },
     clearForm () {
       this.form.part_name = ''
@@ -159,6 +189,15 @@ export default {
       this.form.sourced = false
       this.form.notes = ''
       this.$v.$reset()
+    },
+    fillPart () {
+      if (this.partToEdit) {
+        this.form.part_name = this.partToEdit.part_name
+        this.form.qty = this.partToEdit.qty
+        this.form.sourced = this.partToEdit.sourced
+        this.form.notes = this.partToEdit.notes
+        this.$v.$reset()
+      }
     }
   }
 }

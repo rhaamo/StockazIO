@@ -1,10 +1,7 @@
 <template>
   <div class="project_details">
     <AddPartInventoryModal :project="project" @add-part-inventory-saved="onPartSaved" />
-    <AddPartExternalModal :project="project" @add-part-external-saved="onPartSaved" />
-    <EditPartExternalModal :project="project"
-                           :part="partToEdit" @edit-part-external-saved="onPartSaved"
-    />
+    <ManagePartExternalModal :project="project" :part-to-edit="partToEdit" @manage-part-external-saved="onPartSaved" />
     <ViewModal :part="partDetails" :can-delete="false"
                @view-part-modal-closed="onPartModalClosed"
     />
@@ -69,7 +66,7 @@
               Add part from inventory
             </b-button>
             &nbsp;
-            <b-button variant="info" @click.prevent="addExternalPart">
+            <b-button variant="info" @click.prevent="manageExternalPart">
               Add external part
             </b-button>
 
@@ -236,8 +233,7 @@
 
 <script>
 import AddPartInventoryModal from '@/components/parts/project_add_inventory_modal'
-import AddPartExternalModal from '@/components/parts/project_add_external_modal'
-import EditPartExternalModal from '@/components/parts/project_edit_external_modal'
+import ManagePartExternalModal from '@/components/parts/project_manage_external_modal'
 import ViewModal from '@/components/parts/view_modal'
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
@@ -246,8 +242,7 @@ import { mapState } from 'vuex'
 export default {
   components: {
     AddPartInventoryModal,
-    AddPartExternalModal,
-    EditPartExternalModal,
+    ManagePartExternalModal,
     ViewModal
   },
   props: {
@@ -434,8 +429,8 @@ export default {
     addInventoryPart () {
       this.$bvModal.show('modalAddInventoryPart')
     },
-    addExternalPart () {
-      this.$bvModal.show('modalAddExternalPart')
+    manageExternalPart () {
+      this.$bvModal.show('modalManageExternalPart')
     },
     onPartSaved () {
       logger.default.info('Part saved, reloading project.')
@@ -451,7 +446,11 @@ export default {
     },
     editPart (part) {
       this.partToEdit = part
-      this.$bvModal.show('modalEditExternalPart')
+      if (part.part) {
+        this.$bvModal.show('modalAddInventoryPart')
+      } else {
+        this.$bvModal.show('modalManageExternalPart')
+      }
     },
     deletePart (part) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.part ? part.part.name : part.part_name}' from the project ?`, {
