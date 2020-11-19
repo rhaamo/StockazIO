@@ -1,7 +1,11 @@
 <template>
   <div class="project_details">
-    <AddPartInventoryModal :project="project" @add-part-inventory-saved="onPartSaved" />
-    <ManagePartExternalModal :project="project" :part-to-edit="partToEdit" @manage-part-external-saved="onPartSaved" />
+    <ManagePartInventoryModal :project="project" :part-to-edit="partToEdit" @manage-part-inventory-saved="onPartSaved"
+                              @manage-part-inventory-modal-closed="clearPartToEdit"
+    />
+    <ManagePartExternalModal :project="project" :part-to-edit="partToEdit" @manage-part-external-saved="onPartSaved"
+                             @manage-part-external-modal-closed="clearPartToEdit"
+    />
     <ViewModal :part="partDetails" :can-delete="false"
                @view-part-modal-closed="onPartModalClosed"
     />
@@ -62,7 +66,7 @@
       <div class="col-md-8">
         <b-tabs content-class="mt-3">
           <b-tab title="Parts">
-            <b-button variant="primary" @click.prevent="addInventoryPart">
+            <b-button variant="primary" @click.prevent="manageInventoryPart">
               Add part from inventory
             </b-button>
             &nbsp;
@@ -232,7 +236,7 @@
 </template>
 
 <script>
-import AddPartInventoryModal from '@/components/parts/project_add_inventory_modal'
+import ManagePartInventoryModal from '@/components/parts/project_manage_inventory_modal'
 import ManagePartExternalModal from '@/components/parts/project_manage_external_modal'
 import ViewModal from '@/components/parts/view_modal'
 import apiService from '../../services/api/api.service'
@@ -241,7 +245,7 @@ import { mapState } from 'vuex'
 
 export default {
   components: {
-    AddPartInventoryModal,
+    ManagePartInventoryModal,
     ManagePartExternalModal,
     ViewModal
   },
@@ -426,8 +430,8 @@ export default {
           logger.default.error('Error with the delete attachment modal', err)
         })
     },
-    addInventoryPart () {
-      this.$bvModal.show('modalAddInventoryPart')
+    manageInventoryPart () {
+      this.$bvModal.show('modalManageInventoryPart')
     },
     manageExternalPart () {
       this.$bvModal.show('modalManageExternalPart')
@@ -447,7 +451,7 @@ export default {
     editPart (part) {
       this.partToEdit = part
       if (part.part) {
-        this.$bvModal.show('modalAddInventoryPart')
+        this.$bvModal.show('modalManageInventoryPart')
       } else {
         this.$bvModal.show('modalManageExternalPart')
       }
@@ -495,6 +499,9 @@ export default {
         .catch((err) => {
           logger.default.error('Error with the delete modal', err)
         })
+    },
+    clearPartToEdit () {
+      this.partToEdit = null
     }
   }
 }

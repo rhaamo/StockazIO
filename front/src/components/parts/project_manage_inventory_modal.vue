@@ -1,8 +1,8 @@
 <template>
-  <b-modal id="modalAddInventoryPart" ref="modalAddInventoryPart"
+  <b-modal id="modalManageInventoryPart" ref="modalManageInventoryPart"
            size="xl" hide-footer @cancel="partModalClose"
            @close="partModalClose" @hidden="partModalClose"
-           @shown="fetchParts(1, null)"
+           @shown="fillPart"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
@@ -156,7 +156,7 @@
             </div>
 
             <b-button class="mt-3" type="submit" variant="primary">
-              Add part
+              Save part
             </b-button>
           </b-form>
         </div>
@@ -177,6 +177,9 @@ export default {
   ],
   props: {
     project: {
+      type: Object
+    },
+    partToEdit: {
       type: Object
     }
   },
@@ -219,6 +222,20 @@ export default {
     }
   },
   methods: {
+    fillPart () {
+      if (this.partToEdit) {
+        this.form.part_id = this.partToEdit.part.id
+        this.form.qty = this.partToEdit.qty
+        this.form.sourced = this.partToEdit.sourced
+        this.form.notes = this.partToEdit.notes
+        this.$v.$reset()
+
+        // limit the parts list to the actually selected part
+        this.searchTerm = this.partToEdit.part.name
+        this.partSelected = this.partToEdit.part
+      }
+      this.fetchParts(1, null)
+    },
     fetchParts (page, opts) {
       logger.default.info('Fetching parts page', page, 'with opts', opts)
       let params = {
@@ -236,8 +253,9 @@ export default {
         })
     },
     partModalClose () {
-      this.$bvModal.hide('modalAddInventoryPart')
-      this.$emit('add-part-inventory-modal-closed')
+      this.clearForm()
+      this.$bvModal.hide('modalManageInventoryPart')
+      this.$emit('manage-part-inventory-modal-closed')
     },
     save () {
       this.$v.$touch()
@@ -254,29 +272,55 @@ export default {
         project: this.project.id
       }
 
-      apiService.projectAddPart(this.project.id, part)
-        .then(() => {
-          this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Adding inventory part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+      if (this.partToEdit) {
+        apiService.projectUpdatePart(this.project.id, this.partToEdit.id, part)
+          .then(() => {
+            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Success/Message', 'Success'), {
+              title: this.$pgettext('ProjectManagePart/Update/Toast/Success/Title', 'Updating inventory part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
+            })
+            this.clearForm()
+            this.$bvModal.hide('modalManageInventoryPart')
+            this.$emit('manage-part-inventory-saved')
           })
-          this.clearForm()
-          this.$bvModal.hide('modalAddInventoryPart')
-          this.$emit('add-part-inventory-saved')
-        })
-        .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Adding inventory part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          .catch((error) => {
+            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+              title: this.$pgettext('ProjectManagePart/Update/Toast/Error/Title', 'Updating inventory part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
+            })
+            logger.default.error('Cannot update inventory part', error.message)
           })
-          logger.default.error('Cannot add inventory part', error.message)
-        })
+      } else {
+        apiService.projectAddPart(this.project.id, part)
+          .then(() => {
+            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Success/Message', 'Success'), {
+              title: this.$pgettext('ProjectManagePart/Update/Toast/Success/Title', 'Adding inventory part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'primary',
+              toaster: 'b-toaster-top-center'
+            })
+            this.clearForm()
+            this.$bvModal.hide('modalManageInventoryPart')
+            this.$emit('manage-part-inventory-saved')
+          })
+          .catch((error) => {
+            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+              title: this.$pgettext('ProjectManagePart/Update/Toast/Error/Title', 'Adding inventory part'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'danger',
+              toaster: 'b-toaster-top-center'
+            })
+            logger.default.error('Cannot add inventory part', error.message)
+          })
+      }
     },
     clearForm () {
       this.form.part_id = null
@@ -284,6 +328,8 @@ export default {
       this.form.sourced = false
       this.form.notes = ''
       this.partSelected = null
+      this.searchTerm = ''
+      this.parts = []
       this.$v.$reset()
     },
     sortTableChanged (ctx) {

@@ -115,6 +115,7 @@ export default {
   },
   methods: {
     partModalClose () {
+      this.clearForm()
       this.$bvModal.hide('modalAddExternalPart')
       this.$emit('add-part-external-modal-closed')
     },
@@ -137,7 +138,7 @@ export default {
         apiService.projectUpdatePart(this.project.id, this.partToEdit.id, part)
           .then(() => {
             this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Adding external part'),
+              title: this.$pgettext('ProjectAddPart/Update/Toast/Success/Title', 'Updating external part'),
               autoHideDelay: 5000,
               appendToast: true,
               variant: 'primary',
@@ -149,13 +150,13 @@ export default {
           })
           .catch((error) => {
             this.$bvToast.toast(this.$pgettext('ProjectAddPart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Adding external part'),
+              title: this.$pgettext('ProjectAddPart/Update/Toast/Error/Title', 'Updating external part'),
               autoHideDelay: 5000,
               appendToast: true,
               variant: 'danger',
               toaster: 'b-toaster-top-center'
             })
-            logger.default.error('Cannot add external part', error.message)
+            logger.default.error('Cannot update external part', error.message)
           })
       } else {
         apiService.projectAddPart(this.project.id, part)
