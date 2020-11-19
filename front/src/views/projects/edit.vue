@@ -79,11 +79,8 @@
                 </b-form-checkbox>
               </b-form-group>
 
-              You will be able to add attachments and parts after saving the project.
-              <br>
-
               <b-button type="submit" variant="primary" class="my-3">
-                Add project
+                Save project
               </b-button>
             </b-col>
           </b-row>
