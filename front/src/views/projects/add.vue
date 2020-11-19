@@ -158,7 +158,7 @@ export default {
         public: this.form.public
       }
       apiService.createProject(datas)
-        .then(() => {
+        .then((resp) => {
           this.$bvToast.toast(this.$pgettext('Project/Add/Toast/Success/Message', 'Success'), {
             title: this.$pgettext('Project/Add/Toast/Success/Title', 'Adding project'),
             autoHideDelay: 5000,
@@ -166,7 +166,7 @@ export default {
             variant: 'primary',
             toaster: 'b-toaster-top-center'
           })
-          this.$router.push({ name: 'projects-details', params: { projectId: this.project.id } })
+          this.$router.push({ name: 'projects-details', params: { projectId: resp.data.id } })
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('Project/Add/Toast/Error/Message', 'An error occured, please try again later'), {
