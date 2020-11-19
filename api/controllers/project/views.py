@@ -75,8 +75,13 @@ class ProjectPartsStandalone(views.APIView):
     required_scope = "projects"
     anonymous_policy = False
 
-    def post(self, request, project_id, format=None):
-        serializer = ProjectPartStandaloneSerializer(data=request.data)
+    def post(self, request, project_id, pk=None, format=None):
+        if pk:
+            project_part = get_object_or_404(ProjectPart, id=pk)
+            serializer = ProjectPartStandaloneSerializer(project_part, data=request.data)
+        else:
+            serializer = ProjectPartStandaloneSerializer(data=request.data)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)

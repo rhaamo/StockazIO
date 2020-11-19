@@ -59,6 +59,7 @@ const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`
 const PROJECT_ATTACHMENTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/attachments/`
 const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/attachments/${pk}` // no final /
 const PROJECT_PARTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/parts/`
+const PROJECT_PARTS_UPDATE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}` // no final /
 const PROJECT_PARTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}` // no final /
 
 // Auth
@@ -338,8 +339,12 @@ const projectAddPart = (id, data) => {
   return Axios.post(PROJECT_PARTS_CREATE(id), data)
 }
 
-const projectDeletePart = (id, data) => {
-  return Axios.delete(PROJECT_PARTS_DELETE(id), data)
+const projectDeletePart = (id, partId) => {
+  return Axios.delete(PROJECT_PARTS_DELETE(id, partId))
+}
+
+const projectUpdatePart = (id, partId, data) => {
+  return Axios.post(PROJECT_PARTS_UPDATE(id, partId), data)
 }
 
 const apiService = {
@@ -392,7 +397,8 @@ const apiService = {
   projectAttachmentCreate,
   projectAttachmentDelete,
   projectAddPart,
-  projectDeletePart
+  projectDeletePart,
+  projectUpdatePart
 }
 
 export default apiService

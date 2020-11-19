@@ -2,6 +2,9 @@
   <div class="project_details">
     <AddPartInventoryModal :project="project" @add-part-inventory-saved="onPartSaved" />
     <AddPartExternalModal :project="project" @add-part-external-saved="onPartSaved" />
+    <EditPartExternalModal :project="project"
+                           :part="partToEdit" @edit-part-external-saved="onPartSaved"
+    />
     <ViewModal :part="partDetails" :can-delete="false"
                @view-part-modal-closed="onPartModalClosed"
     />
@@ -149,6 +152,22 @@
                 </template>
                 <span v-else>{{ data.item.qty*boards }}</span>
               </template>
+
+              <template #cell(actions)="data">
+                <b-button variant="link" @click.prevent="editPart(data.item)">
+                  <i
+                    class="fa fa-pencil-square-o"
+                    aria-hidden="true"
+                  />
+                </b-button>
+                &nbsp;
+                <b-button variant="link" @click.prevent="deletePart(data.item)">
+                  <i
+                    class="fa fa-trash-o"
+                    aria-hidden="true"
+                  />
+                </b-button>
+              </template>
             </b-table>
           </b-tab>
 
@@ -218,6 +237,7 @@
 <script>
 import AddPartInventoryModal from '@/components/parts/project_add_inventory_modal'
 import AddPartExternalModal from '@/components/parts/project_add_external_modal'
+import EditPartExternalModal from '@/components/parts/project_edit_external_modal'
 import ViewModal from '@/components/parts/view_modal'
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
@@ -227,6 +247,7 @@ export default {
   components: {
     AddPartInventoryModal,
     AddPartExternalModal,
+    EditPartExternalModal,
     ViewModal
   },
   props: {
@@ -252,10 +273,13 @@ export default {
       { key: 'stock_qty', label: 'Stock', tdClass: 'stock_qty' },
       { key: 'qty', label: 'Quantity x1', tdClass: 'qty' },
       { key: 'qty_total', label: 'Quantity total', tdClass: 'qty_total' },
-      { key: 'sourced', label: 'Sourced', tdClass: 'sourced' }
+      { key: 'sourced', label: 'Sourced', tdClass: 'sourced' },
+      { key: 'actions', label: 'Actions', tdClass: 'actions' }
+
     ],
     partDetails: null,
-    boards: 1
+    boards: 1,
+    partToEdit: null
   }),
   computed: {
     ...mapState({
@@ -415,6 +439,7 @@ export default {
     },
     onPartSaved () {
       logger.default.info('Part saved, reloading project.')
+      this.partToEdit = null
       this.fetchProject()
     },
     onPartModalClosed () {
@@ -423,6 +448,54 @@ export default {
     viewPartModal (part) {
       this.partDetails = part
       this.$bvModal.show('modalManage')
+    },
+    editPart (part) {
+      this.partToEdit = part
+      this.$bvModal.show('modalEditExternalPart')
+    },
+    deletePart (part) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.part ? part.part.name : part.part_name}' from the project ?`, {
+        title: 'Plase Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          if (value === true) {
+            apiService.projectDeletePart(this.project.id, part.id)
+              .then((val) => {
+                this.$bvToast.toast(this.$pgettext('ProjectPart/Delete/Toast/Success/Message', 'Success'), {
+                  title: this.$pgettext('ProjectPart/Delete/Toast/Success/Title', 'Deleting project part'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center'
+                })
+                this.fetchProject()
+              })
+              .catch((err) => {
+                this.$bvToast.toast(this.$pgettext('ProjectPart/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                  title: this.$pgettext('ProjectPart/Delete/Toast/Error/Title', 'Deleting project part'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger',
+                  toaster: 'b-toaster-top-center'
+                })
+                logger.default.error('Error with project part deletion', err)
+                this.fetchProject()
+              })
+          }
+        })
+        .catch((err) => {
+          logger.default.error('Error with the delete modal', err)
+        })
     }
   }
 }
@@ -447,6 +520,10 @@ table#tableParts td.qty_total {
 }
 
 table#tableParts td.sourced {
+  width: 6em;
+}
+
+table#tableParts td.actions {
   width: 8em;
 }
 </style>
