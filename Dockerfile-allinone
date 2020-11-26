@@ -1,0 +1,49 @@
+FROM node:alpine3.12 as builder-front
+
+RUN apk add --update --no-cache yarn \
+    && rm -rf /var/cache/apk/*
+
+ADD ./front/ /front/
+
+RUN \
+    echo 'building frontend' && \
+    cd /front/ && \
+    yarn install && \
+    yarn build
+
+FROM alpine:3.10 as builder-backend
+
+COPY --from=builder-front /front/dist /app/front
+
+ADD ./api/ /app/api/
+
+RUN \
+    echo 'installing dependencies' && \
+    apk add --no-cache \
+    bash \
+    git \
+    musl-dev \
+    gcc \
+    postgresql-dev \
+    python3-dev \
+    py3-psycopg2 \
+    make \
+    zlib-dev \
+    jpeg-dev \
+    libmagic \
+    && \
+    ln -s /usr/bin/python3 /usr/bin/python
+
+# hack around https://github.com/pypa/pip/issues/6158#issuecomment-456619072
+ENV PIP_DOWNLOAD_CACHE=/noop/
+RUN \
+    echo 'installing pip requirements' && \
+    pip3 install --upgrade pip && \
+    pip3 install setuptools wheel && \
+    pip3 install -r /app/api/requirements.txt && \
+    rm -rf $PIP_DOWNLOAD_CACHE
+
+EXPOSE 8000
+WORKDIR /app/api/
+ENTRYPOINT ["./docker/entrypoint.sh"]
+CMD ["./docker/server.sh"]

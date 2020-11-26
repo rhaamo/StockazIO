@@ -16,7 +16,7 @@ The following is not implemented and needs to be accessed through django admin `
 - Nginx
 - PostgreSQL
 
-# Install
+# Install - manual
 
 We assume in here you are installing under the `stockazio` user with default home directory `/home/stockazio`, like by doing:
 ```
@@ -70,6 +70,11 @@ export DJANGO_SETTINGS_MODULE=config.settings.local
 python manage.py ...
 ```
 
+### Docker All-In-One image build
+```
+docker build -t stockazio-allinone -f Dockerfile-allinone
+```
+
 ## Updating
 Look at release changes first if anything is needed.
 
@@ -87,6 +92,31 @@ python manage.py migrate
 ```
 
 Then restart your `stockazio-server` service.
+
+# Install - docker All In One
+You can use the `Dockerfile-allinone` to run StockazIO.
+
+See the file ./deploy/env.prod.sample for the list of ENV variables you can use for the container.
+
+You can copy that env file, edit it, and use `--env-file your-env-file.prod` for `docker run/exec` too.
+
+To migrate the database:
+```
+docker exec -it stockazio python api/manage.py migrate
+```
+
+To seed database:
+```
+docker exec -it stockazio python api/manage.py seeds_database
+```
+
+To create your superuser:
+```
+docker exec -it stockazio python api/manage.py createsuperuser
+```
+
+# Install - docker split frontend & backend
+TODO
 
 # Features
 
