@@ -368,8 +368,12 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE
 URL or path to the Web Application files.
 If a URL is specified, the index.html file will be fetched through HTTP. If a path is provided,
 it will be accessed from disk.
+
+Please note that if an url is passed, django might not be able to serve the static files.
 """
 STOCKAZIO_SPA_HTML_ROOT = env("STOCKAZIO_SPA_HTML_ROOT", default="../front/dist/index.html")
+STOCKAZIO_SPA_CSS_ROOT = env("STOCKAZIO_SPA_CSS_ROOT", default="../front/dist/css/")
+STOCKAZIO_SPA_JS_ROOT = env("STOCKAZIO_SPA_JS_ROOT", default="../front/dist/js/")
 
 STOCKAZIO_SPA_HTML_CACHE_DURATION = env.int("STOCKAZIO_SPA_HTML_CACHE_DURATION", default=60 * 15)
 

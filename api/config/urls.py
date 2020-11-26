@@ -33,6 +33,9 @@ admin.site.index_title = "Welcome to StockazIO"
 # we don't really have choice, silk really wants to have them...
 urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
 
+urlpatterns += static.static("/css/", document_root=settings.STOCKAZIO_SPA_CSS_ROOT)
+urlpatterns += static.static("/js/", document_root=settings.STOCKAZIO_SPA_JS_ROOT)
+
 if settings.DEBUG:
     print("Debug URLs enabled")
     import debug_toolbar
