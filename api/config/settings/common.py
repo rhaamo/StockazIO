@@ -130,6 +130,7 @@ MIDDLEWARE = ADDITIONAL_MIDDLEWARES_BEFORE + [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "controllers.middleware.SPAFallbackMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -362,3 +363,17 @@ MOUSER_IMPORT_FILTER = env("MOUSER_IMPORT_FILTER", default="ThisMonth")
 # 50M (50*1024*1024)
 FILE_UPLOAD_MAX_MEMORY_SIZE = env("FILE_UPLOAD_MAX_MEMORY_SIZE", default=50 * 1024 * 1024)
 DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE
+
+"""
+URL or path to the Web Application files.
+If a URL is specified, the index.html file will be fetched through HTTP. If a path is provided,
+it will be accessed from disk.
+"""
+STOCKAZIO_SPA_HTML_ROOT = env("STOCKAZIO_SPA_HTML_ROOT", default="../front/dist/index.html")
+
+STOCKAZIO_SPA_HTML_CACHE_DURATION = env.int("STOCKAZIO_SPA_HTML_CACHE_DURATION", default=60 * 15)
+
+CACHES = {
+    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "default-cache"},
+    "local": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "local-cache"},
+}
