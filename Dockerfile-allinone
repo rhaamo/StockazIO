@@ -43,6 +43,10 @@ RUN \
     pip3 install -r /app/api/requirements.txt && \
     rm -rf $PIP_DOWNLOAD_CACHE
 
+RUN mkdir /uploads /statics
+VOLUME /uploads
+VOLUME /statics
+
 EXPOSE 8000
 WORKDIR /app/api/
 ENTRYPOINT ["./docker/entrypoint.sh"]

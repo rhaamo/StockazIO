@@ -100,6 +100,8 @@ See the file ./deploy/env.prod.sample for the list of ENV variables you can use 
 
 You can copy that env file, edit it, and use `--env-file your-env-file.prod` for `docker run/exec` too.
 
+The volume for uploads is `/uploads`.
+
 To migrate the database:
 ```
 docker exec -it stockazio python api/manage.py migrate
