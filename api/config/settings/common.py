@@ -14,6 +14,7 @@ env = environ.Env()
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool("DJANGO_DEBUG", False)
+SILK_ENABLED = env.bool("SILK_ENABLED", default=DEBUG)
 
 # Logging
 # ------------------------------------------------------------------------------
@@ -98,7 +99,6 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "django_extensions",
     "drf_yasg",
-    "silk",
 ]
 
 LOCAL_APPS = [
@@ -118,24 +118,28 @@ LOCAL_APPS = [
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 
 ADDITIONAL_APPS = env.list("ADDITIONAL_APPS", default=[])
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + ADDITIONAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + ADDITIONAL_APPS + LOCAL_APPS
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
 ADDITIONAL_MIDDLEWARES_BEFORE = env.list("ADDITIONAL_MIDDLEWARES_BEFORE", default=[])
+ADDITIONAL_MIDDLEWARES_AFTER = env.list("ADDITIONAL_MIDDLEWARES_AFTER", default=[])
 
-MIDDLEWARE = ADDITIONAL_MIDDLEWARES_BEFORE + [
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "controllers.middleware.SPAFallbackMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "silk.middleware.SilkyMiddleware",
-]
+MIDDLEWARE = (
+    ADDITIONAL_MIDDLEWARES_BEFORE
+    + [
+        "corsheaders.middleware.CorsMiddleware",
+        "django.middleware.security.SecurityMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.common.CommonMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "controllers.middleware.SPAFallbackMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    ]
+    + ADDITIONAL_MIDDLEWARES_AFTER
+)
 
 # FIXTURE CONFIGURATION
 # ------------------------------------------------------------------------------
