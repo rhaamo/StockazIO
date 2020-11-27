@@ -40,7 +40,7 @@ logging.config.dictConfig(
                 # required to avoid double logging with root logger
                 "propagate": False,
             },
-            "": {"level": "WARNING", "handlers": ["console"]},
+            "": {"level": LOGLEVEL, "handlers": ["console"]},
         },
     }
 )
@@ -250,6 +250,9 @@ STATIC_ROOT = env("STATIC_ROOT", default=str(ROOT_DIR("static")))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = env("STATIC_URL", default="/static/")
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+# STATICFILES_DIRS = (str(APPS_DIR.path("static")),)
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (

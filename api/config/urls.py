@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf import settings
-from django.conf.urls import static, url, include
+from django.conf.urls import url, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from controllers.utils import static
 
 urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
@@ -34,13 +35,14 @@ if settings.SILK_ENABLED:
     # we don't really have choice, silk really wants to have them...
     urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
 
-urlpatterns += static.static("/css/", document_root=settings.STOCKAZIO_SPA_CSS_ROOT)
-urlpatterns += static.static("/js/", document_root=settings.STOCKAZIO_SPA_JS_ROOT)
+urlpatterns += static("/css/", document_root=settings.STOCKAZIO_SPA_CSS_ROOT)
+urlpatterns += static("/js/", document_root=settings.STOCKAZIO_SPA_JS_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     print("Debug URLs enabled")
     import debug_toolbar
 
-    urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += staticfiles_urlpatterns()
     urlpatterns = [url(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns += staticfiles_urlpatterns()
