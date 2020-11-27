@@ -14,7 +14,6 @@ env = environ.Env()
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = env.bool("DJANGO_DEBUG", False)
-SILK_ENABLED = env.bool("SILK_ENABLED", default=DEBUG)
 
 # Logging
 # ------------------------------------------------------------------------------

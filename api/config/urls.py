@@ -31,7 +31,7 @@ admin.site.site_header = "StockazIO Inventory"
 admin.site.site_title = "StockazIO Admin Portal"
 admin.site.index_title = "Welcome to StockazIO"
 
-if settings.SILK_ENABLED:
+if settings.DEBUG:
     # we don't really have choice, silk really wants to have them...
     urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
 
