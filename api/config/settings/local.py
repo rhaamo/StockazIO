@@ -68,9 +68,7 @@ if DEBUG_TOOLBAR_ENABLED:
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
     INSTALLED_APPS += ("debug_toolbar",)
 
-if DEBUG:
-    ADDITIONAL_APPS = ["silk"]
-    ADDITIONAL_MIDDLEWARES_AFTER = ["silk.middleware.SilkyMiddleware"]
+ADDITIONAL_MIDDLEWARES_AFTER = ["silk.middleware.SilkyMiddleware"]
 
 # TESTING
 # ------------------------------------------------------------------------------

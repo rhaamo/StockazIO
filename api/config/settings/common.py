@@ -98,6 +98,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "django_extensions",
     "drf_yasg",
+    "silk",
 ]
 
 LOCAL_APPS = [
