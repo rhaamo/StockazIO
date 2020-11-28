@@ -78,6 +78,7 @@ docker-compose.env
 scripts/import-for-development
 scripts/nuke
 /.env
+/.env.*
 
 # Static
 media/
