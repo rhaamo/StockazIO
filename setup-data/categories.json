@@ -213,7 +213,13 @@
             { "name": "Brushless" }
           ]
         },
-        { "name": "8 Selenoids" }
+        { "name": "8 Selenoids" },
+        { "name": "9 Probes",
+          "children": [
+            { "name": "Handheld (scope-like)" },
+            { "name": "Clips" }
+          ]
+        }
       ]
     },
     { "name": "4 Mechanical Parts",
