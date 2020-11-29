@@ -155,7 +155,7 @@ You then will have to navigate to 'View - Order importer' in the web ui to manag
 
 # TODO List
 - Export of all components or a category or search
-- ???
+- Mobile app / better mobile layout
 
 # Generated QRCodes format
 - StorageLocation: `stockazio://storageLocation/{uuid}`
