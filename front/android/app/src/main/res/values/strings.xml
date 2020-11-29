@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">StockazIO</string>
+    <string name="title_activity_main">StockazIO</string>
+    <string name="package_name">tech.squeaky.stockazio</string>
+    <string name="custom_url_scheme">tech.squeaky.stockazio</string>
+</resources>

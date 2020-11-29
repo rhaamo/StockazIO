@@ -857,6 +857,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@capacitor/android@2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.3.tgz#0107071f61984c7e0f83ba0716a5518ad9f9ce18"
+  integrity sha512-hM3xmdO8VZ8FfQI5gmyTAOOSSFw6x5UTh4IPwHGg/JhhFK3nG5Hamr/ic7MeUIVwchEQKrUQFFESYHA0A1ZwJg==
+
 "@capacitor/cli@^2.4.3":
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-2.4.3.tgz#be18f6846b12d936a887a45b77d2a3f11cb9894e"
@@ -880,6 +885,11 @@
   integrity sha512-AaLhXryFK65OvfS9zuw3qw6gVbNjeHoIAzvhrzcI0OWJo6Qi8gOIz4rraD35UKSETkRm+H7auhSTAj6Avy5lHQ==
   dependencies:
     tslib "^1.9.0"
+
+"@capacitor/ios@2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.3.tgz#89dca15b2f8363cc03b825d60dee6ccf5c39cf0e"
+  integrity sha512-Wqi1Q+oLf8KUdvr+/JtQGKoWvGylredwJQZKbJ4B9pDysiT+9MHg94AqaEjxJ/Dn97n/0SLfRlPqZPJJxX+YgQ==
 
 "@chenfengyuan/vue-qrcode@^1.0.2":
   version "1.0.2"
