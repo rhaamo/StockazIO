@@ -248,6 +248,13 @@
     },
     { "name": "6 Speakers and Buzzers" },
     { "name": "7 Programmers and like" },
+    { "name": "8 PCBs",
+      "children": [
+        { "name": "Adapters" },
+        { "name": "Projects" },
+        { "name": "Other" }
+      ]
+    },
     { "name": "S Enclosures" },
     { "name": "T Books" },
     { "name": "U 3D Printing" },
