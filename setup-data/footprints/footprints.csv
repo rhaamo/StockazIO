@@ -9,6 +9,18 @@ QFP;PQFP;44,52,64,80;;yes;{cat};{name}-{size};Plastic Quad Flat Pack;tqfp.png;;Q
 QFP;TQFP;32,40,44,48,52,64,80,100,120,128,144,176;;yes;{cat};{name}-{size};Thin Quad Flat Pack;tqfp.png;;Quad Flat Pack
 QFP;LQFP;32,44,48,52,64,80,100,120,128,144,160,176,208,216,256;;yes;{cat};{name}-{size};Low Profile Quad Flat Pack;tqfp.png;;Quad Flat Pack
 FP;FlatPAK;;;no;{cat};{name};Flat Package MIL-STD-1835C;Ic-package-FlatPAK.png;;{description}
+Computer;EISA;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;ISA 8bit;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;ISA 16bit;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;AGP;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;PCI;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;PCI-X;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;PCI-Express 1x;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;PCI-Express 4x;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;PCI-Express 8x;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;PCI-Express 16x;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;Mini-PCI;;;no;{cat};{name};Computer BUS;;;{description}
+Computer;Mini-PCI-Express;;;no;{cat};{name};Computer BUS;;;{description}
 SOI;SOIC;8,14,16,20,24,28,32;;yes;{cat};SO{size};Small Outline Integrated Circuit;so8.png;;{description}
 SOP;TSOP;28,32,40,44,48,50;;yes;{cat};{name}-{size};Thin Small Outline Package;TSOP_32_(T1)_Blank.png;;Small Outline Package
 SOP;SSOP;14,16,20,24,28,36,48,56;;yes;{cat};{name}-{size};Small Shrink Outline Package;so8.png;;Small Outline Package
