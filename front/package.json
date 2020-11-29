@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@capacitor/android": "2.4.3",
+    "@capacitor/ios": "2.4.3",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.21.0",
@@ -32,6 +34,8 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^2.4.3",
+    "@capacitor/core": "^2.4.3",
     "@vue/cli-plugin-babel": "^4.5.8",
     "@vue/cli-plugin-eslint": "^4.5.8",
     "@vue/cli-plugin-router": "^4.5.8",
