@@ -447,7 +447,7 @@ export default {
               description: x.description,
               value: x.value,
               unit: x.unit ? {
-                text: `${x.unit.name} (${x.unit.symbol})`,
+                text: `${x.unit.name} (${x.unit.prefix}${x.unit.symbol})`,
                 value: x.unit.id
               } : null
             }
