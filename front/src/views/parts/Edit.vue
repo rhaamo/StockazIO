@@ -446,10 +446,10 @@ export default {
               name: x.name,
               description: x.description,
               value: x.value,
-              unit: {
+              unit: x.unit ? {
                 text: `${x.unit.name} (${x.unit.symbol})`,
                 value: x.unit.id
-              }
+              } : null
             }
           })
           this.form.manufacturers_sku = this.part.manufacturers_sku.map(x => {

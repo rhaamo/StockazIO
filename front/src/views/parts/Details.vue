@@ -140,7 +140,7 @@
                   <td>{{ pu.name }}</td>
                   <td>{{ pu.description }}</td>
                   <td>{{ pu.value }}</td>
-                  <td>{{ pu.unit ? pu.unit.name : '' }}</td>
+                  <td>{{ pu.unit ? `${pu.unit.name} (${pu.unit.prefix}${pu.unit.symbol})` : '' }}</td>
                 </tr>
               </tbody>
             </table>
