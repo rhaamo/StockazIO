@@ -161,6 +161,12 @@ EMAIL_CONFIG = env.email_url("EMAIL_CONFIG", default="consolemail://")
 
 vars().update(EMAIL_CONFIG)
 
+# SECRET CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+# Note: This key only used for development and testing.
+SECRET_KEY = env("DJANGO_SECRET_KEY", default=None)
+
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
