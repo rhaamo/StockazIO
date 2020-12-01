@@ -104,17 +104,17 @@ The volume for uploads is `/uploads`.
 
 To migrate the database:
 ```
-docker exec -it stockazio python api/manage.py migrate
+docker exec -it stockazio python manage.py migrate
 ```
 
 To seed database:
 ```
-docker exec -it stockazio python api/manage.py seeds_database
+docker exec -it stockazio python manage.py seeds_database
 ```
 
 To create your superuser:
 ```
-docker exec -it stockazio python api/manage.py createsuperuser
+docker exec -it stockazio python manage.py createsuperuser
 ```
 
 Example build & run:

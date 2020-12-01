@@ -16,6 +16,7 @@ FROM alpine:3.10 as builder-backend
 COPY --from=builder-front /front/dist /app/front
 
 ADD ./api/ /app/api/
+ADD ./setup-data/ /app/setup-data/
 
 RUN \
     echo 'installing dependencies' && \
