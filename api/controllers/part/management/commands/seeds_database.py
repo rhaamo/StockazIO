@@ -191,12 +191,13 @@ def seed_manufacturers():
         except Manufacturer.DoesNotExist:
             man = Manufacturer(name=name)
 
-            if "logos" in manufacturers[name]:
-                logo = manufacturers[name]["logos"][0]  # take first
-                fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
-                man.logo.save(path.basename(logo), fi, save=False)
-            if "datasheet_url" in manufacturers[name]:
-                man.datasheet_url = manufacturers[name]["datasheet_url"]
+            if manufacturers[name]:
+                if "logos" in manufacturers[name]:
+                    logo = manufacturers[name]["logos"][0]  # take first
+                    fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
+                    man.logo.save(path.basename(logo), fi, save=False)
+                if "datasheet_url" in manufacturers[name]:
+                    man.datasheet_url = manufacturers[name]["datasheet_url"]
             man.save()
 
         except Manufacturer.MultipleObjectsReturned:
