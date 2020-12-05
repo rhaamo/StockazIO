@@ -1,3 +1,4 @@
+---
 'Integrated Circuit Designs':
   logos:
     - acer.png
@@ -792,7 +793,7 @@ Thomson-CSF:
     - ti.png
   datasheet_url: "https://www.ti.com/lit/ds/symlink/{sku_lower}.pdf"
 'Toko Amerika':
-  logos:  
+  logos:
     - toko.png
 'Toshiba (US)':
   logos:
@@ -868,7 +869,7 @@ Vitelic:
     - vlsi.png
 Volterra:
   logos:
-  - volterra.png
+    - volterra.png
 VTC:
   logos:
     - vtc.png

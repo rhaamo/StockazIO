@@ -1,3 +1,4 @@
+---
 Meter:
   symbol: m
   prefixes:
@@ -32,7 +33,7 @@ Candela:
   prefixes:
     - m
 Ampere:
-  symbol: A 
+  symbol: A
   prefixes:
     - k
     - m
