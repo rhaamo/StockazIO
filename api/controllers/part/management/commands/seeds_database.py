@@ -213,11 +213,11 @@ def seed_distributors():
         ["UtSource", "https://www.utsource.net/", ""],
         ["LCSC Electronics", "https://lcsc.com/", ""],
     ]
-    for name, url in distributors:
+    for name, url, datasheet_url in distributors:
         try:
             distributor = Distributor.objects.get(name=name, url=url)
         except Distributor.DoesNotExist:
-            distributor = Distributor(name=name, url=url)
+            distributor = Distributor(name=name, url=url, datasheet_url=datasheet_url)
             distributor.save()
         except Distributor.MultipleObjectsReturned:
             print(f"WARNING: Multiple entries returned for {name!r}, {url!r}, skipping")
