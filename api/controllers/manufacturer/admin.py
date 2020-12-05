@@ -12,6 +12,7 @@ class ManufacturerAdmin(CommonAdmin):
         "name",
         "address",
         "url",
+        "datasheet_url",
         "email",
         "comment",
         "phone",

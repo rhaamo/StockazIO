@@ -22,6 +22,7 @@ class ManufacturersSerializer(serializers.ModelSerializer):
             "logo_mini",
             "logo_small",
             "logo_medium",
+            "datasheet_url",
         ]
 
 

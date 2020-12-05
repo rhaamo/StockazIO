@@ -205,13 +205,13 @@ def seed_manufacturers():
 def seed_distributors():
     print("+++ 000 --- Seeding Distributors")
     distributors = [
-        ["Farnell element14", "http://farnell.com/"],
-        ["Mouser Electronics", "http://www.mouser.com/"],
-        ["DigiKey Electronics", "https://www.digikey.com/"],
-        ["TME", "https://www.tme.eu/"],
-        ["Arrow", "https://www.arrow.com/"],
-        ["UtSource", "https://www.utsource.net/"],
-        ["LCSC Electronics", "https://lcsc.com/"],
+        ["Farnell element14", "http://farnell.com/", "http://www.farnell.com/datasheets/{_}.pdf"],
+        ["Mouser Electronics", "http://www.mouser.com/", ""],
+        ["DigiKey Electronics", "https://www.digikey.com/", ""],
+        ["TME", "https://www.tme.eu/", ""],
+        ["Arrow", "https://www.arrow.com/", ""],
+        ["UtSource", "https://www.utsource.net/", ""],
+        ["LCSC Electronics", "https://lcsc.com/", ""],
     ]
     for name, url in distributors:
         try:

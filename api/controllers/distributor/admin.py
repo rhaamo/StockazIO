@@ -8,6 +8,7 @@ class DistributorAdmin(CommonAdmin):
         "name",
         "address",
         "url",
+        "datasheet_url",
         "email",
         "comment",
         "phone",

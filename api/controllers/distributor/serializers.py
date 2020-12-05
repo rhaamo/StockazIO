@@ -5,7 +5,7 @@ from .models import Distributor, DistributorSku
 class DistributorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Distributor
-        fields = ["id", "name", "address", "url", "email", "comment", "phone", "fax"]
+        fields = ["id", "name", "address", "url", "email", "comment", "phone", "fax", "datasheet_url"]
 
 
 class DistributorSkuSerializer(serializers.ModelSerializer):
