@@ -212,14 +212,17 @@
                         </b-form-group>
                       </b-col>
                     </b-row>
-                    <div @click.prevent="deletePpv(i)">
-                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
-                    </div>
+                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                     btn-variant-cancel="danger" btn-main-text="remove item"
+                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                     btn-cancel-text="No" @action-confirmed="deletePpv(i)"
+                    />
                     <hr>
                   </div>
-                  <div @click.prevent="addPpv">
-                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
-                  </div>
+
+                  <b-button size="sm" variant="info" @click.prevent="addPpv">
+                    add item
+                  </b-button>
                 </b-tab>
 
                 <b-tab title="Manufacturers">
@@ -243,14 +246,16 @@
                         </b-form-group>
                       </b-col>
                     </b-row>
-                    <div @click.prevent="deletePmanufs(i)">
-                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
-                    </div>
+                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                     btn-variant-cancel="danger" btn-main-text="remove item"
+                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                     btn-cancel-text="No" @action-confirmed="deletePmanufs(i)"
+                    />
                     <hr>
                   </div>
-                  <div @click.prevent="addPmanufs">
-                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
-                  </div>
+                  <b-button size="sm" variant="info" @click.prevent="addPmanufs">
+                    add item
+                  </b-button>
                 </b-tab>
 
                 <b-tab title="Distributors">
@@ -274,14 +279,16 @@
                         </b-form-group>
                       </b-col>
                     </b-row>
-                    <div @click.prevent="deletePdist(i)">
-                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
-                    </div>
+                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                     btn-variant-cancel="danger" btn-main-text="remove item"
+                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                     btn-cancel-text="No" @action-confirmed="deletePdist(i)"
+                    />
                     <hr>
                   </div>
-                  <div @click.prevent="addPdist">
-                    <i class="fa fa-plus-square" aria-hidden="true" /> add item
-                  </div>
+                  <b-button size="sm" variant="info" @click.prevent="addPdist">
+                    add item
+                  </b-button>
                 </b-tab>
               </b-tabs>
             </b-col>
@@ -299,8 +306,12 @@ import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
 import { required, minValue } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
+import BtnDeleteInline from '@/components/btn_delete_inline'
 
 export default {
+  components: {
+    BtnDeleteInline
+  },
   mixins: [
     validationMixin
   ],
