@@ -247,11 +247,6 @@
                         </b-form-group>
                       </b-col>
                     </b-row>
-                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                     btn-variant-cancel="danger" btn-main-text="remove item"
-                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                     btn-cancel-text="No" @action-confirmed="deletePmanufs(i)"
-                    />
 
                     <b-form-group :id="pManufId('datasheet_url', i)" label="Datasheet URL" :label-for="pManufId('datasheet_url', i)">
                       <b-form-input
@@ -260,9 +255,11 @@
                       />
                     </b-form-group>
 
-                    <div @click.prevent="deletePmanufs(i)">
-                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
-                    </div>
+                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                     btn-variant-cancel="danger" btn-main-text="remove item"
+                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                     btn-cancel-text="No" @action-confirmed="deletePmanufs(i)"
+                    />
                     <hr>
                   </div>
                   <b-button size="sm" variant="info" @click.prevent="addPmanufs">
@@ -293,12 +290,6 @@
                         </b-form-group>
                       </b-col>
                     </b-row>
-                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                     btn-variant-cancel="danger" btn-main-text="remove item"
-                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                     btn-cancel-text="No" @action-confirmed="deletePdist(i)"
-                    />
-
                     <b-form-group :id="pDistId('datasheet_url', i)" label="Datasheet URL" :label-for="pDistId('datasheet_url', i)">
                       <b-form-input
                         :id="pDistId('datasheet_url', i)"
@@ -306,9 +297,11 @@
                       />
                     </b-form-group>
 
-                    <div @click.prevent="deletePdist(i)">
-                      <i class="fa fa-minus-square" aria-hidden="true" /> remove item
-                    </div>
+                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                     btn-variant-cancel="danger" btn-main-text="remove item"
+                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                     btn-cancel-text="No" @action-confirmed="deletePdist(i)"
+                    />
                     <hr>
                   </div>
                   <b-button size="sm" variant="info" @click.prevent="addPdist">
