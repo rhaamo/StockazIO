@@ -234,6 +234,7 @@
                             :id="pManufId('sku', i)"
                             v-model="form.manufacturers_sku[i].sku"
                             required
+                            @blur="partManufacturersManufacturerChanged(i)"
                           />
                         </b-form-group>
                       </b-col>
@@ -241,11 +242,19 @@
                       <b-col>
                         <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer*:" :label-for="pManufId('manufacturer', i)">
                           <multiselect v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
-                                       label="text" track-by="value"
+                                       label="text" track-by="value" @input="partManufacturersManufacturerChanged(i)"
                           />
                         </b-form-group>
                       </b-col>
                     </b-row>
+
+                    <b-form-group :id="pManufId('datasheet_url', i)" label="Datasheet URL" :label-for="pManufId('datasheet_url', i)">
+                      <b-form-input
+                        :id="pManufId('datasheet_url', i)"
+                        v-model="form.manufacturers_sku[i].datasheet_url"
+                      />
+                    </b-form-group>
+
                     <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
                                      btn-variant-cancel="danger" btn-main-text="remove item"
                                      btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
@@ -267,6 +276,7 @@
                             :id="pDistId('sku', i)"
                             v-model="form.distributors_sku[i].sku"
                             required
+                            @blur="partDistributorsDistributorChanged(i)"
                           />
                         </b-form-group>
                       </b-col>
@@ -275,10 +285,19 @@
                         <b-form-group :id="pDistId('distributor', i)" label="Distributor*:" :label-for="pDistId('distributor', i)">
                           <multiselect v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
                                        label="text" track-by="value"
+                                       @input="partDistributorsDistributorChanged(i)"
                           />
                         </b-form-group>
                       </b-col>
                     </b-row>
+
+                    <b-form-group :id="pDistId('datasheet_url', i)" label="Datasheet URL" :label-for="pDistId('datasheet_url', i)">
+                      <b-form-input
+                        :id="pDistId('datasheet_url', i)"
+                        v-model="form.distributors_sku[i].datasheet_url"
+                      />
+                    </b-form-group>
+
                     <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
                                      btn-variant-cancel="danger" btn-main-text="remove item"
                                      btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
@@ -394,10 +413,10 @@ export default {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
       },
       choicesManufacturers: (state) => {
-        return state.preloads.manufacturers.map(x => { return { value: x.id, text: x.name } })
+        return state.preloads.manufacturers.map(x => { return { value: x.id, text: x.name, datasheet_url: x.datasheet_url } })
       },
       choicesDistributors: (state) => {
-        return state.preloads.distributors.map(x => { return { value: x.id, text: x.name } })
+        return state.preloads.distributors.map(x => { return { value: x.id, text: x.name, datasheet_url: x.datasheet_url } })
       }
     })
   },
@@ -431,12 +450,12 @@ export default {
         }),
         manufacturers_sku: this.form.manufacturers_sku.map(x => {
           if (x.sku !== '') {
-            return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null }
+            return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null, datasheet_url: x.datasheet_url }
           }
         }),
         distributors_sku: this.form.distributors_sku.map(x => {
           if (x.sku !== '') {
-            return { sku: x.sku, distributor: x.distributor ? x.distributor.value : null }
+            return { sku: x.sku, distributor: x.distributor ? x.distributor.value : null, datasheet_url: x.datasheet_url }
           }
         })
       }
@@ -512,7 +531,8 @@ export default {
     addPmanufs () {
       this.form.manufacturers_sku.push({
         sku: '',
-        manufacturer: null
+        manufacturer: null,
+        datasheet_url: ''
       })
     },
     deletePmanufs (idx) {
@@ -521,7 +541,8 @@ export default {
     addPdist () {
       this.form.distributors_sku.push({
         sku: '',
-        distributor: null
+        distributor: null,
+        datasheet_url: ''
       })
     },
     deletePdist (idx) {
@@ -544,6 +565,43 @@ export default {
     },
     onPartModalClosed () {
       this.partDetails = null
+    },
+    replaceDSUrlPlaceholders (index, url, sku) {
+      if (url.includes('{sku}') || url.includes('{sku_lower}') || url.includes('{sku_upper}')) {
+        url = url.replaceAll('{sku}', sku)
+        url = url.replaceAll('{sku_lower}', sku.toLowerCase())
+        url = url.replaceAll('{sku_upper}', sku.toUpperCase())
+        return url
+      }
+      return url
+    },
+    partManufacturersManufacturerChanged (index) {
+      let manufacturer = this.form.manufacturers_sku[index].manufacturer
+      if (!manufacturer) { return }
+
+      let sku = this.form.manufacturers_sku[index].sku
+
+      if (sku) {
+        if (manufacturer.datasheet_url) {
+          this.form.manufacturers_sku[index].datasheet_url = this.replaceDSUrlPlaceholders(index, manufacturer.datasheet_url, sku)
+        }
+      } else {
+        this.form.manufacturers_sku[index].datasheet_url = manufacturer.datasheet_url
+      }
+    },
+    partDistributorsDistributorChanged (index) {
+      let distributor = this.form.distributors_sku[index].distributor
+      if (!distributor) { return }
+
+      let sku = this.form.distributors_sku[index].sku
+
+      if (sku) {
+        if (distributor.datasheet_url) {
+          this.form.distributors_sku[index].datasheet_url = this.replaceDSUrlPlaceholders(index, distributor.datasheet_url, sku)
+        }
+      } else {
+        this.form.distributors_sku[index].datasheet_url = distributor.datasheet_url
+      }
     }
   }
 }

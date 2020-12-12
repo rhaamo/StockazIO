@@ -56,9 +56,11 @@ export default {
       default: 'No'
     }
   },
-  data: () => ({
-    clicked: false
-  }),
+  data: () => {
+    return {
+      clicked: false
+    }
+  },
   computed: {
   },
   methods: {
@@ -66,7 +68,10 @@ export default {
       this.clicked = true
     },
     actionConfirmed () {
-      this.$emit('action-confirmed')
+      this.clicked = false
+      this.$nextTick(() => {
+        this.$emit('action-confirmed')
+      })
     },
     actionCancelled () {
       this.clicked = false

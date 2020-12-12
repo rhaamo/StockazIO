@@ -22,6 +22,7 @@ class ManufacturersSerializer(serializers.ModelSerializer):
             "logo_mini",
             "logo_small",
             "logo_medium",
+            "datasheet_url",
         ]
 
 
@@ -30,10 +31,10 @@ class PartManufacturerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PartManufacturer
-        fields = ["id", "sku", "part", "manufacturer"]
+        fields = ["id", "sku", "part", "manufacturer", "datasheet_url"]
 
 
 class PartManufacturerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartManufacturer
-        fields = ["id", "sku", "part", "manufacturer"]
+        fields = ["id", "sku", "part", "manufacturer", "datasheet_url"]

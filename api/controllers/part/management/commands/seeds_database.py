@@ -192,9 +192,12 @@ def seed_manufacturers():
             man = Manufacturer(name=name)
 
             if manufacturers[name]:
-                logo = manufacturers[name][0]  # take first
-                fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
-                man.logo.save(path.basename(logo), fi, save=False)
+                if "logos" in manufacturers[name]:
+                    logo = manufacturers[name]["logos"][0]  # take first
+                    fi = open("{0}/../setup-data/manufacturers/images/{1}".format(settings.BASE_DIR, logo), "rb")
+                    man.logo.save(path.basename(logo), fi, save=False)
+                if "datasheet_url" in manufacturers[name]:
+                    man.datasheet_url = manufacturers[name]["datasheet_url"]
             man.save()
 
         except Manufacturer.MultipleObjectsReturned:
@@ -205,19 +208,19 @@ def seed_manufacturers():
 def seed_distributors():
     print("+++ 000 --- Seeding Distributors")
     distributors = [
-        ["Farnell element14", "http://farnell.com/"],
-        ["Mouser Electronics", "http://www.mouser.com/"],
-        ["DigiKey Electronics", "https://www.digikey.com/"],
-        ["TME", "https://www.tme.eu/"],
-        ["Arrow", "https://www.arrow.com/"],
-        ["UtSource", "https://www.utsource.net/"],
-        ["LCSC Electronics", "https://lcsc.com/"],
+        ["Farnell element14", "http://farnell.com/", "http://www.farnell.com/datasheets/{_}.pdf"],
+        ["Mouser Electronics", "http://www.mouser.com/", ""],
+        ["DigiKey Electronics", "https://www.digikey.com/", ""],
+        ["TME", "https://www.tme.eu/", ""],
+        ["Arrow", "https://www.arrow.com/", ""],
+        ["UtSource", "https://www.utsource.net/", ""],
+        ["LCSC Electronics", "https://lcsc.com/", ""],
     ]
-    for name, url in distributors:
+    for name, url, datasheet_url in distributors:
         try:
             distributor = Distributor.objects.get(name=name, url=url)
         except Distributor.DoesNotExist:
-            distributor = Distributor(name=name, url=url)
+            distributor = Distributor(name=name, url=url, datasheet_url=datasheet_url)
             distributor.save()
         except Distributor.MultipleObjectsReturned:
             print(f"WARNING: Multiple entries returned for {name!r}, {url!r}, skipping")

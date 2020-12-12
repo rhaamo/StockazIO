@@ -4,6 +4,14 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
 from controllers.part.models import Part
 
+"""
+Notes about datasheet_url, {placeholders} handled:
+_ do nothing
+sku sku as is
+sku_lower sku in lowercase
+sku_upper sku in uppercase
+"""
+
 
 class Manufacturer(models.Model):
     name = models.CharField(_("name"), max_length=255, blank=False, unique=True, help_text=_("Name"))
@@ -13,6 +21,7 @@ class Manufacturer(models.Model):
     comment = models.TextField(_("comment"), blank=True, unique=False, help_text=_("Comment"))
     phone = models.CharField(_("phone"), max_length=255, blank=True, unique=False, help_text=_("Phone"))
     fax = models.CharField(_("fax"), max_length=255, blank=True, unique=False, help_text=_("FAX"))
+    datasheet_url = models.URLField("Datasheet URL", max_length=255, blank=True, unique=False)
 
     logo = models.ImageField(upload_to="manufacturers/", verbose_name=_("Manufacturer logo"), blank=True, null=True)
     logo_mini = ImageSpecField(
@@ -41,6 +50,7 @@ class PartManufacturer(models.Model):
     manufacturer = models.ForeignKey(
         Manufacturer, related_name="parts_manufacturers_sku", blank=True, null=True, on_delete=models.CASCADE
     )
+    datasheet_url = models.URLField("Datasheet URL", max_length=255, blank=True, unique=False)
 
     class Meta(object):
         ordering = ("sku",)

@@ -1,635 +1,922 @@
+---
 'Integrated Circuit Designs':
-  - acer.png
+  logos:
+    - acer.png
 ACTEL:
-  - actel.png
+  logos:
+    - actel.png
 ALTINC:
-  - advldev.png
+  logos:
+    - advldev.png
 Aeroflex:
-  - aeroflex1.png
-  - aeroflex2.png
+  logos:
+    - aeroflex1.png
+    - aeroflex2.png
 'Agilent Technologies':
-  - agilent.png
+  logos:
+    - agilent.png
 'AKM Semiconductor':
-  - akm.png
+  logos:
+    - akm.png
 'Alesis Semiconductor':
-  - alesis.png
+  logos:
+    - alesis.png
 'ALi (Acer Laboratories Inc.)':
-  - ali1.png
-  - ali2.png
+  logos:
+    - ali1.png
+    - ali2.png
 'Allayer Communications':
-  - allayer.png
+  logos:
+    - allayer.png
 'Allegro Microsystems':
-  - allegro.png
+  logos:
+    - allegro.png
 'Alliance Semiconductor':
-  - alliance.png
+  logos:
+    - alliance.png
 'Alpha Industries':
-  - alphaind.png
+  logos:
+    - alphaind.png
 'Alpha Microelectronics':
-  - alphamic.png
-  - alpha.png
+  logos:
+    - alphamic.png
+    - alpha.png
 Altera:
-  - altera.png
+  logos:
+    - altera.png
 'Advanced Micro Devices (AMD)':
-  - amd.png
+  logos:
+    - amd.png
 'American Microsystems, Inc. (AMI)':
-  - ami1.png
-  - ami2.png
+  logos:
+    - ami1.png
+    - ami2.png
 'Amic Technology':
-  - amic.png
+  logos:
+    - amic.png
 Amphus:
-  - ampus.png
+  logos:
+    - ampus.png
 'Anachip Corp.':
-  - anachip.png
+  logos:
+    - anachip.png
 ANADIGICs:
-  - anadigic.png
+  logos:
+    - anadigic.png
 'Analog Devices':
-  - analog1.png
-  - analog.png
+  logos:
+    - analog1.png
+    - analog.png
 'Analog Systems':
-  - anasys.png
+  logos:
+    - anasys.png
 'Anchor Chips':
-  - anchorch.png
+  logos:
+    - anchorch.png
 'Apex Microtechnology':
-  - apex1.png
-  - apex.png
+  logos:
+    - apex1.png
+    - apex.png
 'ARK Logic':
-  - ark.png
+  logos:
+    - ark.png
 ASD:
-  - asd.png
+  logos:
+    - asd.png
 'Astec Semiconductor':
-  - astec.png
+  logos:
+    - astec.png
 'ATC (Analog Technologie)':
-  - atc.png
+  logos:
+    - atc.png
 ATecoM:
-  - atecom.png
+  logos:
+    - atecom.png
 'ATI Technologies':
-  - ati.png
+  logos:
+    - ati.png
 Atmel:
-  - atmel.png
+  logos:
+    - atmel.png
 'AT&T':
-  - att.png
+  logos:
+    - att.png
 AudioCodes:
-  - audiocod.png
+  logos:
+    - audiocod.png
 'Aura Vision':
-  - auravis.png
+  logos:
+    - auravis.png
 Aureal:
-  - aureal.png
+  logos:
+    - aureal.png
 'Austin Semiconductor':
-  - austin.png
+  logos:
+    - austin.png
 'Avance Logic':
-  - averlog.png
+  logos:
+    - averlog.png
 'Bel Fuse':
-  - belfuse.png
+  logos:
+    - belfuse.png
 'Benchmarq Microelectronics':
-  - benchmrq.png
+  logos:
+    - benchmrq.png
 'BI Technologies':
-  - bi.png
+  logos:
+    - bi.png
 Bowmar/White:
-  - bowmar_white.png
+  logos:
+    - bowmar_white.png
 Brightflash:
-  - bright.png
+  logos:
+    - bright.png
 Broadcom:
-  - broadcom.png
+  logos:
+    - broadcom.png
 'Brooktree(now Rockwell)':
-  - brooktre.png
+  logos:
+    - brooktre.png
 'Burr Brown':
-  - burrbrwn.png
+  logos:
+    - burrbrwn.png
 'California Micro Devices':
-  - calmicro.png
+  logos:
+    - calmicro.png
 Calogic:
-  - calogic.png
+  logos:
+    - calogic.png
 'Catalyst Semiconductor':
-  - catalys1.png
-  - catalyst.png
+  logos:
+    - catalys1.png
+    - catalyst.png
 'Centon Electronics':
-  - ccube.png
+  logos:
+    - ccube.png
 'Ceramate Technical':
-  - ceramate1.png
-  - ceramate2.png
+  logos:
+    - ceramate1.png
+    - ceramate2.png
 'Cherry Semiconductor':
-  - cherry.png
+  logos:
+    - cherry.png
 'Chipcon AS':
-  - chipcon1.png
-  - chipcon2.png
+  logos:
+    - chipcon1.png
+    - chipcon2.png
 Chips:
-  - chips.png
+  logos:
+    - chips.png
 Chrontel:
-  - chrontel.png
+  logos:
+    - chrontel.png
 'Cirrus Logic':
-  - cirrus.png
+  logos:
+    - cirrus.png
 'ComCore Semiconductor':
-  - comcore.png
+  logos:
+    - comcore.png
 Conexant:
-  - conexant.png
+  logos:
+    - conexant.png
 'Cosmo Electronics':
-  - cosmo.png
+  logos:
+    - cosmo.png
 Chrystal:
-  - crystal.png
+  logos:
+    - crystal.png
 Cygnal:
-  - cygnal.png
+  logos:
+    - cygnal.png
 'Cypress Semiconductor':
-  - cypres1.png
-  - cypress.png
+  logos:
+    - cypres1.png
+    - cypress.png
 'Cyrix Corporation':
-  - cyrix.png
+  logos:
+    - cyrix.png
 'Daewoo Electronics Semiconductor':
-  - daewoo.png
+  logos:
+    - daewoo.png
 'Dallas Semiconductor':
-  - dallas1.png
-  - dallas2.png
-  - dallas3.png
+  logos:
+    - dallas1.png
+    - dallas2.png
+    - dallas3.png
 'Davicom Semiconductor':
-  - davicom.png
+  logos:
+    - davicom.png
 'Data Delay Devices':
-  - ddd.png
+  logos:
+    - ddd.png
 'Diamond Technologies':
-  - diamond.png
+  logos:
+    - diamond.png
 DIOTEC:
-  - diotec.png
+  logos:
+    - diotec.png
 'DTC Data Technology':
-  - dtc1.png
-  - dtc2.png
+  logos:
+    - dtc1.png
+    - dtc2.png
 DVDO:
-  - dvdo.png
+  logos:
+    - dvdo.png
 'EG&G':
-  - edi.png
+  logos:
+    - edi.png
 'Elan Microelectronics':
-  - egg.png
+  logos:
+    - egg.png
 ELANTEC:
-  - elan.png
-  - elantec1.png
-  - elantec.png
+  logos:
+    - elan.png
+    - elantec1.png
+    - elantec.png
 'Electronic Arrays':
-  - elec_arrays.png
+  logos:
+    - elec_arrays.png
 'Elite Flash Storage Technology Inc. (EFST)':
-  - 'elite[1].png'
+  logos:
+    - 'elite[1].png'
 'EM Microelectronik - Marin':
-  - emmicro.png
+  logos:
+    - emmicro.png
 'Enhanced Memory Systems':
-  - enhmemsy.png
+  logos:
+    - enhmemsy.png
 'Ensoniq Corp':
-  - ensoniq.png
+  logos:
+    - ensoniq.png
 'EON Silicon Devices':
-  - eon.png
+  logos:
+    - eon.png
 Epson:
-  - epson1.png
-  - epson2.png
+  logos:
+    - epson1.png
+    - epson2.png
 Ericsson:
-  - ericsson.png
+  logos:
+    - ericsson.png
 'ESS Technology':
-  - ess.png
+  logos:
+    - ess.png
 'Electronic Technology':
-  - etc.png
+  logos:
+    - etc.png
 EXAR:
-  - exar.png
+  logos:
+    - exar.png
 'Excel Semiconductor Inc.':
-  - excelsemi1.png
-  - excelsemi2.png
-  - exel.png
+  logos:
+    - excelsemi1.png
+    - excelsemi2.png
+    - exel.png
 Fairschild:
-  - fairchil.png
+  logos:
+    - fairchil.png
 'Freescale Semiconductor':
-  - freescale.png
+  logos:
+    - freescale.png
 Fujitsu:
-  - fujielec.png
-  - fujitsu2.png
+  logos:
+    - fujielec.png
+    - fujitsu2.png
 'Galileo Technology':
-  - galileo.png
+  logos:
+    - galileo.png
 Galvantech:
-  - galvant.png
+  logos:
+    - galvant.png
 'GEC Plessey':
-  - gecples.png
+  logos:
+    - gecples.png
 Gennum:
-  - gennum.png
+  logos:
+    - gennum.png
 'General Electric (Harris)':
-  - ge.png
+  logos:
+    - ge.png
 'General Instruments':
-  - gi1.png
-  - gi.png
+  logos:
+    - gi1.png
+    - gi.png
 'G-Link Technology':
-  - glink.png
+  logos:
+    - glink.png
 'Goal Semiconductor':
-  - goal1.png
-  - goal2.png
+  logos:
+    - goal1.png
+    - goal2.png
 Goldstar:
-  - goldstar1.png
-  - goldstar2.png
+  logos:
+    - goldstar1.png
+    - goldstar2.png
 Gould:
-  - gould.png
+  logos:
+    - gould.png
 'Greenwich Instruments':
-  - greenwich.png
+  logos:
+    - greenwich.png
 'General Semiconductor':
-  - gsemi.png
+  logos:
+    - gsemi.png
 'Harris Semiconductor':
-  - harris1.png
-  - harris2.png
+  logos:
+    - harris1.png
+    - harris2.png
 VEB:
-  - hfo.png
+  logos:
+    - hfo.png
 'Hitachi Semiconductor':
-  - hitachi.png
+  logos:
+    - hitachi.png
 Holtek:
-  - holtek.png
+  logos:
+    - holtek.png
 'Hewlett Packard':
-  - hp.png
+  logos:
+    - hp.png
 Hualon:
-  - hualon.png
+  logos:
+    - hualon.png
 'Hynix Semiconductor':
-  - hynix.png
+  logos:
+    - hynix.png
 Hyundai:
-  - hyundai2.png
+  logos:
+    - hyundai2.png
 'IC Design':
-  - icdesign.png
+  logos:
+    - icdesign.png
 'Integrated Circuit Systems (ICS)':
-  - icd.png
-  - ics.png
+  logos:
+    - icd.png
+    - ics.png
 'IC - Haus':
-  - ichaus1.png
-  - ichaus.png
+  logos:
+    - ichaus1.png
+    - ichaus.png
 'ICSI (Integrated Circuit Solution Inc.)':
-  - icsi.png
+  logos:
+    - icsi.png
 I-Cube:
-  - icube.png
+  logos:
+    - icube.png
 'IC Works':
-  - icworks.png
+  logos:
+    - icworks.png
 'Integrated Device Technology (IDT)':
-  - idt1.png
-  - idt.png
+  logos:
+    - idt1.png
+    - idt.png
 'IGS Technologies':
-  - igstech.png
+  logos:
+    - igstech.png
 'IMPALA Linear':
-  - impala.png
+  logos:
+    - impala.png
 IMP:
-  - imp.png
+  logos:
+    - imp.png
 Infineon:
-  - infineon.png
+  logos:
+    - infineon.png
 INMOS:
-  - inmos.png
+  logos:
+    - inmos.png
 Intel:
-  - intel2.png
+  logos:
+    - intel2.png
 Intersil:
-  - intresil4.png
-  - intrsil1.png
-  - intrsil2.png
-  - intrsil3.png
+  logos:
+    - intresil4.png
+    - intrsil1.png
+    - intrsil2.png
+    - intrsil3.png
 'International Rectifier':
-  - ir.png
+  logos:
+    - ir.png
 'Information Storage Devices':
-  - isd.png
+  logos:
+    - isd.png
 'ISSI (Integrated Silicon Solution, Inc.)':
-  - issi.png
+  logos:
+    - issi.png
 'Integrated Technology Express':
-  - ite.png
+  logos:
+    - ite.png
 'ITT Semiconductor (Micronas Intermetall)':
-  - itt.png
+  logos:
+    - itt.png
 IXYS:
-  - ixys.png
+  logos:
+    - ixys.png
 'Korea Electronics (KEC)':
-  - kec.png
+  logos:
+    - kec.png
 'Kota Microcircuits':
-  - kota.png
+  logos:
+    - kota.png
 'Lattice Semiconductor Corp.':
-  - lattice1.png
-  - lattice2.png
-  - lattice3.png
+  logos:
+    - lattice1.png
+    - lattice2.png
+    - lattice3.png
 'Lansdale Semiconductor':
-  - lds1.png
-  - lds.png
+  logos:
+    - lds1.png
+    - lds.png
 'Level One Communications':
-  - levone.png
+  logos:
+    - levone.png
 'LG Semicon (Lucky Goldstar Electronic Co.)':
-  - lgs1.png
-  - lgs.png
+  logos:
+    - lgs1.png
+    - lgs.png
 'Linear Technology':
-  - linear.png
+  logos:
+    - linear.png
 'Linfinity Microelectronics':
-  - linfin.png
+  logos:
+    - linfin.png
 Lite-On:
-  - liteon.png
+  logos:
+    - liteon.png
 'Lucent Technologies (AT&T Microelectronics)':
-  - lucent.png
+  logos:
+    - lucent.png
 'Macronix International':
-  - macronix.png
+  logos:
+    - macronix.png
 'Marvell Semiconductor':
-  - marvell.png
+  logos:
+    - marvell.png
 'Matsushita Panasonic':
-  - matsush1.png
-  - matsushi.png
+  logos:
+    - matsush1.png
+    - matsushi.png
 'Maxim Dallas':
-  - maxim.png
+  logos:
+    - maxim.png
 'Media Vision':
-  - mediavi1.png
-  - mediavi2.png
+  logos:
+    - mediavi1.png
+    - mediavi2.png
 'Microchip (Arizona Michrochip Technology)':
-  - me.png
-  - microchp.png
+  logos:
+    - me.png
+    - microchp.png
 'Matra MHS':
-  - mhs2.png
-  - mhs.png
+  logos:
+    - mhs2.png
+    - mhs.png
 'Micrel Semiconductor':
-  - micrel1.png
-  - micrel2.png
+  logos:
+    - micrel1.png
+    - micrel2.png
 Micronas:
-  - micronas.png
+  logos:
+    - micronas.png
 'Micronix Integrated Systems':
-  - micronix.png
+  logos:
+    - micronix.png
 'Micron Technology, Inc.':
-  - micron.png
+  logos:
+    - micron.png
 Microsemi:
-  - microsemi1.png
-  - microsemi2.png
+  logos:
+    - microsemi1.png
+    - microsemi2.png
 Mini-Circuits:
-  - minicirc.png
+  logos:
+    - minicirc.png
 'Mitel Semiconductor':
-  - mitel.png
+  logos:
+    - mitel.png
 'Mitsubishi Semiconductor':
-  - mitsubis.png
+  logos:
+    - mitsubis.png
 'Micro Linear':
-  - mlinear.png
+  logos:
+    - mlinear.png
 'MMI (Monolithic Memories, Inc.)':
-  - mmi.png
+  logos:
+    - mmi.png
 'Mosaic Semiconductor':
-  - mosaic.png
+  logos:
+    - mosaic.png
 'Mosel Vitelic':
-  - moselvit.png
+  logos:
+    - moselvit.png
 'MOS Technologies':
-  - mos.png
+  logos:
+    - mos.png
 Mostek:
-  - mostek1.png
-  - mostek2.png
-  - mostek3.png
+  logos:
+    - mostek1.png
+    - mostek2.png
+    - mostek3.png
 MoSys:
-  - mosys.png
+  logos:
+    - mosys.png
 Motorola:
-  - motorol1.png
-  - motorol2.png
+  logos:
+    - motorol1.png
+    - motorol2.png
 Microtune:
-  - mpd.png
+  logos:
+    - mpd.png
 M-Systems:
-  - msystem.png
+  logos:
+    - msystem.png
 'Murata Manufacturing':
-  - murata1.png
-  - murata.png
+  logos:
+    - murata1.png
+    - murata.png
 'MWave (IBM)':
-  - mwave.png
+  logos:
+    - mwave.png
 'Myson Technology':
-  - myson.png
+  logos:
+    - myson.png
 'NEC Electronics':
-  - nec1.png
-  - nec2.png
+  logos:
+    - nec1.png
+    - nec2.png
 'NexFlash Technologies':
-  - nexflash.png
+  logos:
+    - nexflash.png
 'New Japan Radio':
-  - njr.png
+  logos:
+    - njr.png
 'National Semiconductor':
-  - ns1.png
-  - ns2.png
+  logos:
+    - ns1.png
+    - ns2.png
 'NVidia Corporation':
-  - nvidia.png
+  logos:
+    - nvidia.png
 'Oak Technology':
-  - oak.png
+  logos:
+    - oak.png
 'Oki Semiconductor':
-  - oki1.png
-  - oki.png
+  logos:
+    - oki1.png
+    - oki.png
 Opti:
-  - opti.png
+  logos:
+    - opti.png
 'Orbit Semiconductor':
-  - orbit.png
+  logos:
+    - orbit.png
 'Oren Semiconductor':
-  - oren.png
+  logos:
+    - oren.png
 'Performance Semiconductor':
-  - perform.png
+  logos:
+    - perform.png
 'Pericom Semiconductor':
-  - pericom.png
+  logos:
+    - pericom.png
 'PhaseLink Laboratories':
-  - phaslink.png
+  logos:
+    - phaslink.png
 'Philips Semiconductor':
-  - philips.png
+  logos:
+    - philips.png
 'PLX Technology':
-  - plx.png
+  logos:
+    - plx.png
 'PMC- Sierra':
-  - pmc.png
+  logos:
+    - pmc.png
 'Precision Monolithics':
-  - pmi.png
+  logos:
+    - pmi.png
 'Princeton Technology':
-  - ptc.png
+  logos:
+    - ptc.png
 PowerSmart:
-  - pwrsmart.png
+  logos:
+    - pwrsmart.png
 QuickLogic:
-  - qlogic.png
+  logos:
+    - qlogic.png
 Qlogic:
-  - qualcomm.png
+  logos:
+    - qualcomm.png
 'Quality Semiconductor':
-  - quality.png
+  logos:
+    - quality.png
 'Rabbit Semiconductor':
-  - rabbit.png
+  logos:
+    - rabbit.png
 'Ramtron International Co.':
-  - ramtron.png
+  logos:
+    - ramtron.png
 'Raytheon Semiconductor':
-  - raytheon.png
+  logos:
+    - raytheon.png
 'RCA Solid State':
-  - rca.png
+  logos:
+    - rca.png
 'Realtek Semiconductor':
-  - realtek.png
+  logos:
+    - realtek.png
 Rectron:
-  - rectron.png
+  logos:
+    - rectron.png
 Rendition:
-  - rendit.png
+  logos:
+    - rendit.png
 'Renesas Technology':
-  - renesas.png
+  logos:
+    - renesas.png
 Rockwell:
-  - rockwell.png
+  logos:
+    - rockwell.png
 'Rohm Corp.':
-  - rohm.png
+  logos:
+    - rohm.png
 S3:
-  - s3.png
+  logos:
+    - s3.png
 Sage:
-  - sage.png
+  logos:
+    - sage.png
 'Saifun Semiconductors Ltd.':
-  - saifun.png
+  logos:
+    - saifun.png
 Sames:
-  - sames.png
+  logos:
+    - sames.png
 Samsung:
-  - samsung.png
+  logos:
+    - samsung.png
 Sanken:
-  - sanken1.png
-  - sanken.png
+  logos:
+    - sanken1.png
+    - sanken.png
 Sanyo:
-  - sanyo1.png
-  - sanyo.png
+  logos:
+    - sanyo1.png
+    - sanyo.png
 Scenix:
-  - scenix.png
+  logos:
+    - scenix.png
 'Samsung Electronics':
-  - sec1.png
-  - sec.png
+  logos:
+    - sec1.png
+    - sec.png
 'SEEQ Technology':
-  - seeq.png
+  logos:
+    - seeq.png
 'Seiko Instruments':
-  - seikoi.png
-  - semelab.png
+  logos:
+    - seikoi.png
+    - semelab.png
 Semtech:
-  - semtech.png
+  logos:
+    - semtech.png
 SGS-Ates:
-  - sgs1.png
+  logos:
+    - sgs1.png
 'SGS-Thomson Microelectonics ST-M)':
-  - sgs2.png
+  logos:
+    - sgs2.png
 'Sharp Microelectronics (USA)':
-  - sharp.png
+  logos:
+    - sharp.png
 Shindengen:
-  - shindgen.png
+  logos:
+    - shindgen.png
 'Siemens Microelectronics, Inc.':
-  - siemens1.png
-  - siemens2.png
+  logos:
+    - siemens1.png
+    - siemens2.png
 Sierra:
-  - sierra.png
+  logos:
+    - sierra.png
 'Sigma Tel':
-  - sigmatel.png
+  logos:
+    - sigmatel.png
 Signetics:
-  - signetic.png
+  logos:
+    - signetic.png
 'Silicon Laboratories':
-  - siliconlabs.png
+  logos:
+    - siliconlabs.png
 'Silicon Magic':
-  - siliconm.png
+  logos:
+    - siliconm.png
 'Simtec Corp.':
-  - silicons.png
-  - simtek.png
+  logos:
+    - silicons.png
+    - simtek.png
 Siliconix:
-  - siliconx.png
+  logos:
+    - siliconx.png
 Siliconians:
-  - silnans.png
+  logos:
+    - silnans.png
 Sipex:
-  - sipex.png
+  logos:
+    - sipex.png
 'Silicon Integrated Systems':
-  - sis.png
+  logos:
+    - sis.png
 SMC:
-  - smc1.png
+  logos:
+    - smc1.png
 'Standard Microsystems':
-  - smsc1.png
-  - smsc.png
+  logos:
+    - smsc1.png
+    - smsc.png
 'Sony Semiconductor':
-  - sony.png
+  logos:
+    - sony.png
 'Space Electronics':
-  - space.png
+  logos:
+    - space.png
 Spectek:
-  - spectek.png
+  logos:
+    - spectek.png
 'Signal Processing Technologies':
-  - spt.png
+  logos:
+    - spt.png
 'Solid State Scientific':
-  - sss.png
+  logos:
+    - sss.png
 'Silicon Storage Technology (SST)':
-  - sst.png
+  logos:
+    - sst.png
 STMicroelectronics:
-  - st.png
+  logos:
+    - st.png
 'SUMMIT Microelectronics':
-  - summit.png
+  logos:
+    - summit.png
 'Synergy Semiconductor':
-  - synergy.png
+  logos:
+    - synergy.png
 Synertek:
-  - synertek.png
+  logos:
+    - synertek.png
 'Taiwan Semiconductor':
-  - taiwsemi.png
+  logos:
+    - taiwsemi.png
 'TDK Semiconductor':
-  - tdk.png
+  logos:
+    - tdk.png
 'Teccor Electronics':
-  - teccor.png
+  logos:
+    - teccor.png
 'TelCom Semiconductor':
-  - telcom.png
+  logos:
+    - telcom.png
 Teledyne:
-  - teledyne.png
+  logos:
+    - teledyne.png
 Telefunken:
-  - telefunk.png
+  logos:
+    - telefunk.png
 Teltone:
-  - teltone.png
+  logos:
+    - teltone.png
 Thomson-CSF:
-  - thomscsf.png
+  logos:
+    - thomscsf.png
 'Texas Instruments':
-  - ti1.png
-  - ti.png
+  logos:
+    - ti1.png
+    - ti.png
+  datasheet_url: "https://www.ti.com/lit/ds/symlink/{sku_lower}.pdf"
 'Toko Amerika':
-  - toko.png
+  logos:
+    - toko.png
 'Toshiba (US)':
-  - toshiba1.png
-  - toshiba2.png
-  - toshiba3.png
+  logos:
+    - toshiba1.png
+    - toshiba2.png
+    - toshiba3.png
 Trident:
-  - trident.png
+  logos:
+    - trident.png
 'TriQuint Semiconductor':
-  - triquint.png
+  logos:
+    - triquint.png
 Triscend:
-  - triscend.png
+  logos:
+    - triscend.png
 'Tseng Labs':
-  - tseng.png
+  logos:
+    - tseng.png
 Tundra:
-  - tundra.png
+  logos:
+    - tundra.png
 'Turbo IC':
-  - turbo_ic.png
+  logos:
+    - turbo_ic.png
 Ubicom:
-  - ubicom.png
+  logos:
+    - ubicom.png
 'United Microelectronics Corp (UMC)':
-  - umc.png
+  logos:
+    - umc.png
 Unitrode:
-  - unitrode.png
+  logos:
+    - unitrode.png
 'USAR Systems':
-  - usar1.png
-  - usar.png
+  logos:
+    - usar1.png
+    - usar.png
 'United Technologies Microelectronics Center (UTMC)':
-  - utmc.png
+  logos:
+    - utmc.png
 Utron:
-  - utron.png
+  logos:
+    - utron.png
 'V3 Semiconductor':
-  - v3.png
+  logos:
+    - v3.png
 Vadem:
-  - vadem.png
+  logos:
+    - vadem.png
 'Vanguard International Semiconductor':
-  - vanguard.png
+  logos:
+    - vanguard.png
 Vantis:
-  - vantis.png
+  logos:
+    - vantis.png
 'Via Technologies':
-  - via.png
+  logos:
+    - via.png
 Virata:
-  - virata.png
+  logos:
+    - virata.png
 Vishay:
-  - vishay.png
+  logos:
+    - vishay.png
 'Vision Tech':
-  - vistech.png
+  logos:
+    - vistech.png
 Vitelic:
-  - vitelic.png
+  logos:
+    - vitelic.png
 'VLSI Technology':
-  - vlsi.png
+  logos:
+    - vlsi.png
 Volterra:
-  - volterra.png
+  logos:
+    - volterra.png
 VTC:
-  - vtc.png
+  logos:
+    - vtc.png
 'Waferscale Integration (WSI)':
-  - wafscale.png
+  logos:
+    - wafscale.png
 'Western Digital':
-  - wdc1.png
-  - wdc2.png
+  logos:
+    - wdc1.png
+    - wdc2.png
 Weitek:
-  - weitek.png
+  logos:
+    - weitek.png
 Winbond:
-  - winbond.png
+  logos:
+    - winbond.png
 'Wofson Microelectronics':
-  - wolf.png
+  logos:
+    - wolf.png
 Xwmics:
-  - xemics.png
+  logos:
+    - xemics.png
 Xicor:
-  - xicor1.png
-  - xicor.png
+  logos:
+    - xicor1.png
+    - xicor.png
 Xilinx:
-  - xilinx.png
+  logos:
+    - xilinx.png
 Yamaha:
-  - yamaha.png
+  logos:
+    - yamaha.png
 'Zetex Semiconductors':
-  - zetex.png
+  logos:
+    - zetex.png
 Zilog:
-  - zilog1.png
-  - zilog2.png
-  - zilog3.png
-  - zilog4.png
+  logos:
+    - zilog1.png
+    - zilog2.png
+    - zilog3.png
+    - zilog4.png
 'ZMD (Zentrum Mikroelektronik Dresden)':
-  - zmda.png
+  logos:
+    - zmda.png
 Zoran:
-  - zoran.png
+  logos:
+    - zoran.png
 'Comchip Technology':
 'FCI / Amphenol':
 'Amphenol':
