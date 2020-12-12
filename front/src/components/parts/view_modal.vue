@@ -122,12 +122,17 @@
                   <tr>
                     <th>SKU</th>
                     <th>Distributor</th>
+                    <th>Datasheet</th>
                   </tr>
                 </thead>
                 <tbody v-if="partDetailsDistributors && partDetailsDistributors.length">
                   <tr v-for="dist in partDetailsDistributors" :key="dist.id">
                     <td>{{ dist.sku }}</td>
                     <td>{{ dist.distributor ? dist.distributor.name : '-' }}</td>
+                    <td v-if="dist.datasheet_url">
+                      <a :href="dist.datasheet_url" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" /> {{ dist.datasheet_url }}</a>
+                    </td>
+                    <td v-else />
                   </tr>
                 </tbody>
               </table>
@@ -138,16 +143,17 @@
                   <tr>
                     <th>SKU</th>
                     <th>Manufacturer</th>
-                    <th />
+                    <th>Datasheet</th>
                   </tr>
                 </thead>
                 <tbody v-if="partDetailsManufacturers && partDetailsManufacturers.length">
                   <tr v-for="manuf in partDetailsManufacturers" :key="manuf.id">
                     <td>{{ manuf.sku }}</td>
-                    <td>{{ manuf.manufacturer ? manuf.manufacturer.name : '-' }}</td>
-                    <td v-if="manuf.manufacturer">
-                      <img v-if="manuf.manufacturer.logo" :src="manuf.manufacturer.logo_mini" style="max-width:100px;">
+                    <td><img v-if="manuf.manufacturer && manuf.manufacturer.logo" :src="manuf.manufacturer.logo_mini" style="max-width:100px;">&nbsp;{{ manuf.manufacturer ? manuf.manufacturer.name : '-' }}</td>
+                    <td v-if="manuf.datasheet_url">
+                      <a :href="manuf.datasheet_url" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true" /> {{ manuf.datasheet_url }}</a>
                     </td>
+                    <td v-else />
                   </tr>
                 </tbody>
               </table>
