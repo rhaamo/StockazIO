@@ -449,12 +449,12 @@ export default {
         }),
         manufacturers_sku: this.form.manufacturers_sku.map(x => {
           if (x.sku !== '') {
-            return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null }
+            return { sku: x.sku, manufacturer: x.manufacturer ? x.manufacturer.value : null, datasheet_url: x.datasheet_url }
           }
         }),
         distributors_sku: this.form.distributors_sku.map(x => {
           if (x.sku !== '') {
-            return { sku: x.sku, distributor: x.distributor ? x.distributor.value : null }
+            return { sku: x.sku, distributor: x.distributor ? x.distributor.value : null, datasheet_url: x.datasheet_url }
           }
         })
       }

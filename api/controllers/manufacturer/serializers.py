@@ -37,4 +37,4 @@ class PartManufacturerSerializer(serializers.ModelSerializer):
 class PartManufacturerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartManufacturer
-        fields = ["id", "sku", "part", "manufacturer"]
+        fields = ["id", "sku", "part", "manufacturer", "datasheet_url"]

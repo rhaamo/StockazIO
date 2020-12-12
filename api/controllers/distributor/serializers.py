@@ -19,4 +19,4 @@ class DistributorSkuSerializer(serializers.ModelSerializer):
 class DistributorSkuCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = DistributorSku
-        fields = ["id", "sku", "part", "distributor"]
+        fields = ["id", "sku", "part", "distributor", "datasheet_url"]
