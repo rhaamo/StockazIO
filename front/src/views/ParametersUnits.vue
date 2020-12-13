@@ -28,6 +28,12 @@
                   placeholder="Ampere"
                   :state="$v.modalParameterUnit.name.$dirty ? !$v.modalParameterUnit.name.$error : null"
                 />
+                <div v-if="!$v.modalParameterUnit.name.required" class="invalid-feedback d-block">
+                  Name is required
+                </div>
+                <div v-if="!$v.modalParameterUnit.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-prefix" label="Prefix" label-for="short-prefix">
                 <b-form-input
@@ -36,6 +42,9 @@
                   placeholder="µ"
                   :state="$v.modalParameterUnit.prefix.$dirty ? !$v.modalParameterUnit.prefix.$error : null"
                 />
+                <div v-if="!$v.modalParameterUnit.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-symbol" label="Symbol" label-for="short-symbol">
                 <b-form-input
@@ -44,6 +53,9 @@
                   placeholder="A"
                   :state="$v.modalParameterUnit.symbol.$dirty ? !$v.modalParameterUnit.symbol.$error : null"
                 />
+                <div v-if="!$v.modalParameterUnit.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-description" label="Description" label-for="description">
                 <b-form-input
@@ -52,6 +64,9 @@
                   placeholder=""
                   :state="$v.modalParameterUnit.description.$dirty ? !$v.modalParameterUnit.description.$error : null"
                 />
+                <div v-if="!$v.modalParameterUnit.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-button type="submit" variant="primary">
@@ -135,7 +150,7 @@
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 
 export default {
@@ -168,10 +183,10 @@ export default {
   }),
   validations: {
     modalParameterUnit: {
-      name: { required },
-      prefix: {},
-      symbol: {},
-      description: {}
+      name: { required, maxLength: maxLength(255) },
+      prefix: { maxLength: maxLength(255) },
+      symbol: { maxLength: maxLength(255) },
+      description: { maxLength: maxLength(255) }
     }
   },
   computed: {

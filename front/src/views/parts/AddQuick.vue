@@ -35,6 +35,12 @@
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
                   @blur="checkPartExists"
                 />
+                <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
+                  Name is required
+                </div>
+                <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <div v-if="partsExists && partsExists.length" class="mb-3">
                 One or more parts exists with this name: <div v-for="p in partsExists" :key="p.uuid">
@@ -49,6 +55,9 @@
                   placeholder="A cute little mcu"
                   :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
                 />
+                <div v-if="!$v.form.description.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-qty" label="Stock Qty*" label-for="qty">
                 <b-form-input
@@ -59,6 +68,12 @@
                   inputmode="numeric"
                   :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
                 />
+                <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+                  Qty has to be positive
+                </div>
+                <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+                  Qty is required
+                </div>
               </b-form-group>
               <b-form-group id="input-group-qty-min" label="Stock Qty min*" label-for="qty-min">
                 <b-form-input
@@ -69,6 +84,12 @@
                   inputmode="numeric"
                   :state="$v.form.qty_min.$dirty ? !$v.form.qty_min.$error : null"
                 />
+                <div v-if="!$v.form.qty_min.minValue" class="invalid-feedback d-block">
+                  Qty has to be positive
+                </div>
+                <div v-if="!$v.form.qty_min.required" class="invalid-feedback d-block">
+                  Qty is required
+                </div>
               </b-form-group>
               <b-form-group id="input-group-sheet-status" label="Sheet status" label-for="sheet-status">
                 <b-form-input
@@ -76,6 +97,9 @@
                   v-model="form.sheet_status"
                   :state="$v.form.sheet_status.$dirty ? !$v.form.sheet_status.$error : null"
                 />
+                <div v-if="!$v.form.sheet_status.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-condition" label="Part condition" label-for="condition">
                 <b-form-input
@@ -84,6 +108,9 @@
                   placeholder="Condition of the part"
                   :state="$v.form.condition.$dirty ? !$v.form.condition.$error : null"
                 />
+                <div v-if="!$v.form.condition.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-production-remarks" label="Production remarks" label-for="production-remarks">
                 <b-form-input
@@ -91,6 +118,9 @@
                   v-model="form.production_remarks"
                   :state="$v.form.production_remarks.$dirty ? !$v.form.production_remarks.$error : null"
                 />
+                <div v-if="!$v.form.production_remarks.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-internal-pn" label="Internal part number" label-for="internal-pn">
                 <b-form-input
@@ -98,6 +128,9 @@
                   v-model="form.internal_pn"
                   :state="$v.form.internal_pn.$dirty ? !$v.form.internal_pn.$error : null"
                 />
+                <div v-if="!$v.form.internal_pn.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-form-group>
@@ -184,7 +217,7 @@ import ViewModal from '@/components/parts/view_modal'
 
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
-import { required, minValue } from 'vuelidate/lib/validators'
+import { required, minValue, maxLength, integer } from 'vuelidate/lib/validators'
 
 export default {
   components: {
@@ -217,31 +250,39 @@ export default {
   validations: {
     form: {
       name: {
-        required
+        required,
+        maxLength: maxLength(255)
       },
       description: {
+        maxLength: maxLength(255)
       },
       qty: {
         required,
+        integer,
         minValue: minValue(0)
       },
       qty_min: {
         required,
+        integer,
         minValue: minValue(0)
       },
       sheet_status: {
+        maxLength: maxLength(255)
       },
       needs_review: {
       },
       condition: {
+        maxLength: maxLength(255)
       },
       can_be_sold: {
       },
       private: {
       },
       production_remarks: {
+        maxLength: maxLength(255)
       },
       internal_pn: {
+        maxLength: maxLength(255)
       },
       part_unit: {
       },

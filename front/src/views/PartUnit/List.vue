@@ -28,6 +28,12 @@
                   placeholder="Centimeters"
                   :state="$v.modalPartUnit.name.$dirty ? !$v.modalPartUnit.name.$error : null"
                 />
+                <div v-if="!$v.modalPartUnit.name.required" class="invalid-feedback d-block">
+                  Name is required
+                </div>
+                <div v-if="!$v.modalPartUnit.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-short-name" label="Short Name*" label-for="short-name">
                 <b-form-input
@@ -37,6 +43,12 @@
                   placeholder="cm"
                   :state="$v.modalPartUnit.short_name.$dirty ? !$v.modalPartUnit.short_name.$error : null"
                 />
+                <div v-if="!$v.modalPartUnit.short_name.required" class="invalid-feedback d-block">
+                  Short name is required
+                </div>
+                <div v-if="!$v.modalPartUnit.short_name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-description" label="Description" label-for="description">
                 <b-form-input
@@ -45,6 +57,9 @@
                   placeholder=""
                   :state="$v.modalPartUnit.description.$dirty ? !$v.modalPartUnit.description.$error : null"
                 />
+                <div v-if="!$v.modalPartUnit.description.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-button type="submit" variant="primary">
@@ -114,7 +129,7 @@
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [
@@ -144,9 +159,9 @@ export default {
   }),
   validations: {
     modalPartUnit: {
-      name: { required },
-      short_name: { required },
-      description: {}
+      name: { required, maxLength: maxLength(255) },
+      short_name: { required, maxLength: maxLength(255) },
+      description: { maxLength: maxLength(255) }
     }
   },
   computed: {

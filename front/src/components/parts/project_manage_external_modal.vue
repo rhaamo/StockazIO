@@ -28,6 +28,12 @@
                 placeholder="PIC42ACHU"
                 :state="$v.form.part_name.$dirty ? !$v.form.part_name.$error : null"
               />
+              <div v-if="!$v.form.part_name.required" class="invalid-feedback d-block">
+                Part name is required
+              </div>
+              <div v-if="!$v.form.part_name.maxLength" class="invalid-feedback d-block">
+                Maximum length is 255
+              </div>
             </b-form-group>
 
             <b-form-group id="input-group-qty" label="Qty*" label-for="qty">
@@ -39,6 +45,12 @@
                 inputmode="numeric"
                 :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
               />
+              <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+                Qty has to be positive
+              </div>
+              <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+                Qty is required
+              </div>
             </b-form-group>
 
             <b-form-group id="input-group-notes" label="Notes" label-for="notes">
@@ -48,6 +60,9 @@
                 v-model="form.notes"
                 :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
               />
+              <div v-if="!$v.form.notes.maxLength" class="invalid-feedback d-block">
+                Maximum length is 255
+              </div>
             </b-form-group>
 
             <b-form-group>
@@ -76,7 +91,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minValue } from 'vuelidate/lib/validators'
+import { required, minValue, maxLength } from 'vuelidate/lib/validators'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 
@@ -102,13 +117,13 @@ export default {
   }),
   validations: {
     form: {
-      part_name: { required },
+      part_name: { required, maxLength: maxLength(255) },
       qty: {
         required,
         minValue: minValue(0)
       },
       sourced: {},
-      notes: {}
+      notes: { maxLength: maxLength(255) }
     }
   },
   computed: {

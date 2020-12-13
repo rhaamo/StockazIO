@@ -27,6 +27,12 @@
                   required
                   :state="$v.modalDistributor.name.$dirty ? !$v.modalDistributor.name.$error : null"
                 />
+                <div v-if="!$v.modalDistributor.name.required" class="invalid-feedback d-block">
+                  Name is required
+                </div>
+                <div v-if="!$v.modalDistributor.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-address" label="Address" label-for="short-address">
                 <b-form-textarea
@@ -42,6 +48,12 @@
                   type="url"
                   :state="$v.modalDistributor.url.$dirty ? !$v.modalDistributor.url.$error : null"
                 />
+                <div v-if="!$v.modalDistributor.url.url" class="invalid-feedback d-block">
+                  Invalid url
+                </div>
+                <div v-if="!$v.modalDistributor.url.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-email" label="Email" label-for="email">
                 <b-form-input
@@ -50,6 +62,12 @@
                   type="email"
                   :state="$v.modalDistributor.email.$dirty ? !$v.modalDistributor.email.$error : null"
                 />
+                <div v-if="!$v.modalDistributor.email.email" class="invalid-feedback d-block">
+                  Invalid email
+                </div>
+                <div v-if="!$v.modalDistributor.email.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-comment" label="Comment" label-for="comment">
                 <b-form-textarea
@@ -65,6 +83,9 @@
                   type="tel"
                   :state="$v.modalDistributor.phone.$dirty ? !$v.modalDistributor.phone.$error : null"
                 />
+                <div v-if="!$v.modalDistributor.phone.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-fax" label="Fax" label-for="fax">
                 <b-form-input
@@ -73,6 +94,9 @@
                   type="tel"
                   :state="$v.modalDistributor.fax.$dirty ? !$v.modalDistributor.fax.$error : null"
                 />
+                <div v-if="!$v.modalDistributor.fax.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-button type="submit" variant="primary">
@@ -180,7 +204,7 @@
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
-import { required, email, url } from 'vuelidate/lib/validators'
+import { required, email, url, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 
 export default {
@@ -216,13 +240,13 @@ export default {
   }),
   validations: {
     modalDistributor: {
-      name: { required },
+      name: { required, maxLength: maxLength(255) },
       address: {},
-      url: { url },
-      email: { email },
+      url: { url, maxLength: maxLength(255) },
+      email: { email, maxLength: maxLength(255) },
       comment: {},
-      phone: {},
-      fax: {}
+      phone: { maxLength: maxLength(255) },
+      fax: { maxLength: maxLength(255) }
     }
   },
   computed: {

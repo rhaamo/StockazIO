@@ -175,13 +175,21 @@
           <b-tab title="Files attachments">
             <b-form enctype="multipart/form-data" inline @submit.prevent="addAttachment">
               <label class="sr-only" for="description">Description</label>
-              <b-form-input
-                id="description"
-                v-model="addAttachmentForm.description"
-                required
-                placeholder="File description"
-                class="mb-2 mr-sm-2 mb-sm-0"
-              />
+              <b-form-group id="input-group-description" label-for="description">
+                <b-form-input
+                  id="description"
+                  v-model="addAttachmentForm.description"
+                  required
+                  placeholder="File description"
+                  class="mb-2 mr-sm-2 mb-sm-0"
+                />
+                <div v-if="!$v.addAttachmentForm.description.required" class="invalid-feedback d-block">
+                  Description is required
+                </div>
+                <div v-if="!$v.addAttachmentForm.description.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
+              </b-form-group>
 
               <label class="sr-only" for="file">File</label>
               <b-form-group id="input-group-file" label-for="file" class="mb-2 mr-sm-2 mb-sm-0">
@@ -192,9 +200,14 @@
                   :accept="allowedUploadTypes"
                   required
                 />
+                <div v-if="!$v.addAttachmentForm.file.required" class="invalid-feedback d-block">
+                  File is required
+                </div>
               </b-form-group>
 
-              <b-button type="submit" variant="primary">
+              <b-button class="mb-3" type="submit" variant="primary"
+                        size="sm"
+              >
                 Add
               </b-button>
             </b-form>
@@ -259,6 +272,8 @@ import ViewModal from '@/components/parts/view_modal'
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   components: {
@@ -266,7 +281,18 @@ export default {
     ManagePartExternalModal,
     ViewModal
   },
+  mixins: [ validationMixin ],
   props: {
+  },
+  validations: {
+    addAttachmentForm: {
+      description: {
+        required, maxLength: maxLength(255)
+      },
+      file: {
+        required
+      }
+    }
   },
   data: () => ({
     project: null,
@@ -382,6 +408,9 @@ export default {
         })
     },
     addAttachment () {
+      this.$v.addAttachmentForm.$touch()
+      if (this.$v.addAttachmentForm.$invalid) { return }
+
       apiService.projectAttachmentCreate(this.project.id, this.addAttachmentForm)
         .then((val) => {
           this.$bvToast.toast(this.$pgettext('ProjectAttachment/Create/Toast/Success/Message', 'Success'), {

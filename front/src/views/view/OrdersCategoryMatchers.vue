@@ -32,6 +32,12 @@
                       required
                     />
                   </b-input-group>
+                  <div v-if="!$v.matchers.$each[i].regexp.required" class="invalid-feedback d-block">
+                    Regexp string is required
+                  </div>
+                  <div v-if="!$v.matchers.$each[i].regexp.maxLength" class="invalid-feedback d-block">
+                    Maximum length is 255
+                  </div>
                 </b-form-group>
               </b-col>
 
@@ -42,20 +48,30 @@
                               clearable :normalizer="categoriesNormalizer" no-children-text
                               placeholder="Film resistors ? MCUS ?"
                   />
+                  <div v-if="!$v.matchers.$each[i].category.required" class="invalid-feedback d-block">
+                    Category is required
+                  </div>
+                  <div v-if="!$v.matchers.$each[i].category.integer" class="invalid-feedback d-block">
+                    Category is invalid
+                  </div>
                 </b-form-group>
               </b-col>
               <b-col cols="2">
-                <br><br>
-                <div @click.prevent="deletePm(i)">
-                  <i class="fa fa-minus-square" aria-hidden="true" /> remove
+                <div class="pt-2">
+                  <br>
+                  <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                   btn-variant-cancel="danger" btn-main-text="remove"
+                                   btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                   btn-cancel-text="No" @action-confirmed="deletePm(i)"
+                  />
                 </div>
               </b-col>
             </b-row>
             <hr>
           </div>
-          <div @click.prevent="addPm">
-            <i class="fa fa-plus-square" aria-hidden="true" /> add matcher
-          </div>
+          <b-button size="sm" variant="info" @click.prevent="addPm">
+            add matcher
+          </b-button>
         </b-col>
       </b-row>
     </b-form>
@@ -63,14 +79,21 @@
 </template>
 
 <script>
+import BtnDeleteInline from '@/components/btn_delete_inline'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, integer } from 'vuelidate/lib/validators'
 
 import moment from 'moment'
 
 export default {
+  components: {
+    BtnDeleteInline
+  },
   mixins: [
+    validationMixin
   ],
   props: {
   },
@@ -78,6 +101,15 @@ export default {
     matchers: []
   }),
   validations: {
+    matchers: {
+      $each: {
+        regexp: {
+          required,
+          maxLength: maxLength(4)
+        },
+        category: { required, integer: integer }
+      }
+    }
   },
   computed: {
     ...mapState({
@@ -123,6 +155,12 @@ export default {
       return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
     },
     updateMatchers () {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        logger.default.error('Form has errors')
+        return
+      }
+
       apiService.updateCategoryMatchers(this.matchers)
         .then(() => {
           this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success'), {
@@ -144,8 +182,8 @@ export default {
           logger.default.error('Cannot update matchers', error.message)
         })
     },
-    pmId (func, idx) {
-      return `input-pm-${func}-${idx}`
+    pmId (func, idx, suffix) {
+      return `input-pm-${func}-${idx}${suffix ? `-${suffix}` : ''}`
     },
     addPm () {
       this.matchers.push({

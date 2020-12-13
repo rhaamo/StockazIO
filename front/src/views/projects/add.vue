@@ -29,6 +29,9 @@
                   placeholder="My cool project"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
                 />
+                <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-form-group id="input-group-description" label="Description" label-for="description">
@@ -57,12 +60,19 @@
                   inputmode="url"
                   :state="$v.form.ibomUrl.$dirty ? !$v.form.ibomUrl.$error : null"
                 />
+                <div v-if="!$v.form.ibomUrl.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-form-group id="input-group-state" label="State:" label-for="state">
                 <multiselect v-model="form.state" :options="choicesStates" placeholder="Project state"
                              track-by="value" label="text" required
+                             :allow-empty="false"
                 />
+                <div v-if="!$v.form.state.value.integer || !$v.form.state.value.between || !$v.form.state.value.required || !$v.form.state.required" class="invalid-feedback d-block">
+                  Invalid state
+                </div>
               </b-form-group>
 
               <b-form-group>
@@ -98,7 +108,7 @@ import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 
 import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import { required, maxLength, integer, between } from 'vuelidate/lib/validators'
 
 export default {
   components: {
@@ -127,14 +137,20 @@ export default {
   validations: {
     form: {
       name: {
-        required
+        required,
+        maxLength: maxLength(255)
       },
       description: {
       },
       notes: {},
-      ibomUrl: {},
+      ibomUrl: { maxLength: maxLength(255) },
       state: {
-        required
+        required,
+        value: {
+          required,
+          integer,
+          between: between(0, 99)
+        }
       },
       public: {}
     }

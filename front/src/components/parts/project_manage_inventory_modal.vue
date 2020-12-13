@@ -30,6 +30,12 @@
                     inputmode="numeric"
                     :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
                   />
+                  <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+                    Qty has to be positive
+                  </div>
+                  <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+                    Qty is required
+                  </div>
                 </b-form-group>
               </b-col>
               <b-col>
@@ -40,6 +46,9 @@
                     v-model="form.notes"
                     :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
                   />
+                  <div v-if="!$v.form.notes.maxLength" class="invalid-feedback d-block">
+                    Maximum length is 255
+                  </div>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -167,7 +176,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minValue, integer } from 'vuelidate/lib/validators'
+import { required, minValue, integer, maxLength } from 'vuelidate/lib/validators'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 
@@ -213,7 +222,7 @@ export default {
         minValue: minValue(0)
       },
       sourced: {},
-      notes: {}
+      notes: { maxLength: maxLength(255) }
     }
   },
   computed: {
