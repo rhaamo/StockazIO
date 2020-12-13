@@ -98,14 +98,15 @@ export default {
   props: {
   },
   data: () => ({
-    matchers: []
+    matchers: [],
+    deleted: []
   }),
   validations: {
     matchers: {
       $each: {
         regexp: {
           required,
-          maxLength: maxLength(4)
+          maxLength: maxLength(255)
         },
         category: { required, integer: integer }
       }
@@ -161,7 +162,7 @@ export default {
         return
       }
 
-      apiService.updateCategoryMatchers(this.matchers)
+      apiService.updateCategoryMatchers({ update: this.matchers, delete: this.deleted })
         .then(() => {
           this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success'), {
             title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating matchers'),
@@ -192,6 +193,10 @@ export default {
       })
     },
     deletePm (idx) {
+      if (this.matchers[idx].id) {
+        // mark it as deletion
+        this.deleted.push(this.matchers[idx].id)
+      }
       this.$delete(this.matchers, idx)
     }
   }

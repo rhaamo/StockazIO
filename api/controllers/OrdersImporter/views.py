@@ -62,11 +62,12 @@ class CategoryMatcherBatchUpdater(views.APIView):
     anonymous_policy = False
 
     def patch(self, req):
+        # update or create
         # Missing elements will be created
         new_items = []
-        if len(req.data) <= 0:
+        if len(req.data.get("update", [])) <= 0:
             return Response({"detail": "Not found."}, 404)
-        for item in req.data:
+        for item in req.data.get("update", []):
             if "id" in item:
                 # Update
                 db_item = CategoryMatcher.objects.get(id=item["id"])
@@ -85,6 +86,10 @@ class CategoryMatcherBatchUpdater(views.APIView):
                 db_item = CategoryMatcher(regexp=item["regexp"], category=category)
                 db_item.save()
             new_items.append(db_item)
+        # deletes
+        for item in req.data.get("delete", []):
+            i = CategoryMatcher.objects.get(id=item)
+            i.delete()
         serializer = CategoryMatcherSerializer(new_items, many=True)
         return Response(serializer.data, status=200)
 
