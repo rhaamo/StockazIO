@@ -44,6 +44,12 @@
                   placeholder="PIC42ACHU"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
                 />
+                <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
+                  Name is required
+                </div>
+                <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-description" label="Description" label-for="description">
                 <b-form-input
@@ -52,6 +58,9 @@
                   placeholder="A cute little mcu"
                   :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
                 />
+                <div v-if="!$v.form.description.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-qty" label="Stock Qty*" label-for="qty">
                 <b-form-input
@@ -61,6 +70,12 @@
                   type="number"
                   :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
                 />
+                <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+                  Qty has to be positive
+                </div>
+                <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+                  Qty is required
+                </div>
               </b-form-group>
               <b-form-group id="input-group-qty-min" label="Stock Qty min*" label-for="qty-min">
                 <b-form-input
@@ -70,6 +85,12 @@
                   type="number"
                   :state="$v.form.qty_min.$dirty ? !$v.form.qty_min.$error : null"
                 />
+                <div v-if="!$v.form.qty_min.minValue" class="invalid-feedback d-block">
+                  Qty has to be positive
+                </div>
+                <div v-if="!$v.form.qty_min.required" class="invalid-feedback d-block">
+                  Qty is required
+                </div>
               </b-form-group>
               <b-form-group id="input-group-sheet-status" label="Sheet status" label-for="sheet-status">
                 <b-form-input
@@ -77,6 +98,9 @@
                   v-model="form.sheet_status"
                   :state="$v.form.sheet_status.$dirty ? !$v.form.sheet_status.$error : null"
                 />
+                <div v-if="!$v.form.sheet_status.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-condition" label="Part condition" label-for="condition">
                 <b-form-input
@@ -85,6 +109,9 @@
                   placeholder="Condition of the part"
                   :state="$v.form.condition.$dirty ? !$v.form.condition.$error : null"
                 />
+                <div v-if="!$v.form.condition.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-production-remarks" label="Production remarks" label-for="production-remarks">
                 <b-form-input
@@ -92,6 +119,9 @@
                   v-model="form.production_remarks"
                   :state="$v.form.production_remarks.$dirty ? !$v.form.production_remarks.$error : null"
                 />
+                <div v-if="!$v.form.production_remarks.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
               <b-form-group id="input-group-internal-pn" label="Internal part number" label-for="internal-pn">
                 <b-form-input
@@ -99,6 +129,9 @@
                   v-model="form.internal_pn"
                   :state="$v.form.internal_pn.$dirty ? !$v.form.internal_pn.$error : null"
                 />
+                <div v-if="!$v.form.internal_pn.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
               </b-form-group>
 
               <b-form-group>
@@ -182,6 +215,12 @@
                             v-model="form.part_parameters_value[i].name"
                             required
                           />
+                          <div v-if="!$v.form.part_parameters_value.$each[i].name.required" class="invalid-feedback d-block">
+                            Name is required
+                          </div>
+                          <div v-if="!$v.form.part_parameters_value.$each[i].name.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
                         </b-form-group>
                       </b-col>
                       <b-col>
@@ -190,6 +229,9 @@
                             :id="ppvId('description', i)"
                             v-model="form.part_parameters_value[i].description"
                           />
+                          <div v-if="!$v.form.part_parameters_value.$each[i].description.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
                         </b-form-group>
                       </b-col>
                     </b-row>
@@ -201,6 +243,12 @@
                             v-model="form.part_parameters_value[i].value"
                             required
                           />
+                          <div v-if="!$v.form.part_parameters_value.$each[i].value.required" class="invalid-feedback d-block">
+                            Value is required
+                          </div>
+                          <div v-if="!$v.form.part_parameters_value.$each[i].value.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
                         </b-form-group>
                       </b-col>
                       <b-col>
@@ -236,6 +284,12 @@
                             required
                             @blur="partManufacturersManufacturerChanged(i)"
                           />
+                          <div v-if="!$v.form.manufacturers_sku.$each[i].sku.required" class="invalid-feedback d-block">
+                            SKU is required
+                          </div>
+                          <div v-if="!$v.form.manufacturers_sku.$each[i].sku.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
                         </b-form-group>
                       </b-col>
 
@@ -279,6 +333,12 @@
                             required
                             @blur="partDistributorsDistributorChanged(i)"
                           />
+                          <div v-if="!$v.form.distributors_sku.$each[i].sku.required" class="invalid-feedback d-block">
+                            SKU is required
+                          </div>
+                          <div v-if="!$v.form.distributors_sku.$each[i].sku.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
                         </b-form-group>
                       </b-col>
 
@@ -287,6 +347,9 @@
                           <multiselect v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
                                        label="text" track-by="value" @input="partDistributorsDistributorChanged(i)"
                           />
+                          <div v-if="!$v.form.distributors_sku.$each[i].distributor.required" class="invalid-feedback d-block">
+                            Distributor is required
+                          </div>
                         </b-form-group>
                       </b-col>
                     </b-row>
@@ -323,7 +386,7 @@ import apiService from '../../services/api/api.service'
 import QRCode from 'qrcode'
 import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
-import { required, minValue } from 'vuelidate/lib/validators'
+import { required, minValue, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 import BtnDeleteInline from '@/components/btn_delete_inline'
 
@@ -391,9 +454,11 @@ export default {
   validations: {
     form: {
       name: {
-        required
+        required,
+        maxLength: maxLength(255)
       },
       description: {
+        maxLength: maxLength(255)
       },
       qty: {
         required,
@@ -404,18 +469,22 @@ export default {
         minValue: minValue(0)
       },
       sheet_status: {
+        maxLength: maxLength(255)
       },
       needs_review: {
       },
       condition: {
+        maxLength: maxLength(255)
       },
       can_be_sold: {
       },
       private: {
       },
       production_remarks: {
+        maxLength: maxLength(255)
       },
       internal_pn: {
+        maxLength: maxLength(255)
       },
       part_unit: {
       },
@@ -424,6 +493,25 @@ export default {
       storage_location: {
       },
       footprint: {
+      },
+      part_parameters_value: {
+        $each: {
+          name: { required, maxLength: maxLength(255) },
+          description: { maxLength: maxLength(255) },
+          value: { required, maxLength: maxLength(255) },
+          unit: {}
+        }
+      },
+      manufacturers_sku: {
+        $each: {
+          sku: { required, maxLength: maxLength(255) }
+        }
+      },
+      distributors_sku: {
+        $each: {
+          sku: { required, maxLength: maxLength(255) },
+          distributor: { required }
+        }
       }
     }
   },
@@ -574,6 +662,14 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('Form has errors')
+        this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Error/Message', 'Form has errors, please check all fields.'), {
+          title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
+          autoHideDelay: 5000,
+          appendToast: true,
+          variant: 'danger',
+          toaster: 'b-toaster-top-center'
+        })
+        return
       }
       let datas = {
         name: this.form.name,
