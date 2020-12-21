@@ -39,7 +39,7 @@ sqlparse==0.4.1
 toml==0.10.2
 traitlets==5.0.5
 typed-ast==1.4.1
-uvicorn==0.12.3
+uvicorn==0.13.2
 gunicorn==20.0.4
 uvloop==0.14.0
 wcwidth==0.2.5
