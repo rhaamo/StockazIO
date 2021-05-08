@@ -37,7 +37,7 @@ gunicorn==20.0.4
 uvloop==0.14.0
 wcwidth==0.2.5
 websockets==8.1
-django-oauth-toolkit==1.3.3
+django-oauth-toolkit==1.5.0
 django-cors-middleware==1.5.0
 django-environ==0.4.5
 djangorestframework==3.12.4
