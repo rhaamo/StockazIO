@@ -56,20 +56,20 @@
 
             <b-nav-item-dropdown id="manageDropdown">
               <template #button-content>
-                <i class="fa fa-tasks fa-fw" /> Manage
+                <i class="fa fa-tasks fa-fw" /> Tools
               </template>
               <b-dropdown-item :to="{name: 'orders-importer'}">
                 <i class="fa fa-shopping-cart fa-fw" /> Orders importer
               </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'projects-list'}">
-                <i class="fa fa-list-ul fa-fw" /> Projects
-              </b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item :to="{name: 'parts-new'}">
+            <b-nav-item :to="{name: 'projects-list'}">
+              <i class="fa fa-list-ul fa-fw" /> Projects
+            </b-nav-item>
+            <b-nav-item :to="{name: 'parts-new'}" class="ml-4" title="Full form">
               <i class="fa fa-plus fa-fw" /> Add part
             </b-nav-item>
-            <b-nav-item :to="{name: 'parts-quick-new'}">
+            <b-nav-item :to="{name: 'parts-quick-new'}" title="Simplified form">
               <i class="fa fa-fast-forward fa-fw" /> Quick add part
             </b-nav-item>
           </ul>
