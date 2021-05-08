@@ -27,7 +27,6 @@ Pillow==8.0.1
 prompt-toolkit==3.0.8
 psycopg2==2.8.6
 ptyprocess==0.6.0
-pycodestyle==2.6.0
 python-magic==0.4.18
 pytz==2020.4
 PyYAML==5.3.1
