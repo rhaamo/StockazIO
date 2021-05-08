@@ -10,6 +10,7 @@ import ViewStorageTree from '../views/view/StorageTree'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
 import ParametersPresetsList from '../views/ParametersPresets/list'
+import ParametersPresetsAdd from '../views/ParametersPresets/add'
 import Distributors from '../views/Distributors'
 import Manufacturers from '../views/Manufacturers'
 import OrdersImporter from '../views/view/OrdersImporter'
@@ -99,6 +100,13 @@ export default (store) => {
       path: '/part/parameters/presets',
       name: 'parameters-presets-list',
       component: ParametersPresetsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/part/parameters/presets/new',
+      name: 'parameters-presets-add',
+      component: ParametersPresetsAdd,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },

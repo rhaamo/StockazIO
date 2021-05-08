@@ -1,11 +1,11 @@
 <template>
-  <div class="add_part">
+  <div class="add_part_parameters_preset">
     <div class="row">
       <div class="col-12">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <router-link :to="{name: 'projects-list'}">
-              Projects
+            <router-link :to="{ name: 'parameters-presets-list' }">
+              Part Parameters Presets
             </router-link>
           </li>
           <li class="breadcrumb-item active">
@@ -17,7 +17,7 @@
 
     <div class="row mb-4">
       <div class="col-md-6 mx-auto">
-        <b-form @submit.prevent="addProject">
+        <b-form @submit.prevent="addPreset">
           <b-row>
             <b-col>
               <b-form-group id="input-group-name" label="Name*" label-for="name">
@@ -26,7 +26,7 @@
                   ref="inputname"
                   v-model="form.name"
                   required
-                  placeholder="My cool project"
+                  placeholder="Capacitor XXX"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
                 />
                 <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
@@ -34,75 +34,63 @@
                 </div>
               </b-form-group>
 
-              <b-form-group id="input-group-description" label="Description" label-for="description">
-                <b-form-input
-                  id="description"
-                  v-model="form.description"
-                  placeholder="Project description"
-                  :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
-                />
-              </b-form-group>
+              <hr>
 
-              <b-form-group id="input-group-notes" label="Notes" label-for="notes">
-                <b-form-input
-                  id="notes"
-                  v-model="form.notes"
-                  placeholder="Project notes"
-                  :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
-                />
-              </b-form-group>
+              <div v-for="(_, i) in form.part_parameters_presets" :key="i">
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="itemId('name', i)" label="Name*" :label-for="itemId('name', i)">
+                          <b-form-input
+                            :id="itemId('name', i)"
+                            v-model="form.part_parameters_presets[i].name"
+                            required
+                          />
+                          <div v-if="!$v.form.part_parameters_presets.$each[i].name.required" class="invalid-feedback d-block">
+                            Name is required
+                          </div>
+                          <div v-if="!$v.form.part_parameters_presets.$each[i].name.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
+                        </b-form-group>
+                      </b-col>
+                      <b-col>
+                        <b-form-group :id="itemId('description', i)" label="Description" :label-for="itemId('description', i)">
+                          <b-form-input
+                            :id="itemId('description', i)"
+                            v-model="form.part_parameters_presets[i].description"
+                          />
+                          <div v-if="!$v.form.part_parameters_presets.$each[i].description.maxLength" class="invalid-feedback d-block">
+                            Maximum length is 255
+                          </div>
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <b-row>
+                      <b-col>
+                        <b-form-group :id="itemId('unit', i)" label="Unit:" :label-for="itemId('unit', i)">
+                          <multiselect v-model="form.part_parameters_presets[i].unit"
+                                       :options="choicesPartParametersUnit"
+                                       label="text" track-by="value"
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                     btn-variant-cancel="danger" btn-main-text="remove item"
+                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                     btn-cancel-text="No" @action-confirmed="deleteItem(i)"
+                    />
+                    <hr>
+                  </div>
 
-              <b-form-group id="input-group-ibomUrl" label="BOM Url" label-for="ibomUrl">
-                <b-form-input
-                  id="ibomUrl"
-                  v-model="form.ibomUrl"
-                  type="url"
-                  inputmode="url"
-                  :state="$v.form.ibomUrl.$dirty ? !$v.form.ibomUrl.$error : null"
-                />
-                <div v-if="!$v.form.ibomUrl.maxLength" class="invalid-feedback d-block">
-                  Maximum length is 255
-                </div>
-              </b-form-group>
-
-              <b-form-group id="input-group-state" label="State:" label-for="state">
-                <multiselect v-model="form.state" :options="choicesStates" placeholder="Project state"
-                             track-by="value" label="text" required
-                             :allow-empty="false"
-                />
-                <div v-if="!$v.form.state.value.integer || !$v.form.state.value.between || !$v.form.state.value.required || !$v.form.state.required" class="invalid-feedback d-block">
-                  Invalid state
-                </div>
-              </b-form-group>
-
-              <b-form-group id="input-group-state-notes" label="State notes" label-for="state_notes">
-                <b-form-input
-                  id="state_notes"
-                  v-model="form.state_notes"
-                  placeholder="blocked by X, waiting for Y"
-                  :state="$v.form.state_notes.$dirty ? !$v.form.state_notes.$error : null"
-                />
-              </b-form-group>
-
-              <b-form-group>
-                <b-form-checkbox
-                  id="public"
-                  v-model="form.public"
-                  name="public"
-                  :value="true"
-                  :unchecked-value="false"
-                  inline
-                  :state="$v.form.public.$dirty ? !$v.form.public.$error : null"
-                >
-                  Public
-                </b-form-checkbox>
-              </b-form-group>
-
-              You will be able to add attachments and parts after saving the project.
-              <br>
+                  <div>
+                    <b-button size="sm" variant="info" @click.prevent="addItem">
+                      add item
+                    </b-button>
+                  </div>
 
               <b-button type="submit" variant="primary" class="my-3">
-                Add project
+                Add preset
               </b-button>
             </b-col>
           </b-row>
@@ -115,12 +103,15 @@
 <script>
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
+import BtnDeleteInline from '@/components/btn_delete_inline'
 
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer, between } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
+import { mapState } from 'vuex'
 
 export default {
   components: {
+    BtnDeleteInline
   },
   mixins: [
     validationMixin
@@ -128,21 +119,8 @@ export default {
   data: () => ({
     form: {
       name: '',
-      description: '',
-      notes: '',
-      ibomUrl: '',
-      state: { value: 99, text: 'Unknown' },
-      state_notes: '',
-      public: false
-    },
-    choicesStates: [
-      { value: 1, text: 'Planned' },
-      { value: 2, text: 'Ongoing' },
-      { value: 3, text: 'Finished' },
-      { value: 4, text: 'On-Hold' },
-      { value: 5, text: 'Abandonned' },
-      { value: 99, text: 'Unknown' }
-    ]
+      part_parameters_presets: []
+    }
   }),
   validations: {
     form: {
@@ -150,29 +128,24 @@ export default {
         required,
         maxLength: maxLength(255)
       },
-      description: {
-      },
-      notes: {},
-      ibomUrl: { maxLength: maxLength(255) },
-      state: {
-        required,
-        value: {
-          required,
-          integer,
-          between: between(0, 99)
+      part_parameters_presets: {
+        $each: {
+          name: { required, maxLength: maxLength(255) },
+          description: { maxLength: maxLength(255) },
+          unit: {}
         }
-      },
-      state_notes: {
-        maxLength: maxLength(255)
-      },
-      public: {}
+      }
     }
   },
   computed: {
-
+    ...mapState({
+      choicesPartParametersUnit: (state) => {
+        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.prefix}${x.symbol})` } })
+      }
+    })
   },
   methods: {
-    addProject: function () {
+    addPreset: function () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('Form has errors')
@@ -180,34 +153,46 @@ export default {
       }
       let datas = {
         name: this.form.name,
-        description: this.form.description,
-        notes: this.form.notes,
-        ibom_url: this.form.ibomUrl,
-        state: this.form.state.value,
-        public: this.form.public,
-        state_notes: this.form.state_notes
+        part_parameters_presets: this.form.part_parameters_presets.map(x => {
+          if (x.name !== '') {
+            return { name: x.name, description: x.description, unit: x.unit ? x.unit.value : null }
+          }
+        })
       }
-      apiService.createProject(datas)
+      apiService.createPartParameterPresets(datas)
         .then((resp) => {
-          this.$bvToast.toast(this.$pgettext('Project/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Project/Add/Toast/Success/Title', 'Adding project'),
+          this.$bvToast.toast(this.$pgettext('Preset/Add/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Preset/Add/Toast/Success/Title', 'Adding preset'),
             autoHideDelay: 5000,
             appendToast: true,
             variant: 'primary',
             toaster: 'b-toaster-top-center'
           })
-          this.$router.push({ name: 'projects-details', params: { projectId: resp.data.id } })
+          this.$router.push({ name: 'parameters-presets-details', params: { presetId: resp.data.id } })
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Project/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Project/Add/Toast/Error/Title', 'Adding project'),
+          this.$bvToast.toast(this.$pgettext('Preset/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Preset/Add/Toast/Error/Title', 'Adding preset'),
             autoHideDelay: 5000,
             appendToast: true,
             variant: 'danger',
             toaster: 'b-toaster-top-center'
           })
-          logger.default.error('Cannot save project', error.message)
+          logger.default.error('Cannot save preset', error.message)
         })
+    },
+    itemId (func, idx) {
+      return `input-item-${func}-${idx}`
+    },
+    addItem () {
+      this.form.part_parameters_presets.push({
+        name: '',
+        description: '',
+        unit: null
+      })
+    },
+    deleteItem (idx) {
+      this.$delete(this.form.part_parameters_presets, idx)
     }
   }
 }

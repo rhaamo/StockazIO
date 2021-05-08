@@ -12,7 +12,7 @@
       </div>
 
       <div class="col-xl-1 col-2">
-        <b-btn :to="{name: 'parameters-presets-new'}">
+        <b-btn :to="{name: 'parameters-presets-add'}">
           New
         </b-btn>
       </div>
