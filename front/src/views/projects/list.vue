@@ -51,6 +51,7 @@
           </template>
           <template #cell(state)="data">
             <span>{{ projectStateText(data.item.state) }}</span>
+            <div v-if="data.item.state_notes">{{ data.item.state_notes }}</div>
           </template>
           <template #cell(public)="data">
             <i v-if="data.item.public" class="fa fa-unlock" aria-hidden="true" />
@@ -98,10 +99,10 @@ export default {
   data: () => ({
     projects: [],
     fields: [
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'description', label: 'Description' },
+      { key: 'name', label: 'Name', sortable: true, tdClass: 'name' },
+      { key: 'description', label: 'Description', tdClass: 'description' },
       { key: 'state', label: 'State', sortable: true, tdClass: 'state' },
-      { key: 'public', label: 'Public', sortable: true, tdClass: 'public' },
+      { key: 'public', label: 'Visibility', sortable: true, tdClass: 'visibility' },
       { key: 'actions', label: 'Actions', tdClass: 'actions' }
     ],
     sortBy: 'name',
@@ -215,15 +216,22 @@ export default {
 </script>
 
 <style>
-table#tableProjectsList td.state {
-  width: 8em;
+table#tableProjectsList td.name {
+  width: 25em;
 }
 
-table#tableProjectsList td.public {
-  width: 5em;
+table#tableProjectsList td.description {
+}
+
+table#tableProjectsList td.state {
+  width: 15em;
+}
+
+table#tableProjectsList td.visibility {
+  width: 7em;
 }
 
 table#tableProjectsList td.actions {
-  width: 8em;
+  width: 7em;
 }
 </style>

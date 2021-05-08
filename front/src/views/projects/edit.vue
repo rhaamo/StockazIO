@@ -65,6 +65,15 @@
                 />
               </b-form-group>
 
+              <b-form-group id="input-group-state-notes" label="State notes" label-for="state_notes">
+                <b-form-input
+                  id="state_notes"
+                  v-model="form.state_notes"
+                  placeholder="State notes"
+                  :state="$v.form.state_notes.$dirty ? !$v.form.state_notes.$error : null"
+                />
+              </b-form-group>
+
               <b-form-group>
                 <b-form-checkbox
                   id="public"
@@ -95,7 +104,7 @@ import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 
 import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import { required, maxLength } from 'vuelidate/lib/validators'
 
 export default {
   components: {
@@ -111,13 +120,14 @@ export default {
       notes: '',
       ibomUrl: '',
       state: { value: 99, text: 'Unknown' },
+      state_notes: '',
       public: false
     },
     choicesStates: [
       { value: 1, text: 'Planned' },
       { value: 2, text: 'Ongoing' },
       { value: 3, text: 'Finished' },
-      { value: 4, text: 'Waiting' },
+      { value: 4, text: 'On-Hold' },
       { value: 5, text: 'Abandonned' },
       { value: 99, text: 'Unknown' }
     ]
@@ -125,14 +135,21 @@ export default {
   validations: {
     form: {
       name: {
-        required
+        required,
+        maxLength: maxLength(255)
       },
       description: {
       },
       notes: {},
-      ibomUrl: {},
+      ibomUrl: { maxLength: maxLength(255) },
       state: {
-        required
+        required,
+        value: {
+          required
+        }
+      },
+      state_notes: {
+        maxLength: maxLength(255)
       },
       public: {}
     }
@@ -157,6 +174,7 @@ export default {
           let state = this.choicesStates.filter(function (e) { return e.value === res.data.state })
           this.form.state = state
           this.form.public = this.project.public
+          this.form.state_notes = this.project.state_notes
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('Project/Details/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -181,7 +199,8 @@ export default {
         notes: this.form.notes,
         ibom_url: this.form.ibomUrl,
         state: this.form.state.value,
-        public: this.form.public
+        public: this.form.public,
+        state_notes: this.form.state_notes
       }
       apiService.updateProject(this.project.id, datas)
         .then(() => {

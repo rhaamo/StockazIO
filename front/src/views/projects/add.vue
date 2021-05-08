@@ -75,6 +75,15 @@
                 </div>
               </b-form-group>
 
+              <b-form-group id="input-group-state-notes" label="State notes" label-for="state_notes">
+                <b-form-input
+                  id="state_notes"
+                  v-model="form.state_notes"
+                  placeholder="blocked by X, waiting for Y"
+                  :state="$v.form.state_notes.$dirty ? !$v.form.state_notes.$error : null"
+                />
+              </b-form-group>
+
               <b-form-group>
                 <b-form-checkbox
                   id="public"
@@ -123,13 +132,14 @@ export default {
       notes: '',
       ibomUrl: '',
       state: { value: 99, text: 'Unknown' },
+      state_notes: '',
       public: false
     },
     choicesStates: [
       { value: 1, text: 'Planned' },
       { value: 2, text: 'Ongoing' },
       { value: 3, text: 'Finished' },
-      { value: 4, text: 'Waiting' },
+      { value: 4, text: 'On-Hold' },
       { value: 5, text: 'Abandonned' },
       { value: 99, text: 'Unknown' }
     ]
@@ -152,6 +162,9 @@ export default {
           between: between(0, 99)
         }
       },
+      state_notes: {
+        maxLength: maxLength(255)
+      },
       public: {}
     }
   },
@@ -171,7 +184,8 @@ export default {
         notes: this.form.notes,
         ibom_url: this.form.ibomUrl,
         state: this.form.state.value,
-        public: this.form.public
+        public: this.form.public,
+        state_notes: this.form.state_notes
       }
       apiService.createProject(datas)
         .then((resp) => {

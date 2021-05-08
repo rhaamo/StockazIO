@@ -11,6 +11,7 @@ class Project(models.Model):
     notes = models.TextField("notes", blank=True)
     ibom_url = models.URLField("ibom url", blank=True)
     state = models.IntegerField("state", default=99, choices=STATES)
+    state_notes = models.TextField("state notes", max_length=255, blank=True)
     public = models.BooleanField("public", default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
