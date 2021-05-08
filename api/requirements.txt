@@ -23,7 +23,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 pilkit==2.0
 Pillow==8.0.1
-prompt-toolkit==3.0.8
+prompt-toolkit==3.0.18
 psycopg2==2.8.6
 ptyprocess==0.6.0
 python-magic==0.4.18
