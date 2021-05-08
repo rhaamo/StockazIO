@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
 
 from controllers.categories.models import Category
-from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment
+from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
@@ -17,6 +17,7 @@ from controllers.part.serializers import (
     PartsUnitSerializer,
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
+    PartParametersPresetSerializer
 )
 
 
@@ -265,4 +266,21 @@ class PartsParametersUnitViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = ParametersUnit.objects.all()
+        return queryset
+
+
+class PartsParametersPresetViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
+    serializer_class = PartParametersPresetSerializer
+
+    def get_queryset(self):
+        queryset = PartParameterPreset.objects.all()
         return queryset

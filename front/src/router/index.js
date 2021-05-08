@@ -9,6 +9,7 @@ import ViewInfos from '../views/view/Infos'
 import ViewStorageTree from '../views/view/StorageTree'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
+import ParametersPresetsList from '../views/ParametersPresets/list'
 import Distributors from '../views/Distributors'
 import Manufacturers from '../views/Manufacturers'
 import OrdersImporter from '../views/view/OrdersImporter'
@@ -79,7 +80,7 @@ export default (store) => {
     },
     // PartUnits
     {
-      path: '/part_units',
+      path: '/part/units',
       name: 'part-units-list',
       component: PartUnitsList,
       props: true,
@@ -87,9 +88,17 @@ export default (store) => {
     },
     // Parameters Units
     {
-      path: '/partameters_units',
+      path: '/part/parameters/units',
       name: 'parameters-units-list',
       component: ParametersUnitsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    // Parameters Presets
+    {
+      path: '/part/parameters/presets',
+      name: 'parameters-presets-list',
+      component: ParametersPresetsList,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },

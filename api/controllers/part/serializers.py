@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ParametersUnit, PartUnit, Part, PartParameter, PartAttachment, PartStockHistory
+from .models import ParametersUnit, PartUnit, Part, PartParameter, PartAttachment, PartStockHistory, PartParameterPreset, PartParameterPresetItem
 from django.conf import settings
 
 from controllers.storage.serializers import StorageLocationSerializer
@@ -168,3 +168,19 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "updated_at",
             "part_stock_history",
         )
+
+
+class PartParametersPresetItemSerializer(serializers.ModelSerializer):
+    unit = ParametersUnitSerializer(many=False)
+
+    class Meta:
+        model = PartParameterPresetItem
+        fields = ("id", "name", "description")
+
+
+class PartParametersPresetSerializer(serializers.ModelSerializer):
+    part_parameters_preset = PartParametersPresetItemSerializer(many=True, read_only=False)
+    
+    class Meta:
+        model = PartParameterPreset
+        fields = ("id", "name")
