@@ -13,7 +13,8 @@ const preloads = {
     distributors: [],
     currentCategory: {
       id: null
-    }
+    },
+    partParametersPresets: []
   },
   mutations: {
     setCategories (state, value) {
@@ -39,6 +40,9 @@ const preloads = {
     },
     setCurrentCategory (state, value) {
       state.currentCategory = value
+    },
+    setPartParametersPresets (state, value) {
+      state.partParametersPresets = value
     },
     incrementCategoryPartsCount (state, nodeId) {
       function incrementNode (node, nodeId) {
@@ -89,6 +93,9 @@ const preloads = {
     },
     getCurrentCategory: state => () => {
       return state.currentCategory || { id: null }
+    },
+    getPartParametersPresets: state => () => {
+      return state.partParametersPresets || []
     }
   },
   actions: {
@@ -100,6 +107,7 @@ const preloads = {
       dispatch('preloadPartUnits')
       dispatch('preloadManufacturers')
       dispatch('preloadDistributors')
+      dispatch('preloadPartParametersPresets')
     },
     preloadSidebar ({ commit }) {
       // Preload sidebar
@@ -175,6 +183,17 @@ const preloads = {
         })
         .catch((error) => {
           logger.default.error('Cannot preload distributors', error.message)
+        })
+    },
+    preloadPartParametersPresets ({ commit }) {
+      // Preload part parameters presets
+      apiService.getPartParameterPresets()
+        .then((data) => {
+          commit('setPartParametersPresets', data.data)
+          logger.default.info('Part parameters presets preloaded')
+        })
+        .catch((error) => {
+          logger.default.error('Cannot preload part parameters presets', error.message)
         })
     }
   }
