@@ -126,7 +126,7 @@ export default {
     },
     deletePreset (preset) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the preset '${preset.name}' ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

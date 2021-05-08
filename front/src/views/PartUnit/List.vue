@@ -270,7 +270,7 @@ export default {
     },
     deletePartUnit (partUnit) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${partUnit.name}' ? Any associated part will loose that information.`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

@@ -364,7 +364,7 @@ export default {
     },
     deleteDistributor (distributor) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the distributor '${distributor.name}' ? All associated parts SKU will be lost.`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

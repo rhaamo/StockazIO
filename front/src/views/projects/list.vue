@@ -169,7 +169,7 @@ export default {
     },
     deleteProject (project) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the project '${project.name}' ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',
