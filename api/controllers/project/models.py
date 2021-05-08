@@ -5,7 +5,7 @@ from controllers.part.validators import validate_file_type
 
 
 class Project(models.Model):
-    STATES = ((1, "Planned"), (2, "Ongoing"), (3, "Finished"), (4, "Waiting"), (5, "Abandonned"), (99, "Unknown"))
+    STATES = ((1, "Planned"), (2, "Ongoing"), (3, "Finished"), (4, "On-hold"), (5, "Abandonned"), (99, "Unknown"))
     name = models.CharField("name", max_length=255, unique=False, blank=False)
     description = models.TextField("description", blank=True)
     notes = models.TextField("notes", blank=True)
