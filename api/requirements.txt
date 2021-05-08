@@ -16,7 +16,6 @@ httptools==0.1.1
 ipdb==0.13.4
 ipython==7.19.0
 ipython-genutils==0.2.0
-jedi==0.18.0
 mccabe==0.6.1
 parso==0.7.0
 pathspec==0.8.1
