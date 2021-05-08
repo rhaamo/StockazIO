@@ -40,3 +40,7 @@ class AccessToken(oauth2_models.AbstractAccessToken):
 
 class RefreshToken(oauth2_models.AbstractRefreshToken):
     pass
+
+
+class IDToken(oauth2_models.AbstractIDToken):
+    pass
