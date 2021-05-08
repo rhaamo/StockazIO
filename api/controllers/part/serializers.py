@@ -182,3 +182,18 @@ class PartParametersPresetSerializer(WritableNestedModelSerializer):
     class Meta:
         model = PartParameterPreset
         fields = ("id", "name", "part_parameters_presets")
+
+
+class PartParametersPresetItemRetrieveSerializer(serializers.ModelSerializer):
+    unit = ParametersUnitSerializer(many=False, read_only=True)
+    class Meta:
+        model = PartParameterPresetItem
+        fields = ("id", "name", "description", "unit")
+
+
+class PartParametersPresetRetrieveSerializer(WritableNestedModelSerializer):
+    part_parameters_presets = PartParametersPresetItemRetrieveSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = PartParameterPreset
+        fields = ("id", "name", "part_parameters_presets")

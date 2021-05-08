@@ -18,7 +18,8 @@ from controllers.part.serializers import (
     PartsUnitSerializer,
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
-    PartParametersPresetSerializer
+    PartParametersPresetSerializer,
+    PartParametersPresetRetrieveSerializer
 )
 
 
@@ -285,10 +286,17 @@ class PartsParametersPresetViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    serializer_class = PartParametersPresetSerializer
     pagination_class = PartParametersPresetsViewSetPagination
     ordering_fields = ["name"]
     ordering = ["name"]
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PartParametersPresetSerializer
+        elif self.action == "retrieve":
+            return PartParametersPresetRetrieveSerializer
+        else:
+            return PartParametersPresetSerializer
 
     def get_queryset(self):
         queryset = PartParameterPreset.objects.all()
