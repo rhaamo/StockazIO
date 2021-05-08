@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
-from rest_framework import pagination
 
 from controllers.categories.models import Category
 from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
@@ -19,7 +18,7 @@ from controllers.part.serializers import (
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
     PartParametersPresetSerializer,
-    PartParametersPresetRetrieveSerializer
+    PartParametersPresetRetrieveSerializer,
 )
 
 
