@@ -12,6 +12,7 @@ import ParametersUnitsList from '../views/ParametersUnits'
 import ParametersPresetsList from '../views/ParametersPresets/list'
 import ParametersPresetsAdd from '../views/ParametersPresets/add'
 import ParametersPresetsDetails from '../views/ParametersPresets/details'
+import ParametersPresetsEdit from '../views/ParametersPresets/edit'
 import Distributors from '../views/Distributors'
 import Manufacturers from '../views/Manufacturers'
 import OrdersImporter from '../views/view/OrdersImporter'
@@ -108,6 +109,13 @@ export default (store) => {
       path: '/part/parameters/presets/:presetId',
       name: 'parameters-presets-details',
       component: ParametersPresetsDetails,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/part/parameters/presets/:presetId/edit',
+      name: 'parameters-presets-edit',
+      component: ParametersPresetsEdit,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },
