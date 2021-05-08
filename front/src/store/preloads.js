@@ -189,7 +189,7 @@ const preloads = {
       // Preload part parameters presets
       apiService.getPartParameterPresets()
         .then((data) => {
-          commit('setPartParametersPresets', data.data)
+          commit('setPartParametersPresets', data.data.results)
           logger.default.info('Part parameters presets preloaded')
         })
         .catch((error) => {
