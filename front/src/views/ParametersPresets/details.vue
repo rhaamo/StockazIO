@@ -41,7 +41,9 @@
           </div>
           <div class="col-md-6">
             <b>State:</b> <span class="unit">{{ projectStateText(project.state) }}</span>
-            <div v-if="project.state_notes">{{ project.state_notes }}</div>
+            <div v-if="project.state_notes">
+              {{ project.state_notes }}
+            </div>
           </div>
         </div>
 

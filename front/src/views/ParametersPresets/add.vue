@@ -37,57 +37,57 @@
               <hr>
 
               <div v-for="(_, i) in form.part_parameters_presets" :key="i">
-                    <b-row>
-                      <b-col>
-                        <b-form-group :id="itemId('name', i)" label="Name*" :label-for="itemId('name', i)">
-                          <b-form-input
-                            :id="itemId('name', i)"
-                            v-model="form.part_parameters_presets[i].name"
-                            required
-                          />
-                          <div v-if="!$v.form.part_parameters_presets.$each[i].name.required" class="invalid-feedback d-block">
-                            Name is required
-                          </div>
-                          <div v-if="!$v.form.part_parameters_presets.$each[i].name.maxLength" class="invalid-feedback d-block">
-                            Maximum length is 255
-                          </div>
-                        </b-form-group>
-                      </b-col>
-                      <b-col>
-                        <b-form-group :id="itemId('description', i)" label="Description" :label-for="itemId('description', i)">
-                          <b-form-input
-                            :id="itemId('description', i)"
-                            v-model="form.part_parameters_presets[i].description"
-                          />
-                          <div v-if="!$v.form.part_parameters_presets.$each[i].description.maxLength" class="invalid-feedback d-block">
-                            Maximum length is 255
-                          </div>
-                        </b-form-group>
-                      </b-col>
-                    </b-row>
-                    <b-row>
-                      <b-col>
-                        <b-form-group :id="itemId('unit', i)" label="Unit:" :label-for="itemId('unit', i)">
-                          <multiselect v-model="form.part_parameters_presets[i].unit"
-                                       :options="choicesPartParametersUnit"
-                                       label="text" track-by="value"
-                          />
-                        </b-form-group>
-                      </b-col>
-                    </b-row>
-                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                     btn-variant-cancel="danger" btn-main-text="remove item"
-                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                     btn-cancel-text="No" @action-confirmed="deleteItem(i)"
-                    />
-                    <hr>
-                  </div>
+                <b-row>
+                  <b-col>
+                    <b-form-group :id="itemId('name', i)" label="Name*" :label-for="itemId('name', i)">
+                      <b-form-input
+                        :id="itemId('name', i)"
+                        v-model="form.part_parameters_presets[i].name"
+                        required
+                      />
+                      <div v-if="!$v.form.part_parameters_presets.$each[i].name.required" class="invalid-feedback d-block">
+                        Name is required
+                      </div>
+                      <div v-if="!$v.form.part_parameters_presets.$each[i].name.maxLength" class="invalid-feedback d-block">
+                        Maximum length is 255
+                      </div>
+                    </b-form-group>
+                  </b-col>
+                  <b-col>
+                    <b-form-group :id="itemId('description', i)" label="Description" :label-for="itemId('description', i)">
+                      <b-form-input
+                        :id="itemId('description', i)"
+                        v-model="form.part_parameters_presets[i].description"
+                      />
+                      <div v-if="!$v.form.part_parameters_presets.$each[i].description.maxLength" class="invalid-feedback d-block">
+                        Maximum length is 255
+                      </div>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-form-group :id="itemId('unit', i)" label="Unit:" :label-for="itemId('unit', i)">
+                      <multiselect v-model="form.part_parameters_presets[i].unit"
+                                   :options="choicesPartParametersUnit"
+                                   label="text" track-by="value"
+                      />
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+                <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                                 btn-variant-cancel="danger" btn-main-text="remove item"
+                                 btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                 btn-cancel-text="No" @action-confirmed="deleteItem(i)"
+                />
+                <hr>
+              </div>
 
-                  <div>
-                    <b-button size="sm" variant="info" @click.prevent="addItem">
-                      add item
-                    </b-button>
-                  </div>
+              <div>
+                <b-button size="sm" variant="info" @click.prevent="addItem">
+                  add item
+                </b-button>
+              </div>
 
               <b-button type="submit" variant="primary" class="my-3">
                 Add preset

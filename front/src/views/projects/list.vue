@@ -51,7 +51,9 @@
           </template>
           <template #cell(state)="data">
             <span>{{ projectStateText(data.item.state) }}</span>
-            <div v-if="data.item.state_notes">{{ data.item.state_notes }}</div>
+            <div v-if="data.item.state_notes">
+              {{ data.item.state_notes }}
+            </div>
           </template>
           <template #cell(public)="data">
             <i v-if="data.item.public" class="fa fa-unlock" aria-hidden="true" />
