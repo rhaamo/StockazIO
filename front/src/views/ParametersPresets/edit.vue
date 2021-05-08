@@ -8,7 +8,7 @@
               Part Parameters Presets
             </router-link>
           </li>
-          <li class="breadcrumb-item active" v-if="preset">
+          <li v-if="preset" class="breadcrumb-item active">
             {{ preset.name }}
           </li>
         </ol>
@@ -157,7 +157,7 @@ export default {
         .then((res) => {
           this.preset = res.data
           this.form.name = this.preset.name
-          this.form.part_parameters_presets = this.preset.part_parameters_presets.map(x => { return { name: x.name, description: x.description, unit: { text: `${x.unit.name} (${x.unit.prefix}${x.unit.symbol})`,  value: x.unit ? x.unit.id : null } } })
+          this.form.part_parameters_presets = this.preset.part_parameters_presets.map(x => { return { name: x.name, description: x.description, unit: { text: `${x.unit.name} (${x.unit.prefix}${x.unit.symbol})`, value: x.unit ? x.unit.id : null } } })
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('Preset/Details/Toast/Error/Message', 'An error occured, please try again later'), {

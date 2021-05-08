@@ -292,7 +292,7 @@ class PartsParametersPresetViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == "list":
-            return PartParametersPresetSerializer
+            return PartParametersPresetRetrieveSerializer
         elif self.action == "retrieve":
             return PartParametersPresetRetrieveSerializer
         else:

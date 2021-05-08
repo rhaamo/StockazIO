@@ -271,6 +271,24 @@
                   <b-button size="sm" variant="info" @click.prevent="addPpv">
                     add item
                   </b-button>
+
+                  <template v-if="choicesPartParametersPresets">
+                    <b-row class="mt-4">
+                      <b-col cols="3">
+                        Select a preset to apply
+                      </b-col>
+                      <b-col cols="5">
+                        <b-form-select v-model="selectedPartParametersPreset" :options="choicesPartParametersPresets" size="sm" />
+                      </b-col>
+                      <b-col cols="3">
+                        <BtnDeleteInline size="sm" btn-variant-main="info" btn-variant-ok="success"
+                                         btn-variant-cancel="info" btn-main-text="apply"
+                                         btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                                         btn-cancel-text="No" @action-confirmed="applyPartParametersPreset"
+                        />
+                      </b-col>
+                    </b-row>
+                  </template>
                 </b-tab>
 
                 <b-tab title="Manufacturers">
@@ -400,6 +418,7 @@ export default {
     validationMixin
   ],
   data: () => ({
+    selectedPartParametersPreset: {},
     form: {
       name: '',
       description: '',
@@ -505,6 +524,9 @@ export default {
       },
       choicesDistributors: (state) => {
         return state.preloads.distributors.map(x => { return { value: x.id, text: x.name, datasheet_url: x.datasheet_url } })
+      },
+      choicesPartParametersPresets: (state) => {
+        return state.preloads.partParametersPresets.map(x => { return { value: x, text: x.name } })
       }
     })
   },
@@ -696,6 +718,18 @@ export default {
         }
       } else {
         this.form.distributors_sku[index].datasheet_url = distributor.datasheet_url
+      }
+    },
+    applyPartParametersPreset () {
+      if (this.selectedPartParametersPreset) {
+        this.selectedPartParametersPreset.part_parameters_presets.forEach(item => {
+          this.form.part_parameters_value.push({
+            name: item.name,
+            description: item.description,
+            value: '',
+            unit: { value: item.unit.id, text: `${item.unit.name} (${item.unit.prefix}${item.unit.symbol})` }
+          })
+        })
       }
     }
   }

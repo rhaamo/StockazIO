@@ -29,7 +29,6 @@
           />
         </b-button>
       </div>
-
     </div>
 
     <div class="row">
@@ -46,12 +45,13 @@
                  @sort-changed="sortTableChanged"
         >
           <template #cell(unit)="data">
-            <template v-if="data.item.unit">{{ data.item.unit.name }} - {{ data.item.unit.prefix }}{{ data.item.unit.symbol }}</template>
+            <template v-if="data.item.unit">
+              {{ data.item.unit.name }} - {{ data.item.unit.prefix }}{{ data.item.unit.symbol }}
+            </template>
           </template>
         </b-table>
       </div>
     </div>
-
   </div>
 </template>
 
