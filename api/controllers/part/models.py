@@ -147,6 +147,29 @@ class PartParameter(models.Model):
         return self.name
 
 
+class PartParameterPreset(models.Model):
+    name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
+class PartParameterPresetItem(models.Model):
+    name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
+    description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
+    unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.SET_NULL)
+    part_parameter_preset = models.ForeignKey(
+        PartParameterPreset,
+        related_name="part_parameter_presets_value",
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class PartAttachment(models.Model):
     description = models.CharField(
         _("description"), max_length=100, blank=False, unique=False, help_text=_("Description of the attachment")
