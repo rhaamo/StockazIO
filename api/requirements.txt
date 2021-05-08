@@ -34,7 +34,7 @@ traitlets==5.0.5
 typed-ast==1.4.3
 uvicorn==0.12.3
 gunicorn==20.1.0
-uvloop==0.14.0
+uvloop==0.15.2
 wcwidth==0.2.5
 websockets==9.0.1
 django-oauth-toolkit==1.5.0
