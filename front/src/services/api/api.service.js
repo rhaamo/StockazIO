@@ -23,6 +23,7 @@ const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 
 const PART_PARAMETERS_PRESETS_URL = '/api/v1/parts/parameters/presets/'
 const PART_PARAMETERS_PRESETS_CREATE = '/api/v1/parts/parameters/presets/'
+const PART_PARAMETERS_PRESETS_DETAILS = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`
 const PART_PARAMETERS_PRESETS_DELETE = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`
 const PART_PARAMETERS_PRESETS_UPDATE = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`
 
@@ -140,6 +141,10 @@ const updatePartUnit = (partUnitId, data) => {
 
 const getPartParameterPresets = () => {
   return Axios.get(PART_PARAMETERS_PRESETS_URL)
+}
+
+const getPartParameterPreset = (partParameterPresetId) => {
+  return Axios.get(PART_PARAMETERS_PRESETS_DETAILS(partParameterPresetId))
 }
 
 const createPartParameterPresets = (data) => {
@@ -416,6 +421,7 @@ const apiService = {
   deletePartUnit,
   updatePartUnit,
   getPartParameterPresets,
+  getPartParameterPreset,
   createPartParameterPresets,
   deletePartParameterPresets,
   updatePartParameterPresets,
