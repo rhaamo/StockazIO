@@ -41,7 +41,9 @@
           </div>
           <div class="col-md-6">
             <b>State:</b> <span class="unit">{{ projectStateText(project.state) }}</span>
-            <div v-if="project.state_notes">{{ project.state_notes }}</div>
+            <div v-if="project.state_notes">
+              {{ project.state_notes }}
+            </div>
           </div>
         </div>
 
@@ -368,7 +370,7 @@ export default {
     },
     deleteProject (project) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the project '${project.name}' ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',
@@ -437,7 +439,7 @@ export default {
     },
     deleteAttachment (attachment) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the attachment '${attachment.description}' ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',
@@ -505,7 +507,7 @@ export default {
     },
     deletePart (part) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.part ? part.part.name : part.part_name}' from the project ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

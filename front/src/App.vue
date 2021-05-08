@@ -37,6 +37,9 @@
               <b-dropdown-item :to="{ name: 'parameters-units-list' }">
                 <i class="fa fa-cogs fa-fw" /> Parameters Units
               </b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'parameters-presets-list' }">
+                <i class="fa fa-cogs fa-fw" /> Part Parameters Presets
+              </b-dropdown-item>
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown id="viewDropdown">

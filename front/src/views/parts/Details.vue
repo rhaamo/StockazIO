@@ -394,7 +394,7 @@ export default {
       let categoryId = part.category ? part.category.id : null
 
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',
@@ -477,7 +477,7 @@ export default {
     },
     deleteAttachment (attachment) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the attachment '${attachment.description}' ?`, {
-        title: 'Plase Confirm',
+        title: 'Please Confirm',
         size: 'sm',
         buttonSize: 'sm',
         okVariant: 'danger',

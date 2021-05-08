@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
 
 from controllers.categories.models import Category
-from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment
+from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
@@ -17,11 +17,18 @@ from controllers.part.serializers import (
     PartsUnitSerializer,
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
+    PartParametersPresetSerializer,
+    PartParametersPresetRetrieveSerializer,
 )
 
 
 class PartViewSetPagination(PageNumberPagination):
     page_size = settings.PAGINATION["PARTS"]
+    page_size_query_param = "size"
+
+
+class PartParametersPresetsViewSetPagination(PageNumberPagination):
+    page_size = 20
     page_size_query_param = "size"
 
 
@@ -265,4 +272,31 @@ class PartsParametersUnitViewSet(ModelViewSet):
 
     def get_queryset(self):
         queryset = ParametersUnit.objects.all()
+        return queryset
+
+
+class PartsParametersPresetViewSet(ModelViewSet):
+    anonymous_policy = True
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
+    pagination_class = PartParametersPresetsViewSetPagination
+    ordering_fields = ["name"]
+    ordering = ["name"]
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PartParametersPresetRetrieveSerializer
+        elif self.action == "retrieve":
+            return PartParametersPresetRetrieveSerializer
+        else:
+            return PartParametersPresetSerializer
+
+    def get_queryset(self):
+        queryset = PartParameterPreset.objects.all()
         return queryset

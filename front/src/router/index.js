@@ -9,6 +9,10 @@ import ViewInfos from '../views/view/Infos'
 import ViewStorageTree from '../views/view/StorageTree'
 import PartUnitsList from '../views/PartUnit/List'
 import ParametersUnitsList from '../views/ParametersUnits'
+import ParametersPresetsList from '../views/ParametersPresets/list'
+import ParametersPresetsAdd from '../views/ParametersPresets/add'
+import ParametersPresetsDetails from '../views/ParametersPresets/details'
+import ParametersPresetsEdit from '../views/ParametersPresets/edit'
 import Distributors from '../views/Distributors'
 import Manufacturers from '../views/Manufacturers'
 import OrdersImporter from '../views/view/OrdersImporter'
@@ -79,7 +83,7 @@ export default (store) => {
     },
     // PartUnits
     {
-      path: '/part_units',
+      path: '/part/units',
       name: 'part-units-list',
       component: PartUnitsList,
       props: true,
@@ -87,9 +91,38 @@ export default (store) => {
     },
     // Parameters Units
     {
-      path: '/partameters_units',
+      path: '/part/parameters/units',
       name: 'parameters-units-list',
       component: ParametersUnitsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    // Parameters Presets
+    {
+      path: '/part/parameters/presets',
+      name: 'parameters-presets-list',
+      component: ParametersPresetsList,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/part/parameters/presets/:presetId',
+      name: 'parameters-presets-details',
+      component: ParametersPresetsDetails,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/part/parameters/presets/:presetId/edit',
+      name: 'parameters-presets-edit',
+      component: ParametersPresetsEdit,
+      props: true,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    {
+      path: '/part/parameters/presets/new',
+      name: 'parameters-presets-add',
+      component: ParametersPresetsAdd,
       props: true,
       beforeEnter: validateAuthenticatedRoute
     },

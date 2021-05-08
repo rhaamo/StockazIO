@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Part, PartUnit, PartParameter, ParametersUnit, PartAttachment, PartStockHistory
+from .models import (
+    Part,
+    PartUnit,
+    PartParameter,
+    ParametersUnit,
+    PartAttachment,
+    PartStockHistory,
+    PartParameterPreset,
+    PartParameterPresetItem,
+)
 from config.admin import CommonAdmin
 from controllers.distributor.models import DistributorSku
 from controllers.manufacturer.models import PartManufacturer
@@ -76,8 +85,20 @@ class PartStockHistoryAdmin(CommonAdmin):
     list_display = ("created_at", "diff", "part")
 
 
+class PartParameterPresetItemInLine(admin.TabularInline):
+    model = PartParameterPresetItem
+    extra = 1
+    autocomplete_fields = ["unit"]
+
+
+class PartParameterPresetAdmin(CommonAdmin):
+    list_display = ("name",)
+    inlines = [PartParameterPresetItemInLine]
+
+
 admin.site.register(PartUnit, PartUnitAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(ParametersUnit, ParametersUnitAdmin)
 admin.site.register(PartAttachment, PartAttachmentAdmin)
 admin.site.register(PartStockHistory, PartStockHistoryAdmin)
+admin.site.register(PartParameterPreset, PartParameterPresetAdmin)

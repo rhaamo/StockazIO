@@ -21,6 +21,12 @@ const PART_UNITS_CREATE = '/api/v1/parts/units/'
 const PART_UNITS_DELETE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`
 
+const PART_PARAMETERS_PRESETS_URL = '/api/v1/parts/parameters/presets/'
+const PART_PARAMETERS_PRESETS_CREATE = '/api/v1/parts/parameters/presets/'
+const PART_PARAMETERS_PRESETS_DETAILS = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`
+const PART_PARAMETERS_PRESETS_DELETE = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`
+const PART_PARAMETERS_PRESETS_UPDATE = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`
+
 const PARTS_CREATE = '/api/v1/parts/'
 const PARTS_LIST = '/api/v1/parts/'
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
@@ -129,6 +135,28 @@ const deletePartUnit = (partUnitId) => {
 
 const updatePartUnit = (partUnitId, data) => {
   return Axios.put(PART_UNITS_UPDATE(partUnitId), data)
+}
+
+// Part parameters presets
+
+const getPartParameterPresets = () => {
+  return Axios.get(PART_PARAMETERS_PRESETS_URL)
+}
+
+const getPartParameterPreset = (partParameterPresetId) => {
+  return Axios.get(PART_PARAMETERS_PRESETS_DETAILS(partParameterPresetId))
+}
+
+const createPartParameterPresets = (data) => {
+  return Axios.post(PART_PARAMETERS_PRESETS_CREATE, data)
+}
+
+const deletePartParameterPresets = (partParameterPresetId) => {
+  return Axios.delete(PART_PARAMETERS_PRESETS_DELETE(partParameterPresetId))
+}
+
+const updatePartParameterPresets = (partParameterPresetId, data) => {
+  return Axios.put(PART_PARAMETERS_PRESETS_UPDATE(partParameterPresetId), data)
 }
 
 // Manufacturers
@@ -392,6 +420,11 @@ const apiService = {
   createPartUnit,
   deletePartUnit,
   updatePartUnit,
+  getPartParameterPresets,
+  getPartParameterPreset,
+  createPartParameterPresets,
+  deletePartParameterPresets,
+  updatePartParameterPresets,
   getManufacturers,
   createManufacturer,
   updateManufacturer,
