@@ -160,7 +160,7 @@ class PartParameterPresetItem(models.Model):
     unit = models.ForeignKey(ParametersUnit, blank=True, null=True, on_delete=models.SET_NULL)
     part_parameter_preset = models.ForeignKey(
         PartParameterPreset,
-        related_name="part_parameter_presets_value",
+        related_name="part_parameters_presets",
         blank=False,
         null=False,
         on_delete=models.CASCADE,

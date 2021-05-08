@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
+from rest_framework import pagination
 
 from controllers.categories.models import Category
 from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
@@ -23,6 +24,11 @@ from controllers.part.serializers import (
 
 class PartViewSetPagination(PageNumberPagination):
     page_size = settings.PAGINATION["PARTS"]
+    page_size_query_param = "size"
+
+
+class PartParametersPresetsViewSetPagination(PageNumberPagination):
+    page_size = 20
     page_size_query_param = "size"
 
 
@@ -280,6 +286,9 @@ class PartsParametersPresetViewSet(ModelViewSet):
         "list": "read",
     }
     serializer_class = PartParametersPresetSerializer
+    pagination_class = PartParametersPresetsViewSetPagination
+    ordering_fields = ["name"]
+    ordering = ["name"]
 
     def get_queryset(self):
         queryset = PartParameterPreset.objects.all()
