@@ -24,10 +24,6 @@
   "vetur.format.defaultFormatter.js": "vscode-typescript",
   "vetur.format.defaultFormatter.html": "js-beautify-html",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-  "restructuredtext.confPath": "${workspaceFolder}/docs",
-  "eslint.workingDirectories": [
-    "./front"
-  ],
   "vetur.languageFeatures.codeActions": true,
   "vetur.experimental.templateInterpolationService": true,
   "vetur.validation.template": false
