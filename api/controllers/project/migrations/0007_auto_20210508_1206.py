@@ -6,18 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('project', '0006_auto_20201119_1158'),
+        ("project", "0006_auto_20201119_1158"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='project',
-            name='state_notes',
-            field=models.TextField(blank=True, max_length=255, verbose_name='state notes'),
+            model_name="project",
+            name="state_notes",
+            field=models.TextField(blank=True, max_length=255, verbose_name="state notes"),
         ),
         migrations.AlterField(
-            model_name='project',
-            name='state',
-            field=models.IntegerField(choices=[(1, 'Planned'), (2, 'Ongoing'), (3, 'Finished'), (4, 'On-hold'), (5, 'Abandonned'), (99, 'Unknown')], default=99, verbose_name='state'),
+            model_name="project",
+            name="state",
+            field=models.IntegerField(
+                choices=[
+                    (1, "Planned"),
+                    (2, "Ongoing"),
+                    (3, "Finished"),
+                    (4, "On-hold"),
+                    (5, "Abandonned"),
+                    (99, "Unknown"),
+                ],
+                default=99,
+                verbose_name="state",
+            ),
         ),
     ]
