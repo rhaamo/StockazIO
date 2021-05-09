@@ -173,9 +173,7 @@ def seed_parameters_unit():
             pu = ParametersUnit(name=i, symbol=units[i]["symbol"])
             pu.save()
         except ParametersUnit.MultipleObjectsReturned:
-            print(
-                f"WARNING: Multiple entries returned for name={i!r}, symbol={units[i]['symbol']!r}"
-            )
+            print(f"WARNING: Multiple entries returned for name={i!r}, symbol={units[i]['symbol']!r}")
             continue
 
 
