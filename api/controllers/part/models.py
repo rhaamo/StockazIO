@@ -110,7 +110,6 @@ def post_save(sender, instance, created, **kwargs):
 class ParametersUnit(models.Model):
     name = models.CharField(_("name"), max_length=255, unique=False, blank=False, help_text=_("ex. Ampere"))
     symbol = models.CharField(_("symbol"), max_length=255, unique=False, blank=True, help_text=_("ex. A"))
-    prefix = models.CharField(_("prefix"), max_length=255, unique=False, blank=True, help_text=_("ex. μ"))
 
     description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
 
@@ -122,8 +121,8 @@ class ParametersUnit(models.Model):
         verbose_name_plural = _("parameter units")
 
     def __str__(self):
-        if self.prefix or self.symbol:
-            return "{0} ({1}{2})".format(self.name, self.prefix, self.symbol)
+        if self.symbol:
+            return "{0} ({1})".format(self.name, self.symbol)
         else:
             return self.name
 
