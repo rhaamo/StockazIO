@@ -514,7 +514,7 @@ export default {
       choicesCategory: state => { return [state.preloads.categories] },
       choicesStorageLocation: (state) => state.preloads.storages,
       choicesPartParametersUnit: (state) => {
-        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.prefix}${x.symbol})` } })
+        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.symbol})` } })
       },
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
@@ -727,7 +727,7 @@ export default {
             name: item.name,
             description: item.description,
             value: '',
-            unit: { value: item.unit.id, text: `${item.unit.name} (${item.unit.prefix}${item.unit.symbol})` }
+            unit: { value: item.unit.id, text: `${item.unit.name} (${item.unit.symbol})` }
           })
         })
       }

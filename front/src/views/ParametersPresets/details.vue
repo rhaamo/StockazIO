@@ -46,7 +46,7 @@
         >
           <template #cell(unit)="data">
             <template v-if="data.item.unit">
-              {{ data.item.unit.name }} - {{ data.item.unit.prefix }}{{ data.item.unit.symbol }}
+              {{ data.item.unit.symbol }} ({{ data.item.unit.name }})
             </template>
           </template>
         </b-table>
