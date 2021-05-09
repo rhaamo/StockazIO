@@ -108,8 +108,8 @@ def post_save(sender, instance, created, **kwargs):
 
 
 class ParametersUnit(models.Model):
-    name = models.CharField(_("name"), max_length=255, unique=False, blank=False, help_text=_("ex. Ampere"))
-    symbol = models.CharField(_("symbol"), max_length=255, unique=False, blank=True, help_text=_("ex. A"))
+    name = models.CharField(_("name"), max_length=255, unique=True, blank=False, help_text=_("ex. Ampere"))
+    symbol = models.CharField(_("symbol"), max_length=255, unique=True, blank=True, help_text=_("ex. A"))
 
     description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
 
