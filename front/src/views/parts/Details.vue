@@ -132,15 +132,18 @@
                   <th>Name</th>
                   <th>Description</th>
                   <th>Value</th>
-                  <th>Unit</th>
                 </tr>
               </thead>
               <tbody v-if="part.part_parameters_value && part.part_parameters_value.length">
                 <tr v-for="pu in part.part_parameters_value" :key="pu.id">
                   <td>{{ pu.name }}</td>
                   <td>{{ pu.description }}</td>
-                  <td>{{ pu.value }}</td>
-                  <td>{{ pu.unit ? `${pu.unit.name} (${pu.unit.prefix}${pu.unit.symbol})` : '' }}</td>
+                  <td v-if="pu.unit">
+                    {{ pu.value }}{{ pu.unit.symbol || '' }} ({{ pu.unit.name }})
+                  </td>
+                  <td v-else>
+                    {{ pu.value }}
+                  </td>
                 </tr>
               </tbody>
             </table>
