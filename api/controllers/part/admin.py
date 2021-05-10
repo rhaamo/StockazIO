@@ -24,7 +24,6 @@ class PartUnitAdmin(CommonAdmin):
 class ParametersUnitAdmin(CommonAdmin):
     list_display = (
         "name",
-        "prefix",
         "symbol",
         "description",
     )

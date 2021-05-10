@@ -35,17 +35,6 @@
                   Maximum length is 255
                 </div>
               </b-form-group>
-              <b-form-group id="input-group-prefix" label="Prefix" label-for="short-prefix">
-                <b-form-input
-                  id="prefix"
-                  v-model="modalParameterUnit.prefix"
-                  placeholder="µ"
-                  :state="$v.modalParameterUnit.prefix.$dirty ? !$v.modalParameterUnit.prefix.$error : null"
-                />
-                <div v-if="!$v.modalParameterUnit.name.maxLength" class="invalid-feedback d-block">
-                  Maximum length is 255
-                </div>
-              </b-form-group>
               <b-form-group id="input-group-symbol" label="Symbol" label-for="short-symbol">
                 <b-form-input
                   id="symbol"
@@ -165,7 +154,6 @@ export default {
     search_query: '', // TODO/FIXME no search yet
     fields: [
       { key: 'name', label: 'Name', sortable: true },
-      { key: 'prefix', label: 'Prefix' },
       { key: 'symbol', label: 'Symbol' },
       { key: 'description', label: 'Description' },
       { key: 'actions', label: 'Actions' }
@@ -175,7 +163,6 @@ export default {
     modalTitle: '',
     modalParameterUnit: {
       name: '',
-      prefix: '',
       symbol: '',
       description: ''
     },
@@ -184,7 +171,6 @@ export default {
   validations: {
     modalParameterUnit: {
       name: { required, maxLength: maxLength(255) },
-      prefix: { maxLength: maxLength(255) },
       symbol: { maxLength: maxLength(255) },
       description: { maxLength: maxLength(255) }
     }

@@ -140,7 +140,7 @@ export default {
   computed: {
     ...mapState({
       choicesPartParametersUnit: (state) => {
-        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.prefix}${x.symbol})` } })
+        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.symbol})` } })
       }
     })
   },

@@ -141,7 +141,7 @@ export default {
   computed: {
     ...mapState({
       choicesPartParametersUnit: (state) => {
-        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.prefix}${x.symbol})` } })
+        return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.symbol})` } })
       }
     }),
     presetId () {
@@ -157,7 +157,7 @@ export default {
         .then((res) => {
           this.preset = res.data
           this.form.name = this.preset.name
-          this.form.part_parameters_presets = this.preset.part_parameters_presets.map(x => { return { name: x.name, description: x.description, unit: { text: `${x.unit.name} (${x.unit.prefix}${x.unit.symbol})`, value: x.unit ? x.unit.id : null } } })
+          this.form.part_parameters_presets = this.preset.part_parameters_presets.map(x => { return { name: x.name, description: x.description, unit: { text: `${x.unit.name} (${x.unit.symbol})`, value: x.unit ? x.unit.id : null } } })
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('Preset/Details/Toast/Error/Message', 'An error occured, please try again later'), {

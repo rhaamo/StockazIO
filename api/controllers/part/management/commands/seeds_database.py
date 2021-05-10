@@ -167,17 +167,14 @@ def seed_parameters_unit():
         units = yaml.load(stream, Loader=yaml.FullLoader)
 
     for i in units:
-        for ii in units[i]["prefixes"]:
-            try:
-                pu = ParametersUnit.objects.get(name=i, symbol=units[i]["symbol"], prefix=ii)
-            except ParametersUnit.DoesNotExist:
-                pu = ParametersUnit(name=i, symbol=units[i]["symbol"], prefix=ii)
-                pu.save()
-            except ParametersUnit.MultipleObjectsReturned:
-                print(
-                    f"WARNING: Multiple entries returned for name={i!r}, symbol={units[i]['symbol']!r}, prefix={ii!r}"
-                )
-                continue
+        try:
+            pu = ParametersUnit.objects.get(name=i, symbol=units[i]["symbol"])
+        except ParametersUnit.DoesNotExist:
+            pu = ParametersUnit(name=i, symbol=units[i]["symbol"])
+            pu.save()
+        except ParametersUnit.MultipleObjectsReturned:
+            print(f"WARNING: Multiple entries returned for name={i!r}, symbol={units[i]['symbol']!r}")
+            continue
 
 
 def seed_manufacturers():

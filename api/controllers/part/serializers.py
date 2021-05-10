@@ -23,7 +23,7 @@ from upload_validator import FileTypeValidator
 class ParametersUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParametersUnit
-        fields = ("id", "name", "symbol", "prefix", "description")
+        fields = ("id", "name", "symbol", "description")
 
 
 class PartsUnitSerializer(serializers.ModelSerializer):
