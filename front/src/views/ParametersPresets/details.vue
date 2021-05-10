@@ -124,6 +124,7 @@ export default {
                   variant: 'primary',
                   toaster: 'b-toaster-top-center'
                 })
+                this.$store.dispatch('preloadPartParametersPresets')
                 this.$router.push({ name: 'parameters-presets-list' })
               })
               .catch((err) => {

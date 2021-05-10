@@ -149,6 +149,7 @@ export default {
                   variant: 'primary',
                   toaster: 'b-toaster-top-center'
                 })
+                this.$store.dispatch('preloadPartParametersPresets')
                 this.fetchPresets(this.currentPage, null)
               })
               .catch((err) => {
