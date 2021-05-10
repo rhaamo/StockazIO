@@ -46,7 +46,7 @@
 
           <template #cell(description)="data">
             <p style="white-space: pre-line;">
-              {{ data.item.description }}
+              {{ data.item.description || '-' }}
             </p>
           </template>
           <template #cell(state)="data">
