@@ -3,7 +3,7 @@ asgiref==3.3.4
 attrs==21.2.0
 backcall==0.2.0
 black==21.5b0
-Django==3.2.2
+Django==3.2.3
 django-admin-list-filter-dropdown==1.0.3
 django-appconf==1.0.4
 django-debug-toolbar==3.2.1
