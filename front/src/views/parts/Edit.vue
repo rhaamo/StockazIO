@@ -846,7 +846,7 @@ export default {
             name: item.name,
             description: item.description,
             value: '',
-            unit: { value: item.unit.id, text: `${item.unit.name} (${item.unit.symbol})` }
+            unit: item.unit ? { value: item.unit.id, text: `${item.unit.name} (${item.unit.symbol})` } : null
           })
         })
       }
