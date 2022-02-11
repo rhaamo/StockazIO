@@ -172,14 +172,14 @@
               </b-form-group>
 
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
-                <multiselect
+                <vue-multiselect
                   v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?"
                   label="text" track-by="value"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-category" label="Category:" label-for="category">
-                <treeselect
+                <vue-treeselect
                   v-model="form.category" :multiple="false" :options="choicesCategory"
                   search-nested :default-expand-level="Infinity" clearable
                   :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
@@ -187,7 +187,7 @@
               </b-form-group>
 
               <b-form-group id="input-group-storage_location" label="Storage location:" label-for="storage_location">
-                <treeselect
+                <vue-treeselect
                   v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
                   search-nested :default-expand-level="Infinity" clearable
                   :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
@@ -196,7 +196,7 @@
               </b-form-group>
 
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
-                <multiselect
+                <vue-multiselect
                   v-model="form.footprint" :options="choicesFootprint" group-values="footprints"
                   group-label="category" placeholder="PDIP, BGA, SOIC, who knows" label="name"
                   track-by="id"
@@ -258,7 +258,7 @@
                       </b-col>
                       <b-col>
                         <b-form-group :id="ppvId('unit', i)" label="Unit:" :label-for="ppvId('unit', i)">
-                          <multiselect
+                          <vue-multiselect
                             v-model="form.part_parameters_value[i].unit"
                             :options="choicesPartParametersUnit"
                             label="text" track-by="value"
@@ -321,7 +321,7 @@
 
                       <b-col>
                         <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer:" :label-for="pManufId('manufacturer', i)">
-                          <multiselect
+                          <vue-multiselect
                             v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
                             label="text" track-by="value" @input="partManufacturersManufacturerChanged(i)"
                           />
@@ -371,7 +371,7 @@
 
                       <b-col>
                         <b-form-group :id="pDistId('distributor', i)" label="Distributor*:" :label-for="pDistId('distributor', i)">
-                          <multiselect
+                          <vue-multiselect
                             v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
                             label="text" track-by="value"
                             @input="partDistributorsDistributorChanged(i)"

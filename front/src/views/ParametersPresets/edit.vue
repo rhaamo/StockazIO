@@ -68,7 +68,7 @@
                 <b-row>
                   <b-col>
                     <b-form-group :id="itemId('unit', i)" label="Unit:" :label-for="itemId('unit', i)">
-                      <multiselect
+                      <vue-multiselect
                         v-model="form.part_parameters_presets[i].unit"
                         :options="choicesPartParametersUnit"
                         label="text" track-by="value"

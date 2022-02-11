@@ -31,7 +31,7 @@
 
     <div class="row mb-3">
       <div class="col-xl-2 col-3">
-        <multiselect
+        <vue-multiselect
           v-model="filter.footprint" :options="choicesFootprint"
           group-values="footprints" group-label="category" placeholder="Filter footprint"
           label="name" track-by="id" @input="filterFootprintChanged"
@@ -48,7 +48,7 @@
       </div>
 
       <div class="col-xl-2 col-3">
-        <treeselect
+        <vue-treeselect
           v-model="filter.storage" :multiple="false"
           :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
           clearable :normalizer="storagesNormalizer" no-children-text

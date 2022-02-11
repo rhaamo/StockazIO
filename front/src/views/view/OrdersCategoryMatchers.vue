@@ -43,7 +43,7 @@
 
               <b-col>
                 <b-form-group :id="pmId('category', i)" label="Category*" :label-for="pmId('category', i)">
-                  <treeselect
+                  <vue-treeselect
                     :id="pmId('category', i)" v-model="matchers[i].category" :multiple="false"
                     :options="choicesCategory" search-nested :default-expand-level="Infinity"
                     clearable :normalizer="categoriesNormalizer" no-children-text

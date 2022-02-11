@@ -12,7 +12,7 @@
     </template>
 
     <ul v-if="node.children && node.children.length" class="children">
-      <node v-for="child in node.children" :key="child.id" :node="child" />
+      <CategoriesNode v-for="child in node.children" :key="child.id" :node="child" />
     </ul>
   </li>
 </template>

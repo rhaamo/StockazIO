@@ -60,7 +60,7 @@
               </b-form-group>
 
               <b-form-group id="input-group-state" label="State:" label-for="state">
-                <multiselect
+                <vue-multiselect
                   v-model="form.state" :options="choicesStates" placeholder="Project state"
                   track-by="value" label="text" required
                 />

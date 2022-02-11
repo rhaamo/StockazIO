@@ -6,18 +6,18 @@
       </router-link>
     </li>
 
-    <node :node="treeData" />
+    <CategoriesNode :node="treeData" />
   </ul>
 </template>
 
 <script>
-import node from './node'
+import CategoriesNode from './node'
 import { mapState } from 'vuex'
 
 export default {
   name: 'CategoriesTree',
   components: {
-    node
+    CategoriesNode
   },
   props: {
     'treeData': Object
