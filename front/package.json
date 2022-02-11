@@ -23,7 +23,7 @@
     "node-sass": "^7.0.0",
     "qrcode": "^1.4.4",
     "sass-loader": "^10.1.0",
-    "vue": "^2.6.12",
+    "vue": "^3.2.30",
     "vue-axios": "^2.1.5",
     "vue-gettext": "^2.1.10",
     "vue-multiselect": "^2.1.6",
