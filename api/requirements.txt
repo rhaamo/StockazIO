@@ -53,4 +53,4 @@ pytest-env==0.6.2
 django-silk==4.1.0
 django-upload-validator==1.1.5
 djangorestframework-csv==2.1.1
-drf-renderer-xlsx==0.4.0
+drf-renderer-xlsx==0.4.4
