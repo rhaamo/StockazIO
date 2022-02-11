@@ -12,7 +12,7 @@
     "@capacitor/ios": "2.4.3",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@riophae/vue-treeselect": "^0.4.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap-vue": "^2.19.0",
     "core-js": "^3.7.0",
     "fork-awesome": "^1.1.7",
