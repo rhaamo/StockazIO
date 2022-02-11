@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import StorageCategory, StorageLocation
 from config.admin import CommonAdmin
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 from mptt.admin import TreeRelatedFieldListFilter
 

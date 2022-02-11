@@ -46,7 +46,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
+CSRF_TRUSTED_ORIGINS = [f"http://{o}" for o in ALLOWED_HOSTS] + [f"https://{o}" for o in ALLOWED_HOSTS]
 
 # END SITE CONFIGURATION
 

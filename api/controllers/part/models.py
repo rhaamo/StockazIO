@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from controllers.footprints.models import Footprint
 from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation

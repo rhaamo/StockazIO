@@ -76,7 +76,7 @@ TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 # Your local stuff: Below this line define 3rd party library settings
 
-CSRF_TRUSTED_ORIGINS = [o for o in ALLOWED_HOSTS]
+CSRF_TRUSTED_ORIGINS = [f"http://{o}" for o in ALLOWED_HOSTS] + [f"https://{o}" for o in ALLOWED_HOSTS]
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Speed up a bit ImageKit

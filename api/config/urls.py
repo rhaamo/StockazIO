@@ -15,15 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf import settings
-from django.conf.urls import url, include
+from django.conf.urls import include
+from django.urls import re_path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from controllers.utils import static
 
 urlpatterns = [
-    url(settings.ADMIN_URL, admin.site.urls),
-    url(r"^oauth/", include(("controllers.oauth.urls", "oauth"), namespace="oauth")),
-    url(r"^api/", include(("config.api_urls", "api"), namespace="api")),
+    re_path(settings.ADMIN_URL, admin.site.urls),
+    re_path(r"^oauth/", include(("controllers.oauth.urls", "oauth"), namespace="oauth")),
+    re_path(r"^api/", include(("config.api_urls", "api"), namespace="api")),
 ]
 
 
@@ -33,7 +34,7 @@ admin.site.index_title = "Welcome to StockazIO"
 
 if settings.DEBUG:
     # we don't really have choice, silk really wants to have them...
-    urlpatterns += [url(r"^silk/", include("silk.urls", namespace="silk"))]
+    urlpatterns += [re_path(r"^silk/", include("silk.urls", namespace="silk"))]
 
 urlpatterns += static("/css/", document_root=settings.STOCKAZIO_SPA_CSS_ROOT)
 urlpatterns += static("/js/", document_root=settings.STOCKAZIO_SPA_JS_ROOT)
@@ -44,5 +45,5 @@ if settings.DEBUG:
     print("Debug URLs enabled")
     import debug_toolbar
 
-    urlpatterns = [url(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
+    urlpatterns = [re_path(r"^__debug__/", include(debug_toolbar.urls))] + urlpatterns
     urlpatterns += staticfiles_urlpatterns()
