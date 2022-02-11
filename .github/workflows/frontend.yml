@@ -29,4 +29,4 @@ jobs:
     - name: Test build
       run: |
         cd front
-        yarn build
+        NODE_OPTIONS=--openssl-legacy-provider yarn build
