@@ -5,12 +5,12 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target_branch: "master"
+  target-branch: "master"
   package-ecosystem: "pip"
 - directory: "/front"
   schedule:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  target_branch: "master"
+  target-branch: "master"
   package-ecosystem: "npm"
