@@ -132,6 +132,7 @@ import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
 
 export default {
+  name: 'PartUnitList',
   mixins: [
     validationMixin
   ],

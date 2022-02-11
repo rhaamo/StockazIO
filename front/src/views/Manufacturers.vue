@@ -227,6 +227,7 @@ import { required, email, url, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'ViewManufacturers',
   mixins: [
     validationMixin
   ],

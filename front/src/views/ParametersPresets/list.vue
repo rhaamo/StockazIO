@@ -78,6 +78,7 @@ import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 
 export default {
+  name: 'ParametersPresetsList',
   data: () => ({
     presets: [],
     fields: [

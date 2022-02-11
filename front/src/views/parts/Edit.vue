@@ -409,6 +409,7 @@ import { mapState } from 'vuex'
 import BtnDeleteInline from '@/components/btn_delete_inline'
 
 export default {
+  name: 'PartsEdit',
   components: {
     BtnDeleteInline
   },

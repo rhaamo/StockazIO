@@ -40,6 +40,7 @@
 import apiService from '../../services/api/api.service'
 
 export default {
+  name: 'ViewInfos',
   data () {
     return {
       parts_count: 0,

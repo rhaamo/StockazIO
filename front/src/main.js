@@ -50,8 +50,8 @@ Vue.use(GetTextPlugin, {
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
-Vue.component('Multiselect', Multiselect)
-Vue.component('Treeselect', Treeselect)
+Vue.component(Multiselect.name, Multiselect)
+Vue.component(Treeselect.name, Treeselect)
 Vue.component(VueQrcode.name, VueQrcode)
 
 axios.interceptors.request.use(function (config) {

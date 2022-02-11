@@ -45,10 +45,11 @@ module.exports = {
     // don't nag on v-html
     'vue/no-v-html': 0,
     'vue/max-attributes-per-line': ['error', {
-      'singleline': 3,
+      'singleline': {
+        'max': 3
+      },
       'multiline': {
-        'max': 3,
-        "allowFirstLine": true
+        'max': 3
       }
     }],
     'vue/require-default-prop': 0,

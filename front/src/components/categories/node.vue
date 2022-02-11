@@ -21,7 +21,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Node',
+  name: 'CategoriesNode',
   props: {
     'node': Object
   },

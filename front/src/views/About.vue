@@ -7,3 +7,9 @@
     <p>Source code of the application is available <a href="https://github.com/rhaamo/StockazIO" target="_blank">here</a> under AGPLv3 license.</p>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'ViewAbout'
+}
+</script>

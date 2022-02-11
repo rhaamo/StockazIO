@@ -15,6 +15,7 @@ import node from './node'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'CategoriesTree',
   components: {
     node
   },

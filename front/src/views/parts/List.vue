@@ -245,6 +245,7 @@ import { mapState } from 'vuex'
 import ViewModal from '@/components/parts/view_modal'
 
 export default {
+  name: 'PartsList',
   components: {
     ViewModal
   },

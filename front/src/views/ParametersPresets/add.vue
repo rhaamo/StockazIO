@@ -110,6 +110,7 @@ import { required, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'ParametersPresetsAdd',
   components: {
     BtnDeleteInline
   },

@@ -120,6 +120,7 @@ import { validationMixin } from 'vuelidate'
 import { required, maxLength, integer, between } from 'vuelidate/lib/validators'
 
 export default {
+  name: 'ProjectsAdd',
   components: {
   },
   mixins: [

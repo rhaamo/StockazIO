@@ -281,6 +281,7 @@ import { mapState } from 'vuex'
 import moment from 'moment'
 
 export default {
+  name: 'PartsDetails',
   props: {
     category: {
       type: Object

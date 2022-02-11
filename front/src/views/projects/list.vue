@@ -98,6 +98,7 @@ import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 
 export default {
+  name: 'ProjectsList',
   data: () => ({
     projects: [],
     fields: [

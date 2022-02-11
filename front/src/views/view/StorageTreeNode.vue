@@ -32,7 +32,7 @@
 import QRCode from 'qrcode'
 
 export default {
-  name: 'Node',
+  name: 'StorageTreeNode',
   props: {
     'node': Object
   },
