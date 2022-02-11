@@ -48,6 +48,21 @@ python manage.py createsuperuser
 
 You can uses `deploy/stockazio-server.service` for your systemd service. 
 
+## NodeJS warning
+You might need to uses thoses commands because of weird things in NodeJS and incompatibilities...
+
+If using NodeJS 16.x uses the following commands for the frontend instead of the other ones:
+```
+CXXFLAGS="--std=c++14" yarn install
+do yarn build classic
+```
+
+For NodeJS 17.x:
+```
+CXXFLAGS="--std=c++14" yarn install
+NODE_OPTIONS=--openssl-legacy-provider yarn build
+```
+
 ## Frontend
 ```shell
 sudo su - stockazio
