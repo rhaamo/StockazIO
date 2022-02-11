@@ -15,7 +15,7 @@
     "axios": "^0.21.2",
     "bootstrap-vue": "^2.19.0",
     "core-js": "^3.7.0",
-    "fork-awesome": "^1.1.7",
+    "fork-awesome": "^1.2.0",
     "glob-all": "^3.2.1",
     "js-file-download": "^0.4.12",
     "js-logger": "^1.6.0",
