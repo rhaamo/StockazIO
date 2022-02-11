@@ -23,7 +23,7 @@ Pillow==9.0.0
 prompt-toolkit==3.0.18
 psycopg2==2.9.3
 ptyprocess==0.7.0
-python-magic==0.4.22
+python-magic==0.4.25
 pytz==2021.1
 PyYAML==5.4
 regex==2021.4.4
