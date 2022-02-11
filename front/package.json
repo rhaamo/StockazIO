@@ -34,7 +34,7 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^2.4.3",
+    "@capacitor/cli": "^3.4.1",
     "@capacitor/core": "^2.4.9",
     "@vue/cli-plugin-babel": "^4.5.8",
     "@vue/cli-plugin-eslint": "^4.5.15",
