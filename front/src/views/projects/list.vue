@@ -24,17 +24,18 @@
 
     <div class="row">
       <div class="col-md-12 mx-auto">
-        <b-table id="tableProjectsList" ref="tableProjectsList" :items="projects"
-                 :fields="fields"
-                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
-                 :current-page="currentPage"
-                 condensed striped
-                 sort-icon-left
-                 show-empty
-                 primary-key="uuid"
-                 :no-local-sorting="true"
-                 small
-                 @sort-changed="sortTableChanged"
+        <b-table
+          id="tableProjectsList" ref="tableProjectsList" :items="projects"
+          :fields="fields"
+          :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
+          :current-page="currentPage"
+          condensed striped
+          sort-icon-left
+          show-empty
+          primary-key="uuid"
+          :no-local-sorting="true"
+          small
+          @sort-changed="sortTableChanged"
         >
           <template #cell(name)="data">
             <p style="white-space: pre-line;">

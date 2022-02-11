@@ -1,15 +1,17 @@
 <template>
-  <b-modal id="modalManageExternalPart" ref="modalManageExternalPart"
-           size="lg" hide-footer @cancel="partModalClose"
-           @close="partModalClose" @hidden="partModalClose"
-           @shown="fillPart"
+  <b-modal
+    id="modalManageExternalPart" ref="modalManageExternalPart"
+    size="lg" hide-footer @cancel="partModalClose"
+    @close="partModalClose" @hidden="partModalClose"
+    @shown="fillPart"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
         Describe part
       </h5>
-      <button type="button" class="close" data-dismiss="modal"
-              aria-label="Close" @click="close()"
+      <button
+        type="button" class="close" data-dismiss="modal"
+        aria-label="Close" @click="close()"
       >
         <span aria-hidden="true">&times;</span>
       </button>

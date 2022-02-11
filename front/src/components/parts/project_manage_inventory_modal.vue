@@ -1,15 +1,17 @@
 <template>
-  <b-modal id="modalManageInventoryPart" ref="modalManageInventoryPart"
-           size="xl" hide-footer @cancel="partModalClose"
-           @close="partModalClose" @hidden="partModalClose"
-           @shown="fillPart"
+  <b-modal
+    id="modalManageInventoryPart" ref="modalManageInventoryPart"
+    size="xl" hide-footer @cancel="partModalClose"
+    @close="partModalClose" @hidden="partModalClose"
+    @shown="fillPart"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
         Select part from inventory
       </h5>
-      <button type="button" class="close" data-dismiss="modal"
-              aria-label="Close" @click="close()"
+      <button
+        type="button" class="close" data-dismiss="modal"
+        aria-label="Close" @click="close()"
       >
         <span aria-hidden="true">&times;</span>
       </button>
@@ -97,17 +99,18 @@
             </div>
 
             <div>
-              <b-table id="tablePartsList" ref="tablePartsList" :items="parts"
-                       :fields="fields"
-                       :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
-                       :current-page="currentPage"
-                       condensed striped
-                       sort-icon-left
-                       show-empty
-                       primary-key="uuid"
-                       :no-local-sorting="true"
-                       small
-                       @sort-changed="sortTableChanged"
+              <b-table
+                id="tablePartsList" ref="tablePartsList" :items="parts"
+                :fields="fields"
+                :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
+                :current-page="currentPage"
+                condensed striped
+                sort-icon-left
+                show-empty
+                primary-key="uuid"
+                :no-local-sorting="true"
+                small
+                @sort-changed="sortTableChanged"
               >
                 <template #cell(name)="data">
                   {{ data.item.name }}
@@ -121,12 +124,14 @@
                 </template>
 
                 <template #cell(stock_qty)="data">
-                  <span v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0"
-                        class="qtyMinWarning"
+                  <span
+                    v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0"
+                    class="qtyMinWarning"
                   >{{ data.item.stock_qty }}
-                    <i v-b-tooltip.hover class="fa fa-circle"
-                       aria-hidden="true"
-                       title="Current stock is below minimum stock quantity or exhausted"
+                    <i
+                      v-b-tooltip.hover class="fa fa-circle"
+                      aria-hidden="true"
+                      title="Current stock is below minimum stock quantity or exhausted"
                     />
                   </span>
                   <span v-else>{{ data.item.stock_qty }}</span>

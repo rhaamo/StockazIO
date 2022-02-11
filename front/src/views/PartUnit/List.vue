@@ -1,17 +1,19 @@
 <template>
   <div class="list_part_unit">
-    <b-modal id="modalAddPartUnit" ref="modalAddPartUnit"
-             size="md" :hide-footer="true"
-             @cancel="modalAddPartUnitClose"
-             @close="modalAddPartUnitClose"
-             @hidden="modalAddPartUnitClose"
+    <b-modal
+      id="modalAddPartUnit" ref="modalAddPartUnit"
+      size="md" :hide-footer="true"
+      @cancel="modalAddPartUnitClose"
+      @close="modalAddPartUnitClose"
+      @hidden="modalAddPartUnitClose"
     >
       <template #modal-header="{ close }">
         <h5 id="modalPartTitle">
           <span class="modal-title">{{ modalTitle }}</span>
         </h5>
-        <button type="button" class="close" data-dismiss="modal"
-                aria-label="Close" @click="close()"
+        <button
+          type="button" class="close" data-dismiss="modal"
+          aria-label="Close" @click="close()"
         >
           <span aria-hidden="true">&times;</span>
         </button>

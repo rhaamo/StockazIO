@@ -1,14 +1,16 @@
 <template>
-  <b-modal id="modalManage" ref="modalManage"
-           size="xl" @cancel="partModalClose" @close="partModalClose"
-           @hidden="partModalClose"
+  <b-modal
+    id="modalManage" ref="modalManage"
+    size="xl" @cancel="partModalClose" @close="partModalClose"
+    @hidden="partModalClose"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
         <i title="Private" :class="partDetailsPrivate" /> <span class="modal-title">{{ partDetailsName }}</span>
       </h5>
-      <button type="button" class="close" data-dismiss="modal"
-              aria-label="Close" @click="close()"
+      <button
+        type="button" class="close" data-dismiss="modal"
+        aria-label="Close" @click="close()"
       >
         <span aria-hidden="true">&times;</span>
       </button>
@@ -208,8 +210,9 @@
         Show full details
       </b-button>
 
-      <b-button v-if="canDelete" size="sm" variant="danger"
-                @click="deletePart(part)"
+      <b-button
+        v-if="canDelete" size="sm" variant="danger"
+        @click="deletePart(part)"
       >
         Delete
       </b-button>

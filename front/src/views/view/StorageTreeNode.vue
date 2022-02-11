@@ -7,13 +7,15 @@
       {{ node.name }}
     </template>
     <template v-if="node.uuid">
-      &nbsp;<i v-b-tooltip.hover class="fa fa-barcode" aria-hidden="true"
-               title="Show QrCode" @click="showBigQrCode(node)"
+      &nbsp;<i
+              v-b-tooltip.hover class="fa fa-barcode" aria-hidden="true"
+              title="Show QrCode" @click="showBigQrCode(node)"
             />
       <template v-if="node.picture">
       &nbsp;
-        <i v-b-tooltip.hover class="fa fa-picture-o" title="Show location picture"
-           aria-hidden="true" @click="showLocationPicture(node)"
+        <i
+          v-b-tooltip.hover class="fa fa-picture-o" title="Show location picture"
+          aria-hidden="true" @click="showLocationPicture(node)"
         />
       </template>
     </template>

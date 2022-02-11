@@ -43,10 +43,11 @@
 
               <b-col>
                 <b-form-group :id="pmId('category', i)" label="Category*" :label-for="pmId('category', i)">
-                  <treeselect :id="pmId('category', i)" v-model="matchers[i].category" :multiple="false"
-                              :options="choicesCategory" search-nested :default-expand-level="Infinity"
-                              clearable :normalizer="categoriesNormalizer" no-children-text
-                              placeholder="Film resistors ? MCUS ?"
+                  <treeselect
+                    :id="pmId('category', i)" v-model="matchers[i].category" :multiple="false"
+                    :options="choicesCategory" search-nested :default-expand-level="Infinity"
+                    clearable :normalizer="categoriesNormalizer" no-children-text
+                    placeholder="Film resistors ? MCUS ?"
                   />
                   <div v-if="!$v.matchers.$each[i].category.required" class="invalid-feedback d-block">
                     Category is required
@@ -59,10 +60,11 @@
               <b-col cols="2">
                 <div class="pt-2">
                   <br>
-                  <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                   btn-variant-cancel="danger" btn-main-text="remove"
-                                   btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                   btn-cancel-text="No" @action-confirmed="deletePm(i)"
+                  <BtnDeleteInline
+                    size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                    btn-variant-cancel="danger" btn-main-text="remove"
+                    btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                    btn-cancel-text="No" @action-confirmed="deletePm(i)"
                   />
                 </div>
               </b-col>

@@ -1,7 +1,8 @@
 <template>
   <div class="add_part">
-    <ViewModal :part="partDetails" :can-delete="true" @delete-part="deletePart"
-               @view-part-modal-closed="onPartModalClosed"
+    <ViewModal
+      :part="partDetails" :can-delete="true" @delete-part="deletePart"
+      @view-part-modal-closed="onPartModalClosed"
     />
 
     <div class="row">
@@ -30,9 +31,10 @@
 
     <div class="row mb-3">
       <div class="col-xl-2 col-3">
-        <multiselect v-model="filter.footprint" :options="choicesFootprint"
-                     group-values="footprints" group-label="category" placeholder="Filter footprint"
-                     label="name" track-by="id" @input="filterFootprintChanged"
+        <multiselect
+          v-model="filter.footprint" :options="choicesFootprint"
+          group-values="footprints" group-label="category" placeholder="Filter footprint"
+          label="name" track-by="id" @input="filterFootprintChanged"
         />
         <b-form-checkbox
           v-model="filter.footprint"
@@ -46,11 +48,12 @@
       </div>
 
       <div class="col-xl-2 col-3">
-        <treeselect v-model="filter.storage" :multiple="false"
-                    :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
-                    clearable :normalizer="storagesNormalizer" no-children-text
-                    placeholder="Filter storage" :disable-branch-nodes="true"
-                    @input="filterStorageChanged"
+        <treeselect
+          v-model="filter.storage" :multiple="false"
+          :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
+          clearable :normalizer="storagesNormalizer" no-children-text
+          placeholder="Filter storage" :disable-branch-nodes="true"
+          @input="filterStorageChanged"
         />
         <b-form-checkbox
           v-model="filter.storage"
@@ -88,17 +91,18 @@
 
     <div class="row">
       <div class="col-md-12 mx-auto">
-        <b-table id="tablePartsList" ref="tablePartsList" :items="parts"
-                 :fields="fields"
-                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
-                 :current-page="currentPage" :busy.sync="busy"
-                 condensed striped
-                 sort-icon-left
-                 show-empty
-                 primary-key="uuid"
-                 :no-local-sorting="true"
-                 small
-                 @sort-changed="sortTableChanged"
+        <b-table
+          id="tablePartsList" ref="tablePartsList" :items="parts"
+          :fields="fields"
+          :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
+          :current-page="currentPage" :busy.sync="busy"
+          condensed striped
+          sort-icon-left
+          show-empty
+          primary-key="uuid"
+          :no-local-sorting="true"
+          small
+          @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">
             <div @click="showBigQrCode(data.item)">
@@ -136,16 +140,19 @@
           </template>
 
           <template #cell(stock_qty)="data">
-            <span v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0" :id="popoverStockQtyClass(data.item.id)"
-                  class="qtyMinWarning"
+            <span
+              v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0" :id="popoverStockQtyClass(data.item.id)"
+              class="qtyMinWarning"
             >{{ data.item.stock_qty }}
-              <i v-b-tooltip.hover class="fa fa-circle"
-                 aria-hidden="true"
-                 title="Current stock is below minimum stock quantity or exhausted"
+              <i
+                v-b-tooltip.hover class="fa fa-circle"
+                aria-hidden="true"
+                title="Current stock is below minimum stock quantity or exhausted"
               />
             </span>
-            <span v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
-                  title="click to change qty"
+            <span
+              v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
+              title="click to change qty"
             >{{ data.item.stock_qty }}</span>
 
             <b-popover
@@ -161,8 +168,9 @@
               <div align="center">
                 <b-form-spinbutton v-model="data.item.stock_qty" min="0" />
                 <br>
-                <b-button size="sm" type="submit" variant="primary"
-                          @click.prevent="popoverQtyUpdatePart(data.item.id, data.item.stock_qty)"
+                <b-button
+                  size="sm" type="submit" variant="primary"
+                  @click.prevent="popoverQtyUpdatePart(data.item.id, data.item.stock_qty)"
                 >
                   update
                 </b-button>
@@ -186,8 +194,9 @@
               <div align="center">
                 <b-form-spinbutton v-model="data.item.stock_qty_min" min="0" />
                 <br>
-                <b-button size="sm" type="submit" variant="primary"
-                          @click.prevent="popoverQtyMinUpdatePart(data.item.id, data.item.stock_qty_min)"
+                <b-button
+                  size="sm" type="submit" variant="primary"
+                  @click.prevent="popoverQtyMinUpdatePart(data.item.id, data.item.stock_qty_min)"
                 >
                   update
                 </b-button>

@@ -1,10 +1,11 @@
 <template>
   <div>
     <b-button-group>
-      <b-button :size="size"
-                :variant="clicked ? 'secondary' : btnVariantMain"
-                :disabled="clicked"
-                @click.prevent="btnClicked"
+      <b-button
+        :size="size"
+        :variant="clicked ? 'secondary' : btnVariantMain"
+        :disabled="clicked"
+        @click.prevent="btnClicked"
       >
         {{ clicked ? btnMainTextDisabled : btnMainText }}
       </b-button>

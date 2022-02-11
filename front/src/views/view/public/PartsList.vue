@@ -1,7 +1,8 @@
 <template>
   <div class="add_part">
-    <ViewModal :part="partDetails" :can-delete="false"
-               @view-part-modal-closed="onPartModalClosed"
+    <ViewModal
+      :part="partDetails" :can-delete="false"
+      @view-part-modal-closed="onPartModalClosed"
     />
 
     <div class="row">
@@ -30,17 +31,19 @@
 
     <div class="row mb-3">
       <div class="col-xl-2 col-3">
-        <multiselect v-model="filter.footprint" :options="choicesFootprint"
-                     group-values="footprints" group-label="category" placeholder="Filter footprint"
-                     label="name" track-by="id" @input="filterFootprintChanged"
+        <multiselect
+          v-model="filter.footprint" :options="choicesFootprint"
+          group-values="footprints" group-label="category" placeholder="Filter footprint"
+          label="name" track-by="id" @input="filterFootprintChanged"
         />
       </div>
       <div class="col-xl-2 col-3">
-        <treeselect v-model="filter.storage" :multiple="false"
-                    :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
-                    clearable :normalizer="storagesNormalizer" no-children-text
-                    placeholder="Filter storage" :disable-branch-nodes="true"
-                    @input="filterStorageChanged"
+        <treeselect
+          v-model="filter.storage" :multiple="false"
+          :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
+          clearable :normalizer="storagesNormalizer" no-children-text
+          placeholder="Filter storage" :disable-branch-nodes="true"
+          @input="filterStorageChanged"
         />
       </div>
       <div class="col-lg-2">
@@ -77,17 +80,18 @@
 
     <div class="row">
       <div class="col-md-12 mx-auto">
-        <b-table id="tablePartsList" ref="tablePartsList" :items="parts"
-                 :fields="fields"
-                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
-                 :current-page="currentPage" :busy.sync="busy"
-                 condensed striped
-                 sort-icon-left
-                 show-empty
-                 primary-key="uuid"
-                 :no-local-sorting="true"
-                 small
-                 @sort-changed="sortTableChanged"
+        <b-table
+          id="tablePartsList" ref="tablePartsList" :items="parts"
+          :fields="fields"
+          :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
+          :current-page="currentPage" :busy.sync="busy"
+          condensed striped
+          sort-icon-left
+          show-empty
+          primary-key="uuid"
+          :no-local-sorting="true"
+          small
+          @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">
             <div @click="showBigQrCode(data.item)">
@@ -125,12 +129,14 @@
           </template>
 
           <template #cell(stock_qty)="data">
-            <span v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0"
-                  class="qtyMinWarning"
+            <span
+              v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0"
+              class="qtyMinWarning"
             >{{ data.item.stock_qty }}
-              <i v-b-tooltip.hover class="fa fa-circle"
-                 aria-hidden="true"
-                 title="Current stock is below minimum stock quantity or exhausted"
+              <i
+                v-b-tooltip.hover class="fa fa-circle"
+                aria-hidden="true"
+                title="Current stock is below minimum stock quantity or exhausted"
               />
             </span>
             <span v-else>{{ data.item.stock_qty }}</span>

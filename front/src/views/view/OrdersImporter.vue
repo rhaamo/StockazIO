@@ -52,9 +52,10 @@
           </template>
 
           <template #cell(actions)="data">
-            <b-button v-if="data.item.import_state == 1"
-                      variant="info"
-                      @click.prevent="importOrder(data.item)"
+            <b-button
+              v-if="data.item.import_state == 1"
+              variant="info"
+              @click.prevent="importOrder(data.item)"
             >
               import
             </b-button>

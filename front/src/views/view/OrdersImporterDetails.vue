@@ -20,8 +20,9 @@
           <b>Number:</b> {{ order.order_number }}<br>
           <b>Items:</b> {{ rows }}<br>
           <b>From:</b> {{ order.vendor }}<br>
-          <multiselect v-model="order.vendor_db" :options="choicesDistributors"
-                       label="text" track-by="value" placeholder="match known one"
+          <multiselect
+            v-model="order.vendor_db" :options="choicesDistributors"
+            label="text" track-by="value" placeholder="match known one"
           /><br>
           <b>Import:</b> {{ importStateText(order.import_state) }}<br>
           <br>
@@ -46,16 +47,18 @@
             show-empty
           >
             <template #cell(category)="data">
-              <treeselect v-model="data.item.category" :multiple="false" :options="choicesCategory"
-                          search-nested :default-expand-level="Infinity" clearable
-                          :normalizer="categoriesNormalizer" no-children-text placeholder="Category to import in"
+              <treeselect
+                v-model="data.item.category" :multiple="false" :options="choicesCategory"
+                search-nested :default-expand-level="Infinity" clearable
+                :normalizer="categoriesNormalizer" no-children-text placeholder="Category to import in"
               />
             </template>
 
             <template #cell(manufacturer)="data">
               {{ data.item.manufacturer }}<br>
-              <multiselect v-model="data.item.manufacturer_db" :options="choicesManufacturers"
-                           label="text" track-by="value" placeholder="match known one"
+              <multiselect
+                v-model="data.item.manufacturer_db" :options="choicesManufacturers"
+                label="text" track-by="value" placeholder="match known one"
               />
             </template>
 

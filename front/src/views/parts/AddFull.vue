@@ -1,7 +1,8 @@
 <template>
   <div class="add_part">
-    <ViewModal :part="partDetails" :can-delete="false"
-               @view-part-modal-closed="onPartModalClosed"
+    <ViewModal
+      :part="partDetails" :can-delete="false"
+      @view-part-modal-closed="onPartModalClosed"
     />
 
     <div class="row">
@@ -171,30 +172,34 @@
               </b-form-group>
 
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
-                <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?"
-                             label="text" track-by="value"
+                <multiselect
+                  v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?"
+                  label="text" track-by="value"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-category" label="Category:" label-for="category">
-                <treeselect v-model="form.category" :multiple="false" :options="choicesCategory"
-                            search-nested :default-expand-level="Infinity" clearable
-                            :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
+                <treeselect
+                  v-model="form.category" :multiple="false" :options="choicesCategory"
+                  search-nested :default-expand-level="Infinity" clearable
+                  :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-storage_location" label="Storage location:" label-for="storage_location">
-                <treeselect v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
-                            search-nested :default-expand-level="Infinity" clearable
-                            :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
-                            :disable-branch-nodes="true"
+                <treeselect
+                  v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
+                  search-nested :default-expand-level="Infinity" clearable
+                  :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
+                  :disable-branch-nodes="true"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
-                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints"
-                             group-label="category" placeholder="PDIP, BGA, SOIC, who knows" label="name"
-                             track-by="id"
+                <multiselect
+                  v-model="form.footprint" :options="choicesFootprint" group-values="footprints"
+                  group-label="category" placeholder="PDIP, BGA, SOIC, who knows" label="name"
+                  track-by="id"
                 />
               </b-form-group>
 
@@ -253,17 +258,19 @@
                       </b-col>
                       <b-col>
                         <b-form-group :id="ppvId('unit', i)" label="Unit:" :label-for="ppvId('unit', i)">
-                          <multiselect v-model="form.part_parameters_value[i].unit"
-                                       :options="choicesPartParametersUnit"
-                                       label="text" track-by="value"
+                          <multiselect
+                            v-model="form.part_parameters_value[i].unit"
+                            :options="choicesPartParametersUnit"
+                            label="text" track-by="value"
                           />
                         </b-form-group>
                       </b-col>
                     </b-row>
-                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                     btn-variant-cancel="danger" btn-main-text="remove item"
-                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                     btn-cancel-text="No" @action-confirmed="deletePpv(i)"
+                    <BtnDeleteInline
+                      size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                      btn-variant-cancel="danger" btn-main-text="remove item"
+                      btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                      btn-cancel-text="No" @action-confirmed="deletePpv(i)"
                     />
                     <hr>
                   </div>
@@ -281,10 +288,11 @@
                         <b-form-select v-model="selectedPartParametersPreset" :options="choicesPartParametersPresets" size="sm" />
                       </b-col>
                       <b-col cols="3">
-                        <BtnDeleteInline size="sm" btn-variant-main="info" btn-variant-ok="success"
-                                         btn-variant-cancel="info" btn-main-text="apply"
-                                         btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                         btn-cancel-text="No" @action-confirmed="applyPartParametersPreset"
+                        <BtnDeleteInline
+                          size="sm" btn-variant-main="info" btn-variant-ok="success"
+                          btn-variant-cancel="info" btn-main-text="apply"
+                          btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                          btn-cancel-text="No" @action-confirmed="applyPartParametersPreset"
                         />
                       </b-col>
                     </b-row>
@@ -313,8 +321,9 @@
 
                       <b-col>
                         <b-form-group :id="pManufId('manufacturer', i)" label="Manufacturer:" :label-for="pManufId('manufacturer', i)">
-                          <multiselect v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
-                                       label="text" track-by="value" @input="partManufacturersManufacturerChanged(i)"
+                          <multiselect
+                            v-model="form.manufacturers_sku[i].manufacturer" :options="choicesManufacturers"
+                            label="text" track-by="value" @input="partManufacturersManufacturerChanged(i)"
                           />
                         </b-form-group>
                       </b-col>
@@ -327,10 +336,11 @@
                       />
                     </b-form-group>
 
-                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                     btn-variant-cancel="danger" btn-main-text="remove item"
-                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                     btn-cancel-text="No" @action-confirmed="deletePmanufs(i)"
+                    <BtnDeleteInline
+                      size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                      btn-variant-cancel="danger" btn-main-text="remove item"
+                      btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                      btn-cancel-text="No" @action-confirmed="deletePmanufs(i)"
                     />
                     <hr>
                   </div>
@@ -361,9 +371,10 @@
 
                       <b-col>
                         <b-form-group :id="pDistId('distributor', i)" label="Distributor*:" :label-for="pDistId('distributor', i)">
-                          <multiselect v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
-                                       label="text" track-by="value"
-                                       @input="partDistributorsDistributorChanged(i)"
+                          <multiselect
+                            v-model="form.distributors_sku[i].distributor" :options="choicesDistributors"
+                            label="text" track-by="value"
+                            @input="partDistributorsDistributorChanged(i)"
                           />
                           <div v-if="!$v.form.distributors_sku.$each[i].distributor.required" class="invalid-feedback d-block">
                             Distributor is required
@@ -379,10 +390,11 @@
                       />
                     </b-form-group>
 
-                    <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                     btn-variant-cancel="danger" btn-main-text="remove item"
-                                     btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                     btn-cancel-text="No" @action-confirmed="deletePdist(i)"
+                    <BtnDeleteInline
+                      size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                      btn-variant-cancel="danger" btn-main-text="remove item"
+                      btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                      btn-cancel-text="No" @action-confirmed="deletePdist(i)"
                     />
                     <hr>
                   </div>

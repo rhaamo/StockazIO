@@ -68,17 +68,19 @@
                 <b-row>
                   <b-col>
                     <b-form-group :id="itemId('unit', i)" label="Unit:" :label-for="itemId('unit', i)">
-                      <multiselect v-model="form.part_parameters_presets[i].unit"
-                                   :options="choicesPartParametersUnit"
-                                   label="text" track-by="value"
+                      <multiselect
+                        v-model="form.part_parameters_presets[i].unit"
+                        :options="choicesPartParametersUnit"
+                        label="text" track-by="value"
                       />
                     </b-form-group>
                   </b-col>
                 </b-row>
-                <BtnDeleteInline size="sm" btn-variant-main="danger" btn-variant-ok="success"
-                                 btn-variant-cancel="danger" btn-main-text="remove item"
-                                 btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
-                                 btn-cancel-text="No" @action-confirmed="deleteItem(i)"
+                <BtnDeleteInline
+                  size="sm" btn-variant-main="danger" btn-variant-ok="success"
+                  btn-variant-cancel="danger" btn-main-text="remove item"
+                  btn-main-text-disabled="Confirm ?" btn-ok-text="Yes"
+                  btn-cancel-text="No" @action-confirmed="deleteItem(i)"
                 />
                 <hr>
               </div>

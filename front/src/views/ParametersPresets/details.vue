@@ -33,16 +33,17 @@
 
     <div class="row">
       <div class="col-md-8">
-        <b-table id="tablePresetsList" ref="tablePresetItemsList" :items="preset.part_parameters_presets"
-                 :fields="fields"
-                 :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
-                 condensed striped
-                 sort-icon-left
-                 show-empty
-                 primary-key="uuid"
-                 :no-local-sorting="true"
-                 small
-                 @sort-changed="sortTableChanged"
+        <b-table
+          id="tablePresetsList" ref="tablePresetItemsList" :items="preset.part_parameters_presets"
+          :fields="fields"
+          :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+          condensed striped
+          sort-icon-left
+          show-empty
+          primary-key="uuid"
+          :no-local-sorting="true"
+          small
+          @sort-changed="sortTableChanged"
         >
           <template #cell(unit)="data">
             <template v-if="data.item.unit">

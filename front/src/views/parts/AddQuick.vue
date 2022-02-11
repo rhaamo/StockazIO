@@ -1,7 +1,8 @@
 <template>
   <div class="add_part">
-    <ViewModal :part="partDetails" :can-delete="false"
-               @view-part-modal-closed="onPartModalClosed"
+    <ViewModal
+      :part="partDetails" :can-delete="false"
+      @view-part-modal-closed="onPartModalClosed"
     />
 
     <div class="row">
@@ -172,30 +173,34 @@
 
             <b-col>
               <b-form-group id="input-group-part-unit" label="Part unit:" label-for="part-unit">
-                <multiselect v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?"
-                             label="text" track-by="value"
+                <multiselect
+                  v-model="form.part_unit" :options="choicesPartUnit" placeholder="Centimeters ? Pieces ?"
+                  label="text" track-by="value"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-category" label="Category:" label-for="category">
-                <treeselect v-model="form.category" :multiple="false" :options="choicesCategory"
-                            search-nested :default-expand-level="Infinity" clearable
-                            :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
+                <treeselect
+                  v-model="form.category" :multiple="false" :options="choicesCategory"
+                  search-nested :default-expand-level="Infinity" clearable
+                  :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-storage_location" label="Storage location:" label-for="storage_location">
-                <treeselect v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
-                            search-nested :default-expand-level="Infinity" clearable
-                            :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
-                            :disable-branch-nodes="true"
+                <treeselect
+                  v-model="form.storage_location" :multiple="false" :options="choicesStorageLocation"
+                  search-nested :default-expand-level="Infinity" clearable
+                  :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
+                  :disable-branch-nodes="true"
                 />
               </b-form-group>
 
               <b-form-group id="input-group-footprint" label="Footprint:" label-for="footprint">
-                <multiselect v-model="form.footprint" :options="choicesFootprint" group-values="footprints"
-                             group-label="category" placeholder="PDIP, BGA, SOIC, who knows" label="name"
-                             track-by="id"
+                <multiselect
+                  v-model="form.footprint" :options="choicesFootprint" group-values="footprints"
+                  group-label="category" placeholder="PDIP, BGA, SOIC, who knows" label="name"
+                  track-by="id"
                 />
               </b-form-group>
 

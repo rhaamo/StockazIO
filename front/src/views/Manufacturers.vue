@@ -1,17 +1,19 @@
 <template>
   <div class="list_manufacturers">
-    <b-modal id="modalAddManufacturer" ref="modalAddManufacturer"
-             size="md" :hide-footer="true"
-             @cancel="modalAddManufacturerClose"
-             @close="modalAddManufacturerClose"
-             @hidden="modalAddManufacturerClose"
+    <b-modal
+      id="modalAddManufacturer" ref="modalAddManufacturer"
+      size="md" :hide-footer="true"
+      @cancel="modalAddManufacturerClose"
+      @close="modalAddManufacturerClose"
+      @hidden="modalAddManufacturerClose"
     >
       <template #modal-header="{ close }">
         <h5 id="modalPartTitle">
           <span class="modal-title">{{ modalTitle }}</span>
         </h5>
-        <button type="button" class="close" data-dismiss="modal"
-                aria-label="Close" @click="close()"
+        <button
+          type="button" class="close" data-dismiss="modal"
+          aria-label="Close" @click="close()"
         >
           <span aria-hidden="true">&times;</span>
         </button>

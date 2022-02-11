@@ -66,9 +66,10 @@
               </b-form-group>
 
               <b-form-group id="input-group-state" label="State:" label-for="state">
-                <multiselect v-model="form.state" :options="choicesStates" placeholder="Project state"
-                             track-by="value" label="text" required
-                             :allow-empty="false"
+                <multiselect
+                  v-model="form.state" :options="choicesStates" placeholder="Project state"
+                  track-by="value" label="text" required
+                  :allow-empty="false"
                 />
                 <div v-if="!$v.form.state.value.integer || !$v.form.state.value.between || !$v.form.state.value.required || !$v.form.state.required" class="invalid-feedback d-block">
                   Invalid state

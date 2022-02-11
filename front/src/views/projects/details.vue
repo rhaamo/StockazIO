@@ -1,13 +1,16 @@
 <template>
   <div class="project_details">
-    <ManagePartInventoryModal :project="project" :part-to-edit="partToEdit" @manage-part-inventory-saved="onPartSaved"
-                              @manage-part-inventory-modal-closed="clearPartToEdit"
+    <ManagePartInventoryModal
+      :project="project" :part-to-edit="partToEdit" @manage-part-inventory-saved="onPartSaved"
+      @manage-part-inventory-modal-closed="clearPartToEdit"
     />
-    <ManagePartExternalModal :project="project" :part-to-edit="partToEdit" @manage-part-external-saved="onPartSaved"
-                             @manage-part-external-modal-closed="clearPartToEdit"
+    <ManagePartExternalModal
+      :project="project" :part-to-edit="partToEdit" @manage-part-external-saved="onPartSaved"
+      @manage-part-external-modal-closed="clearPartToEdit"
     />
-    <ViewModal :part="partDetails" :can-delete="false"
-               @view-part-modal-closed="onPartModalClosed"
+    <ViewModal
+      :part="partDetails" :can-delete="false"
+      @view-part-modal-closed="onPartModalClosed"
     />
 
     <div v-if="project" class="row">
@@ -79,8 +82,9 @@
 
             <div>
               <label for="boardsCount">Boards:</label>
-              <b-form-spinbutton id="boardsCount" v-model="boards" min="1"
-                                 class="w-25 ml-1"
+              <b-form-spinbutton
+                id="boardsCount" v-model="boards" min="1"
+                class="w-25 ml-1"
               />
             </div>
             <hr>
@@ -104,22 +108,26 @@
               </template>
 
               <template #cell(sourced)="data">
-                <i v-if="data.item.sourced" style="color: green;" class="fa fa-check"
-                   aria-hidden="true"
+                <i
+                  v-if="data.item.sourced" style="color: green;" class="fa fa-check"
+                  aria-hidden="true"
                 />
-                <i v-else class="fa fa-close" style="color: red;"
-                   aria-hidden="true"
+                <i
+                  v-else class="fa fa-close" style="color: red;"
+                  aria-hidden="true"
                 />
               </template>
 
               <template #cell(stock_qty)="data">
                 <template v-if="data.item.part">
-                  <span v-if="(data.item.part.stock_qty < data.item.qty)"
-                        class="qtyMinWarning"
+                  <span
+                    v-if="(data.item.part.stock_qty < data.item.qty)"
+                    class="qtyMinWarning"
                   >{{ data.item.part.stock_qty }}
-                    <i v-b-tooltip.hover class="fa fa-circle"
-                       aria-hidden="true"
-                       :title="currentStockQuantityWarning(data.item.qty)"
+                    <i
+                      v-b-tooltip.hover class="fa fa-circle"
+                      aria-hidden="true"
+                      :title="currentStockQuantityWarning(data.item.qty)"
                     />
                   </span>
                   <span v-else>{{ data.item.part.stock_qty }}</span>
@@ -129,12 +137,14 @@
 
               <template #cell(qty)="data">
                 <template v-if="data.item.part">
-                  <span v-if="(data.item.part.stock_qty < data.item.qty)"
-                        class="qtyMinWarning"
+                  <span
+                    v-if="(data.item.part.stock_qty < data.item.qty)"
+                    class="qtyMinWarning"
                   >{{ data.item.qty }}
-                    <i v-b-tooltip.hover class="fa fa-circle"
-                       aria-hidden="true"
-                       :title="currentStockQuantityWarning(data.item.part.stock_qty)"
+                    <i
+                      v-b-tooltip.hover class="fa fa-circle"
+                      aria-hidden="true"
+                      :title="currentStockQuantityWarning(data.item.part.stock_qty)"
                     />
                   </span>
                   <span v-else>{{ data.item.qty }}</span>
@@ -144,12 +154,14 @@
 
               <template #cell(qty_total)="data">
                 <template v-if="data.item.part">
-                  <span v-if="(data.item.part.stock_qty < data.item.qty*boards)"
-                        class="qtyMinWarning"
+                  <span
+                    v-if="(data.item.part.stock_qty < data.item.qty*boards)"
+                    class="qtyMinWarning"
                   >{{ data.item.qty*boards }}
-                    <i v-b-tooltip.hover class="fa fa-circle"
-                       aria-hidden="true"
-                       :title="currentStockQuantityWarning(data.item.part.stock_qty)"
+                    <i
+                      v-b-tooltip.hover class="fa fa-circle"
+                      aria-hidden="true"
+                      :title="currentStockQuantityWarning(data.item.part.stock_qty)"
                     />
                   </span>
                   <span v-else>{{ data.item.qty*boards }}</span>
@@ -208,8 +220,9 @@
                 </div>
               </b-form-group>
 
-              <b-button class="mb-3" type="submit" variant="primary"
-                        size="sm"
+              <b-button
+                class="mb-3" type="submit" variant="primary"
+                size="sm"
               >
                 Add
               </b-button>
