@@ -27,6 +27,9 @@ jobs:
         cd front
         yarn lint --no-fix
     - name: Test build
+      env:
+        NJS: ${{ matrix.node-version }}
       run: |
         cd front
-        NODE_OPTIONS=--openssl-legacy-provider yarn build
+        [ "${NJS}" == "16.x" ] && yarn build
+        [ "${NJS}" == "17.x" ] && NODE_OPTIONS=--openssl-legacy-provider yarn build
