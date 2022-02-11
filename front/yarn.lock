@@ -886,10 +886,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@capacitor/ios@2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.3.tgz#89dca15b2f8363cc03b825d60dee6ccf5c39cf0e"
-  integrity sha512-Wqi1Q+oLf8KUdvr+/JtQGKoWvGylredwJQZKbJ4B9pDysiT+9MHg94AqaEjxJ/Dn97n/0SLfRlPqZPJJxX+YgQ==
+"@capacitor/ios@2.4.9":
+  version "2.4.9"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.9.tgz#1733508a21f9ed20fac6b0fb6b263db1f637295c"
+  integrity sha512-JCuANGQUqy7oO6uIIEICNZbpawNaQn1PvSbTr+evcPk03JcdvHocWrW5s9nZ+T3SpUT5c9u58vjzqVbqCrj3yw==
 
 "@chenfengyuan/vue-qrcode@^1.0.2":
   version "1.0.2"
