@@ -901,12 +901,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.9.tgz#1733508a21f9ed20fac6b0fb6b263db1f637295c"
   integrity sha512-JCuANGQUqy7oO6uIIEICNZbpawNaQn1PvSbTr+evcPk03JcdvHocWrW5s9nZ+T3SpUT5c9u58vjzqVbqCrj3yw==
 
-"@chenfengyuan/vue-qrcode@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@chenfengyuan/vue-qrcode/-/vue-qrcode-1.0.2.tgz#37d71902e166e1ae58176bd6cb9c40905c1b0949"
-  integrity sha512-hwy1d4YMJAyEh+V7dLPG8eAKACRvugzSB4ylwb6QNqo84KHTF50/5EJcBYdUhTRPfAqrxG0i6jDAXONWOGyQbQ==
-  dependencies:
-    qrcode "^1.4.4"
+"@chenfengyuan/vue-qrcode@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@chenfengyuan/vue-qrcode/-/vue-qrcode-2.0.0.tgz#8cd01f6fc528d471680ebe812ec47c830aea7e63"
+  integrity sha512-33Cfr0zjbc3Dd8d5b1IgzXRAgXH0c2Gv19VI4snS25V/x9Z41eg769tC+Us1x+vqgQQhgD5YUjLnkpkrQfeMSw==
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -7654,7 +7652,7 @@ q@^1.1.2:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qrcode@^1.4.4, qrcode@^1.5.0:
+qrcode@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/qrcode/-/qrcode-1.5.0.tgz#95abb8a91fdafd86f8190f2836abbfc500c72d1b"
   integrity sha512-9MgRpgVc+/+47dFvQeD6U2s0Z92EsKzcHogtum4QB+UNd025WOJSHvn/hjk9xmzj7Stj95CyUAs31mrjxliEsQ==
