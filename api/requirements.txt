@@ -51,6 +51,5 @@ factory_boy==3.2.1
 persisting-theory==0.2.1
 pytest-env==0.6.2
 django-silk==4.2.0
-django-upload-validator==1.1.5
 djangorestframework-csv==2.1.1
 drf-renderer-xlsx==0.4.4

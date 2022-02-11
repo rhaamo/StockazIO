@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Project, ProjectAttachment, ProjectPart
 from controllers.part.serializers import PartSerializer
 from controllers.part.models import Part
-from upload_validator import FileTypeValidator
+from controllers.upload_validator import FileTypeValidator
 from django.conf import settings
 
 

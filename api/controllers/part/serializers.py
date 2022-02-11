@@ -17,7 +17,7 @@ from controllers.footprints.serializers import FootprintSerializer
 from controllers.distributor.serializers import DistributorSkuSerializer, DistributorSkuCreateSerializer
 from controllers.manufacturer.serializers import PartManufacturerSerializer, PartManufacturerCreateSerializer
 from drf_writable_nested.serializers import WritableNestedModelSerializer
-from upload_validator import FileTypeValidator
+from controllers.upload_validator import FileTypeValidator
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
