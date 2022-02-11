@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd front
-        yarn install
+        CXXFLAGS="--std=c++14" yarn install
     - name: Check linting
       run: |
         cd front
