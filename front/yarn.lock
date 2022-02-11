@@ -862,10 +862,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@capacitor/android@2.4.9":
-  version "2.4.9"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.9.tgz#ac1e5898df802fa02e5761c48513a2f7dc5006dc"
-  integrity sha512-WHBbcNBcTjPA98aC+mwPM4RpGBNRXKsv2dQv+Ki4wW19iw5nDuqLLSE540Rq0HC4Lduj8sCKqZvmEzppIKkK4w==
+"@capacitor/android@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-3.4.1.tgz#d4accc41c843927853d27c7f638487bd52633486"
+  integrity sha512-4qQGEdZTW8W01PTOzSScmx9NBDcsi1GRl32tyYnpQrjdH2f7hI9OX2MLbNkirtOwKNCDeinQfEqqn0hVCkgHag==
 
 "@capacitor/cli@^3.4.1":
   version "3.4.1"
@@ -889,17 +889,17 @@
     tslib "^2.1.0"
     xml2js "^0.4.23"
 
-"@capacitor/core@^2.4.9":
-  version "2.4.9"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-2.4.9.tgz#2711eae61b8a3afa188430ff13304d023063774a"
-  integrity sha512-dz7D8yr0VTYfjNvA8VlAn0AddHwAgrrQnZ0kyluNWtTbi9iJKtA9UmXw1NHbkPgVMrx9sJrhEawNXRCpzmM3rg==
+"@capacitor/core@^3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-3.4.1.tgz#110e59eef7344ddc2d5642fbdc48a79caf0435d7"
+  integrity sha512-BwN925gwXGEVAhnnVAXH57cp+/YW5PhFZloGYaN3Sm8eKcYDNeti38lV9DQ8A/T5PYkJw/+TSu8SsuoEQD0vwQ==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.1.0"
 
-"@capacitor/ios@2.4.9":
-  version "2.4.9"
-  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-2.4.9.tgz#1733508a21f9ed20fac6b0fb6b263db1f637295c"
-  integrity sha512-JCuANGQUqy7oO6uIIEICNZbpawNaQn1PvSbTr+evcPk03JcdvHocWrW5s9nZ+T3SpUT5c9u58vjzqVbqCrj3yw==
+"@capacitor/ios@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-3.4.1.tgz#0ae173056924294aa1e468b70377d603abea790e"
+  integrity sha512-ycFCyKI8DsgedVg7PW5MpCVgqFuD0PMHQGVfC5ichXc2C/jAATX32EVdEMCB0N3guKoH2k6T3Efwg59+Fcdx2w==
 
 "@chenfengyuan/vue-qrcode@^2.0.0":
   version "2.0.0"
