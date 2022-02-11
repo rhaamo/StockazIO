@@ -1,6 +1,6 @@
 appdirs==1.4.4
 asgiref==3.3.4
-attrs==21.2.0
+attrs==21.4.0
 backcall==0.2.0
 black==22.1.0
 Django==4.0.2
