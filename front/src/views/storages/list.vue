@@ -28,7 +28,7 @@
             </b-button>
           </li>
         </ul>
-        <template v-for="item in storages">
+        <template v-for="item in stateStorages">
           <ListCategory v-if="item.children && item.storage_locations"
           :item=item :level=1></ListCategory>
           <ListLocation v-else :item=item></ListLocation>
@@ -40,10 +40,12 @@
 
 <script>
 import apiService from '@/services/api/api.service'
+import logger from '@/logging'
 
 import ListCategory from './list-category'
 import ListLocation from './list-location'
 import ModalManageCategory from './modal-manage-category'
+import { mapState } from 'vuex'
 
 export default {
   name: 'StoragesList',
@@ -55,9 +57,13 @@ export default {
   data: () => ({
     modalManageCategoryParent: null,
     modalManageCategoryMode: 'add',
-    modalManageCategoryItem: null,
-    storages: []
+    modalManageCategoryItem: null
   }),
+  computed: {
+    ...mapState({
+      stateStorages: (state) => state.preloads.storages
+    })
+  },
   created () {
     this.$nextTick(() => {
       this.$root.$on('changeModalManageCategoryParent', (id) => {
@@ -72,15 +78,18 @@ export default {
       this.$root.$on('modalStoragesCategoryUpdateSetItem', (item) => {
         this.modalManageCategoryItem = item
       })
-      this.fetchStorages()
+      this.fetchStorages(true)
     })
   },
   methods: {
-    fetchStorages () {
-      apiService.getStorages()
-        .then((res) => {
-          this.storages = res.data
-        })
+    fetchStorages (init = false) {
+      if (!init) {
+        apiService.getStorages()
+          .then((res) => {
+            this.$store.commit('setStorages', res.data)
+            logger.default.info('Storages reloaded')
+          })
+      }
         // Reset field
         this.modalManageCategoryItem = null
         this.modalManageCategoryMode = 'add'
