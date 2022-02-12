@@ -7,14 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('storage', '0005_storagelocation_description'),
+        ("storage", "0005_storagelocation_description"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='storagelocation',
-            name='category',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='storage_locations', to='storage.storagecategory'),
+            model_name="storagelocation",
+            name="category",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="storage_locations",
+                to="storage.storagecategory",
+            ),
             preserve_default=False,
         ),
     ]

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Category
-from controllers.utils import RecursiveField
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -10,7 +9,6 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ["id", "name", "parts_count", "children"]
-
 
 
 CategorySerializer._declared_fields["parts_count"] = serializers.SerializerMethodField()

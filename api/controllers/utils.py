@@ -1,6 +1,6 @@
 import re
 
-from django.core.exceptions import ImproperlyConfigured
+from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.urls import re_path
 from django.views.static import serve
 from rest_framework import serializers
@@ -39,10 +39,10 @@ def static(prefix, view=serve, **kwargs):
 # Fix from https://github.com/axnsan12/drf-yasg/issues/632
 class RecursiveField(serializers.BaseSerializer):
     def to_representation(self, value):
-        depth = self.context.get('depth', 0)
-        self.context['depth'] = depth+1
+        depth = self.context.get("depth", 0)
+        self.context["depth"] = depth + 1
         ParentSerializer = self.parent.parent.__class__
-        serializer = ParentSerializer(value, context=self.context, depth=self.context['depth'])
+        serializer = ParentSerializer(value, context=self.context, depth=self.context["depth"])
 
         return serializer.data
 
@@ -52,9 +52,5 @@ class RecursiveField(serializers.BaseSerializer):
         try:
             instance = Model.objects.get(pk=data)
         except ObjectDoesNotExist:
-            raise serializers.ValidationError(
-                "Objeto {0} does not exists".format(
-                    Model().__class__.__name__
-                )
-            )
+            raise serializers.ValidationError("Objeto {0} does not exists".format(Model().__class__.__name__))
         return instance

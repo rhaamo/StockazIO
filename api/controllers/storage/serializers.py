@@ -21,7 +21,7 @@ class StorageLocationSerializer(serializers.ModelSerializer):
             "picture",
             # "picture_medium",
             "uuid",
-            "category"
+            "category",
         ]
 
 
@@ -41,6 +41,7 @@ class StorageSerializer(serializers.ModelSerializer):
         if self.depth != 1:
             fields["children"] = RecursiveField(many=True, required=False)
         return fields
+
 
 StorageSerializer._declared_fields["children"] = StorageSerializer(
     many=True,

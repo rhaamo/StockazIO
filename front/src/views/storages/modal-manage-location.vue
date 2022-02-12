@@ -53,8 +53,8 @@
 
             <b-form-group id="input-group-storage_location" label="Storage place:" label-for="storage_location">
               <vue-treeselect
-              :required="true"
-                v-model="form.parent_id" :multiple="false" :options="choicesStorageLocation"
+                v-model="form.parent_id"
+                :required="true" :multiple="false" :options="choicesStorageLocation"
                 search-nested :default-expand-level="Infinity" clearable
                 no-children-text placeholder="In the House ? The Workshop ?"
                 :disable-branch-nodes="true" :normalizer="storagesNormalizer"

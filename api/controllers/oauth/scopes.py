@@ -40,7 +40,7 @@ COMMON_SCOPES = ANONYMOUS_SCOPES | {
     "read:projects",
     "write:projects",
     "read:storages",
-    "write:storages"
+    "write:storages",
 }
 
 OAUTH_APP_SCOPES = COMMON_SCOPES
