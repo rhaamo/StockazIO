@@ -25,7 +25,8 @@
       <div class="col-md-12 mx-auto">
         <ul class="list_storages">
           <li>
-            <router-link to="#"
+            <router-link
+              to="#"
               title="Add storage category on root level"
               @click.native.prevent="addCategory(null)"
             >
