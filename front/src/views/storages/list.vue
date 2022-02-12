@@ -4,6 +4,10 @@
       :parent="modalManageCategoryParent" :mode="modalManageCategoryMode"
       :item="modalManageCategoryItem" @modal-storages-manage-category-closed="fetchStorages" @modal-storages-manage-category-saved="fetchStorages"
     />
+    <ModalManageLocation
+      :parent="modalManageLocationParent" :mode="modalManageLocationMode"
+      :item="modalManageLocationItem" @modal-storages-manage-location-closed="fetchStorages" @modal-storages-manage-location-saved="fetchStorages"
+    />
 
     <div class="row">
       <div class="col-8">
@@ -21,13 +25,12 @@
       <div class="col-md-12 mx-auto">
         <ul class="list_storages">
           <li>
-            <b-button
-              pill size="sm" variant="light"
+            <router-link to="#"
               title="Add storage category on root level"
-              @click.prevent="addCategory(null)"
+              @click.native.prevent="addCategory(null)"
             >
               <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root category
-            </b-button>
+            </router-link>
           </li>
         </ul>
         <template v-for="item in stateStorages">
@@ -49,6 +52,7 @@ import logger from '@/logging'
 import ListCategory from './list-category'
 import ListLocation from './list-location'
 import ModalManageCategory from './modal-manage-category'
+import ModalManageLocation from './modal-manage-location'
 import { mapState } from 'vuex'
 
 export default {
@@ -56,12 +60,16 @@ export default {
   components: {
     ListCategory,
     ListLocation,
-    ModalManageCategory
+    ModalManageCategory,
+    ModalManageLocation
   },
   data: () => ({
     modalManageCategoryParent: null,
     modalManageCategoryMode: 'add',
-    modalManageCategoryItem: null
+    modalManageCategoryItem: null,
+    modalManageLocationParent: null,
+    modalManageLocationMode: 'add',
+    modalManageLocationItem: null
   }),
   computed: {
     ...mapState({
@@ -71,16 +79,26 @@ export default {
   created () {
     this.$nextTick(() => {
       this.$root.$on('changeModalManageCategoryParent', (id) => {
-        this.changeModalManageCategoryParent(id)
+        this.modalManageCategoryParent = id
       })
       this.$root.$on('reloadStorageCategoriesTree', (id) => {
         this.fetchStorages()
       })
       this.$root.$on('changeModalManageCategoryMode', (mode) => {
-        this.changeModalManageCategoryMode(mode)
+        this.modalManageCategoryMode = mode
       })
       this.$root.$on('modalStoragesCategoryUpdateSetItem', (item) => {
         this.modalManageCategoryItem = item
+      })
+      //
+      this.$root.$on('changeModalManageLocationParent', (id) => {
+        this.modalManageLocationParent = id
+      })
+      this.$root.$on('changeModalManageLocationMode', (mode) => {
+        this.modalManageLocationMode = mode
+      })
+      this.$root.$on('modalStoragesLocationUpdateSetItem', (item) => {
+        this.modalManageLocationItem = item
       })
       this.fetchStorages(true)
     })
@@ -97,12 +115,8 @@ export default {
       // Reset field
       this.modalManageCategoryItem = null
       this.modalManageCategoryMode = 'add'
-    },
-    changeModalManageCategoryParent (id) {
-      this.modalManageCategoryParent = id
-    },
-    changeModalManageCategoryMode (mode) {
-      this.modalManageCategoryMode = mode
+      this.modalManageLocationItem = null
+      this.modalManageLocationMode = 'add'
     },
     addCategory (id) {
       this.changeModalManageCategoryParent(id)

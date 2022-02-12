@@ -14,6 +14,10 @@ const STORAGES_CATEGORY_CREATE = '/api/v1/storages/category/'
 const STORAGES_CATEGORY_DELETE = (id) => `/api/v1/storages/category/${id}/`
 const STORAGES_CATEGORY_UPDATE = (id) => `/api/v1/storages/category/${id}/`
 
+const STORAGES_LOCATION_CREATE = '/api/v1/storages/location/'
+const STORAGES_LOCATION_DELETE = (id) => `/api/v1/storages/location/${id}/`
+const STORAGES_LOCATION_UPDATE = (id) => `/api/v1/storages/location/${id}/`
+
 const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units/'
 const PARAMETERS_UNITS_CREATE = '/api/v1/parts/parameters/units/'
 const PARAMETERS_UNITS_DELETE = (id) => `/api/v1/parts/parameters/units/${id}/`
@@ -114,6 +118,44 @@ const deleteStorageCategory = (id) => {
 
 const updateStorageCategory = (id, data) => {
   return Axios.put(STORAGES_CATEGORY_UPDATE(id), data)
+}
+
+const createStorageLocation = (data) => {
+  let formData = new FormData()
+  if (data.name) {
+    formData.append('name', data.name)
+  }
+  if (data.description) {
+    formData.append('description', data.description)
+  }
+  if (data.category) {
+    formData.append('category', data.category)
+  }
+  if (data.picture && data.picture instanceof File) {
+    formData.append('picture', data.picture)
+  }
+  return Axios.post(STORAGES_LOCATION_CREATE, formData)
+}
+
+const deleteStorageLocation = (id) => {
+  return Axios.delete(STORAGES_LOCATION_DELETE(id))
+}
+
+const updateStorageLocation = (id, data) => {
+  let formData = new FormData()
+  if (data.name) {
+    formData.append('name', data.name)
+  }
+  if (data.description) {
+    formData.append('description', data.description)
+  }
+  if (data.category) {
+    formData.append('category', data.category)
+  }
+  if (data.picture && data.picture instanceof File) {
+    formData.append('picture', data.picture)
+  }
+  return Axios.put(STORAGES_LOCATION_UPDATE(id), formData)
 }
 
 // Parameters units
@@ -430,6 +472,9 @@ const apiService = {
   createStorageCategory,
   deleteStorageCategory,
   updateStorageCategory,
+  createStorageLocation,
+  deleteStorageLocation,
+  updateStorageLocation,
   getParametersUnits,
   createParametersUnits,
   deleteParametersUnits,

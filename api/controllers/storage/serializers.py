@@ -10,7 +10,7 @@ class StorageCategorySerializer(serializers.ModelSerializer):
 
 
 class StorageLocationSerializer(serializers.ModelSerializer):
-    picture_medium = serializers.ImageField(read_only=False)
+    # picture_medium = serializers.ImageField(read_only=False)
 
     class Meta:
         model = StorageLocation
@@ -19,8 +19,9 @@ class StorageLocationSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "picture",
-            "picture_medium",
+            # "picture_medium",
             "uuid",
+            "category"
         ]
 
 

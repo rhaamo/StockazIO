@@ -21,26 +21,22 @@
 
         &nbsp;&nbsp;
 
-      <b-button
-        pill size="sm" variant="light"
+      <router-link
         to="#"
         :title="addCategoryTitle(item.name)"
         @click.native.prevent="addCategory(item.id)"
       >
-        <i class="fa fa-home" aria-hidden="true" />&nbsp;
-        <i class="fa fa-plus" aria-hidden="true" />
-      </b-button>
+        [add category]
+      </router-link>
 
         &nbsp;&nbsp;
-      <b-button
-        pill size="sm" variant="info"
+      <router-link
         to="#"
         :title="addLocationTitle(item.name)"
         @click.native.prevent="addLocation(item.id)"
       >
-        <i class="fa fa-folder-o" aria-hidden="true" />&nbsp;
-        <i class="fa fa-plus" aria-hidden="true" />
-      </b-button>
+        [add location/box]
+      </router-link>
     </li>
     <ListCategory
       v-for="category in item.children" :key="category.id"
@@ -84,6 +80,14 @@ export default {
     },
     addCategoryTitle (name) {
       return `Add category under '${name}'`
+    },
+    addLocation (id) {
+      this.$root.$emit('changeModalManageLocationParent', id)
+      this.$root.$emit('changeModalManageLocationMode', 'add')
+      // Important to nextTick otherwise we don't get the time to emit the parent ID change
+      this.$nextTick(() => {
+        this.$bvModal.show('modalStoragesManageLocation')
+      })
     },
     addLocationTitle (name) {
       return `Add location/box under '${name}'`
