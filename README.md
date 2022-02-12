@@ -7,7 +7,6 @@ Manage your inventory of electronic stuff
 The following is not implemented and needs to be accessed through django admin `/admin`:
 - Edition of:
   - Footprints
-  - Storages
   - Categories
 
 # Requirements
