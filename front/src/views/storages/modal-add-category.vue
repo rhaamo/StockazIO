@@ -20,7 +20,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-11 mx-auto">
-          <b-form @submit.prevent="save">
+          <b-form @submit.prevent="saveOrUpdate">
 
             <b-form-group id="input-group-name" label="Name" label-for="name">
               <b-form-input
@@ -49,7 +49,7 @@
               </b-form-group>
 
             <b-button class="mt-3" type="submit" variant="primary">
-              Add
+              Save
             </b-button>
           </b-form>
         </div>
@@ -72,6 +72,12 @@ export default {
   props: {
     parent: {
       type: Number
+    },
+    mode: {
+      type: String
+    },
+    item: {
+      type: Object
     }
   },
   data: () => ({
@@ -97,9 +103,7 @@ export default {
             children: e.children && e.children.length ? e.children.map(cb) : 0
           }
         }
-        let res = state.preloads.storages.map(cb)
-        console.log(res)
-        return res
+        return state.preloads.storages.map(cb)
       }
     })
   },
@@ -107,11 +111,22 @@ export default {
     addCategoryShow () {
       console.log('parent=', this.parent)
       this.form.parent_id = this.parent
+      if (this.item) {
+        this.form.name = this.item.name
+        this.form.parent_id = this.item.parent
+      }
     },
     addCategoryClose () {
       this.clearForm()
       this.$bvModal.hide('modalStoragesAddCategory')
       this.$emit('modal-storages-add-category-closed')
+    },
+    saveOrUpdate () {
+      if (this.mode === 'add') {
+        this.save()
+      } else {
+        this.update()
+      }
     },
     save () {
       this.$v.$touch()
@@ -145,6 +160,41 @@ export default {
           toaster: 'b-toaster-top-center'
         })
         logger.default.error('Cannot add storage category', error.message)
+      })
+    },
+    update () {
+      console.log('uwu')
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        logger.default.error('form has errors')
+        return
+      }
+
+      let storageCategory = {
+        name: this.form.name,
+        parent: this.form.parent_id ? this.form.parent_id : null
+      }
+
+      apiService.updateStorageCategory(this.item.id, storageCategory)
+      .then(() => {
+        this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Success/Message', 'Success'), {
+          title: this.$pgettext('StorageCategory/Update/Toast/Success/Title', 'Update storage category'),
+          autoHideDelay: 5000,
+          appendToast: true,
+          variant: 'primary',
+          toaster: 'b-toaster-top-center'
+        })
+        this.addCategoryClose()
+      })
+      .catch((error) => {
+        this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+          title: this.$pgettext('StorageCategory/Update/Toast/Error/Title', 'Update storage category'),
+          autoHideDelay: 5000,
+          appendToast: true,
+          variant: 'danger',
+          toaster: 'b-toaster-top-center'
+        })
+        logger.default.error('Cannot update storage category', error.message)
       })
     },
     clearForm () {

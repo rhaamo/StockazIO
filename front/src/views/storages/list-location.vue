@@ -1,7 +1,7 @@
 <template>
   <li>
       <i class="fa fa-folder-o" aria-hidden="true"></i> {{ item.name }}<br />
-      <template v-if="item.description">&raquo; {{ item.description }}</template>
+      <template v-if="item.description">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }}</template>
   </li>
 </template>
 

@@ -11,6 +11,8 @@ const FOOTPRINTS_URL = '/api/v1/footprints/'
 
 const STORAGES_URL = '/api/v1/storages/'
 const STORAGES_CATEGORY_CREATE = '/api/v1/storages/category/'
+const STORAGES_CATEGORY_DELETE = (id) => `/api/v1/storages/category/${id}/`
+const STORAGES_CATEGORY_UPDATE = (id) => `/api/v1/storages/category/${id}/`
 
 const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units/'
 const PARAMETERS_UNITS_CREATE = '/api/v1/parts/parameters/units/'
@@ -104,6 +106,14 @@ const getStorages = () => {
 
 const createStorageCategory = (data) => {
   return Axios.post(STORAGES_CATEGORY_CREATE, data)
+}
+
+const deleteStorageCategory = (id) => {
+  return Axios.delete(STORAGES_CATEGORY_DELETE(id))
+}
+
+const updateStorageCategory = (id, data) => {
+  return Axios.put(STORAGES_CATEGORY_UPDATE(id), data)
 }
 
 // Parameters units
@@ -418,6 +428,8 @@ const apiService = {
   getFootprints,
   getStorages,
   createStorageCategory,
+  deleteStorageCategory,
+  updateStorageCategory,
   getParametersUnits,
   createParametersUnits,
   deleteParametersUnits,

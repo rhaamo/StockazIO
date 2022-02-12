@@ -33,7 +33,7 @@ class StorageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StorageCategory
-        fields = ["id", "name", "children", "storage_locations"]
+        fields = ["id", "name", "children", "storage_locations", "parent"]
 
     def get_fields(self):
         fields = super().get_fields()

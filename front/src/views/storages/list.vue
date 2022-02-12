@@ -2,7 +2,7 @@
   <div class="storages_list">
     <ModalAddCategory
       :parent="modalAddCategoryParent" @modal-storages-add-category-closed="fetchStorages"
-      @modal-storages-add-category-saved="fetchStorages"
+      @modal-storages-add-category-saved="fetchStorages" :mode="modalAddCategoryMode" :item="modalAddCategoryItem"
     />
 
     <div class="row">
@@ -54,12 +54,23 @@ export default {
   },
   data: () => ({
     modalAddCategoryParent: null,
+    modalAddCategoryMode: 'add',
+    modalAddCategoryItem: null,
     storages: []
   }),
   created () {
     this.$nextTick(() => {
       this.$root.$on('changeModalAddCategoryParent', (id) => {
         this.changeModalAddCategoryParent(id)
+      })
+      this.$root.$on('reloadStorageCategoriesTree', (id) => {
+        this.fetchStorages()
+      })
+      this.$root.$on('changeModalAddCategoryMode', (mode) => {
+        this.changeModalAddCategoryMode(mode)
+      })
+      this.$root.$on('modalStoragesCategoryUpdateSetItem', (item) => {
+        this.modalAddCategoryItem = item
       })
       this.fetchStorages()
     })
@@ -70,12 +81,19 @@ export default {
         .then((res) => {
           this.storages = res.data
         })
+        // Reset field
+        this.modalAddCategoryItem = null
+        this.modalAddCategoryMode = 'add'
     },
     changeModalAddCategoryParent (id) {
       this.modalAddCategoryParent = id
     },
+    changeModalAddCategoryMode (mode) {
+      this.modalAddCategoryMode = mode
+    },
     addCategory (id) {
         this.changeModalAddCategoryParent(id)
+        this.modalAddCategoryMode = 'add'
         // Important to nextTick otherwise we don't get the time to emit the parent ID change
         this.$nextTick(() => {
           this.$bvModal.show('modalStoragesAddCategory')
