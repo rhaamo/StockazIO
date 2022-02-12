@@ -29,7 +29,7 @@
               <b-dropdown-item :to="{name: 'distributors-list'}">
                 <i class="fa fa-car fa-fw" /> Distributors
               </b-dropdown-item>
-              <b-dropdown-item :to="{}">
+              <b-dropdown-item :to="{name: 'storages-list'}">
                 <i class="fa fa-archive fa-fw" /> Storage
               </b-dropdown-item>
               <b-dropdown-item :to="{ name: 'part-units-list' }">

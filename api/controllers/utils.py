@@ -1,8 +1,9 @@
 import re
 
-from django.core.exceptions import ImproperlyConfigured
+from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.urls import re_path
 from django.views.static import serve
+from rest_framework import serializers
 
 
 def join_url(start, end):
@@ -33,3 +34,23 @@ def static(prefix, view=serve, **kwargs):
     return [
         re_path(r"^%s(?P<path>.*)$" % re.escape(prefix.lstrip("/")), view, kwargs=kwargs),
     ]
+
+
+# Fix from https://github.com/axnsan12/drf-yasg/issues/632
+class RecursiveField(serializers.BaseSerializer):
+    def to_representation(self, value):
+        depth = self.context.get("depth", 0)
+        self.context["depth"] = depth + 1
+        ParentSerializer = self.parent.parent.__class__
+        serializer = ParentSerializer(value, context=self.context, depth=self.context["depth"])
+
+        return serializer.data
+
+    def to_internal_value(self, data):
+        ParentSerializer = self.parent.parent.__class__
+        Model = ParentSerializer.Meta.model
+        try:
+            instance = Model.objects.get(pk=data)
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Objeto {0} does not exists".format(Model().__class__.__name__))
+        return instance

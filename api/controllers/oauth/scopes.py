@@ -8,7 +8,7 @@ class Scope:
         return Scope("{}:{}".format(prefix, self.id))
 
 
-BASE_SCOPES = [Scope("app"), Scope("categories"), Scope("parts"), Scope("projects")]
+BASE_SCOPES = [Scope("app"), Scope("categories"), Scope("parts"), Scope("projects"), Scope("storages")]
 
 SCOPES = [
     Scope("read", children=[s.copy("read") for s in BASE_SCOPES]),
@@ -39,6 +39,8 @@ COMMON_SCOPES = ANONYMOUS_SCOPES | {
     "write:parts",
     "read:projects",
     "write:projects",
+    "read:storages",
+    "write:storages",
 }
 
 OAUTH_APP_SCOPES = COMMON_SCOPES
