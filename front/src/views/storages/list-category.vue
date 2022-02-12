@@ -46,7 +46,10 @@ export default {
   methods: {
     addCategory (id) {
         this.$root.$emit('changeModalAddCategoryParent', id)
-        this.$bvModal.show('modalStoragesAddCategory')
+        // Important to nextTick otherwise we don't get the time to emit the parent ID change
+        this.$nextTick(() => {
+            this.$bvModal.show('modalStoragesAddCategory')
+        })
     },
     addCategoryTitle (name) {
         return `Add category under '${name}'`

@@ -2,8 +2,15 @@ from rest_framework import serializers
 from .models import StorageCategory, StorageLocation
 from controllers.utils import RecursiveField
 
+
+class StorageCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StorageCategory
+        fields = ["id", "name", "parent"]
+
+
 class StorageLocationSerializer(serializers.ModelSerializer):
-    picture_medium = serializers.ImageField(read_only=True)
+    picture_medium = serializers.ImageField(read_only=False)
 
     class Meta:
         model = StorageLocation

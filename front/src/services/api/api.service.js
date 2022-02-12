@@ -10,6 +10,7 @@ const APP_INFORMATIONS_URL = '/api/v1/app/informations'
 const FOOTPRINTS_URL = '/api/v1/footprints/'
 
 const STORAGES_URL = '/api/v1/storages/'
+const STORAGES_CATEGORY_CREATE = '/api/v1/storages/category/'
 
 const PARAMETERS_UNITS_URL = '/api/v1/parts/parameters/units/'
 const PARAMETERS_UNITS_CREATE = '/api/v1/parts/parameters/units/'
@@ -99,6 +100,10 @@ const getFootprints = () => {
 
 const getStorages = () => {
   return Axios.get(STORAGES_URL)
+}
+
+const createStorageCategory = (data) => {
+  return Axios.post(STORAGES_CATEGORY_CREATE, data)
 }
 
 // Parameters units
@@ -412,6 +417,7 @@ const apiService = {
   getInformations,
   getFootprints,
   getStorages,
+  createStorageCategory,
   getParametersUnits,
   createParametersUnits,
   deleteParametersUnits,

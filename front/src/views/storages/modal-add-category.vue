@@ -1,8 +1,9 @@
 <template>
   <b-modal
     id="modalStoragesAddCategory" ref="modalStoragesAddCategory"
-    size="xl" hide-footer @cancel="partModalClose"
-    @close="partModalClose" @hidden="partModalClose"
+    size="md" hide-footer @cancel="addCategoryClose"
+    @close="addCategoryClose" @hidden="addCategoryClose"
+    @show="addCategoryShow"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
@@ -21,10 +22,34 @@
         <div class="col-md-11 mx-auto">
           <b-form @submit.prevent="save">
 
-            parent: {{ parent || 'root' }}<br/>
+            <b-form-group id="input-group-name" label="Name" label-for="name">
+              <b-form-input
+                id="name"
+                ref="inputname"
+                v-model="form.name"
+                required
+                placeholder="Under the bed"
+                :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+              />
+              <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
+                Category name is required
+              </div>
+              <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                Maximum length is 200
+              </div>
+            </b-form-group>
+
+            <b-form-group id="input-group-storage_location" label="Parent storage category:" label-for="storage_location">
+                <vue-treeselect
+                  v-model="form.parent_id" :multiple="false" :options="choicesStorageLocation"
+                  search-nested :default-expand-level="Infinity" clearable
+                  no-children-text placeholder="In the House ? The Workshop ?"
+                  :disable-branch-nodes="false"
+                />
+              </b-form-group>
 
             <b-button class="mt-3" type="submit" variant="primary">
-              Save
+              Add
             </b-button>
           </b-form>
         </div>
@@ -35,7 +60,10 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
+import { required, maxLength } from 'vuelidate/lib/validators'
 import logger from '@/logging'
+import { mapState } from 'vuex'
+import apiService from '@/services/api/api.service'
 
 export default {
   mixins: [
@@ -49,16 +77,38 @@ export default {
   data: () => ({
     modalAddCategoryParent: null,
     form: {
+      name: '',
+      parent_id: ''
     }
   }),
   validations: {
     form: {
+      name: { required, maxLength: maxLength(200) },
+      parent_id: {}
     }
   },
   computed: {
+    ...mapState({
+      choicesStorageLocation: (state) => {
+        const cb = (e) => {
+          return {
+            id: e.id,
+            label: e.name,
+            children: e.children && e.children.length ? e.children.map(cb) : 0
+          }
+        }
+        let res = state.preloads.storages.map(cb)
+        console.log(res)
+        return res
+      }
+    })
   },
   methods: {
-    partModalClose () {
+    addCategoryShow () {
+      console.log('parent=', this.parent)
+      this.form.parent_id = this.parent
+    },
+    addCategoryClose () {
       this.clearForm()
       this.$bvModal.hide('modalStoragesAddCategory')
       this.$emit('modal-storages-add-category-closed')
@@ -67,10 +117,39 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('form has errors')
-        // return
+        return
       }
+
+      let storageCategory = {
+        name: this.form.name,
+        parent: this.form.parent_id
+      }
+
+      apiService.createStorageCategory(storageCategory)
+      .then(() => {
+        this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Success/Message', 'Success'), {
+          title: this.$pgettext('StorageCategory/Add/Toast/Success/Title', 'Add storage category'),
+          autoHideDelay: 5000,
+          appendToast: true,
+          variant: 'primary',
+          toaster: 'b-toaster-top-center'
+        })
+        this.addCategoryClose()
+      })
+      .catch((error) => {
+        this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+          title: this.$pgettext('StorageCategory/Add/Toast/Error/Title', 'Add storage category'),
+          autoHideDelay: 5000,
+          appendToast: true,
+          variant: 'danger',
+          toaster: 'b-toaster-top-center'
+        })
+        logger.default.error('Cannot add storage category', error.message)
+      })
     },
     clearForm () {
+      this.form.name = ''
+      this.form.parent_id = ''
       this.$v.$reset()
     }
   }
