@@ -1,13 +1,13 @@
 <template>
   <b-modal
-    id="modalStoragesAddCategory" ref="modalStoragesAddCategory"
-    size="md" hide-footer @cancel="addCategoryClose"
-    @close="addCategoryClose" @hidden="addCategoryClose"
-    @show="addCategoryShow"
+    id="modalStoragesManageCategory" ref="modalStoragesManageCategory"
+    size="md" hide-footer @cancel="manageCategoryClose"
+    @close="manageCategoryClose" @hidden="manageCategoryClose"
+    @show="manageCategoryShow"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
-        Add storage category
+        Manage storage category
       </h5>
       <button
         type="button" class="close" data-dismiss="modal"
@@ -81,7 +81,7 @@ export default {
     }
   },
   data: () => ({
-    modalAddCategoryParent: null,
+    modalManageCategoryParent: null,
     form: {
       name: '',
       parent_id: ''
@@ -108,18 +108,17 @@ export default {
     })
   },
   methods: {
-    addCategoryShow () {
-      console.log('parent=', this.parent)
+    manageCategoryShow () {
       this.form.parent_id = this.parent
       if (this.item) {
         this.form.name = this.item.name
         this.form.parent_id = this.item.parent
       }
     },
-    addCategoryClose () {
+    manageCategoryClose () {
       this.clearForm()
-      this.$bvModal.hide('modalStoragesAddCategory')
-      this.$emit('modal-storages-add-category-closed')
+      this.$bvModal.hide('modalStoragesManageCategory')
+      this.$emit('modal-storages-manage-category-closed')
     },
     saveOrUpdate () {
       if (this.mode === 'add') {
@@ -149,7 +148,7 @@ export default {
           variant: 'primary',
           toaster: 'b-toaster-top-center'
         })
-        this.addCategoryClose()
+        this.manageCategoryClose()
       })
       .catch((error) => {
         this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -163,7 +162,6 @@ export default {
       })
     },
     update () {
-      console.log('uwu')
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('form has errors')
@@ -184,7 +182,7 @@ export default {
           variant: 'primary',
           toaster: 'b-toaster-top-center'
         })
-        this.addCategoryClose()
+        this.manageCategoryClose()
       })
       .catch((error) => {
         this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Error/Message', 'An error occured, please try again later'), {

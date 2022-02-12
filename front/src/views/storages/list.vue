@@ -1,8 +1,8 @@
 <template>
   <div class="storages_list">
-    <ModalAddCategory
-      :parent="modalAddCategoryParent" @modal-storages-add-category-closed="fetchStorages"
-      @modal-storages-add-category-saved="fetchStorages" :mode="modalAddCategoryMode" :item="modalAddCategoryItem"
+    <ModalManageCategory
+      :parent="modalManageCategoryParent" @modal-storages-manage-category-closed="fetchStorages"
+      @modal-storages-manage-category-saved="fetchStorages" :mode="modalManageCategoryMode" :item="modalManageCategoryItem"
     />
 
     <div class="row">
@@ -43,34 +43,34 @@ import apiService from '@/services/api/api.service'
 
 import ListCategory from './list-category'
 import ListLocation from './list-location'
-import ModalAddCategory from './modal-add-category'
+import ModalManageCategory from './modal-manage-category'
 
 export default {
   name: 'StoragesList',
   components: {
     ListCategory,
     ListLocation,
-    ModalAddCategory
+    ModalManageCategory
   },
   data: () => ({
-    modalAddCategoryParent: null,
-    modalAddCategoryMode: 'add',
-    modalAddCategoryItem: null,
+    modalManageCategoryParent: null,
+    modalManageCategoryMode: 'add',
+    modalManageCategoryItem: null,
     storages: []
   }),
   created () {
     this.$nextTick(() => {
-      this.$root.$on('changeModalAddCategoryParent', (id) => {
-        this.changeModalAddCategoryParent(id)
+      this.$root.$on('changeModalManageCategoryParent', (id) => {
+        this.changeModalManageCategoryParent(id)
       })
       this.$root.$on('reloadStorageCategoriesTree', (id) => {
         this.fetchStorages()
       })
-      this.$root.$on('changeModalAddCategoryMode', (mode) => {
-        this.changeModalAddCategoryMode(mode)
+      this.$root.$on('changeModalManageCategoryMode', (mode) => {
+        this.changeModalManageCategoryMode(mode)
       })
       this.$root.$on('modalStoragesCategoryUpdateSetItem', (item) => {
-        this.modalAddCategoryItem = item
+        this.modalManageCategoryItem = item
       })
       this.fetchStorages()
     })
@@ -82,21 +82,21 @@ export default {
           this.storages = res.data
         })
         // Reset field
-        this.modalAddCategoryItem = null
-        this.modalAddCategoryMode = 'add'
+        this.modalManageCategoryItem = null
+        this.modalManageCategoryMode = 'add'
     },
-    changeModalAddCategoryParent (id) {
-      this.modalAddCategoryParent = id
+    changeModalManageCategoryParent (id) {
+      this.modalManageCategoryParent = id
     },
-    changeModalAddCategoryMode (mode) {
-      this.modalAddCategoryMode = mode
+    changeModalManageCategoryMode (mode) {
+      this.modalManageCategoryMode = mode
     },
     addCategory (id) {
-        this.changeModalAddCategoryParent(id)
-        this.modalAddCategoryMode = 'add'
+        this.changeModalManageCategoryParent(id)
+        this.modalManageCategoryMode = 'add'
         // Important to nextTick otherwise we don't get the time to emit the parent ID change
         this.$nextTick(() => {
-          this.$bvModal.show('modalStoragesAddCategory')
+          this.$bvModal.show('modalStoragesManageCategory')
         })
     }
   }

@@ -65,11 +65,11 @@ export default {
   },
   methods: {
     addCategory (id) {
-        this.$root.$emit('changeModalAddCategoryParent', id)
-        this.$root.$emit('changeModalAddCategoryMode', 'add')
+        this.$root.$emit('changeModalManageCategoryParent', id)
+        this.$root.$emit('changeModalManageCategoryMode', 'add')
         // Important to nextTick otherwise we don't get the time to emit the parent ID change
         this.$nextTick(() => {
-            this.$bvModal.show('modalStoragesAddCategory')
+            this.$bvModal.show('modalStoragesManageCategory')
         })
     },
     addCategoryTitle (name) {
@@ -79,11 +79,11 @@ export default {
         return `Add location/box under '${name}'`
     },
     editCategory (item) {
-        this.$root.$emit('changeModalAddCategoryMode', 'edit')
+        this.$root.$emit('changeModalManageCategoryMode', 'edit')
         this.$root.$emit('modalStoragesCategoryUpdateSetItem', item)
         // Important to nextTick otherwise we don't get the time to emit the parent ID change
         this.$nextTick(() => {
-            this.$bvModal.show('modalStoragesAddCategory')
+            this.$bvModal.show('modalStoragesManageCategory')
         })
     },
     deleteCategory (item) {
