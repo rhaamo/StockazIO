@@ -53,6 +53,7 @@
 
             <b-form-group id="input-group-storage_location" label="Storage place:" label-for="storage_location">
               <vue-treeselect
+              :required="true"
                 v-model="form.parent_id" :multiple="false" :options="choicesStorageLocation"
                 search-nested :default-expand-level="Infinity" clearable
                 no-children-text placeholder="In the House ? The Workshop ?"
@@ -104,7 +105,7 @@ export default {
     form: {
       name: { required, maxLength: maxLength(255) },
       description: { maxLength: maxLength(255) },
-      parent_id: {}
+      parent_id: { required }
     }
   },
   computed: {
