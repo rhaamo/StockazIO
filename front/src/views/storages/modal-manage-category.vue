@@ -21,7 +21,6 @@
       <div class="row">
         <div class="col-md-11 mx-auto">
           <b-form @submit.prevent="saveOrUpdate">
-
             <b-form-group id="input-group-name" label="Name" label-for="name">
               <b-form-input
                 id="name"
@@ -40,13 +39,13 @@
             </b-form-group>
 
             <b-form-group id="input-group-storage_location" label="Parent storage category:" label-for="storage_location">
-                <vue-treeselect
-                  v-model="form.parent_id" :multiple="false" :options="choicesStorageLocation"
-                  search-nested :default-expand-level="Infinity" clearable
-                  no-children-text placeholder="In the House ? The Workshop ?"
-                  :disable-branch-nodes="false"
-                />
-              </b-form-group>
+              <vue-treeselect
+                v-model="form.parent_id" :multiple="false" :options="choicesStorageLocation"
+                search-nested :default-expand-level="Infinity" clearable
+                no-children-text placeholder="In the House ? The Workshop ?"
+                :disable-branch-nodes="false"
+              />
+            </b-form-group>
 
             <b-button class="mt-3" type="submit" variant="primary">
               Save
@@ -140,26 +139,26 @@ export default {
       }
 
       apiService.createStorageCategory(storageCategory)
-      .then(() => {
-        this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Success/Message', 'Success'), {
-          title: this.$pgettext('StorageCategory/Add/Toast/Success/Title', 'Add storage category'),
-          autoHideDelay: 5000,
-          appendToast: true,
-          variant: 'primary',
-          toaster: 'b-toaster-top-center'
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('StorageCategory/Add/Toast/Success/Title', 'Add storage category'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.manageCategoryClose()
         })
-        this.manageCategoryClose()
-      })
-      .catch((error) => {
-        this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-          title: this.$pgettext('StorageCategory/Add/Toast/Error/Title', 'Add storage category'),
-          autoHideDelay: 5000,
-          appendToast: true,
-          variant: 'danger',
-          toaster: 'b-toaster-top-center'
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('StorageCategory/Add/Toast/Error/Title', 'Add storage category'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Cannot add storage category', error.message)
         })
-        logger.default.error('Cannot add storage category', error.message)
-      })
     },
     update () {
       this.$v.$touch()
@@ -174,26 +173,26 @@ export default {
       }
 
       apiService.updateStorageCategory(this.item.id, storageCategory)
-      .then(() => {
-        this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Success/Message', 'Success'), {
-          title: this.$pgettext('StorageCategory/Update/Toast/Success/Title', 'Update storage category'),
-          autoHideDelay: 5000,
-          appendToast: true,
-          variant: 'primary',
-          toaster: 'b-toaster-top-center'
+        .then(() => {
+          this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('StorageCategory/Update/Toast/Success/Title', 'Update storage category'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.manageCategoryClose()
         })
-        this.manageCategoryClose()
-      })
-      .catch((error) => {
-        this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-          title: this.$pgettext('StorageCategory/Update/Toast/Error/Title', 'Update storage category'),
-          autoHideDelay: 5000,
-          appendToast: true,
-          variant: 'danger',
-          toaster: 'b-toaster-top-center'
+        .catch((error) => {
+          this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('StorageCategory/Update/Toast/Error/Title', 'Update storage category'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Cannot update storage category', error.message)
         })
-        logger.default.error('Cannot update storage category', error.message)
-      })
     },
     clearForm () {
       this.form.name = ''

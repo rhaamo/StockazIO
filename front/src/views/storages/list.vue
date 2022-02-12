@@ -1,8 +1,8 @@
 <template>
   <div class="storages_list">
     <ModalManageCategory
-      :parent="modalManageCategoryParent" @modal-storages-manage-category-closed="fetchStorages"
-      @modal-storages-manage-category-saved="fetchStorages" :mode="modalManageCategoryMode" :item="modalManageCategoryItem"
+      :parent="modalManageCategoryParent" :mode="modalManageCategoryMode"
+      :item="modalManageCategoryItem" @modal-storages-manage-category-closed="fetchStorages" @modal-storages-manage-category-saved="fetchStorages"
     />
 
     <div class="row">
@@ -21,17 +21,21 @@
       <div class="col-md-12 mx-auto">
         <ul class="list_storages">
           <li>
-            <b-button pill size="sm" variant="light"
-            @click.prevent="addCategory(null)"
-            title="Add storage category on root level">
-              <i class="fa fa-plus-square-o" aria-hidden="true"></i> Add root category
+            <b-button
+              pill size="sm" variant="light"
+              title="Add storage category on root level"
+              @click.prevent="addCategory(null)"
+            >
+              <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root category
             </b-button>
           </li>
         </ul>
         <template v-for="item in stateStorages">
-          <ListCategory v-if="item.children && item.storage_locations"
-          :item=item :level=1></ListCategory>
-          <ListLocation v-else :item=item></ListLocation>
+          <ListCategory
+            v-if="item.children && item.storage_locations"
+            :key="item.id" :item="item" :level="1"
+          />
+          <ListLocation v-else :key="item.uuid" :item="item" />
         </template>
       </div>
     </div>
@@ -90,9 +94,9 @@ export default {
             logger.default.info('Storages reloaded')
           })
       }
-        // Reset field
-        this.modalManageCategoryItem = null
-        this.modalManageCategoryMode = 'add'
+      // Reset field
+      this.modalManageCategoryItem = null
+      this.modalManageCategoryMode = 'add'
     },
     changeModalManageCategoryParent (id) {
       this.modalManageCategoryParent = id
@@ -101,12 +105,12 @@ export default {
       this.modalManageCategoryMode = mode
     },
     addCategory (id) {
-        this.changeModalManageCategoryParent(id)
-        this.modalManageCategoryMode = 'add'
-        // Important to nextTick otherwise we don't get the time to emit the parent ID change
-        this.$nextTick(() => {
-          this.$bvModal.show('modalStoragesManageCategory')
-        })
+      this.changeModalManageCategoryParent(id)
+      this.modalManageCategoryMode = 'add'
+      // Important to nextTick otherwise we don't get the time to emit the parent ID change
+      this.$nextTick(() => {
+        this.$bvModal.show('modalStoragesManageCategory')
+      })
     }
   }
 }
