@@ -1,7 +1,28 @@
 <template>
   <li>
     <i class="fa fa-folder-o" aria-hidden="true" /> {{ item.name }}
+
+    <template v-if="item.picture">
+        &nbsp;
+      <i
+        :id="item.uuid"
+        class="fa fa-file-image-o"
+        aria-hidden="true"
+      />
+      <b-popover
+        :target="item.uuid"
+        placement="right"
+        triggers="hover focus"
+      >
+        <template #title>
+          Storage Picture
+        </template>
+        <img :src="item.picture_medium" width="250px">
+      </b-popover>
+    </template>
+
     &nbsp;&nbsp;
+
     <router-link to="#" title="Edit Location" @click.native.prevent="editLocation(item)">
       <i
         class="fa fa-pencil-square-o"

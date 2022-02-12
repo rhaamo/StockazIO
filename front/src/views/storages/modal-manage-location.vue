@@ -61,6 +61,19 @@
               />
             </b-form-group>
 
+            <b-form-group id="input-group-picture" label="Picture" label-for="picture">
+              <b-form-file
+                id="picture"
+                ref="file"
+                v-model="form.picture"
+                :accept="allowedUploadTypes"
+                :state="$v.form.picture.$dirty ? !$v.form.picture.$error : null"
+              />
+              <template v-if="mode==='edit' && typeof item.picture === 'string'">
+                Current <a :href="item.picture" target="_blank">file</a>.
+              </template>
+            </b-form-group>
+
             <b-button class="mt-3" type="submit" variant="primary">
               Save
             </b-button>
@@ -98,20 +111,27 @@ export default {
     form: {
       name: '',
       description: '',
-      parent_id: ''
+      parent_id: '',
+      picture: null
     }
   }),
   validations: {
     form: {
       name: { required, maxLength: maxLength(255) },
       description: { maxLength: maxLength(255) },
-      parent_id: { required }
+      parent_id: { required },
+      picture: {}
     }
   },
   computed: {
     ...mapState({
-      choicesStorageLocation: (state) => state.preloads.storages
-    })
+      choicesStorageLocation: (state) => state.preloads.storages,
+      serverSettings: state => state.server.settings
+    }),
+    allowedUploadTypes () {
+      let types = this.serverSettings.partAttachmentAllowedTypes || ['image/jpeg', 'image/png']
+      return types.join(', ')
+    }
   },
   methods: {
     storagesNormalizer: function (node) {
@@ -127,6 +147,7 @@ export default {
         this.form.name = this.item.name
         this.form.description = this.item.description
         this.form.parent_id = `cat_${this.item.category}`
+        this.form.picture = this.item.picture
       }
     },
     manageLocationClose () {
@@ -152,7 +173,7 @@ export default {
         name: this.form.name,
         description: this.form.description,
         category: this.form.parent_id.split('_')[1],
-        picture: null
+        picture: this.form.picture
       }
 
       apiService.createStorageLocation(storageLocation)
@@ -188,7 +209,7 @@ export default {
         name: this.form.name,
         description: this.form.description,
         category: this.form.parent_id.split('_')[1],
-        picture: null
+        picture: this.form.picture
       }
 
       apiService.updateStorageLocation(this.item.id, storageLocation)
@@ -217,6 +238,7 @@ export default {
       this.form.name = ''
       this.form.description = ''
       this.form.parent_id = ''
+      this.form.picture = null
       this.$v.$reset()
     }
   }
