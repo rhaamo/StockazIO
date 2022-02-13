@@ -53,3 +53,4 @@ pytest-env==0.6.2
 django-silk==4.2.0
 djangorestframework-csv==2.1.1
 drf-renderer-xlsx==0.4.4
+fpdf==1.7.2

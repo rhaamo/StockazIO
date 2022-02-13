@@ -23,6 +23,15 @@
 
     &nbsp;&nbsp;
 
+    <router-link to="#" title="QrCode label generator" @click.native.prevent="labelGenerator(item)">
+      <i
+        class="fa fa-qrcode"
+        aria-hidden="true"
+      />
+    </router-link>
+
+    &nbsp;&nbsp;
+
     <router-link to="#" title="Edit Location" @click.native.prevent="editLocation(item)">
       <i
         class="fa fa-pencil-square-o"
@@ -49,6 +58,8 @@ import apiService from '@/services/api/api.service'
 
 export default {
   name: 'ListLocation',
+  components: {
+  },
   props: {
     'item': Object,
     'level': Number
@@ -62,6 +73,13 @@ export default {
       // Important to nextTick otherwise we don't get the time to emit the parent ID change
       this.$nextTick(() => {
         this.$bvModal.show('modalStoragesManageLocation')
+      })
+    },
+    labelGenerator (item) {
+      this.$root.$emit('modalLabelGeneratorSetItem', item)
+      // Important to nextTick otherwise we don't get the time to emit the parent ID change
+      this.$nextTick(() => {
+        this.$bvModal.show('modalLabelGenerator')
       })
     },
     deleteLocation (item) {
