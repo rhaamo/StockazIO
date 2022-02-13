@@ -40,6 +40,7 @@ class Command(BaseCommand):
             with open(file_path) as csv_file:
                 csv_reader = csv.DictReader(csv_file, delimiter=",")
                 for row in csv_reader:
+                    print(f"Working on line: {row}")
                     # Get or create part unit
                     if row["partUnit.name"] == "null":
                         part_unit = None
@@ -52,6 +53,10 @@ class Command(BaseCommand):
                             category = None
                     except Category.MultipleObjectsReturned:
                         category = None
+                        print(f"Category named '{row['category.name']}' returned multiple objects")
+                    except Category.DoesNotExist:
+                        category = None
+                        print(f"Category named '{row['category.name']}' does not exists")
                     # Get footprint category if possible
                     try:
                         footprint_category = FootprintCategory.objects.get(name=row["footprint.category.name"])
@@ -103,6 +108,7 @@ class Command(BaseCommand):
                     )
                     count = count + 1
                     count_imported = count_imported + 1
+                    print("")
 
         except FileNotFoundError:
             raise CommandError(f"File {file_path!r} does not exist.")
