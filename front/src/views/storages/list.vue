@@ -35,6 +35,16 @@
             >
               <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root category
             </router-link>
+
+            &nbsp;&nbsp;&nbsp;
+
+            <router-link
+              to="#"
+              title="Bulk-generate labels"
+              @click.native.prevent="bulkGenerateLabels()"
+            >
+              <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
+            </router-link>
           </li>
         </ul>
         <template v-for="item in stateStorages">
@@ -139,6 +149,20 @@ export default {
     },
     labelGeneratorClosed () {
       this.modalLabelGeneratorItems = []
+    },
+    bulkGenerateLabels () {
+      let slocs = []
+      const cb = (e) => {
+        if (e.category) {
+          slocs.push(e)
+        } else {
+          e.storage_locations.forEach(cb)
+          e.children.forEach(cb)
+        }
+      }
+      this.stateStorages.forEach(cb)
+      this.modalLabelGeneratorItems = slocs
+      this.$bvModal.show('modalLabelGenerator')
     }
   }
 }

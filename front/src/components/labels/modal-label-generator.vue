@@ -20,7 +20,7 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-5 mx-auto">
+        <div class="col-md-4">
           <template v-if="items && items.length == 1">
             <template v-if="items[0].category">
               Storage location infos:<br>
@@ -44,7 +44,9 @@
           <template v-else>
             Multiple items choosen for label generation.
             <ul>
-              <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+              <li v-for="item in items" :key="item.id">
+                {{ item.name }}
+              </li>
             </ul>
           </template>
           <br><br>
@@ -62,10 +64,10 @@
           You can use the PDF on the right to print corresponding labels.<br>
           Do not hesitate to download the PDF and open it natively if the print preview is showing a bad layout.
         </div>
-        <div class="col-md-7 mx-auto">
+        <div class="col-md-8">
           <vue-pdf-app
             v-if="pdf" :pdf="pdf" :config="pdfJsConfig"
-            style="min-height: 30em;"
+            style="min-height: 40em;"
           />
         </div>
       </div>
@@ -178,14 +180,15 @@ export default {
     generatePdf () {
       const template = {
         basePdf: this.template.tpl.base_pdf,
-        schemas: [
-          JSON.parse(this.template.tpl.template)
-        ]
+        schemas: Array(this.items.length).fill(JSON.parse(this.template.tpl.template))
       }
-      let inputs = [{
-        'qrcode': this.qrCodeUri(this.items[0]),
-        'text': this.doSubstitutions(this.items[0])
-      }]
+      let inputs = []
+      for (let item of this.items) {
+        inputs.push({
+          'qrcode': this.qrCodeUri(item),
+          'text': this.doSubstitutions(item)
+        })
+      }
       generate({ template, inputs })
         .then((pdf) => {
           let blob = new Blob([pdf.buffer], { type: 'application/pdf' })
