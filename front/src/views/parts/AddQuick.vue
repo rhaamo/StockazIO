@@ -60,6 +60,19 @@
                   Maximum length is 255
                 </div>
               </b-form-group>
+
+              <b-form-group id="input-group-comment" label="Comment" label-for="comment">
+                <b-form-input
+                  id="comment"
+                  v-model="form.comment"
+                  placeholder="Any comment about this part ?"
+                  :state="$v.form.comment.$dirty ? !$v.form.comment.$error : null"
+                />
+                <div v-if="!$v.form.comment.maxLength" class="invalid-feedback d-block">
+                  Maximum length is 255
+                </div>
+              </b-form-group>
+
               <b-form-group id="input-group-qty" label="Stock Qty*" label-for="qty">
                 <b-form-input
                   id="qty"
@@ -235,6 +248,7 @@ export default {
     form: {
       name: '',
       description: '',
+      comment: '',
       qty: 1,
       qty_min: 0,
       sheet_status: '',
@@ -259,6 +273,9 @@ export default {
         maxLength: maxLength(255)
       },
       description: {
+        maxLength: maxLength(255)
+      },
+      comment: {
         maxLength: maxLength(255)
       },
       qty: {
@@ -321,6 +338,7 @@ export default {
       let datas = {
         name: this.form.name,
         description: this.form.description,
+        comment: this.form.comment,
         stock_qty: this.form.qty,
         stock_qty_min: this.form.qty_min,
         status: this.form.sheet_status,
