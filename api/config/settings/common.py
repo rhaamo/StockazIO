@@ -113,6 +113,7 @@ LOCAL_APPS = [
     "controllers.distributor",
     "controllers.OrdersImporter",
     "controllers.project",
+    "controllers.labeltemplate",
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

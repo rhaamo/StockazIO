@@ -31,5 +31,5 @@ jobs:
         NJS: ${{ matrix.node-version }}
       run: |
         cd front
-        [ "${NJS}" == "16.x" ] && yarn build
-        [ "${NJS}" == "17.x" ] && NODE_OPTIONS=--openssl-legacy-provider yarn build
+        [ "${NJS}" == "16.x" ] && yarn build || echo 'not using nodejs 16.x'
+        [ "${NJS}" == "17.x" ] && NODE_OPTIONS=--openssl-legacy-provider yarn build || echo 'not using nodejs 17.x'

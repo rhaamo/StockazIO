@@ -2,6 +2,20 @@
 
 Manage your inventory of electronic stuff
 
+# Features
+
+- yummy bugs
+- partkeepr import from CSV (fixed fields, see [here](https://github.com/rhaamo/StockazIO/blob/master/api/controllers/part/management/commands/import_partkeepr.py#L14) for them) 
+- Categories tree for parts
+- Storage categories and Storage Locations (with possible pictures)
+- Footprints categories and actual footprint in them (with possible picture)
+- Parts can have distributors SKU, manufacturers SKU, parts parameters and file attachments
+- Parts and Storage Locations have UUIDs and QRCode (containing a specific URI usuable in the search input)
+- Quick add form and a full-featured one
+- Can import orders from vendors (Mouser for now) and selective import into inventory with category matching through regexpes
+- Project management with BOM with parts from inventory or free-form (with export of BOM to CSV or XLSX)
+- PDF Generator for labels printing of Storage Locations (plus bulk-generation) or Parts
+
 # V2 Caveats
 
 The following is not implemented and needs to be accessed through django admin `/admin`:
@@ -139,19 +153,6 @@ docker run --net=host --name stockazio -it --rm --env-file .env -v /local/path/t
 
 # Install - docker split frontend & backend
 TODO
-
-# Features
-
-- yummy bugs
-- partkeepr import from CSV (fixed fields, see [here](https://github.com/rhaamo/StockazIO/blob/master/api/controllers/part/management/commands/import_partkeepr.py#L14) for them) 
-- Categories tree for parts
-- Storage categories and Storage Locations (with possible pictures)
-- Footprints categories and actual footprint in them (with possible picture)
-- Parts can have distributors SKU, manufacturers SKU, parts parameters and file attachments
-- Parts and Storage Locations have UUIDs and QRCode (containing a specific URI usuable in the search input)
-- Quick add form and a full-featured one
-- Can import orders from vendors (Mouser for now) and selective import into inventory with category matching through regexpes
-- Project management with BOM with parts from inventory or free-form (with export of BOM to CSV or XLSX)
 
 # Orders importer
 - Current vendors supported: Mouser

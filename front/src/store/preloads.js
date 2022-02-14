@@ -11,6 +11,7 @@ const preloads = {
     part_units: [],
     manufacturers: [],
     distributors: [],
+    label_templates: [],
     currentCategory: {
       id: null
     },
@@ -37,6 +38,9 @@ const preloads = {
     },
     setDistributors (state, value) {
       state.distributors = value
+    },
+    setLabelTemplates (state, value) {
+      state.label_templates = value
     },
     setCurrentCategory (state, value) {
       state.currentCategory = value
@@ -91,6 +95,9 @@ const preloads = {
     getDistributors: state => () => {
       return state.distributors || []
     },
+    getLabelTemplates: state => () => {
+      return state.label_templates || []
+    },
     getCurrentCategory: state => () => {
       return state.currentCategory || { id: null }
     },
@@ -107,6 +114,7 @@ const preloads = {
       dispatch('preloadPartUnits')
       dispatch('preloadManufacturers')
       dispatch('preloadDistributors')
+      dispatch('preloadLabelTemplates')
       dispatch('preloadPartParametersPresets')
     },
     preloadSidebar ({ commit }) {
@@ -183,6 +191,17 @@ const preloads = {
         })
         .catch((error) => {
           logger.default.error('Cannot preload distributors', error.message)
+        })
+    },
+    preloadLabelTemplates ({ commit }) {
+      // Preload Label Templates
+      apiService.getLabelTemplates()
+        .then((data) => {
+          commit('setLabelTemplates', data.data)
+          logger.default.info('Label Templates preloaded')
+        })
+        .catch((error) => {
+          logger.default.error('Cannot preload Label Templates', error.message)
         })
     },
     preloadPartParametersPresets ({ commit }) {

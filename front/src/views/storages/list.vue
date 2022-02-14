@@ -8,6 +8,9 @@
       :parent="modalManageLocationParent" :mode="modalManageLocationMode"
       :item="modalManageLocationItem" @modal-storages-manage-location-closed="fetchStorages" @modal-storages-manage-location-saved="fetchStorages"
     />
+    <modalLabelGenerator
+      :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
+    />
 
     <div class="row">
       <div class="col-8">
@@ -32,6 +35,16 @@
             >
               <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root category
             </router-link>
+
+            &nbsp;&nbsp;&nbsp;
+
+            <router-link
+              to="#"
+              title="Bulk-generate labels"
+              @click.native.prevent="bulkGenerateLabels()"
+            >
+              <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
+            </router-link>
           </li>
         </ul>
         <template v-for="item in stateStorages">
@@ -54,6 +67,8 @@ import ListCategory from './list-category'
 import ListLocation from './list-location'
 import ModalManageCategory from './modal-manage-category'
 import ModalManageLocation from './modal-manage-location'
+import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
+
 import { mapState } from 'vuex'
 
 export default {
@@ -62,7 +77,8 @@ export default {
     ListCategory,
     ListLocation,
     ModalManageCategory,
-    ModalManageLocation
+    ModalManageLocation,
+    modalLabelGenerator
   },
   data: () => ({
     modalManageCategoryParent: null,
@@ -70,7 +86,8 @@ export default {
     modalManageCategoryItem: null,
     modalManageLocationParent: null,
     modalManageLocationMode: 'add',
-    modalManageLocationItem: null
+    modalManageLocationItem: null,
+    modalLabelGeneratorItems: []
   }),
   computed: {
     ...mapState({
@@ -101,6 +118,9 @@ export default {
       this.$root.$on('modalStoragesLocationUpdateSetItem', (item) => {
         this.modalManageLocationItem = item
       })
+      this.$root.$on('modalLabelGeneratorSetItem', (item) => {
+        this.modalLabelGeneratorItems = [item]
+      })
       this.fetchStorages(true)
     })
   },
@@ -126,6 +146,23 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.show('modalStoragesManageCategory')
       })
+    },
+    labelGeneratorClosed () {
+      this.modalLabelGeneratorItems = []
+    },
+    bulkGenerateLabels () {
+      let slocs = []
+      const cb = (e) => {
+        if (e.category) {
+          slocs.push(e)
+        } else {
+          e.storage_locations.forEach(cb)
+          e.children.forEach(cb)
+        }
+      }
+      this.stateStorages.forEach(cb)
+      this.modalLabelGeneratorItems = slocs
+      this.$bvModal.show('modalLabelGenerator')
     }
   }
 }

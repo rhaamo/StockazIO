@@ -4,6 +4,9 @@
       :part="partDetails" :can-delete="true" @delete-part="deletePart"
       @view-part-modal-closed="onPartModalClosed"
     />
+    <modalLabelGenerator
+      :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
+    />
 
     <div class="row">
       <div class="col-12">
@@ -105,13 +108,13 @@
           @sort-changed="sortTableChanged"
         >
           <template #cell(qrcode)="data">
-            <div @click="showBigQrCode(data.item)">
+            <div @click="showLabelGenerator(data.item)">
               <qrcode
                 :id="qrcodeId(data.item.id)"
                 v-b-tooltip.hover
                 :value="qrCodePart(data.item.uuid)"
                 :options="{ scale: 1, color: {dark: '#000000', light:'#0000'} }"
-                title="click to show bigger QrCode"
+                title="show label generator"
                 :data-uuid="data.item.uuid"
                 :data-name="data.item.name"
                 data-toggle="modal"
@@ -248,15 +251,16 @@
 
 <script>
 import apiService from '../../services/api/api.service'
-import QRCode from 'qrcode'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 import ViewModal from '@/components/parts/view_modal'
+import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
 
 export default {
   name: 'PartsList',
   components: {
-    ViewModal
+    ViewModal,
+    modalLabelGenerator
   },
   props: {
     category: {
@@ -286,7 +290,8 @@ export default {
       footprint: null,
       storage: null,
       qty: null
-    }
+    },
+    modalLabelGeneratorItems: []
   }),
   computed: {
     ...mapState({
@@ -417,21 +422,14 @@ export default {
     qrCodePart (uuid) {
       return `stockazio://part/${uuid}`
     },
-    async showBigQrCode (part) {
-      let qrCodeDataUrl = await QRCode.toDataURL(this.qrCodePart(part.uuid), { width: 300 }).then((url) => { return url })
-
-      const h = this.$createElement
-      const titleVNode = h('div', { domProps: { innerHTML: `QrCode for: ${part.name}` } })
-      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
-        h('img', { domProps: { src: qrCodeDataUrl } }),
-        h('div', {}, ['The content of the QrCode is:', h('br'), h('code', { class: ['qrCodeText'] }, [this.qrCodePart(part.uuid)])])
-      ])
-      this.$bvModal.msgBoxOk([messageVNode], {
-        title: [titleVNode],
-        buttonSize: 'sm',
-        centered: true,
-        size: 'lg'
+    showLabelGenerator (part) {
+      this.modalLabelGeneratorItems = [part]
+      this.$nextTick(() => {
+        this.$bvModal.show('modalLabelGenerator')
       })
+    },
+    labelGeneratorClosed () {
+      this.modalLabelGeneratorItems = []
     },
     fetchParts (page, opts) {
       console.log('we have', this.perPage, 'per page')

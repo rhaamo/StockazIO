@@ -34,6 +34,9 @@ v1_patterns += [
         include(("controllers.OrdersImporter.urls", "orders_importer"), namespace="orders_importer"),
     ),
     re_path(r"^projects/", include(("controllers.project.urls", "project"), namespace="projects")),
+    re_path(
+        r"^labeltemplates/", include(("controllers.labeltemplate.urls", "labeltemplate"), namespace="labeltemplates")
+    ),
 ]
 
 swagger = [
