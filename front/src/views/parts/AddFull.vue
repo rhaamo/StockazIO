@@ -641,6 +641,7 @@ export default {
     clearForm: function () {
       this.form.name = ''
       this.form.description = ''
+      this.form.comment = ''
       this.form.qty = 1
       this.form.qty_min = 0
       this.form.sheet_status = ''
