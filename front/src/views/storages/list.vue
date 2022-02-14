@@ -140,7 +140,7 @@ export default {
       this.modalManageLocationMode = 'add'
     },
     addCategory (id) {
-      this.changeModalManageCategoryParent(id)
+      this.modalManageCategoryParent = id
       this.modalManageCategoryMode = 'add'
       // Important to nextTick otherwise we don't get the time to emit the parent ID change
       this.$nextTick(() => {
