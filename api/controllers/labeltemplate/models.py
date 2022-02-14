@@ -11,6 +11,12 @@ class LabelTemplate(models.Model):
     height = models.IntegerField(blank=False, null=False, default=38, help_text="in mm")
     base_pdf = models.TextField(editable=False)
     template = models.TextField(blank=False, null=False)
+    text_template = models.TextField(
+        blank=False,
+        null=False,
+        default="""{name}
+{description}""",
+    )
 
 
 @receiver(pre_save, sender=LabelTemplate)

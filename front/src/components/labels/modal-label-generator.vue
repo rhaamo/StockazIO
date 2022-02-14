@@ -26,19 +26,31 @@
               Storage location infos:<br>
               <ul>
                 <li>Name: {{ item.name }}</li>
-                <li>Description: {{ item.description }}</li>
+                <li>Description: {{ item.description || 'none' }}</li>
                 <li>UUID: {{ item.uuid }}</li>
+                <li>qrCode content: {{ qrCodeUri }}</li>
               </ul>
             </template>
             <template v-else>
               Part infos:<br>
               <ul>
                 <li>Name: {{ item.name }}</li>
-                <li>Description: {{ item.description }}</li>
+                <li>Description: {{ item.description || 'none' }}</li>
                 <li>UUID: {{ item.uuid }}</li>
+                <li>qrCode content: {{ qrCodeUri }}</li>
               </ul>
             </template>
           </template>
+          <br><br>
+          <b-form-group id="input-group-template" label="Template:" label-for="template">
+            <vue-multiselect
+              v-model="template" :options="labelTemplates"
+              placeholder="Please select a template"
+              label="name" track-by="tpl"
+              :allow-empty="false" deselect-label="Cannot remove this item"
+              @select="templateChanged"
+            />
+          </b-form-group>
         </div>
         <div class="col-md-7 mx-auto">
           <vue-pdf-app
@@ -55,6 +67,7 @@
 import { generate } from '@pdfme/generator'
 import VuePdfApp from 'vue-pdf-app'
 import 'vue-pdf-app/dist/icons/main.css'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -66,8 +79,7 @@ export default {
     }
   },
   data: () => ({
-    templates: '{ "field1": { "type": "qrcode", "position": { "x": 1, "y": 1 }, "width": 36, "height": 36 }, "field2": { "type": "text", "position": { "x": 39.39, "y": 1 }, "width": 44.61, "height": 34, "alignment": "left", "fontSize": 12 } }',
-    basePdf: 'data:application/pdf;base64,JVBERi0xLjMKMyAwIG9iago8PC9UeXBlIC9QYWdlCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyAyIDAgUgovQ29udGVudHMgNCAwIFI+PgplbmRvYmoKNCAwIG9iago8PC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTk+PgpzdHJlYW0KeJwzUvDiMtAzNVco5wIAC/wCEgplbmRzdHJlYW0KZW5kb2JqCjEgMCBvYmoKPDwvVHlwZSAvUGFnZXMKL0tpZHMgWzMgMCBSIF0KL0NvdW50IDEKL01lZGlhQm94IFswIDAgMjU1LjEyIDEwNy43Ml0KPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1Byb2NTZXQgWy9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUldCi9Gb250IDw8Cj4+Ci9YT2JqZWN0IDw8Cj4+Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9Qcm9kdWNlciAoUHlGUERGIDEuNy4yIGh0dHA6Ly9weWZwZGYuZ29vZ2xlY29kZS5jb20vKQovQ3JlYXRpb25EYXRlIChEOjIwMjIwMjEzMTUyNzUzKQo+PgplbmRvYmoKNiAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMSAwIFIKL09wZW5BY3Rpb24gWzMgMCBSIC9GaXRIIG51bGxdCi9QYWdlTGF5b3V0IC9PbmVDb2x1bW4KPj4KZW5kb2JqCnhyZWYKMCA3CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDE3NSAwMDAwMCBuIAowMDAwMDAwMjYyIDAwMDAwIG4gCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA4NyAwMDAwMCBuIAowMDAwMDAwMzU2IDAwMDAwIG4gCjAwMDAwMDA0NjUgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSA3Ci9Sb290IDYgMCBSCi9JbmZvIDUgMCBSCj4+CnN0YXJ0eHJlZgo1NjgKJSVFT0YK',
+    template: null,
     pdf: null,
     pdfJsConfig: {
       sidebar: false,
@@ -115,52 +127,60 @@ export default {
     }
   }),
   computed: {
+    ...mapState({
+      labelTemplates: (state) => {
+        return state.preloads.label_templates.map(x => { return { name: x.name, tpl: x } })
+      }
+    }),
+    qrCodeUri: function () {
+      if (this.item.category) {
+        // location
+        return `web+stockazio:storageLocation,${this.item.uuid}`
+      } else {
+        // part
+        return `web+stockazio:part,${this.item.uuid}`
+      }
+    }
   },
   methods: {
+    doSubstitutions () {
+      let text = this.template.tpl.text_template
+      text = this.item && this.item.name ? text.replace('{name}', this.item.name) : text
+      text = this.item && this.item.description ? text.replace('{description}', this.item.description) : text.replace('{description}', '') // description is optional
+      text = this.item && this.item.uuid ? text.replace('{qrcode}', this.qrCodeUri) : text
+      return text
+    },
     modalLabelGeneratorShow () {
+      // Auto select the first one
+      this.template = this.labelTemplates && this.labelTemplates.length ? this.labelTemplates[0] : null
+      this.generatePdf()
+    },
+    modalLabelGeneratorClose () {
+      this.template = null
+      this.pdf = null
+    },
+    templateChanged (item) {
+      // We need to wait next tick or we get a delay in change of this.template
+      this.$nextTick(() => {
+        this.generatePdf()
+      })
+    },
+    generatePdf () {
       const template = {
-        basePdf: this.basePdf,
+        basePdf: this.template.tpl.base_pdf,
         schemas: [
-          // JSON.parse(this.templates)
-          {
-            'qrcode': {
-              'type': 'qrcode',
-              'position': {
-                'x': 1,
-                'y': 1
-              },
-              'width': 36,
-              'height': 36
-            },
-            'text': {
-              'type': 'text',
-              'position': {
-                'x': 39.39,
-                'y': 1
-              },
-              'width': 44.61,
-              'height': 34,
-              'alignment': 'left',
-              'fontSize': 12,
-              'characterSpacing': 0,
-              'lineHeight': 1
-            }
-          }
+          JSON.parse(this.template.tpl.template)
         ]
       }
       let inputs = [{
-        'qrcode': 'uwu',
-        'text': 'owo'
+        'qrcode': this.qrCodeUri,
+        'text': this.doSubstitutions()
       }]
-      console.log(template)
       generate({ template, inputs })
         .then((pdf) => {
           let blob = new Blob([pdf.buffer], { type: 'application/pdf' })
           this.pdf = URL.createObjectURL(blob)
-          console.log(this.pdf)
         })
-    },
-    modalLabelGeneratorClose () {
     }
   }
 }
