@@ -30,21 +30,23 @@
       />
     </router-link>
 
+    <template v-if="!readonly">
     &nbsp;&nbsp;
 
-    <router-link to="#" title="Edit Location" @click.native.prevent="editLocation(item)">
-      <i
-        class="fa fa-pencil-square-o"
-        aria-hidden="true"
-      />
-    </router-link>
+      <router-link to="#" title="Edit Location" @click.native.prevent="editLocation(item)">
+        <i
+          class="fa fa-pencil-square-o"
+          aria-hidden="true"
+        />
+      </router-link>
             &nbsp;
-    <router-link to="#" title="Delete Location" @click.native.prevent="deleteLocation(item)">
-      <i
-        class="fa fa-trash-o"
-        aria-hidden="true"
-      />
-    </router-link>
+      <router-link to="#" title="Delete Location" @click.native.prevent="deleteLocation(item)">
+        <i
+          class="fa fa-trash-o"
+          aria-hidden="true"
+        />
+      </router-link>
+    </template>
     <br>
     <template v-if="item.description">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }}
@@ -62,7 +64,11 @@ export default {
   },
   props: {
     'item': Object,
-    'level': Number
+    'level': Number,
+    'readonly': {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
   },

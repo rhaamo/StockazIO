@@ -3,50 +3,54 @@
     <li>
       <i class="fa fa-home" aria-hidden="true" /> {{ item.name }}
 
+      <template v-if="!readonly">
         &nbsp;&nbsp;
 
-      <router-link to="#" title="Edit Category" @click.native.prevent="editCategory(item)">
-        <i
-          class="fa fa-pencil-square-o"
-          aria-hidden="true"
-        />
-      </router-link>
+        <router-link to="#" title="Edit Category" @click.native.prevent="editCategory(item)">
+          <i
+            class="fa fa-pencil-square-o"
+            aria-hidden="true"
+          />
+        </router-link>
             &nbsp;
-      <router-link to="#" title="Delete Category" @click.native.prevent="deleteCategory(item)">
-        <i
-          class="fa fa-trash-o"
-          aria-hidden="true"
-        />
-      </router-link>
+        <router-link to="#" title="Delete Category" @click.native.prevent="deleteCategory(item)">
+          <i
+            class="fa fa-trash-o"
+            aria-hidden="true"
+          />
+        </router-link>
 
         &nbsp;&nbsp;
 
-      <router-link
-        to="#"
-        :title="addCategoryTitle(item.name)"
-        @click.native.prevent="addCategory(item.id)"
-      >
-        [add category]
-      </router-link>
+        <router-link
+          to="#"
+          :title="addCategoryTitle(item.name)"
+          @click.native.prevent="addCategory(item.id)"
+        >
+          [add category]
+        </router-link>
 
         &nbsp;&nbsp;
-      <router-link
-        to="#"
-        :title="addLocationTitle(item.name)"
-        @click.native.prevent="addLocation(item.id)"
-      >
-        [add location/box]
-      </router-link>
+        <router-link
+          to="#"
+          :title="addLocationTitle(item.name)"
+          @click.native.prevent="addLocation(item.id)"
+        >
+          [add location/box]
+        </router-link>
+      </template>
     </li>
     <ListCategory
       v-for="category in item.children" :key="category.id"
       :item="category"
       :level="level+1"
+      :readonly="readonly"
     />
     <ul class="list_storages">
       <ListLocation
         v-for="storage in item.storage_locations" :key="storage.uuid" :item="storage"
         :level="level+1"
+        :readonly="readonly"
       />
     </ul>
   </ul>
@@ -64,7 +68,11 @@ export default {
   },
   props: {
     'item': Object,
-    'level': Number
+    'level': Number,
+    'readonly': {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
 

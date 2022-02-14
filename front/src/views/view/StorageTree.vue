@@ -1,50 +1,104 @@
 <template>
-  <div class="add_part">
+  <div class="storages_list">
+    <modalLabelGenerator
+      :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
+    />
+
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-8">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <router-link :to="{name: 'home'}">
-              StockazIO
-            </router-link>
-          </li>
           <li class="breadcrumb-item active">
-            Storage Tree
+            <router-link :to="{ name: 'view-storage-tree' }">
+              Storage tree
+            </router-link>
           </li>
         </ol>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-lg-9">
-        <ul>
-          <li v-for="storage in storages" :key="storage.id">
-            <node :node="storage" />
+      <div class="col-md-12 mx-auto">
+        <ul class="list_storages">
+          <li>
+            <router-link
+              to="#"
+              title="Bulk-generate labels"
+              @click.native.prevent="bulkGenerateLabels()"
+            >
+              <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
+            </router-link>
           </li>
         </ul>
+        <template v-for="item in stateStorages">
+          <ListCategory
+            v-if="item.children && item.storage_locations"
+            :key="item.id" :item="item" :level="1"
+            :readonly="true"
+          />
+          <ListLocation
+            v-else :key="item.uuid" :item="item"
+            :readonly="true"
+          />
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ListCategory from '@/views/storages/list-category'
+import ListLocation from '@/views/storages/list-location'
+import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
+
 import { mapState } from 'vuex'
-import node from './StorageTreeNode'
 
 export default {
+  name: 'StorageTree',
   components: {
-    node
+    ListCategory,
+    ListLocation,
+    modalLabelGenerator
   },
-  data () {
-    return {
-    }
-  },
+  data: () => ({
+    modalLabelGeneratorItems: []
+  }),
   computed: {
     ...mapState({
-      storages: (state) => { return state.preloads.storages }
+      stateStorages: (state) => state.preloads.storages
     })
   },
-  mounted () {
+  created () {
+    this.$nextTick(() => {
+      this.$root.$on('modalLabelGeneratorSetItem', (item) => {
+        this.modalLabelGeneratorItems = [item]
+      })
+    })
+  },
+  methods: {
+    labelGeneratorClosed () {
+      this.modalLabelGeneratorItems = []
+    },
+    bulkGenerateLabels () {
+      let slocs = []
+      const cb = (e) => {
+        if (e.category) {
+          slocs.push(e)
+        } else {
+          e.storage_locations.forEach(cb)
+          e.children.forEach(cb)
+        }
+      }
+      this.stateStorages.forEach(cb)
+      this.modalLabelGeneratorItems = slocs
+      this.$bvModal.show('modalLabelGenerator')
+    }
   }
 }
 </script>
+
+<style>
+ul.list_storages {
+  list-style-type: none;
+  margin: 0;
+}
+</style>
