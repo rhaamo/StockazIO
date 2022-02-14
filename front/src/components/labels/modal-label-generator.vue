@@ -28,7 +28,7 @@
                 <li>Name: {{ items[0].name }}</li>
                 <li>Description: {{ items[0].description || 'none' }}</li>
                 <li>UUID: {{ items[0].uuid }}</li>
-                <li>qrCode content: {{ qrCodeUri }}</li>
+                <li>qrCode content: {{ qrCodeUri(items[0]) }}</li>
               </ul>
             </template>
             <template v-else>
@@ -37,7 +37,7 @@
                 <li>Name: {{ items[0].name }}</li>
                 <li>Description: {{ items[0].description || 'none' }}</li>
                 <li>UUID: {{ items[0].uuid }}</li>
-                <li>qrCode content: {{ qrCodeUri }}</li>
+                <li>qrCode content: {{ qrCodeUri(items[0]) }}</li>
               </ul>
             </template>
           </template>
@@ -57,6 +57,10 @@
               @select="templateChanged"
             />
           </b-form-group>
+          <br><br>
+          <hr>
+          You can use the PDF on the right to print corresponding labels.<br>
+          Do not hesitate to download the PDF and open it natively if the print preview is showing a bad layout.
         </div>
         <div class="col-md-7 mx-auto">
           <vue-pdf-app
