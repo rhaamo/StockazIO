@@ -23,7 +23,7 @@
     "moment": "^2.29.1",
     "qrcode": "^1.5.0",
     "sass": "^1.48.0",
-    "sass-loader": "^10.1.1",
+    "sass-loader": "^12.5.0",
     "vue": "^2",
     "vue-axios": "^3.4.1",
     "vue-gettext": "^2.1.12",
