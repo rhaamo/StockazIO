@@ -25,7 +25,14 @@ class StorageViewSet(ModelViewSet):
 
 class StorageCategoryViewSet(ModelViewSet):
     anonymous_policy = False
-    required_scope = "storages"
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
     serializer_class = StorageCategorySerializer
 
     def get_queryset(self):
@@ -34,7 +41,14 @@ class StorageCategoryViewSet(ModelViewSet):
 
 class StorageLocationViewSet(ModelViewSet):
     anonymous_policy = False
-    required_scope = "storages"
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+    }
     serializer_class = StorageLocationSerializer
 
     def get_queryset(self):
