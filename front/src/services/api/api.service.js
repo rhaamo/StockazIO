@@ -80,6 +80,9 @@ const PROJECT_EXPORT_BOM_CSV = (projectId) => `/api/v1/projects/${projectId}/exp
 const PROJECT_EXPORT_BOM_XLSX = (projectId) => `/api/v1/projects/${projectId}/exports/bom.xlsx`
 
 const LABELTEMPLATE_LIST = '/api/v1/labeltemplates/'
+const LABELTEMPLATE_CREATE = '/api/v1/labeltemplates/'
+const LABELTEMPLATE_UPDATE = (id) => `/api/v1/labeltemplates/${id}/`
+const LABELTEMPLATE_DELETE = (id) => `/api/v1/labeltemplates/${id}/`
 
 // Auth
 const verifyCredentials = () => {
@@ -471,6 +474,18 @@ const getLabelTemplates = () => {
   return Axios.get(LABELTEMPLATE_LIST)
 }
 
+const createLabelTemplate = (data) => {
+  return Axios.post(LABELTEMPLATE_CREATE, data)
+}
+
+const updateLabelTemplate = (id, data) => {
+  return Axios.put(LABELTEMPLATE_UPDATE(id), data)
+}
+
+const deleteLabelTemplate = (id) => {
+  return Axios.delete(LABELTEMPLATE_DELETE(id))
+}
+
 const apiService = {
   verifyCredentials,
   getCategories,
@@ -537,7 +552,10 @@ const apiService = {
   projectExportInfosTxt,
   projectExportBomCSV,
   projectExportBomXLSX,
-  getLabelTemplates
+  getLabelTemplates,
+  createLabelTemplate,
+  updateLabelTemplate,
+  deleteLabelTemplate
 }
 
 export default apiService

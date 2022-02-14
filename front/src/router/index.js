@@ -24,6 +24,7 @@ import ProjectsAdd from '../views/projects/add'
 import ProjectsEdit from '../views/projects/edit'
 import ProjectsDetails from '../views/projects/details'
 import StoragesList from '../views/storages/list'
+import LabelTemplatesList from '@/views/labeltemplates/list'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -222,6 +223,13 @@ export default (store) => {
       path: '/storages',
       name: 'storages-list',
       component: StoragesList,
+      beforeEnter: validateAuthenticatedRoute
+    },
+    // Label Templates
+    {
+      path: '/labeltemplates',
+      name: 'label-templates-list',
+      component: LabelTemplatesList,
       beforeEnter: validateAuthenticatedRoute
     },
     // Other
