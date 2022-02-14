@@ -9,7 +9,7 @@
       :item="modalManageLocationItem" @modal-storages-manage-location-closed="fetchStorages" @modal-storages-manage-location-saved="fetchStorages"
     />
     <modalLabelGenerator
-      :item="modalLabelGeneratorItem" @modal-label-generator-closed="labelGeneratorClosed"
+      :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
     />
 
     <div class="row">
@@ -77,7 +77,7 @@ export default {
     modalManageLocationParent: null,
     modalManageLocationMode: 'add',
     modalManageLocationItem: null,
-    modalLabelGeneratorItem: null
+    modalLabelGeneratorItems: []
   }),
   computed: {
     ...mapState({
@@ -109,7 +109,7 @@ export default {
         this.modalManageLocationItem = item
       })
       this.$root.$on('modalLabelGeneratorSetItem', (item) => {
-        this.modalLabelGeneratorItem = item
+        this.modalLabelGeneratorItems = [item]
       })
       this.fetchStorages(true)
     })
@@ -138,7 +138,7 @@ export default {
       })
     },
     labelGeneratorClosed () {
-      this.modalLabelGeneratorItem = null
+      this.modalLabelGeneratorItems = []
     }
   }
 }

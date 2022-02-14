@@ -21,25 +21,31 @@
     <div class="container">
       <div class="row">
         <div class="col-md-5 mx-auto">
-          <template v-if="item">
-            <template v-if="item.category">
+          <template v-if="items && items.length == 1">
+            <template v-if="items[0].category">
               Storage location infos:<br>
               <ul>
-                <li>Name: {{ item.name }}</li>
-                <li>Description: {{ item.description || 'none' }}</li>
-                <li>UUID: {{ item.uuid }}</li>
+                <li>Name: {{ items[0].name }}</li>
+                <li>Description: {{ items[0].description || 'none' }}</li>
+                <li>UUID: {{ items[0].uuid }}</li>
                 <li>qrCode content: {{ qrCodeUri }}</li>
               </ul>
             </template>
             <template v-else>
               Part infos:<br>
               <ul>
-                <li>Name: {{ item.name }}</li>
-                <li>Description: {{ item.description || 'none' }}</li>
-                <li>UUID: {{ item.uuid }}</li>
+                <li>Name: {{ items[0].name }}</li>
+                <li>Description: {{ items[0].description || 'none' }}</li>
+                <li>UUID: {{ items[0].uuid }}</li>
                 <li>qrCode content: {{ qrCodeUri }}</li>
               </ul>
             </template>
+          </template>
+          <template v-else>
+            Multiple items choosen for label generation.
+            <ul>
+              <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+            </ul>
           </template>
           <br><br>
           <b-form-group id="input-group-template" label="Template:" label-for="template">
@@ -74,8 +80,8 @@ export default {
     VuePdfApp
   },
   props: {
-    item: {
-      type: Object
+    items: {
+      type: Array
     }
   },
   data: () => ({
@@ -131,24 +137,24 @@ export default {
       labelTemplates: (state) => {
         return state.preloads.label_templates.map(x => { return { name: x.name, tpl: x } })
       }
-    }),
-    qrCodeUri: function () {
-      if (this.item.category) {
-        // location
-        return `web+stockazio:storageLocation,${this.item.uuid}`
-      } else {
-        // part
-        return `web+stockazio:part,${this.item.uuid}`
-      }
-    }
+    })
   },
   methods: {
-    doSubstitutions () {
+    doSubstitutions (item) {
       let text = this.template.tpl.text_template
-      text = this.item && this.item.name ? text.replace('{name}', this.item.name) : text
-      text = this.item && this.item.description ? text.replace('{description}', this.item.description) : text.replace('{description}', '') // description is optional
-      text = this.item && this.item.uuid ? text.replace('{qrcode}', this.qrCodeUri) : text
+      text = item && item.name ? text.replace('{name}', item.name) : text
+      text = item && item.description ? text.replace('{description}', item.description) : text.replace('{description}', '') // description is optional
+      text = item && item.uuid ? text.replace('{qrcode}', this.qrCodeUri(item)) : text
       return text
+    },
+    qrCodeUri (item) {
+      if (item.category) {
+        // location
+        return `web+stockazio:storageLocation,${item.uuid}`
+      } else {
+        // part
+        return `web+stockazio:part,${item.uuid}`
+      }
     },
     modalLabelGeneratorShow () {
       // Auto select the first one
@@ -173,8 +179,8 @@ export default {
         ]
       }
       let inputs = [{
-        'qrcode': this.qrCodeUri,
-        'text': this.doSubstitutions()
+        'qrcode': this.qrCodeUri(this.items[0]),
+        'text': this.doSubstitutions(this.items[0])
       }]
       generate({ template, inputs })
         .then((pdf) => {
