@@ -183,12 +183,12 @@ export default {
         schemas: Array(this.items.length).fill(JSON.parse(this.template.tpl.template))
       }
       let inputs = []
-      for (let item of this.items) {
+      this.items.forEach((cb) => {
         inputs.push({
-          'qrcode': this.qrCodeUri(item),
-          'text': this.doSubstitutions(item)
+          'qrcode': this.qrCodeUri(cb),
+          'text': this.doSubstitutions(cb)
         })
-      }
+      })
       generate({ template, inputs })
         .then((pdf) => {
           let blob = new Blob([pdf.buffer], { type: 'application/pdf' })
