@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     qrCodeStorage (uuid) {
-      return `stockazio://storageLocation/${uuid}`
+      return `web+stockazio:storageLocation,${uuid}`
     },
     async showBigQrCode (storage) {
       let qrCodeDataUrl = await QRCode.toDataURL(this.qrCodeStorage(storage.uuid), { width: 300 }).then((url) => { return url })

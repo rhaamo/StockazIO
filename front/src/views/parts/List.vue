@@ -420,10 +420,11 @@ export default {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
     },
     qrCodePart (uuid) {
-      return `stockazio://part/${uuid}`
+      return `web+stockazio:part,${uuid}`
     },
     showLabelGenerator (part) {
       this.modalLabelGeneratorItems = [part]
+      // We need to wait a tick or the previous set will not be finalized before the modal is shown
       this.$nextTick(() => {
         this.$bvModal.show('modalLabelGenerator')
       })

@@ -361,7 +361,7 @@ export default {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
     },
     qrCodePart (uuid) {
-      return `stockazio://part/${uuid}`
+      return `web+stockazio:part,${uuid}`
     },
     async showBigQrCode (part) {
       let qrCodeDataUrl = await QRCode.toDataURL(this.qrCodePart(part.uuid), { width: 300 }).then((url) => { return url })

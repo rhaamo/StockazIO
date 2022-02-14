@@ -173,8 +173,10 @@ You then will have to navigate to 'View - Order importer' in the web ui to manag
 - Mobile app / better mobile layout
 
 # Generated QRCodes format
-- StorageLocation: `stockazio://storageLocation/{uuid}`
-- Part: `stockazio://part/{uuid}`
+Format changed but both URLs are handled by the search.
+
+- StorageLocation: `web+stockazio:storageLocation,{uuid}` (old format: `stockazio://storageLocation/{uuid}`)
+- Part: `web+stockazio:part,{uuid}` (old format: `stockazio://part/{uuid}`)
 
 # Images sources
 - Footprints
