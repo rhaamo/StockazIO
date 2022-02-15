@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-12">
         <ol class="breadcrumb">
-          <template v-if="categoryId != 0">
+          <template v-if="categoryId && category != 0">
             <li class="breadcrumb-item">
               Parts by category
             </li>
