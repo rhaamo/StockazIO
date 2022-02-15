@@ -264,7 +264,7 @@
                       aria-hidden="true"
                     />
                   </td>
-                  <td><a target="_blank" :href="file.file || file.picture">{{ file.file || file.picture }}</a></td>
+                  <td><a target="_blank" :href="file.file || file.picture">{{ stripPathFromFileUrl(file.file || file.picture) }}</a></td>
                   <td>{{ file.description }}</td>
                   <td>
                     <b-button variant="link" @click.prevent="deleteAttachment(file)">
@@ -315,6 +315,7 @@ import QRCode from 'qrcode'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 import moment from 'moment'
+import utils from '@/utils'
 
 export default {
   name: 'PartsDetails',
@@ -576,6 +577,9 @@ export default {
         centered: true,
         size: 'xl'
       })
+    },
+    stripPathFromFileUrl (url) {
+      return utils.baseName(url)
     }
   }
 }
