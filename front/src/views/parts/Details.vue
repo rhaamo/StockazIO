@@ -265,14 +265,27 @@
                     />
                   </td>
                   <td><a target="_blank" :href="file.file || file.picture">{{ stripPathFromFileUrl(file.file || file.picture) }}</a></td>
-                  <td>{{ file.description }}</td>
-                  <td>
-                    <b-button variant="link" @click.prevent="deleteAttachment(file)">
+                  <td style="width: 700px;">
+                    {{ file.description }}
+                  </td>
+                  <td style="width: 80px;">
+                    <template v-if="file.picture && file.picture_medium">
+                      <i
+                        v-if="file.picture_default" class="fa fa-check-square-o" title="Default picture"
+                        aria-hidden="true"
+                      />
+                      <i
+                        v-else class="fa fa-square-o" aria-hidden="true"
+                        title="Set as default picture"
+                      />
+                      &nbsp;&nbsp;
+                    </template>
+                    <router-link to="#" @click.native.prevent="deleteAttachment(file)">
                       <i
                         class="fa fa-trash-o"
                         aria-hidden="true"
                       />
-                    </b-button>
+                    </router-link>
                   </td>
                 </tr>
               </tbody>

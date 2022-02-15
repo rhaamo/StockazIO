@@ -93,7 +93,7 @@ class PartAttachmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PartAttachment
-        fields = ("id", "description", "file", "file_size", "file_type", "picture", "picture_medium")
+        fields = ("id", "description", "file", "file_size", "file_type", "picture", "picture_medium", "picture_default")
 
 
 class PartAttachmentCreateSerializer(serializers.ModelSerializer):
