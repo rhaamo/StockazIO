@@ -197,6 +197,7 @@ class PartAttachment(models.Model):
     )
     file_size = models.IntegerField()  # internal filled
     file_type = models.CharField(max_length=200)  # internal filled
+    picture_default = models.BooleanField(default=False)
 
     part = models.ForeignKey(Part, related_name="part_attachments", blank=False, null=False, on_delete=models.CASCADE)
 
