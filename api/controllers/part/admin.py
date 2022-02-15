@@ -78,6 +78,11 @@ class PartAdmin(CommonAdmin):
 
 class PartAttachmentAdmin(CommonAdmin):
     list_display = ("description",)
+    readonly_fields = (
+        "file_size",
+        "file_type",
+        "picture_medium",
+    )
 
 
 class PartStockHistoryAdmin(CommonAdmin):

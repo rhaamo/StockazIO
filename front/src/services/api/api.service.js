@@ -347,7 +347,11 @@ const getPublicPart = (partId) => {
 
 const partAttachmentCreate = (partId, data) => {
   let formData = new FormData()
-  formData.append('file', data.file)
+  if (data.file.type.startsWith('image/')) {
+    formData.append('picture', data.file)
+  } else {
+    formData.append('file', data.file)
+  }
   formData.append('description', data.description)
   formData.append('part', data.part_id ? data.part_id : partId)
   return Axios.post(PARTS_ATTACHMENTS_CREATE(partId), formData)

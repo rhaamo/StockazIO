@@ -24,7 +24,13 @@ class ProjectPartStandaloneSerializer(serializers.ModelSerializer):
 
 
 class ProjectAttachmentsSerializer(serializers.ModelSerializer):
-    file = serializers.FileField(validators=[FileTypeValidator(allowed_types=settings.PART_ATTACHMENT_ALLOWED_TYPES)])
+    file = serializers.FileField(
+        validators=[
+            FileTypeValidator(
+                allowed_types=settings.PART_ATTACHMENT_ALLOWED_FILES + settings.PART_ATTACHMENT_ALLOWED_IMAGES
+            )
+        ]
+    )
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
 
     class Meta:

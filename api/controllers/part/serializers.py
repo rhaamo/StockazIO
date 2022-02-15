@@ -91,16 +91,19 @@ class PartAttachmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PartAttachment
-        fields = ("id", "description", "file", "file_size", "file_type")
+        fields = ("id", "description", "file", "file_size", "file_type", "picture")
 
 
 class PartAttachmentCreateSerializer(serializers.ModelSerializer):
-    file = serializers.FileField(validators=[FileTypeValidator(allowed_types=settings.PART_ATTACHMENT_ALLOWED_TYPES)])
+    file = serializers.FileField(validators=[FileTypeValidator(allowed_types=settings.PART_ATTACHMENT_ALLOWED_FILES)])
+    picture = serializers.FileField(
+        validators=[FileTypeValidator(allowed_types=settings.PART_ATTACHMENT_ALLOWED_IMAGES)]
+    )
     part = serializers.PrimaryKeyRelatedField(queryset=Part.objects.all())
 
     class Meta:
         model = PartAttachment
-        fields = ("id", "description", "file", "part")
+        fields = ("id", "description", "file", "part", "picture")
 
 
 class PartCreateSeralizer(WritableNestedModelSerializer):
