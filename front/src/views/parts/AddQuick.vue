@@ -23,7 +23,7 @@
     <div class="row mb-4">
       <div class="col-md-11 mx-auto">
         <h3>Basic parts informations</h3>
-        <b-form @submit.prevent="addPart">
+        <b-form>
           <b-row>
             <b-col>
               <b-form-group id="input-group-name" label="Name*" label-for="name">
@@ -217,8 +217,12 @@
                 />
               </b-form-group>
 
-              <b-button type="submit" variant="primary">
-                Add part
+              <b-button type="submit" variant="primary" @click.prevent="addPart('continue')">
+                Save and view
+              </b-button>
+            &nbsp;&nbsp;
+              <b-button type="submit" variant="info" @click.prevent="addPart('add_new')">
+                Save and add another
               </b-button>
             </b-col>
           </b-row>
@@ -329,7 +333,7 @@ export default {
     })
   },
   methods: {
-    addPart: function () {
+    addPart: function (mode) {
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('Form has errors')
@@ -355,7 +359,7 @@ export default {
       }
       console.log('submitting', datas)
       apiService.createPart(datas)
-        .then(() => {
+        .then((resp) => {
           this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Success/Message', 'Success'), {
             title: this.$pgettext('Part/Add/Toast/Success/Title', 'Adding part'),
             autoHideDelay: 5000,
@@ -364,8 +368,13 @@ export default {
             toaster: 'b-toaster-top-center'
           })
           this.$store.commit('incrementCategoryPartsCount', this.form.category)
-          this.clearForm()
-          this.$refs.inputname.focus()
+          if (mode === 'add_new') {
+            this.clearForm()
+            this.$refs.inputname.focus()
+          } else {
+            // 'continue'
+            this.$router.push({ name: 'parts-details', params: { partId: resp.data.id } })
+          }
         })
         .catch((error) => {
           this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Error/Message', 'An error occured, please try again later'), {
