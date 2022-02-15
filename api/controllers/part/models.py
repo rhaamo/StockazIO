@@ -1,4 +1,3 @@
-from xml.dom import ValidationErr
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from controllers.footprints.models import Footprint

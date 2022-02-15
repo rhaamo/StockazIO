@@ -61,6 +61,20 @@
           </div>
         </div>
 
+        <b-container v-if="picturesGalleryForPart && picturesGalleryForPart.length" fluid class="p-4 bg-white mb-2 mt-2">
+          <b-row>
+            <b-col v-for="file in picturesGalleryForPart" :key="file.id">
+              <b-img
+                thumbnail
+                :src="file.picture_medium"
+                style="height: 200px;"
+                :alt="file.description"
+                @click.prevent="showGalleryImage(file)"
+              />
+            </b-col>
+          </b-row>
+        </b-container>
+
         <div class="row">
           <div class="col-lg-12">
             <table class="table table-sm table-striped">
@@ -222,6 +236,7 @@
             <table id="table-files-attachments" class="table table-sm table-striped">
               <thead>
                 <tr>
+                  <th />
                   <th>Link</th>
                   <th>Description</th>
                   <th />
@@ -229,7 +244,27 @@
               </thead>
               <tbody v-if="part.part_attachments && part.part_attachments.length">
                 <tr v-for="file in part.part_attachments" :key="file.id">
-                  <td><a target="_blank" :href="file.file">{{ file.file }}</a></td>
+                  <td v-if="file.picture && file.picture_medium">
+                    <i
+                      :id="`p-a-pic-${file.id}`"
+                      class="fa fa-file-image-o"
+                      aria-hidden="true"
+                    />
+                    <b-popover
+                      :target="`p-a-pic-${file.id}`"
+                      placement="left"
+                      triggers="hover focus"
+                    >
+                      <img :src="file.picture_medium" width="250px">
+                    </b-popover>
+                  </td>
+                  <td v-else>
+                    <i
+                      class="fa fa-file-code-o"
+                      aria-hidden="true"
+                    />
+                  </td>
+                  <td><a target="_blank" :href="file.file || file.picture">{{ file.file || file.picture }}</a></td>
                   <td>{{ file.description }}</td>
                   <td>
                     <b-button variant="link" @click.prevent="deleteAttachment(file)">
@@ -346,6 +381,13 @@ export default {
     },
     partDetailsUpdatedOn () {
       return this.part && this.part.updated_at ? this.formatDate(this.part.updated_at) : ''
+    },
+    picturesGalleryForPart () {
+      return this.part ? this.part.part_attachments.filter(x => {
+        if (x.picture && x.picture_medium) {
+          return x
+        }
+      }).slice(0, 4) : []
     }
   },
   watch: {
@@ -392,7 +434,7 @@ export default {
             variant: 'danger',
             toaster: 'b-toaster-top-center'
           })
-          logger.default.error('Error with part deletion', err.message)
+          logger.default.error('Error with part fetch', err.message)
         })
     },
     deletePart (part) {
@@ -521,6 +563,19 @@ export default {
         .catch((err) => {
           logger.default.error('Error with the delete attachment modal', err)
         })
+    },
+    showGalleryImage (file) {
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: file.description } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: file.picture, width: '800' } })
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'xl'
+      })
     }
   }
 }
