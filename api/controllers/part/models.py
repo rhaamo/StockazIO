@@ -5,7 +5,7 @@ from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation
 from controllers.part.validators import validate_file_type
 import uuid
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 
@@ -181,6 +181,9 @@ class PartAttachment(models.Model):
         blank=False,
         null=False,
     )
+    file_size = models.IntegerField()  # internal filled
+    file_type = models.CharField(max_length=200)  # internal filled
+
     part = models.ForeignKey(Part, related_name="part_attachments", blank=False, null=False, on_delete=models.CASCADE)
 
     class Meta(object):
@@ -190,6 +193,12 @@ class PartAttachment(models.Model):
 
     def __str__(self):
         return self.description
+
+
+@receiver(pre_save, sender=PartAttachment)
+def set_file_infos(sender, instance, **kwargs):
+    instance.file_size = instance.file.file.size  # bytes
+    instance.file_type = instance.file.file.content_type
 
 
 class PartStockHistory(models.Model):

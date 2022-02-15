@@ -91,7 +91,7 @@ class PartAttachmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PartAttachment
-        fields = ("id", "description", "file")
+        fields = ("id", "description", "file", "file_size", "file_type")
 
 
 class PartAttachmentCreateSerializer(serializers.ModelSerializer):
