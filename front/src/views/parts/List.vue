@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-12">
         <ol class="breadcrumb">
-          <template v-if="actualCurrentCategory && categoryId != 0">
+          <template v-if="actualCurrentCategory && categoryId && categoryId !== '0'">
             <li class="breadcrumb-item">
               Parts by category
             </li>
@@ -372,7 +372,8 @@ export default {
   },
   methods: {
     categoryChanged () {
-      if (Number(this.categoryId) === 0) {
+      if (!this.categoryId || Number(this.categoryId) === 0) {
+        this.$store.commit('setCurrentCategory', { id: this.categoryId, name: 'none' })
         return
       }
       let curCat = null
