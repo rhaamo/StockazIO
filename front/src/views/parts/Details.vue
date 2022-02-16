@@ -69,6 +69,7 @@
                 :src="file.picture_medium"
                 style="height: 200px;"
                 :alt="file.description"
+                title="Click to show bigger image"
                 @click.prevent="showGalleryImage(file)"
               />
             </b-col>
