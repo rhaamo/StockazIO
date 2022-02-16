@@ -17,7 +17,7 @@ export default new Vuex.Store({
   },
   plugins: [
     new VuexPersistence({
-      reducer: (state) => ({ oauth: state.oauth, server: state.server })
+      reducer: (state) => ({ oauth: state.oauth, server: state.server, preloads: state.preloads })
     }).plugin
   ]
 })
