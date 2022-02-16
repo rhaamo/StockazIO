@@ -138,7 +138,7 @@ MIDDLEWARE = (
         "controllers.middleware.SPAFallbackMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
-        "django.middleware.clickjacking.XFrameOptionsMiddleware"
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
     ]
     + ADDITIONAL_MIDDLEWARES_AFTER
 )
