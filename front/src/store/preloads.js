@@ -106,20 +106,20 @@ const preloads = {
     }
   },
   actions: {
-    preloadStuff ({ commit, dispatch }) {
-      dispatch('preloadSidebar')
-      dispatch('preloadFootprints')
-      dispatch('preloadStorages')
-      dispatch('preloadParametersUnits')
-      dispatch('preloadPartUnits')
-      dispatch('preloadManufacturers')
-      dispatch('preloadDistributors')
-      dispatch('preloadLabelTemplates')
-      dispatch('preloadPartParametersPresets')
+    async preloadStuff ({ commit, dispatch }) {
+      await dispatch('preloadSidebar')
+      await dispatch('preloadFootprints')
+      await dispatch('preloadStorages')
+      await dispatch('preloadParametersUnits')
+      await dispatch('preloadPartUnits')
+      await dispatch('preloadManufacturers')
+      await dispatch('preloadDistributors')
+      await dispatch('preloadLabelTemplates')
+      await dispatch('preloadPartParametersPresets')
     },
     preloadSidebar ({ commit }) {
       // Preload sidebar
-      apiService.getCategories()
+      return apiService.getCategories()
         .then((data) => {
           commit('setCategories', data.data[0])
           logger.default.info('Categories preloaded')
@@ -130,7 +130,7 @@ const preloads = {
     },
     preloadFootprints ({ commit }) {
       // Preload footprints
-      apiService.getFootprints()
+      return apiService.getFootprints()
         .then((data) => {
           commit('setFootprints', data.data)
           logger.default.info('Footprints preloaded')
@@ -141,7 +141,7 @@ const preloads = {
     },
     preloadStorages ({ commit }) {
       // Preload storages
-      apiService.getStorages()
+      return apiService.getStorages()
         .then((data) => {
           commit('setStorages', data.data)
           logger.default.info('Storages preloaded')
@@ -152,7 +152,7 @@ const preloads = {
     },
     preloadParametersUnits ({ commit }) {
       // Preload units
-      apiService.getParametersUnits()
+      return apiService.getParametersUnits()
         .then((data) => {
           commit('setParametersUnits', data.data)
           logger.default.info('Parameters Units preloaded')
@@ -163,7 +163,7 @@ const preloads = {
     },
     preloadPartUnits ({ commit }) {
       // Preload part-units
-      apiService.getPartUnits()
+      return apiService.getPartUnits()
         .then((data) => {
           commit('setPartUnits', data.data)
           logger.default.info('Part Units preloaded')
@@ -174,7 +174,7 @@ const preloads = {
     },
     preloadManufacturers ({ commit }) {
       // Preload manufacturers
-      apiService.getManufacturers()
+      return apiService.getManufacturers()
         .then((data) => {
           commit('setManufacturers', data.data)
           logger.default.info('Manufacturers preloaded')
@@ -184,7 +184,7 @@ const preloads = {
     },
     preloadDistributors ({ commit }) {
       // Preload distributors
-      apiService.getDistributors()
+      return apiService.getDistributors()
         .then((data) => {
           commit('setDistributors', data.data)
           logger.default.info('Distributors preloaded')
@@ -195,7 +195,7 @@ const preloads = {
     },
     preloadLabelTemplates ({ commit }) {
       // Preload Label Templates
-      apiService.getLabelTemplates()
+      return apiService.getLabelTemplates()
         .then((data) => {
           commit('setLabelTemplates', data.data)
           logger.default.info('Label Templates preloaded')
@@ -206,7 +206,7 @@ const preloads = {
     },
     preloadPartParametersPresets ({ commit }) {
       // Preload part parameters presets
-      apiService.getPartParameterPresets()
+      return apiService.getPartParameterPresets()
         .then((data) => {
           commit('setPartParametersPresets', data.data.results)
           logger.default.info('Part parameters presets preloaded')

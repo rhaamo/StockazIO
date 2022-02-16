@@ -12,7 +12,7 @@
             <li class="breadcrumb-item">
               Parts by category
             </li>
-            <li v-if="actualCurrentCategory.name" class="breadcrumb-item active">
+            <li class="breadcrumb-item active">
               <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
                 {{ actualCurrentCategory.name }}
               </router-link>
@@ -219,7 +219,8 @@ export default {
       choicesStorageLocation: (state) => state.preloads.storages,
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
-      }
+      },
+      categories: state => { return [state.preloads.categories] }
     }),
     perPage () {
       return this.serverSettings.pagination.PARTS || 10
@@ -243,6 +244,7 @@ export default {
   watch: {
     'categoryId': function () {
       this.fetchParts(1, null)
+      this.categoryChanged()
     },
     'searchQuery': function () {
       this.fetchParts(1, { search: this.searchQuery })
@@ -271,10 +273,22 @@ export default {
         this.fetchParts(1, { storage_uuid: this.storageUuid })
       } else {
         this.fetchParts(1, null)
+        this.categoryChanged()
       }
     })
   },
   methods: {
+    categoryChanged () {
+      let curCat = null
+      const cb = (e) => {
+        if (e.id === Number(this.categoryId)) {
+          curCat = e
+        }
+        e.children.forEach(cb)
+      }
+      this.categories.forEach(cb)
+      this.$store.commit('setCurrentCategory', { id: this.categoryId, name: curCat.name })
+    },
     pageChanged (page) {
       this.fetchParts(page, null)
     },

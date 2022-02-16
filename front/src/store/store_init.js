@@ -49,6 +49,15 @@ const initializeSomeStuff = async ({ store }) => {
       logger.default.error('Error while doing initialization', error)
     })
   logger.default.info('Initialization done.')
+
+  if (store.state.oauth.loggedIn) {
+    await store.dispatch('preloadStuff')
+  } else {
+    // Only preload stuff needed for unauthenticated views
+    await store.dispatch('preloadSidebar')
+    await store.dispatch('preloadFootprints')
+    await store.dispatch('preloadStorages')
+  }
 }
 
 export default initializeSomeStuff

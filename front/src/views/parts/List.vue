@@ -15,7 +15,7 @@
             <li class="breadcrumb-item">
               Parts by category
             </li>
-            <li v-if="actualCurrentCategory.name" class="breadcrumb-item active">
+            <li class="breadcrumb-item active">
               <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
                 {{ actualCurrentCategory.name }}
               </router-link>
@@ -372,7 +372,15 @@ export default {
   },
   methods: {
     categoryChanged () {
-      this.$store.commit('setCurrentCategory', { id: this.categoryId })
+      let curCat = null
+      const cb = (e) => {
+        if (e.id === Number(this.categoryId)) {
+          curCat = e
+        }
+        e.children.forEach(cb)
+      }
+      this.categories.forEach(cb)
+      this.$store.commit('setCurrentCategory', { id: this.categoryId, name: curCat.name })
     },
     popoverQtyUpdatePart (id, qty) {
       apiService.updatePartialPart(id, { stock_qty: qty })

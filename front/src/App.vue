@@ -171,14 +171,6 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.oauth.loggedIn) {
-      this.$store.dispatch('preloadStuff')
-    } else {
-      // Only preload stuff needed for unauthenticated views
-      this.$store.dispatch('preloadSidebar')
-      this.$store.dispatch('preloadFootprints')
-      this.$store.dispatch('preloadStorages')
-    }
   },
   methods: {
     logout () {
