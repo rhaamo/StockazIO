@@ -218,10 +218,12 @@ class PartAttachment(models.Model):
 
 @receiver(pre_save, sender=PartAttachment)
 def set_file_infos(sender, instance, **kwargs):
+    if instance.file_size and instance.file_type:
+        return
     if instance.file:
         instance.file_size = instance.file.file.size  # bytes
         instance.file_type = instance.file.file.content_type
-    else:
+    elif instance.picture:
         instance.file_size = instance.picture.file.size  # bytes
         instance.file_type = instance.picture.file.content_type
 

@@ -309,3 +309,23 @@ class PartsParametersPresetViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = PartParameterPreset.objects.all()
         return queryset
+
+
+class PartAttachmentsSetDefault(views.APIView):
+    required_scope = "parts"
+    anonymous_policy = False
+
+    def post(self, request, part_id, pk, format=None):
+        attachment = get_object_or_404(PartAttachment, id=pk)
+
+        # Get old default and set to False
+        old_default = PartAttachment.objects.all().filter(part_id=part_id, picture_default=True)
+        for opa in old_default:
+            opa.picture_default = False
+            opa.save()
+
+        # Set new default to true
+        attachment.picture_default = True
+        attachment.save()
+
+        return Response("ok", status=200)

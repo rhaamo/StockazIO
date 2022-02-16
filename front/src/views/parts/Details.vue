@@ -277,6 +277,7 @@
                       <i
                         v-else class="fa fa-square-o" aria-hidden="true"
                         title="Set as default picture"
+                        @click.prevent="setAttachmentAsDefault(part.id, file.id)"
                       />
                       &nbsp;&nbsp;
                     </template>
@@ -593,6 +594,30 @@ export default {
     },
     stripPathFromFileUrl (url) {
       return utils.baseName(url)
+    },
+    setAttachmentAsDefault (partId, fileId) {
+      apiService.partAttachmentSetDefault(partId, fileId)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/SetDefault/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('PartAttachment/SetDefault/Toast/Success/Title', 'Setting default part attachment'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.fetchPart()
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/SetDefault/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('PartAttachment/SetDefault/Toast/Error/Title', 'Setting default part attachment'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Error with part attachment default set', err)
+          this.fetchPart()
+        })
     }
   }
 }

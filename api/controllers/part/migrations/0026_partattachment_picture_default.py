@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('part', '0025_partattachment_picture_alter_partattachment_file'),
+        ("part", "0025_partattachment_picture_alter_partattachment_file"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='partattachment',
-            name='picture_default',
+            model_name="partattachment",
+            name="picture_default",
             field=models.BooleanField(default=False),
         ),
     ]
