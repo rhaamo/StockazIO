@@ -1,12 +1,12 @@
 <template>
   <li>
     <template v-if="node.parts_count >0">
-      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: node.id, category: node } }" :title="node.name">
+      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: node.id, category: {id: node.id, name: node.name} } }" :title="node.name">
         <b>{{ node.name }} <small>({{ node.parts_count }})</small></b>
       </router-link>
     </template>
     <template v-else>
-      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: node.id, category: node } }" :title="node.name">
+      <i :class="categoryFolderClass(node)" /> <router-link :to="{ name: categoriesRouteName, params: { categoryId: node.id, category: {id: node.id, name: node.name} } }" :title="node.name">
         {{ node.name }} <small>({{ node.parts_count }})</small>
       </router-link>
     </template>

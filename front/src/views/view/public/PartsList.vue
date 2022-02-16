@@ -8,13 +8,13 @@
     <div class="row">
       <div class="col-12">
         <ol class="breadcrumb">
-          <template v-if="category">
+          <template v-if="actualCurrentCategory && categoryId != 0">
             <li class="breadcrumb-item">
               Parts by category
             </li>
-            <li class="breadcrumb-item active">
-              <router-link :to="{ name: 'parts-category-list', params: { categoryId: category.id, category: category } }">
-                {{ category.name }}
+            <li v-if="actualCurrentCategory.name" class="breadcrumb-item active">
+              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
+                {{ actualCurrentCategory.name }}
               </router-link>
             </li>
           </template>
@@ -214,6 +214,7 @@ export default {
   }),
   computed: {
     ...mapState({
+      currentCategory: state => { return state.preloads.currentCategory },
       serverSettings: state => state.server.settings,
       choicesStorageLocation: (state) => state.preloads.storages,
       choicesFootprint: (state) => {
@@ -234,12 +235,14 @@ export default {
     },
     searchQuery () {
       return this.$route.query.q
+    },
+    actualCurrentCategory () {
+      return this.category || this.currentCategory
     }
   },
   watch: {
     'categoryId': function () {
       this.fetchParts(1, null)
-      this.categoryChanged()
     },
     'searchQuery': function () {
       this.fetchParts(1, { search: this.searchQuery })
@@ -269,13 +272,9 @@ export default {
       } else {
         this.fetchParts(1, null)
       }
-      this.categoryChanged()
     })
   },
   methods: {
-    categoryChanged () {
-      this.$store.commit('setCurrentCategory', { id: this.categoryId })
-    },
     pageChanged (page) {
       this.fetchParts(page, null)
     },

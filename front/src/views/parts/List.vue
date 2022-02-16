@@ -11,13 +11,13 @@
     <div class="row">
       <div class="col-12">
         <ol class="breadcrumb">
-          <template v-if="categoryId && category != 0">
+          <template v-if="actualCurrentCategory && categoryId != 0">
             <li class="breadcrumb-item">
               Parts by category
             </li>
-            <li class="breadcrumb-item active">
-              <router-link :to="{ name: 'parts-category-list', params: { categoryId: category.id, category: category } }">
-                {{ category.name }}
+            <li v-if="actualCurrentCategory.name" class="breadcrumb-item active">
+              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
+                {{ actualCurrentCategory.name }}
               </router-link>
             </li>
           </template>
@@ -310,11 +310,13 @@ export default {
   }),
   computed: {
     ...mapState({
+      currentCategory: state => { return state.preloads.currentCategory },
       serverSettings: state => state.server.settings,
       choicesStorageLocation: (state) => state.preloads.storages,
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
-      }
+      },
+      categories: state => { return [state.preloads.categories] }
     }),
     perPage () {
       return this.serverSettings.pagination.PARTS || 10
@@ -330,6 +332,9 @@ export default {
     },
     searchQuery () {
       return this.$route.query.q
+    },
+    actualCurrentCategory () {
+      return this.category || this.currentCategory
     }
   },
   watch: {
@@ -361,11 +366,14 @@ export default {
         this.fetchParts(1, { storage_uuid: this.storageUuid })
       } else {
         this.fetchParts(1, null)
+        this.categoryChanged()
       }
-      this.categoryChanged()
     })
   },
   methods: {
+    categoryChanged () {
+      this.$store.commit('setCurrentCategory', { id: this.categoryId })
+    },
     popoverQtyUpdatePart (id, qty) {
       apiService.updatePartialPart(id, { stock_qty: qty })
         .then(() => {
@@ -419,9 +427,6 @@ export default {
     },
     popoverStockQtyMinClass (id) {
       return `popover-stock-qty-min-${id}`
-    },
-    categoryChanged () {
-      this.$store.commit('setCurrentCategory', { id: this.categoryId })
     },
     pageChanged (page) {
       this.fetchParts(page, null)
