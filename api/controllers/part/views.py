@@ -77,7 +77,7 @@ class PartViewSet(ModelViewSet):
 
         queryset = Part.objects.all()
 
-        # category TODO/FIXME: recursivity ?
+        # category is recursive, thaks to .get_descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
         elif category_id:
