@@ -90,7 +90,10 @@ export default {
       }
       this.stateStorages.forEach(cb)
       this.modalLabelGeneratorItems = slocs
-      this.$bvModal.show('modalLabelGenerator')
+      // yet another magic tick
+      this.$nextTick(() => {
+        this.$bvModal.show('modalLabelGenerator')
+      })
     }
   }
 }
