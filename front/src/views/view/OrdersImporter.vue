@@ -165,6 +165,7 @@ export default {
                   toaster: 'b-toaster-top-center'
                 })
                 this.fetchOrders()
+                // why reload categories ?
                 this.$store.dispatch('preloadSidebar')
               })
               .catch((error) => {

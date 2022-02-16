@@ -130,6 +130,7 @@ export default {
         apiService.getStorages()
           .then((res) => {
             this.$store.commit('setStorages', res.data)
+            this.$store.commit('setLastUpdate', { item: 'storages', value: new Date() })
             logger.default.info('Storages reloaded')
           })
       }

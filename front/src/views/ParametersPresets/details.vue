@@ -126,7 +126,8 @@ export default {
                   variant: 'primary',
                   toaster: 'b-toaster-top-center'
                 })
-                this.$store.dispatch('preloadPartParametersPresets')
+                this.$store.commit('setPartParametersPresets', val.data)
+                this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: new Date() })
                 this.$router.push({ name: 'parameters-presets-list' })
               })
               .catch((err) => {

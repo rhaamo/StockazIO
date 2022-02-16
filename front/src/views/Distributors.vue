@@ -273,7 +273,8 @@ export default {
       apiService.getDistributors()
         .then((val) => {
           this.distributors = val.data
-          this.$store.dispatch('preloadDistributors')
+          this.$store.commit('setDistributors', val.data)
+          this.$store.commit('setLastUpdate', { item: 'distributors', value: new Date() })
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('distributors/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {

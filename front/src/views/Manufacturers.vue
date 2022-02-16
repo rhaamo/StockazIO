@@ -299,7 +299,8 @@ export default {
       apiService.getManufacturers()
         .then((val) => {
           this.manufacturers = val.data
-          this.$store.dispatch('preloadManufacturers')
+          this.$store.commit('setManufacturers', val.data)
+          this.$store.commit('setLastUpdate', { item: 'manufacturers', value: new Date() })
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('Manufacturers/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {

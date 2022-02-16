@@ -155,7 +155,7 @@ const preloads = {
       return apiService.getCategories()
         .then((data) => {
           commit('setCategories', data.data[0])
-          commit('setLastUpdate', {item: 'categories', value: new Date()})
+          commit('setLastUpdate', { item: 'categories', value: new Date() })
           logger.default.info('Categories preloaded')
         })
         .catch((error) => {
@@ -173,7 +173,7 @@ const preloads = {
       return apiService.getFootprints()
         .then((data) => {
           commit('setFootprints', data.data)
-          commit('setLastUpdate', {item: 'footprints', value: new Date()})
+          commit('setLastUpdate', { item: 'footprints', value: new Date() })
           logger.default.info('Footprints preloaded')
         })
         .catch((error) => {
@@ -191,7 +191,7 @@ const preloads = {
       return apiService.getStorages()
         .then((data) => {
           commit('setStorages', data.data)
-          commit('setLastUpdate', {item: 'storages', value: new Date()})
+          commit('setLastUpdate', { item: 'storages', value: new Date() })
           logger.default.info('Storages preloaded')
         })
         .catch((error) => {
@@ -209,7 +209,7 @@ const preloads = {
       return apiService.getParametersUnits()
         .then((data) => {
           commit('setParametersUnits', data.data)
-          commit('setLastUpdate', {item: 'parameters_units', value: new Date()})
+          commit('setLastUpdate', { item: 'parameters_units', value: new Date() })
           logger.default.info('Parameters Units preloaded')
         })
         .catch((error) => {
@@ -227,7 +227,7 @@ const preloads = {
       return apiService.getPartUnits()
         .then((data) => {
           commit('setPartUnits', data.data)
-          commit('setLastUpdate', {item: 'part_units', value: new Date()})
+          commit('setLastUpdate', { item: 'part_units', value: new Date() })
           logger.default.info('Part Units preloaded')
         })
         .catch((error) => {
@@ -245,7 +245,7 @@ const preloads = {
       return apiService.getManufacturers()
         .then((data) => {
           commit('setManufacturers', data.data)
-          commit('setLastUpdate', {item: 'manufacturers', value: new Date()})
+          commit('setLastUpdate', { item: 'manufacturers', value: new Date() })
           logger.default.info('Manufacturers preloaded')
         }).catch((error) => {
           logger.default.error('Cannot preload manufacturers', error.message)
@@ -262,7 +262,7 @@ const preloads = {
       return apiService.getDistributors()
         .then((data) => {
           commit('setDistributors', data.data)
-          commit('setLastUpdate', {item: 'distributors', value: new Date()})
+          commit('setLastUpdate', { item: 'distributors', value: new Date() })
           logger.default.info('Distributors preloaded')
         })
         .catch((error) => {
@@ -280,7 +280,7 @@ const preloads = {
       return apiService.getLabelTemplates()
         .then((data) => {
           commit('setLabelTemplates', data.data)
-          commit('setLastUpdate', {item: 'label_templates', value: new Date()})
+          commit('setLastUpdate', { item: 'label_templates', value: new Date() })
           logger.default.info('Label Templates preloaded')
         })
         .catch((error) => {
@@ -298,7 +298,7 @@ const preloads = {
       return apiService.getPartParameterPresets()
         .then((data) => {
           commit('setPartParametersPresets', data.data.results)
-          commit('setLastUpdate', {item: 'parameters_presets', value: new Date()})
+          commit('setLastUpdate', { item: 'parameters_presets', value: new Date() })
           logger.default.info('Part parameters presets preloaded')
         })
         .catch((error) => {

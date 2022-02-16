@@ -179,7 +179,8 @@ export default {
       apiService.getPartUnits()
         .then((val) => {
           this.partUnits = val.data
-          this.$store.dispatch('preloadPartUnits')
+          this.$store.commit('setPartUnits', val.data)
+          this.$store.commit('setLastUpdate', { item: 'part_units', value: new Date() })
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('PartUnits/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {

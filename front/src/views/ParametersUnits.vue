@@ -198,8 +198,8 @@ export default {
       apiService.getParametersUnits()
         .then((val) => {
           this.parametersUnits = val.data
-          console.log(val.data)
-          this.$store.dispatch('preloadParametersUnits')
+          this.$store.commit('setParametersUnits', val.data)
+          this.$store.commit('setLastUpdate', { item: 'parameters_units', value: new Date() })
         })
         .catch((err) => {
           this.$bvToast.toast(this.$pgettext('ParametersUnits/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {

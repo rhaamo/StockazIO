@@ -194,7 +194,7 @@ export default {
         })
       }
       apiService.updatePartParameterPresets(this.preset.id, datas)
-        .then(() => {
+        .then((resp) => {
           this.$bvToast.toast(this.$pgettext('Preset/Update/Toast/Success/Message', 'Success'), {
             title: this.$pgettext('Preset/Update/Toast/Success/Title', 'Updating preset'),
             autoHideDelay: 5000,
@@ -202,7 +202,8 @@ export default {
             variant: 'primary',
             toaster: 'b-toaster-top-center'
           })
-          this.$store.dispatch('preloadPartParametersPresets')
+          this.$store.commit('setPartParametersPresets', resp.data)
+          this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: new Date() })
           this.$router.push({ name: 'parameters-presets-details', params: { presetId: this.preset.id } })
         })
         .catch((error) => {
