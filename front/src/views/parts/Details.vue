@@ -248,7 +248,7 @@
                   <td v-if="file.picture && file.picture_medium">
                     <i
                       :id="`p-a-pic-${file.id}`"
-                      class="fa fa-file-image-o"
+                      class="fa fa-picture-o"
                       aria-hidden="true"
                     />
                     <b-popover

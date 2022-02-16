@@ -38,12 +38,23 @@ class PartStockHistory(serializers.ModelSerializer):
         fields = ("id", "diff", "created_at")
 
 
+class PartAttachmentSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+    picture = serializers.ImageField()
+    picture_medium = serializers.ImageField(read_only=True)
+
+    class Meta:
+        model = PartAttachment
+        fields = ("id", "description", "file", "file_size", "file_type", "picture", "picture_medium", "picture_default")
+
+
 class PartSerializer(serializers.ModelSerializer):
     storage = StorageLocationSerializer(many=False, read_only=True)
     category = SingleCategorySerializer(many=False, read_only=True)
     footprint = FootprintSerializer(many=False, read_only=True)
     part_unit = PartsUnitSerializer(many=False, read_only=True)
     part_stock_history = PartStockHistory(many=True, read_only=True)
+    part_attachments = PartAttachmentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Part
@@ -69,6 +80,7 @@ class PartSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "part_stock_history",
+            "part_attachments",
         )
 
 
@@ -84,16 +96,6 @@ class PartParameterCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartParameter
         fields = ("id", "name", "description", "value", "unit")
-
-
-class PartAttachmentSerializer(serializers.ModelSerializer):
-    file = serializers.FileField()
-    picture = serializers.ImageField()
-    picture_medium = serializers.ImageField(read_only=True)
-
-    class Meta:
-        model = PartAttachment
-        fields = ("id", "description", "file", "file_size", "file_type", "picture", "picture_medium", "picture_default")
 
 
 class PartAttachmentCreateSerializer(serializers.ModelSerializer):
