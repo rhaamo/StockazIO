@@ -279,6 +279,9 @@ export default {
   },
   methods: {
     categoryChanged () {
+      if (Number(this.categoryId) === 0) {
+        return
+      }
       let curCat = null
       const cb = (e) => {
         if (e.id === Number(this.categoryId)) {
