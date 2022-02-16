@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+import VuexPersistence from 'vuex-persist'
 import server from './server'
 import user from './user'
 import oauth from './oauth'
@@ -16,13 +16,8 @@ export default new Vuex.Store({
     preloads
   },
   plugins: [
-    createPersistedState({
-      key: 'oauth',
-      paths: ['oauth']
-    }),
-    createPersistedState({
-      key: 'server',
-      paths: ['server.serverUrl']
-    })
+    new VuexPersistence({
+      reducer: (state) => ({ oauth: state.oauth, server: state.server })
+    }).plugin
   ]
 })
