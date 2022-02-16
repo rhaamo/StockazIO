@@ -20,7 +20,7 @@ class LabelTemplate(models.Model):
 
 
 @receiver(pre_save, sender=LabelTemplate)
-def post_save(sender, instance, **kwargs):
+def set_base_pdf(sender, instance, **kwargs):
     # L is H*W, P is W*H
     fpdf = FPDF(
         orientation="L",

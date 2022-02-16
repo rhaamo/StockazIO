@@ -3,10 +3,13 @@ from django.utils.translation import gettext_lazy as _
 from controllers.footprints.models import Footprint
 from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation
-from controllers.part.validators import validate_file_type
+from controllers.part.validators import validate_file_type_file, validate_file_type_image
 import uuid
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
+from django.core.exceptions import ValidationError
 
 
 class PartUnit(models.Model):
@@ -177,11 +180,32 @@ class PartAttachment(models.Model):
         verbose_name=_("File"),
         help_text=_("File to upload"),
         upload_to="part_attachments/",
-        validators=[validate_file_type],
-        blank=False,
-        null=False,
+        validators=[validate_file_type_file],
+        blank=True,
+        null=True,
     )
+    picture = models.FileField(
+        verbose_name=_("Picture"),
+        help_text=_("Picture to upload"),
+        upload_to="part_attachments/",
+        validators=[validate_file_type_image],
+        blank=True,
+        null=True,
+    )
+    picture_medium = ImageSpecField(
+        source="picture", processors=[ResizeToFill(400, 400, upscale=False)], format="JPEG", options={"quality": 80}
+    )
+    file_size = models.IntegerField()  # internal filled
+    file_type = models.CharField(max_length=200)  # internal filled
+    picture_default = models.BooleanField(default=False)
+
     part = models.ForeignKey(Part, related_name="part_attachments", blank=False, null=False, on_delete=models.CASCADE)
+
+    def clean(self):
+        if self.file and self.picture:
+            raise ValidationError("A File or Picture needs to be filled")
+        if not self.file and not self.picture:
+            raise ValidationError("A File or Picture needs to be filled")
 
     class Meta(object):
         ordering = ("id",)
@@ -190,6 +214,18 @@ class PartAttachment(models.Model):
 
     def __str__(self):
         return self.description
+
+
+@receiver(pre_save, sender=PartAttachment)
+def set_file_infos(sender, instance, **kwargs):
+    if instance.file_size and instance.file_type:
+        return
+    if instance.file:
+        instance.file_size = instance.file.file.size  # bytes
+        instance.file_type = instance.file.file.content_type
+    elif instance.picture:
+        instance.file_size = instance.picture.file.size  # bytes
+        instance.file_type = instance.picture.file.content_type
 
 
 class PartStockHistory(models.Model):

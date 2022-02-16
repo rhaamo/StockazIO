@@ -20,7 +20,8 @@ class AppSettings(views.APIView):
 
         data = {
             "version": __version__,
-            "part_attachment_allowed_types": settings.PART_ATTACHMENT_ALLOWED_TYPES,
+            "part_attachment_allowed_types": settings.PART_ATTACHMENT_ALLOWED_FILES
+            + settings.PART_ATTACHMENT_ALLOWED_IMAGES,
             "pagination": settings.PAGINATION,
             "parts_uncategorized_count": parts_uncategorized_count,
         }

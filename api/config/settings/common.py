@@ -351,13 +351,9 @@ REST_FRAMEWORK = {
 
 
 # Various other things
-PART_ATTACHMENT_ALLOWED_TYPES = [
+PART_ATTACHMENT_ALLOWED_FILES = [
     "application/pdf",
     "application/xml",
-    "image/gif",
-    "image/jpeg",
-    "image/png",
-    "image/svg+xml",
     "text/html",
     "text/plain",
     "text/xml",
@@ -366,6 +362,7 @@ PART_ATTACHMENT_ALLOWED_TYPES = [
     "application/vnd.oasis.opendocument.text",
     "application/vnd.oasis.opendocument.spreadsheet",
 ]
+PART_ATTACHMENT_ALLOWED_IMAGES = ["image/gif", "image/jpeg", "image/png", "image/svg+xml"]
 
 # https://github.com/jazzband/django-silk/issues/449
 SILKY_INTERCEPT_FUNC = lambda r: DEBUG  # noqa: E731

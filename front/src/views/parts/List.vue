@@ -124,6 +124,21 @@
           </template>
 
           <template #cell(name)="data">
+            <template v-if="partGetDefaultAttachment(data.item.part_attachments)">
+              <i
+                :id="`p_a_${data.item.id}`" title="Hover to show picture"
+                class="fa fa-picture-o"
+                aria-hidden="true"
+              />
+              <b-popover
+                :target="`p_a_${data.item.id}`"
+                placement="left"
+                triggers="hover focus"
+              >
+                <b-img-lazy :src="partGetDefaultAttachment(data.item.part_attachments).picture_medium" width="250px" />
+              </b-popover>
+              &nbsp;&nbsp;
+            </template>
             <a href="#" @click.prevent="viewPartModal(data.item)">{{ data.item.name }}</a>
             <br>
             <template v-if="data.item.description">
@@ -556,6 +571,13 @@ export default {
     },
     onPartModalClosed () {
       this.partDetails = null
+    },
+    partGetDefaultAttachment (attachments) {
+      return attachments.filter(x => {
+        if (x.picture_default) {
+          return x
+        }
+      })[0] // return first item
     }
   }
 }

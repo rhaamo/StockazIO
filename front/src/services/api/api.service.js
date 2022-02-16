@@ -40,6 +40,7 @@ const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}/`
 const PARTS_ATTACHMENTS_CREATE = (partId) => `/api/v1/parts/${partId}/attachments/`
 const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}` // no final /
+const PARTS_ATTACHMENTS_DEFAULT = (partId, attachmentId) => `/api/v1/parts/${partId}/attachments/${attachmentId}/set_default`
 
 const PARTS_PUBLIC_LIST = '/api/v1/parts/public/'
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`
@@ -347,7 +348,11 @@ const getPublicPart = (partId) => {
 
 const partAttachmentCreate = (partId, data) => {
   let formData = new FormData()
-  formData.append('file', data.file)
+  if (data.file.type.startsWith('image/')) {
+    formData.append('picture', data.file)
+  } else {
+    formData.append('file', data.file)
+  }
   formData.append('description', data.description)
   formData.append('part', data.part_id ? data.part_id : partId)
   return Axios.post(PARTS_ATTACHMENTS_CREATE(partId), formData)
@@ -355,6 +360,10 @@ const partAttachmentCreate = (partId, data) => {
 
 const partAttachmentDelete = (partId, partAttachmentId) => {
   return Axios.delete(PARTS_ATTACHMENTS_DELETE(partId, partAttachmentId))
+}
+
+const partAttachmentSetDefault = (partId, partAttachmentId) => {
+  return Axios.post(PARTS_ATTACHMENTS_DEFAULT(partId, partAttachmentId))
 }
 
 // Order Importer
@@ -530,6 +539,7 @@ const apiService = {
   getPublicPart,
   partAttachmentCreate,
   partAttachmentDelete,
+  partAttachmentSetDefault,
   getOrdersImporter,
   getOrderImporter,
   importOrderToInventory,

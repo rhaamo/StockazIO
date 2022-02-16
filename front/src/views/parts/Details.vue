@@ -61,6 +61,21 @@
           </div>
         </div>
 
+        <b-container v-if="picturesGalleryForPart && picturesGalleryForPart.length" fluid class="p-4 bg-white mb-2 mt-2">
+          <b-row>
+            <b-col v-for="file in picturesGalleryForPart" :key="file.id">
+              <b-img
+                thumbnail
+                :src="file.picture_medium"
+                style="height: 200px;"
+                :alt="file.description"
+                title="Click to show bigger image"
+                @click.prevent="showGalleryImage(file)"
+              />
+            </b-col>
+          </b-row>
+        </b-container>
+
         <div class="row">
           <div class="col-lg-12">
             <table class="table table-sm table-striped">
@@ -222,6 +237,7 @@
             <table id="table-files-attachments" class="table table-sm table-striped">
               <thead>
                 <tr>
+                  <th />
                   <th>Link</th>
                   <th>Description</th>
                   <th />
@@ -229,15 +245,49 @@
               </thead>
               <tbody v-if="part.part_attachments && part.part_attachments.length">
                 <tr v-for="file in part.part_attachments" :key="file.id">
-                  <td><a target="_blank" :href="file.file">{{ file.file }}</a></td>
-                  <td>{{ file.description }}</td>
-                  <td>
-                    <b-button variant="link" @click.prevent="deleteAttachment(file)">
+                  <td v-if="file.picture && file.picture_medium">
+                    <i
+                      :id="`p-a-pic-${file.id}`"
+                      class="fa fa-picture-o"
+                      aria-hidden="true"
+                    />
+                    <b-popover
+                      :target="`p-a-pic-${file.id}`"
+                      placement="left"
+                      triggers="hover focus"
+                    >
+                      <img :src="file.picture_medium" width="250px">
+                    </b-popover>
+                  </td>
+                  <td v-else>
+                    <i
+                      class="fa fa-file-code-o"
+                      aria-hidden="true"
+                    />
+                  </td>
+                  <td><a target="_blank" :href="file.file || file.picture">{{ stripPathFromFileUrl(file.file || file.picture) }}</a></td>
+                  <td style="width: 700px;">
+                    {{ file.description }}
+                  </td>
+                  <td style="width: 80px;">
+                    <template v-if="file.picture && file.picture_medium">
+                      <i
+                        v-if="file.picture_default" class="fa fa-check-square-o" title="Default picture"
+                        aria-hidden="true"
+                      />
+                      <i
+                        v-else class="fa fa-square-o" aria-hidden="true"
+                        title="Set as default picture"
+                        @click.prevent="setAttachmentAsDefault(part.id, file.id)"
+                      />
+                      &nbsp;&nbsp;
+                    </template>
+                    <router-link to="#" @click.native.prevent="deleteAttachment(file)">
                       <i
                         class="fa fa-trash-o"
                         aria-hidden="true"
                       />
-                    </b-button>
+                    </router-link>
                   </td>
                 </tr>
               </tbody>
@@ -280,6 +330,7 @@ import QRCode from 'qrcode'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 import moment from 'moment'
+import utils from '@/utils'
 
 export default {
   name: 'PartsDetails',
@@ -346,6 +397,13 @@ export default {
     },
     partDetailsUpdatedOn () {
       return this.part && this.part.updated_at ? this.formatDate(this.part.updated_at) : ''
+    },
+    picturesGalleryForPart () {
+      return this.part ? this.part.part_attachments.filter(x => {
+        if (x.picture && x.picture_medium) {
+          return x
+        }
+      }).slice(0, 4) : []
     }
   },
   watch: {
@@ -392,7 +450,7 @@ export default {
             variant: 'danger',
             toaster: 'b-toaster-top-center'
           })
-          logger.default.error('Error with part deletion', err.message)
+          logger.default.error('Error with part fetch', err.message)
         })
     },
     deletePart (part) {
@@ -520,6 +578,46 @@ export default {
         })
         .catch((err) => {
           logger.default.error('Error with the delete attachment modal', err)
+        })
+    },
+    showGalleryImage (file) {
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: file.description } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: file.picture, width: '800' } })
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'xl'
+      })
+    },
+    stripPathFromFileUrl (url) {
+      return utils.baseName(url)
+    },
+    setAttachmentAsDefault (partId, fileId) {
+      apiService.partAttachmentSetDefault(partId, fileId)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/SetDefault/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('PartAttachment/SetDefault/Toast/Success/Title', 'Setting default part attachment'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.fetchPart()
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('PartAttachment/SetDefault/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('PartAttachment/SetDefault/Toast/Error/Title', 'Setting default part attachment'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Error with part attachment default set', err)
+          this.fetchPart()
         })
     }
   }
