@@ -129,6 +129,7 @@ ADDITIONAL_MIDDLEWARES_AFTER = env.list("ADDITIONAL_MIDDLEWARES_AFTER", default=
 MIDDLEWARE = (
     ADDITIONAL_MIDDLEWARES_BEFORE
     + [
+        "django.middleware.gzip.GZipMiddleware",
         "corsheaders.middleware.CorsMiddleware",
         "django.middleware.security.SecurityMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
@@ -137,7 +138,7 @@ MIDDLEWARE = (
         "controllers.middleware.SPAFallbackMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
-        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware"
     ]
     + ADDITIONAL_MIDDLEWARES_AFTER
 )
