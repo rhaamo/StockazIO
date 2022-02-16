@@ -1,0 +1,4 @@
+paths:
+  - front
+paths-ignore:
+  - src/node_modules
