@@ -70,7 +70,8 @@
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
-import moment from 'moment'
+import dateFnsFormat from 'date-fns/format'
+import dateFnsParseISO from 'date-fns/parseISO'
 
 export default {
   mixins: [
@@ -112,7 +113,7 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return moment(date).format('ddd MMM D YYYY')
+      return date ? dateFnsFormat(dateFnsParseISO(date), 'E d MMM yyyy') : ''
     },
     importStateText (state) {
       let states = {

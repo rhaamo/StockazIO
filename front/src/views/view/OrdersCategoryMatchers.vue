@@ -88,7 +88,8 @@ import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, integer } from 'vuelidate/lib/validators'
 
-import moment from 'moment'
+import dateFnsFormat from 'date-fns/format'
+import dateFnsParseISO from 'date-fns/parseISO'
 
 export default {
   components: {
@@ -130,7 +131,7 @@ export default {
       return `ignore-${id}`
     },
     formatDate (date) {
-      return moment(date).format('ddd DD MMM YYYY')
+      return date ? dateFnsFormat(dateFnsParseISO(date), 'E d MMM yyyy') : ''
     },
     fetchMatchers (orderId) {
       apiService.getCategoryMatchers()

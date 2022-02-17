@@ -329,7 +329,8 @@ import apiService from '../../services/api/api.service'
 import QRCode from 'qrcode'
 import logger from '@/logging'
 import { mapState } from 'vuex'
-import moment from 'moment'
+import dateFnsFormat from 'date-fns/format'
+import dateFnsParseISO from 'date-fns/parseISO'
 import utils from '@/utils'
 
 export default {
@@ -413,7 +414,7 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return moment(date).format('ddd MMM D YYYY HH:mm zz')
+      return dateFnsFormat(dateFnsParseISO(date), 'E MMM d yyyy HH:mm')
     },
     qrcodeId (id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`

@@ -83,8 +83,8 @@
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
-
-import moment from 'moment'
+import dateFnsFormat from 'date-fns/format'
+import dateFnsParseISO from 'date-fns/parseISO'
 
 export default {
   mixins: [
@@ -135,7 +135,7 @@ export default {
       return `ignore-${id}`
     },
     formatDate (date) {
-      return moment(date).format('ddd DD MMM YYYY')
+      return date ? dateFnsFormat(dateFnsParseISO(date), 'E d MMM yyyy') : ''
     },
     fetchOrder (orderId) {
       apiService.getOrderImporter(orderId)

@@ -225,7 +225,8 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dateFnsFormat from 'date-fns/format'
+import dateFnsParseISO from 'date-fns/parseISO'
 
 export default {
   props: {
@@ -298,7 +299,7 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return moment(date).format('ddd MMM D YYYY HH:mm zz')
+      return dateFnsFormat(dateFnsParseISO(date), 'E MMM d yyyy HH:mm')
     },
     partModalClose () {
       this.$bvModal.hide('modalManage')
