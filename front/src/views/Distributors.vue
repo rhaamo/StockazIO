@@ -217,7 +217,6 @@ export default {
   props: {
   },
   data: () => ({
-    distributors: [],
     currentPage: 1,
     fields: [
       { key: 'name', label: 'Name', sortable: true },
@@ -254,7 +253,8 @@ export default {
   },
   computed: {
     ...mapState({
-      serverSettings: state => state.server.settings
+      serverSettings: state => state.server.settings,
+      distributors: state => state.preloads.distributors
     }),
     rows () {
       return this.distributors.length
@@ -266,13 +266,11 @@ export default {
   watch: {
   },
   created () {
-    this.fetchDistributors()
   },
   methods: {
     fetchDistributors () {
       apiService.getDistributors()
         .then((val) => {
-          this.distributors = val.data
           this.$store.commit('setDistributors', val.data)
           this.$store.commit('setLastUpdate', { item: 'distributors', value: new Date() })
         })

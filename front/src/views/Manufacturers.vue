@@ -236,7 +236,6 @@ export default {
   props: {
   },
   data: () => ({
-    manufacturers: [],
     currentPage: 1,
     fields: [
       { key: 'name', label: 'Name', sortable: true },
@@ -276,7 +275,8 @@ export default {
   },
   computed: {
     ...mapState({
-      serverSettings: state => state.server.settings
+      serverSettings: state => state.server.settings,
+      manufacturers: state => state.preloads.manufacturers
     }),
     rows () {
       return this.manufacturers.length
@@ -292,13 +292,11 @@ export default {
   watch: {
   },
   created () {
-    this.fetchManufacturers()
   },
   methods: {
     fetchManufacturers () {
       apiService.getManufacturers()
         .then((val) => {
-          this.manufacturers = val.data
           this.$store.commit('setManufacturers', val.data)
           this.$store.commit('setLastUpdate', { item: 'manufacturers', value: new Date() })
         })
