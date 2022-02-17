@@ -132,6 +132,7 @@ import apiService from '../../services/api/api.service'
 import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
+import { mapState } from 'vuex'
 
 export default {
   name: 'PartUnitList',
@@ -141,7 +142,6 @@ export default {
   props: {
   },
   data: () => ({
-    partUnits: [],
     page: 0, // TODO/FIXME no pagination yet
     search_query: '', // TODO/FIXME no search yet
     fields: [
@@ -168,17 +168,16 @@ export default {
     }
   },
   computed: {
+    ...mapState({ partUnits: state => { return state.preloads.part_units } })
   },
   watch: {
   },
   created () {
-    this.fetchPartUnits()
   },
   methods: {
     fetchPartUnits () {
       apiService.getPartUnits()
         .then((val) => {
-          this.partUnits = val.data
           this.$store.commit('setPartUnits', val.data)
           this.$store.commit('setLastUpdate', { item: 'part_units', value: new Date() })
         })
