@@ -178,6 +178,9 @@ Format changed but both URLs are handled by the search.
 - StorageLocation: `web+stockazio:storageLocation,{uuid}` (old format: `stockazio://storageLocation/{uuid}`)
 - Part: `web+stockazio:part,{uuid}` (old format: `stockazio://part/{uuid}`)
 
+# Changelog
+- Part file attachments split into file and picture, if you had uploads prior to that split, use that command to migrate them: `python3 manage.py migrations_move_from_one_to_two_part_file_fields`
+
 # Images sources
 - Footprints
     - Unless noted, from https://commons.wikimedia.org/, original names, some have been edited to add a transform for orientation and size.
