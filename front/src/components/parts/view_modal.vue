@@ -41,6 +41,21 @@
             </div>
           </div>
 
+          <b-container v-if="picturesGalleryForPart && picturesGalleryForPart.length" fluid class="p-4 bg-white">
+            <b-row>
+              <b-col v-for="file in picturesGalleryForPart" :key="file.id">
+                <b-img
+                  thumbnail
+                  :src="file.picture_medium"
+                  style="height: 100px;"
+                  :alt="file.description"
+                  title="Click to show bigger image"
+                  @click.prevent="showGalleryImage(file)"
+                />
+              </b-col>
+            </b-row>
+          </b-container>
+
           <div class="row">
             <div class="col-lg-12">
               <table class="table table-sm table-striped">
@@ -167,16 +182,37 @@
               <table id="table-files-attachments" class="table table-sm table-striped">
                 <thead>
                   <tr>
+                    <th />
                     <th>Link</th>
                     <th>Description</th>
                   </tr>
                 </thead>
                 <tbody v-if="partDetailsAttachments && partDetailsAttachments.length">
                   <tr v-for="file in partDetailsAttachments" :key="file.id">
-                    <td style="width: 10em;">
-                      <a target="_blank" :href="file.file">link to file</a>
+                    <td v-if="file.picture && file.picture_medium">
+                      <i
+                        :id="`p-a-pic-${file.id}`"
+                        class="fa fa-picture-o"
+                        aria-hidden="true"
+                      />
+                      <b-popover
+                        :target="`p-a-pic-${file.id}`"
+                        placement="left"
+                        triggers="hover focus"
+                      >
+                        <img :src="file.picture_medium" width="250px">
+                      </b-popover>
                     </td>
-                    <td>{{ file.description }}</td>
+                    <td v-else>
+                      <i
+                        class="fa fa-file-code-o"
+                        aria-hidden="true"
+                      />
+                    </td>
+                    <td><a target="_blank" :href="file.file || file.picture">{{ stripPathFromFileUrl(file.file || file.picture) }}</a></td>
+                    <td style="width: 700px;">
+                      {{ file.description }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -227,6 +263,7 @@
 <script>
 import dateFnsFormat from 'date-fns/format'
 import dateFnsParseISO from 'date-fns/parseISO'
+import utils from '@/utils'
 
 export default {
   props: {
@@ -295,6 +332,13 @@ export default {
     },
     partDetailsStockHistory () {
       return this.part && this.part.part_stock_history ? this.part.part_stock_history : []
+    },
+    picturesGalleryForPart () {
+      return this.part ? this.part.part_attachments.filter(x => {
+        if (x.picture && x.picture_medium) {
+          return x
+        }
+      }).slice(0, 4) : []
     }
   },
   methods: {
@@ -308,6 +352,22 @@ export default {
     deletePart (part) {
       this.$emit('delete-part', part)
       this.partModalClose()
+    },
+    stripPathFromFileUrl (url) {
+      return utils.baseName(url)
+    },
+    showGalleryImage (file) {
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: file.description } })
+      const messageVNode = h('div', { domProps: { style: 'text-align: center;' } }, [
+        h('img', { domProps: { src: file.picture, width: '800' } })
+      ])
+      this.$bvModal.msgBoxOk([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true,
+        size: 'xl'
+      })
     }
   }
 }
