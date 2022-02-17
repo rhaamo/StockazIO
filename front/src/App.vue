@@ -90,6 +90,10 @@
                 <i class="fa fa-key fa-fw" /> Change password
               </b-dropdown-item>
               <b-dropdown-divider />
+              <b-dropdown-item to="#" @click.prevent="forceReloadDatas">
+                <i class="fa fa-refresh" /> Force reload datas
+              </b-dropdown-item>
+              <b-dropdown-divider />
               <b-dropdown-item @click.prevent="logout">
                 <i class="fa fa-sign-out fa-fw" /> Logout
               </b-dropdown-item>
@@ -193,6 +197,43 @@ export default {
       } else {
         this.$router.replace({ name: 'parts-list', query: { q: search } }).catch(() => {})
       }
+    },
+    forceReloadDatas () {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to force reload of all datas ?`, {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          if (value === true) {
+            this.$store.commit('setLastUpdate', { item: 'categories', value: null })
+            this.$store.commit('setLastUpdate', { item: 'footprints', value: null })
+            this.$store.commit('setLastUpdate', { item: 'storages', value: null })
+            this.$store.commit('setLastUpdate', { item: 'parameters_units', value: null })
+            this.$store.commit('setLastUpdate', { item: 'part_units', value: null })
+            this.$store.commit('setLastUpdate', { item: 'manufacturers', value: null })
+            this.$store.commit('setLastUpdate', { item: 'distributors', value: null })
+            this.$store.commit('setLastUpdate', { item: 'label_templates', value: null })
+            this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: null })
+            this.$store.dispatch('preloadStuff').then(() => {
+              this.$bvToast.toast(this.$pgettext('Datas/Preloading/Toast/Success/Message', 'Success'), {
+                title: this.$pgettext('Datas/Preloading/Toast/Success/Title', 'Reloading datas'),
+                autoHideDelay: 5000,
+                appendToast: true,
+                variant: 'primary',
+                toaster: 'b-toaster-top-center'
+              })
+            })
+          }
+        })
     }
   }
 }

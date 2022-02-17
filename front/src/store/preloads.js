@@ -65,8 +65,13 @@ const preloads = {
     },
     // setLastUpdate take a dict as value {item: 'xxx', value: 'date 42'}
     setLastUpdate (state, value) {
-      // Cannot save a Date() object in LocalStorage, so convert it to ISO String
-      state.lastUpdate[value.item] = value.value.toISOString()
+      if (value && value.value) {
+        // Cannot save a Date() object in LocalStorage, so convert it to ISO String
+        state.lastUpdate[value.item] = value.value.toISOString()
+      } else {
+        // When nulled to force reload
+        state.lastUpdate[value.item] = value.value
+      }
     },
     incrementCategoryPartsCount (state, nodeId) {
       function incrementNode (node, nodeId) {
