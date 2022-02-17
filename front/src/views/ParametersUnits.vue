@@ -151,7 +151,6 @@ export default {
   props: {
   },
   data: () => ({
-    parametersUnits: [],
     currentPage: 1,
     search_query: '', // TODO/FIXME no search yet
     fields: [
@@ -179,7 +178,8 @@ export default {
   },
   computed: {
     ...mapState({
-      serverSettings: state => state.server.settings
+      serverSettings: state => state.server.settings,
+      parametersUnits: state => state.preloads.parameters_unit
     }),
     rows () {
       return this.parametersUnits.length
@@ -191,13 +191,11 @@ export default {
   watch: {
   },
   created () {
-    this.fetchParametersUnits()
   },
   methods: {
     fetchParametersUnits () {
       apiService.getParametersUnits()
         .then((val) => {
-          this.parametersUnits = val.data
           this.$store.commit('setParametersUnits', val.data)
           this.$store.commit('setLastUpdate', { item: 'parameters_units', value: new Date() })
         })
