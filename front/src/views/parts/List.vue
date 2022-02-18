@@ -590,8 +590,24 @@ export default {
       this.partDetails = null
     },
     partGetDefaultAttachment (attachments) {
-      return attachments.filter(x => {
+      // If only one attachment, and it is a picture, elect as default
+      if (attachments.length === 1 && attachments[0].picture) {
+        return attachments[0]
+      }
+
+      // Else return the one marked as default
+      let att = attachments.filter(x => {
         if (x.picture_default) {
+          return x
+        }
+      })[0] // return first item
+      if (att) {
+        return att
+      }
+
+      // Else return first attachment being an image
+      return attachments.filter(x => {
+        if (x.picture) {
           return x
         }
       })[0] // return first item
