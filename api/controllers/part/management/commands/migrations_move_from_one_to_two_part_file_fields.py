@@ -31,5 +31,9 @@ class Command(BaseCommand):
                         print(f"Part attachment #{pa.id} has been moved from file to picture")
                         pa.save()
                         treated += 1
+                if not part.part_attachments.filter(picture_default=True):
+                    pa = part.part_attachments.first()
+                    pa.picture_default = True
+                    pa.save()
                 if treated == 0:
                     print("   > No attachment to handle.")
