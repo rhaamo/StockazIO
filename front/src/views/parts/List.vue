@@ -162,167 +162,202 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12 mx-auto">
-        <b-table
-          id="tablePartsList" ref="tablePartsList" :items="parts"
-          :fields="bulkEditMode ? fieldsBulkEdit : fields"
-          :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
-          :current-page="currentPage" :busy.sync="busy"
-          condensed striped
-          sort-icon-left
-          show-empty
-          primary-key="uuid"
-          :no-local-sorting="true"
-          small
-          @sort-changed="sortTableChanged"
-        >
-          <template #cell(select)="data">
-            <b-form-checkbox v-model="data.item.selected" />
-          </template>
+    <b-card no-body class="mb-4">
+      <b-tabs card>
+        <b-tab no-body title="Table" active>
+          <b-table
+            id="tablePartsList" ref="tablePartsList" :items="parts"
+            :fields="bulkEditMode ? fieldsBulkEdit : fields"
+            :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
+            :current-page="currentPage" :busy.sync="busy"
+            condensed striped
+            sort-icon-left
+            show-empty
+            primary-key="uuid"
+            :no-local-sorting="true"
+            small
+            @sort-changed="sortTableChanged"
+          >
+            <template #cell(select)="data">
+              <b-form-checkbox v-model="data.item.selected" />
+            </template>
 
-          <template #cell(qrcode)="data">
-            <div @click="showLabelGenerator(data.item)">
-              <qrcode
-                :id="qrcodeId(data.item.id)"
-                v-b-tooltip.hover
-                :value="qrCodePart(data.item.uuid)"
-                :options="{ scale: 1, color: {dark: '#000000', light:'#0000'} }"
-                title="show label generator"
-                :data-uuid="data.item.uuid"
-                :data-name="data.item.name"
-                data-toggle="modal"
-                data-target="#modalQrCode"
-              />
-            </div>
-          </template>
+            <template #cell(qrcode)="data">
+              <div @click="showLabelGenerator(data.item)">
+                <qrcode
+                  :id="qrcodeId(data.item.id)"
+                  v-b-tooltip.hover
+                  :value="qrCodePart(data.item.uuid)"
+                  :options="{ scale: 1, color: {dark: '#000000', light:'#0000'} }"
+                  title="show label generator"
+                  :data-uuid="data.item.uuid"
+                  :data-name="data.item.name"
+                  data-toggle="modal"
+                  data-target="#modalQrCode"
+                />
+              </div>
+            </template>
 
-          <template #cell(name)="data">
-            <template v-if="partGetDefaultAttachment(data.item.part_attachments)">
-              <i
-                :id="`p_a_${data.item.id}`" title="Hover to show picture"
-                class="fa fa-picture-o"
-                aria-hidden="true"
-              />
-              <b-popover
-                :target="`p_a_${data.item.id}`"
-                placement="left"
-                triggers="hover focus"
-              >
-                <b-img-lazy :src="partGetDefaultAttachment(data.item.part_attachments).picture_medium" width="250px" />
-              </b-popover>
+            <template #cell(name)="data">
+              <template v-if="partGetDefaultAttachment(data.item.part_attachments)">
+                <i
+                  :id="`p_a_${data.item.id}`" title="Hover to show picture"
+                  class="fa fa-picture-o"
+                  aria-hidden="true"
+                />
+                <b-popover
+                  :target="`p_a_${data.item.id}`"
+                  placement="left"
+                  triggers="hover focus"
+                >
+                  <b-img-lazy :src="partGetDefaultAttachment(data.item.part_attachments).picture_medium" width="250px" />
+                </b-popover>
               &nbsp;&nbsp;
-            </template>
-            <a href="#" @click.prevent="viewPartModal(data.item)">{{ data.item.name }}</a>
-            <br>
-            <template v-if="data.item.description">
-              {{ data.item.category ? data.item.category.name : 'No category' }}: {{ data.item.description }}
-            </template>
-            <template v-else>
-              {{ data.item.category ? data.item.category.name : 'No category' }}
-            </template>
-          </template>
-
-          <template #cell(storage)="data">
-            {{ data.item.storage && data.item.storage.name ? data.item.storage.name : '-' }}
-          </template>
-
-          <template #cell(part_unit)="data">
-            {{ data.item.part_unit && data.item.part_unit.name ? data.item.part_unit.name : '-' }}
-          </template>
-
-          <template #cell(stock_qty)="data">
-            <span
-              v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0" :id="popoverStockQtyClass(data.item.id)"
-              class="qtyMinWarning"
-            >{{ data.item.stock_qty }}
-              <i
-                v-b-tooltip.hover class="fa fa-circle"
-                aria-hidden="true"
-                title="Current stock is below minimum stock quantity or exhausted"
-              />
-            </span>
-            <span
-              v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
-              title="click to change qty"
-            >{{ data.item.stock_qty }}</span>
-
-            <b-popover
-              :target="popoverStockQtyClass(data.item.id)"
-              triggers="click"
-              placement="auto"
-              container="tablePartsList"
-            >
-              <template #title>
-                Change stock qty
               </template>
-
-              <div align="center">
-                <b-form-spinbutton v-model="data.item.stock_qty" min="0" />
-                <br>
-                <b-button
-                  size="sm" type="submit" variant="primary"
-                  @click.prevent="popoverQtyUpdatePart(data.item.id, data.item.stock_qty)"
-                >
-                  update
-                </b-button>
-              </div>
-            </b-popover>
-          </template>
-
-          <template #cell(stock_qty_min)="data">
-            <span :id="popoverStockQtyMinClass(data.item.id)">{{ data.item.stock_qty_min }}</span>
-
-            <b-popover
-              :target="popoverStockQtyMinClass(data.item.id)"
-              triggers="click"
-              placement="auto"
-              container="tablePartsList"
-            >
-              <template #title>
-                Change stock min qty
+              <a href="#" @click.prevent="viewPartModal(data.item)">{{ data.item.name }}</a>
+              <br>
+              <template v-if="data.item.description">
+                {{ data.item.category ? data.item.category.name : 'No category' }}: {{ data.item.description }}
               </template>
+              <template v-else>
+                {{ data.item.category ? data.item.category.name : 'No category' }}
+              </template>
+            </template>
 
-              <div align="center">
-                <b-form-spinbutton v-model="data.item.stock_qty_min" min="0" />
-                <br>
-                <b-button
-                  size="sm" type="submit" variant="primary"
-                  @click.prevent="popoverQtyMinUpdatePart(data.item.id, data.item.stock_qty_min)"
-                >
-                  update
-                </b-button>
-              </div>
-            </b-popover>
-          </template>
+            <template #cell(storage)="data">
+              {{ data.item.storage && data.item.storage.name ? data.item.storage.name : '-' }}
+            </template>
 
-          <template #cell(footprint)="data">
-            <span
-              v-b-tooltip.hover
-              :title="data.item.footprint ? data.item.footprint.description : ''"
-            >
-              {{ data.item.footprint ? data.item.footprint.name : '-' }}
-            </span>
-          </template>
+            <template #cell(part_unit)="data">
+              {{ data.item.part_unit && data.item.part_unit.name ? data.item.part_unit.name : '-' }}
+            </template>
 
-          <template #cell(actions)="data">
-            <b-button variant="link" :to="{ name: 'parts-edit', params: { partId: data.item.id } }">
-              <i
-                class="fa fa-pencil-square-o"
-                aria-hidden="true"
-              />
-            </b-button>
+            <template #cell(stock_qty)="data">
+              <span
+                v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0" :id="popoverStockQtyClass(data.item.id)"
+                class="qtyMinWarning"
+              >{{ data.item.stock_qty }}
+                <i
+                  v-b-tooltip.hover class="fa fa-circle"
+                  aria-hidden="true"
+                  title="Current stock is below minimum stock quantity or exhausted"
+                />
+              </span>
+              <span
+                v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
+                title="click to change qty"
+              >{{ data.item.stock_qty }}</span>
+
+              <b-popover
+                :target="popoverStockQtyClass(data.item.id)"
+                triggers="click"
+                placement="auto"
+                container="tablePartsList"
+              >
+                <template #title>
+                  Change stock qty
+                </template>
+
+                <div align="center">
+                  <b-form-spinbutton v-model="data.item.stock_qty" min="0" />
+                  <br>
+                  <b-button
+                    size="sm" type="submit" variant="primary"
+                    @click.prevent="popoverQtyUpdatePart(data.item.id, data.item.stock_qty)"
+                  >
+                    update
+                  </b-button>
+                </div>
+              </b-popover>
+            </template>
+
+            <template #cell(stock_qty_min)="data">
+              <span :id="popoverStockQtyMinClass(data.item.id)">{{ data.item.stock_qty_min }}</span>
+
+              <b-popover
+                :target="popoverStockQtyMinClass(data.item.id)"
+                triggers="click"
+                placement="auto"
+                container="tablePartsList"
+              >
+                <template #title>
+                  Change stock min qty
+                </template>
+
+                <div align="center">
+                  <b-form-spinbutton v-model="data.item.stock_qty_min" min="0" />
+                  <br>
+                  <b-button
+                    size="sm" type="submit" variant="primary"
+                    @click.prevent="popoverQtyMinUpdatePart(data.item.id, data.item.stock_qty_min)"
+                  >
+                    update
+                  </b-button>
+                </div>
+              </b-popover>
+            </template>
+
+            <template #cell(footprint)="data">
+              <span
+                v-b-tooltip.hover
+                :title="data.item.footprint ? data.item.footprint.description : ''"
+              >
+                {{ data.item.footprint ? data.item.footprint.name : '-' }}
+              </span>
+            </template>
+
+            <template #cell(actions)="data">
+              <b-button variant="link" :to="{ name: 'parts-edit', params: { partId: data.item.id } }">
+                <i
+                  class="fa fa-pencil-square-o"
+                  aria-hidden="true"
+                />
+              </b-button>
                 &nbsp;
-            <b-button variant="link" @click.prevent="deletePart(data.item)">
-              <i
-                class="fa fa-trash-o"
-                aria-hidden="true"
+              <b-button variant="link" @click.prevent="deletePart(data.item)">
+                <i
+                  class="fa fa-trash-o"
+                  aria-hidden="true"
+                />
+              </b-button>
+            </template>
+          </b-table>
+        </b-tab>
+        <b-tab title="Thumbnails">
+          <b-card-group
+            v-for="(row, idx) in thumbnailsChunked" :key="idx" deck
+            class="mb-4"
+          >
+            <b-card
+              v-for="part in row" :key="part.id"
+              :title="part.name"
+              img-top
+            >
+              <b-card-text>{{ part.description || 'No description.' }}</b-card-text>
+              <b-card-img-lazy
+                v-if="partGetDefaultAttachment(part.part_attachments)" :src="partGetDefaultAttachment(part.part_attachments).picture_medium"
+                top
               />
-            </b-button>
-          </template>
-        </b-table>
-      </div>
-    </div>
+              <template v-else>
+                <span class="fa-stack fa-5x">
+                  <i class="fa fa-file-picture-o fa-stack-2x" />
+                  <i class="fa fa-question fa-stack-1x text-warning" />
+                </span>
+              </template>
+              <template #footer>
+                <small class="text-muted">Qty: {{ part.stock_qty }}</small>
+                <b-button
+                  size="sm" variant="outline-primary" class="pull-right"
+                  @click.prevent="viewPartModal(part)"
+                >
+                  View details
+                </b-button>
+              </template>
+            </b-card>
+          </b-card-group>
+        </b-tab>
+      </b-tabs>
+    </b-card>
 
     <b-row>
       <b-col md="6" offset-md="1">
@@ -344,6 +379,7 @@ import logger from '@/logging'
 import { mapState } from 'vuex'
 import ViewModal from '@/components/parts/view_modal'
 import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
+import _ from '@/lodash'
 
 export default {
   name: 'PartsList',
@@ -433,6 +469,9 @@ export default {
           return x
         }
       })
+    },
+    thumbnailsChunked () {
+      return _.chunk(this.parts, 6)
     }
   },
   watch: {
