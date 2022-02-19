@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <div class="row mb-3">
-      <div class="col-xl-2 col-3">
+    <div class="row mb-4">
+      <div class="col-2">
         <vue-multiselect
           v-model="filter.footprint" :options="choicesFootprint"
           group-values="footprints" group-label="category" placeholder="Filter footprint"
@@ -50,7 +50,7 @@
         </b-form-checkbox>
       </div>
 
-      <div class="col-xl-2 col-3">
+      <div class="col-2">
         <vue-treeselect
           v-model="filter.storage" :multiple="false"
           :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
@@ -69,7 +69,7 @@
         </b-form-checkbox>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-2">
         <b-form-checkbox
           v-model="filter.qty"
           value="qty"
@@ -80,7 +80,7 @@
         </b-form-checkbox>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-2">
         <b-form-checkbox
           v-model="filter.qty"
           value="qtyMin"
@@ -90,13 +90,34 @@
           Only qty &lt; min
         </b-form-checkbox>
       </div>
+
+      <div class="col-2">
+        <b-form-checkbox v-model="bulkEditMode" name="check-button" switch>
+          Bulk-edit
+        </b-form-checkbox>
+      </div>
+    </div>
+
+    <div v-if="bulkEditMode" class="row mb-2">
+      <div class="col-3">
+        Bulk edit options:<br>
+        <b-button variant="info">
+          Change category
+        </b-button>&nbsp;
+        <b-button variant="info">
+          Change location
+        </b-button>&nbsp;
+        <b-button variant="danger" @click.prevent="deleteAllSelected">
+          Delete
+        </b-button>
+      </div>
     </div>
 
     <div class="row">
       <div class="col-md-12 mx-auto">
         <b-table
           id="tablePartsList" ref="tablePartsList" :items="parts"
-          :fields="fields"
+          :fields="bulkEditMode ? fieldsBulkEdit : fields"
           :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
           :current-page="currentPage" :busy.sync="busy"
           condensed striped
@@ -107,6 +128,10 @@
           small
           @sort-changed="sortTableChanged"
         >
+          <template #cell(select)="data">
+            <b-form-checkbox v-model="data.item.selected" />
+          </template>
+
           <template #cell(qrcode)="data">
             <div @click="showLabelGenerator(data.item)">
               <qrcode
@@ -297,6 +322,17 @@ export default {
       { key: 'footprint', label: 'Footprint', sortable: true },
       { key: 'actions', label: 'Actions' }
     ],
+    fieldsBulkEdit: [
+      { key: 'select', label: '', tdClass: 'select' },
+      { key: 'qrcode', label: 'QrCode', tdClass: 'qrCode' },
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'storage', label: 'Storage', sortable: true },
+      { key: 'stock_qty', label: 'Stock', sortable: true },
+      { key: 'stock_qty_min', label: 'Min', sortable: true },
+      { key: 'part_unit', label: 'Unit', sortable: true },
+      { key: 'footprint', label: 'Footprint', sortable: true },
+      { key: 'actions', label: 'Actions' }
+    ],
     sortBy: 'name',
     sortDesc: false,
     busy: false,
@@ -306,7 +342,8 @@ export default {
       storage: null,
       qty: null
     },
-    modalLabelGeneratorItems: []
+    modalLabelGeneratorItems: [],
+    bulkEditMode: false
   }),
   computed: {
     ...mapState({
@@ -541,6 +578,64 @@ export default {
                   toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with part deletion', err)
+                this.fetchParts(1, null)
+              })
+          }
+        })
+        .catch((err) => {
+          logger.default.error('Error with the delete modal', err)
+        })
+    },
+    deleteAllSelected () {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete all the selected parts ?`, {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          if (value === true) {
+            let partsToDelete = this.parts.filter(x => {
+              if (x.selected) {
+                return x
+              }
+            })
+
+            const _bulkDelete = async (parts) => {
+              for (let x of parts) {
+                await apiService.deletePart(x.id)
+                  .then(() => {
+                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
+                      title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                      autoHideDelay: 5000,
+                      appendToast: true,
+                      variant: 'primary',
+                      toaster: 'b-toaster-top-center'
+                    })
+                    this.$store.commit('decrementCategoryPartsCount', this.actualCurrentCategory.id)
+                  })
+                  .catch((err) => {
+                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                      title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                      autoHideDelay: 5000,
+                      appendToast: true,
+                      variant: 'danger',
+                      toaster: 'b-toaster-top-center'
+                    })
+                    logger.default.error('Error with part deletion', err)
+                  })
+              }
+            }
+            _bulkDelete(partsToDelete)
+              .then(() => {
+              // Then reload
                 this.fetchParts(1, null)
               })
           }
