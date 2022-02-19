@@ -4,6 +4,7 @@ from django.db.models import F
 
 from controllers.categories.models import Category
 from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
+from controllers.storage.models import StorageLocation
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
@@ -336,10 +337,24 @@ class BulkEditChangeCategory(views.APIView):
     anonymous_policy = False
 
     def post(self, request, format=None):
-        category = get_object_or_404(Category, id=request.data['category'])
-        for partId in request.data['parts']:
+        category = get_object_or_404(Category, id=request.data["category"])
+        for partId in request.data["parts"]:
             part = get_object_or_404(Part, id=partId)
             part.category = category
             part.save()
 
-        return Response({'message': 'ok', 'parts': request.data['parts']}, status=200)
+        return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
+
+
+class BulkEditChangeStorageLocation(views.APIView):
+    required_scope = "parts"
+    anonymous_policy = False
+
+    def post(self, request, format=None):
+        storage_location = get_object_or_404(StorageLocation, id=request.data["storage_location"])
+        for partId in request.data["parts"]:
+            part = get_object_or_404(Part, id=partId)
+            part.storage = storage_location
+            part.save()
+
+        return Response({"message": "ok", "parts": request.data["parts"]}, status=200)

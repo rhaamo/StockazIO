@@ -128,9 +128,33 @@
           </div>
         </b-popover>
 
-        <b-button variant="info">
+        <b-button id="popoverChangeStorageLocation" variant="info">
           Change location
         </b-button>&nbsp;
+        <b-popover target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover">
+          <template #title>
+            For selected parts
+          </template>
+          <div>
+            <vue-treeselect
+              v-model="bulkEditNewStorageLocation" :multiple="false" :options="choicesStorageLocation"
+              search-nested :default-expand-level="Infinity" clearable
+              :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
+              :disable-branch-nodes="true"
+            />
+            <br>
+            <b-button size="sm" variant="danger" @click="onBulkEditNewStorageLocationPopoverClose">
+              Cancel
+            </b-button>
+            &nbsp;
+            <b-button
+              size="sm" variant="primary" :disabled="!bulkEditNewStorageLocation"
+              @click="onBulkEditNewStorageLocationPopoverOk"
+            >
+              Ok
+            </b-button>
+          </div>
+        </b-popover>
 
         <b-button variant="danger" @click.prevent="deleteAllSelected">
           Delete
@@ -370,7 +394,9 @@ export default {
     modalLabelGeneratorItems: [],
     bulkEditMode: false,
     bulkEditNewCategoryPopover: false,
-    bulkEditNewCategory: null
+    bulkEditNewCategory: null,
+    bulkEditNewStorageLocationPopover: false,
+    bulkEditNewStorageLocation: null
   }),
   computed: {
     ...mapState({
@@ -572,6 +598,8 @@ export default {
           this.busy = false
           this.bulkEditNewCategory = null
           this.bulkEditNewCategoryPopover = false
+          this.bulkEditNewStorageLocation = null
+          this.bulkEditNewStorageLocationPopover = false
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::refresh::table', 'tablePartsList')
         })
@@ -778,6 +806,44 @@ export default {
             toaster: 'b-toaster-top-center'
           })
           logger.default.error('Error with category part update', err)
+          this.fetchParts(1, null)
+        })
+    },
+    onBulkEditNewStorageLocationPopoverClose () {
+      this.bulkEditNewStorageLocation = null
+      this.bulkEditNewStorageLocationPopover = false
+    },
+    onBulkEditNewStorageLocationPopoverOk () {
+      if (!(this.selectedParts && this.selectedParts.length)) {
+        return
+      }
+
+      let ids = this.selectedParts.map(x => { return x.id })
+
+      apiService.changePartsStorageLocation(ids, this.bulkEditNewStorageLocation)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.fetchParts(1, null)
+
+          this.$nextTick(() => {
+            this.bulkEditNewStorageLocationPopover = false
+          })
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Error with category storage location update', err)
           this.fetchParts(1, null)
         })
     }
