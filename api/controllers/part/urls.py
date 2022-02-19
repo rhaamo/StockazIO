@@ -14,6 +14,11 @@ urlpatterns = [
         views.PartQuickAutocompletion.as_view(),
         name="parts_autocompletion",
     ),
+    path(
+        r"bulk/change_category",
+        views.BulkEditChangeCategory.as_view(),
+        name="bulk_edit_change_category"
+    ),
     path(r"public/", views.PartsPublic.as_view({"get": "list"}), name="parts_public"),
     path(r"public/<str:pk>/", views.PartsPublic.as_view({"get": "retrieve"}), name="parts_public_pk"),
     path(r"<int:part_id>/attachments/", views.PartAttachmentsStandalone.as_view(), name="parts_attachments"),

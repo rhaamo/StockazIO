@@ -689,7 +689,7 @@ export default {
                 variant: 'primary',
                 toaster: 'b-toaster-top-center'
               })
-              this.$store.commit('decrementCategoryPartsCount', categoryId)
+              this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               this.$router.push({ name: 'home' })
             })
             .catch((err) => {
@@ -767,8 +767,8 @@ export default {
           this.$v.$reset()
           if (this.origCategory !== newCategoryId) {
             // only do the in/de crements if the category changed
-            this.$store.commit('decrementCategoryPartsCount', this.origCategory)
-            this.$store.commit('incrementCategoryPartsCount', newCategoryId)
+            this.$store.commit('decrementCategoryPartsCount', { nodeId: this.origCategory })
+            this.$store.commit('incrementCategoryPartsCount', { nodeId: newCategoryId })
             // then update the 'original category' to the new one
             this.origCategory = newCategoryId
           }

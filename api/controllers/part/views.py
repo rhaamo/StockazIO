@@ -329,3 +329,17 @@ class PartAttachmentsSetDefault(views.APIView):
         attachment.save()
 
         return Response("ok", status=200)
+
+
+class BulkEditChangeCategory(views.APIView):
+    required_scope = "parts"
+    anonymous_policy = False
+
+    def post(self, request, format=None):
+        category = get_object_or_404(Category, id=request.data['category'])
+        for partId in request.data['parts']:
+            part = get_object_or_404(Part, id=partId)
+            part.category = category
+            part.save()
+
+        return Response({'message': 'ok', 'parts': request.data['parts']}, status=200)

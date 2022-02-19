@@ -101,12 +101,37 @@
     <div v-if="bulkEditMode" class="row mb-2">
       <div class="col-3">
         Bulk edit options:<br>
-        <b-button variant="info">
+        <b-button id="popoverChangeCategory" variant="info">
           Change category
         </b-button>&nbsp;
+        <b-popover target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover">
+          <template #title>
+            For selected parts
+          </template>
+          <div>
+            <vue-treeselect
+              v-model="bulkEditNewCategory" :multiple="false" :options="choicesCategory"
+              search-nested :default-expand-level="Infinity" clearable
+              :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
+            />
+            <br>
+            <b-button size="sm" variant="danger" @click="onBulkEditNewCategoryPopoverClose">
+              Cancel
+            </b-button>
+            &nbsp;
+            <b-button
+              size="sm" variant="primary" :disabled="!bulkEditNewCategory"
+              @click="onBulkEditNewCategoryPopoverOk"
+            >
+              Ok
+            </b-button>
+          </div>
+        </b-popover>
+
         <b-button variant="info">
           Change location
         </b-button>&nbsp;
+
         <b-button variant="danger" @click.prevent="deleteAllSelected">
           Delete
         </b-button>
@@ -343,12 +368,15 @@ export default {
       qty: null
     },
     modalLabelGeneratorItems: [],
-    bulkEditMode: false
+    bulkEditMode: false,
+    bulkEditNewCategoryPopover: false,
+    bulkEditNewCategory: null
   }),
   computed: {
     ...mapState({
       currentCategory: state => { return state.preloads.currentCategory },
       serverSettings: state => state.server.settings,
+      choicesCategory: state => { return [state.preloads.categories] },
       choicesStorageLocation: (state) => state.preloads.storages,
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
@@ -372,6 +400,13 @@ export default {
     },
     actualCurrentCategory () {
       return this.category || this.currentCategory
+    },
+    selectedParts () {
+      return this.parts.filter(x => {
+        if (x.selected) {
+          return x
+        }
+      })
     }
   },
   watch: {
@@ -535,6 +570,8 @@ export default {
           this.parts = res.data.results
           this.partsCount = res.data.count
           this.busy = false
+          this.bulkEditNewCategory = null
+          this.bulkEditNewCategoryPopover = false
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::refresh::table', 'tablePartsList')
         })
@@ -567,7 +604,7 @@ export default {
                   toaster: 'b-toaster-top-center'
                 })
                 this.fetchParts(1, null)
-                this.$store.commit('decrementCategoryPartsCount', categoryId)
+                this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               })
               .catch((err) => {
                 this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -602,12 +639,6 @@ export default {
           if (value === false) { return }
 
           if (value === true) {
-            let partsToDelete = this.parts.filter(x => {
-              if (x.selected) {
-                return x
-              }
-            })
-
             const _bulkDelete = async (parts) => {
               for (let x of parts) {
                 await apiService.deletePart(x.id)
@@ -619,7 +650,7 @@ export default {
                       variant: 'primary',
                       toaster: 'b-toaster-top-center'
                     })
-                    this.$store.commit('decrementCategoryPartsCount', this.actualCurrentCategory.id)
+                    this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id })
                   })
                   .catch((err) => {
                     this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -633,7 +664,7 @@ export default {
                   })
               }
             }
-            _bulkDelete(partsToDelete)
+            _bulkDelete(this.selectedParts)
               .then(() => {
               // Then reload
                 this.fetchParts(1, null)
@@ -666,6 +697,9 @@ export default {
       let childs = (node.children || []).concat(node.storage_locations || [])
       let id = node.uuid ? node.id : `cat_${node.id}`
       return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
+    },
+    categoriesNormalizer: function (node) {
+      return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
     },
     filterFootprintChanged (value, id) {
       if (value) {
@@ -706,6 +740,46 @@ export default {
           return x
         }
       })[0] // return first item
+    },
+    onBulkEditNewCategoryPopoverClose () {
+      this.bulkEditNewCategory = null
+      this.bulkEditNewCategoryPopover = false
+    },
+    onBulkEditNewCategoryPopoverOk () {
+      if (!(this.selectedParts && this.selectedParts.length)) {
+        return
+      }
+
+      let ids = this.selectedParts.map(x => { return x.id })
+
+      apiService.changePartsCategory(ids, this.bulkEditNewCategory)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.fetchParts(1, null)
+
+          this.$nextTick(() => {
+            this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id, by: ids.length })
+            this.$store.commit('incrementCategoryPartsCount', { nodeId: this.bulkEditNewCategory, by: ids.length })
+            this.bulkEditNewCategoryPopover = false
+          })
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Error with category part update', err)
+          this.fetchParts(1, null)
+        })
     }
   }
 }

@@ -41,6 +41,7 @@ const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}/`
 const PARTS_ATTACHMENTS_CREATE = (partId) => `/api/v1/parts/${partId}/attachments/`
 const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}` // no final /
 const PARTS_ATTACHMENTS_DEFAULT = (partId, attachmentId) => `/api/v1/parts/${partId}/attachments/${attachmentId}/set_default`
+const PART_CHANGE_CATEGORY = '/api/v1/parts/bulk/change_category'
 
 const PARTS_PUBLIC_LIST = '/api/v1/parts/public/'
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`
@@ -322,6 +323,10 @@ const updatePartialPart = (id, data) => {
   return Axios.patch(PARTS_UPDATE(id), data)
 }
 
+const changePartsCategory = (partsId, categoryId) => {
+  return Axios.post(PART_CHANGE_CATEGORY, { parts: partsId, category: categoryId })
+}
+
 const getParts = (params) => {
   return Axios.get(PARTS_LIST, { params: params })
 }
@@ -531,6 +536,7 @@ const apiService = {
   createPart,
   updatePart,
   updatePartialPart,
+  changePartsCategory,
   getParts,
   getPart,
   deletePart,
