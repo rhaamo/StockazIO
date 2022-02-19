@@ -480,7 +480,7 @@ export default {
                 variant: 'primary',
                 toaster: 'b-toaster-top-center'
               })
-              this.$store.commit('decrementCategoryPartsCount', categoryId)
+              this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               this.$router.push({ name: 'home' })
             })
             .catch((err) => {

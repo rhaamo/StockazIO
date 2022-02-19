@@ -73,10 +73,10 @@ const preloads = {
         state.lastUpdate[value.item] = value.value
       }
     },
-    incrementCategoryPartsCount (state, nodeId) {
+    incrementCategoryPartsCount (state, { nodeId, by = 1 }) {
       function incrementNode (node, nodeId) {
         if (node.id === nodeId) {
-          node.parts_count += 1
+          node.parts_count += by
         } else if (node.children && node.children.length) {
           for (let i = 0; i < node.children.length; i++) {
             incrementNode(node.children[i], nodeId)
@@ -85,10 +85,10 @@ const preloads = {
       }
       if (nodeId !== null) { incrementNode(state.categories, nodeId) }
     },
-    decrementCategoryPartsCount (state, nodeId) {
+    decrementCategoryPartsCount (state, { nodeId, by = 1 }) {
       function decrementNode (node, nodeId) {
         if (node.id === nodeId) {
-          node.parts_count -= 1
+          node.parts_count -= by
         } else if (node.children && node.children.length) {
           for (let i = 0; i < node.children.length; i++) {
             decrementNode(node.children[i], nodeId)

@@ -308,7 +308,7 @@ PAGINATION = {
     "STORAGES": int(env("PAGINATION_STORAGES", default=10)),
     "PART_UNITS": int(env("PAGINATION_PART_UNITS", default=10)),
     "PARAMETERS_UNITS": int(env("PAGINATION_PARAMETERS_UNITS", default=10)),
-    "PARTS": int(env("PAGINATION_PARTS", default=10)),
+    "PARTS": int(env("PAGINATION_PARTS", default=20)),
     "ORDERS_IMPORTER": int(env("PAGINATION_ORDERS_IMPORTER", default=10)),
 }
 

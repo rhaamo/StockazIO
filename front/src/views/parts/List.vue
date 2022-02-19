@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <div class="row mb-3">
-      <div class="col-xl-2 col-3">
+    <div class="row mb-4">
+      <div class="col-2">
         <vue-multiselect
           v-model="filter.footprint" :options="choicesFootprint"
           group-values="footprints" group-label="category" placeholder="Filter footprint"
@@ -50,7 +50,7 @@
         </b-form-checkbox>
       </div>
 
-      <div class="col-xl-2 col-3">
+      <div class="col-2">
         <vue-treeselect
           v-model="filter.storage" :multiple="false"
           :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
@@ -69,7 +69,7 @@
         </b-form-checkbox>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-2">
         <b-form-checkbox
           v-model="filter.qty"
           value="qty"
@@ -80,7 +80,7 @@
         </b-form-checkbox>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-2">
         <b-form-checkbox
           v-model="filter.qty"
           value="qtyMin"
@@ -90,13 +90,83 @@
           Only qty &lt; min
         </b-form-checkbox>
       </div>
+
+      <div class="col-2">
+        <b-form-checkbox v-model="bulkEditMode" name="check-button" switch>
+          Bulk-edit
+        </b-form-checkbox>
+      </div>
+    </div>
+
+    <div v-if="bulkEditMode" class="row mb-2">
+      <div class="col-3">
+        Bulk edit options:<br>
+        <b-button id="popoverChangeCategory" variant="info">
+          Change category
+        </b-button>&nbsp;
+        <b-popover target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover">
+          <template #title>
+            For selected parts
+          </template>
+          <div>
+            <vue-treeselect
+              v-model="bulkEditNewCategory" :multiple="false" :options="choicesCategory"
+              search-nested :default-expand-level="Infinity" clearable
+              :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
+            />
+            <br>
+            <b-button size="sm" variant="danger" @click="onBulkEditNewCategoryPopoverClose">
+              Cancel
+            </b-button>
+            &nbsp;
+            <b-button
+              size="sm" variant="primary" :disabled="!bulkEditNewCategory"
+              @click="onBulkEditNewCategoryPopoverOk"
+            >
+              Ok
+            </b-button>
+          </div>
+        </b-popover>
+
+        <b-button id="popoverChangeStorageLocation" variant="info">
+          Change location
+        </b-button>&nbsp;
+        <b-popover target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover">
+          <template #title>
+            For selected parts
+          </template>
+          <div>
+            <vue-treeselect
+              v-model="bulkEditNewStorageLocation" :multiple="false" :options="choicesStorageLocation"
+              search-nested :default-expand-level="Infinity" clearable
+              :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
+              :disable-branch-nodes="true"
+            />
+            <br>
+            <b-button size="sm" variant="danger" @click="onBulkEditNewStorageLocationPopoverClose">
+              Cancel
+            </b-button>
+            &nbsp;
+            <b-button
+              size="sm" variant="primary" :disabled="!bulkEditNewStorageLocation"
+              @click="onBulkEditNewStorageLocationPopoverOk"
+            >
+              Ok
+            </b-button>
+          </div>
+        </b-popover>
+
+        <b-button variant="danger" @click.prevent="deleteAllSelected">
+          Delete
+        </b-button>
+      </div>
     </div>
 
     <div class="row">
       <div class="col-md-12 mx-auto">
         <b-table
           id="tablePartsList" ref="tablePartsList" :items="parts"
-          :fields="fields"
+          :fields="bulkEditMode ? fieldsBulkEdit : fields"
           :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
           :current-page="currentPage" :busy.sync="busy"
           condensed striped
@@ -107,6 +177,10 @@
           small
           @sort-changed="sortTableChanged"
         >
+          <template #cell(select)="data">
+            <b-form-checkbox v-model="data.item.selected" />
+          </template>
+
           <template #cell(qrcode)="data">
             <div @click="showLabelGenerator(data.item)">
               <qrcode
@@ -297,6 +371,17 @@ export default {
       { key: 'footprint', label: 'Footprint', sortable: true },
       { key: 'actions', label: 'Actions' }
     ],
+    fieldsBulkEdit: [
+      { key: 'select', label: '', tdClass: 'select' },
+      { key: 'qrcode', label: 'QrCode', tdClass: 'qrCode' },
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'storage', label: 'Storage', sortable: true },
+      { key: 'stock_qty', label: 'Stock', sortable: true },
+      { key: 'stock_qty_min', label: 'Min', sortable: true },
+      { key: 'part_unit', label: 'Unit', sortable: true },
+      { key: 'footprint', label: 'Footprint', sortable: true },
+      { key: 'actions', label: 'Actions' }
+    ],
     sortBy: 'name',
     sortDesc: false,
     busy: false,
@@ -306,12 +391,18 @@ export default {
       storage: null,
       qty: null
     },
-    modalLabelGeneratorItems: []
+    modalLabelGeneratorItems: [],
+    bulkEditMode: false,
+    bulkEditNewCategoryPopover: false,
+    bulkEditNewCategory: null,
+    bulkEditNewStorageLocationPopover: false,
+    bulkEditNewStorageLocation: null
   }),
   computed: {
     ...mapState({
       currentCategory: state => { return state.preloads.currentCategory },
       serverSettings: state => state.server.settings,
+      choicesCategory: state => { return [state.preloads.categories] },
       choicesStorageLocation: (state) => state.preloads.storages,
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
@@ -335,6 +426,13 @@ export default {
     },
     actualCurrentCategory () {
       return this.category || this.currentCategory
+    },
+    selectedParts () {
+      return this.parts.filter(x => {
+        if (x.selected) {
+          return x
+        }
+      })
     }
   },
   watch: {
@@ -498,6 +596,10 @@ export default {
           this.parts = res.data.results
           this.partsCount = res.data.count
           this.busy = false
+          this.bulkEditNewCategory = null
+          this.bulkEditNewCategoryPopover = false
+          this.bulkEditNewStorageLocation = null
+          this.bulkEditNewStorageLocationPopover = false
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::refresh::table', 'tablePartsList')
         })
@@ -530,7 +632,7 @@ export default {
                   toaster: 'b-toaster-top-center'
                 })
                 this.fetchParts(1, null)
-                this.$store.commit('decrementCategoryPartsCount', categoryId)
+                this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               })
               .catch((err) => {
                 this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
@@ -541,6 +643,58 @@ export default {
                   toaster: 'b-toaster-top-center'
                 })
                 logger.default.error('Error with part deletion', err)
+                this.fetchParts(1, null)
+              })
+          }
+        })
+        .catch((err) => {
+          logger.default.error('Error with the delete modal', err)
+        })
+    },
+    deleteAllSelected () {
+      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete all the selected parts ?`, {
+        title: 'Please Confirm',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'YES',
+        cancelTitle: 'NO',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then((value) => {
+          if (value === false) { return }
+
+          if (value === true) {
+            const _bulkDelete = async (parts) => {
+              for (let x of parts) {
+                await apiService.deletePart(x.id)
+                  .then(() => {
+                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
+                      title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                      autoHideDelay: 5000,
+                      appendToast: true,
+                      variant: 'primary',
+                      toaster: 'b-toaster-top-center'
+                    })
+                    this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id })
+                  })
+                  .catch((err) => {
+                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
+                      title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                      autoHideDelay: 5000,
+                      appendToast: true,
+                      variant: 'danger',
+                      toaster: 'b-toaster-top-center'
+                    })
+                    logger.default.error('Error with part deletion', err)
+                  })
+              }
+            }
+            _bulkDelete(this.selectedParts)
+              .then(() => {
+              // Then reload
                 this.fetchParts(1, null)
               })
           }
@@ -571,6 +725,9 @@ export default {
       let childs = (node.children || []).concat(node.storage_locations || [])
       let id = node.uuid ? node.id : `cat_${node.id}`
       return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
+    },
+    categoriesNormalizer: function (node) {
+      return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
     },
     filterFootprintChanged (value, id) {
       if (value) {
@@ -611,6 +768,84 @@ export default {
           return x
         }
       })[0] // return first item
+    },
+    onBulkEditNewCategoryPopoverClose () {
+      this.bulkEditNewCategory = null
+      this.bulkEditNewCategoryPopover = false
+    },
+    onBulkEditNewCategoryPopoverOk () {
+      if (!(this.selectedParts && this.selectedParts.length)) {
+        return
+      }
+
+      let ids = this.selectedParts.map(x => { return x.id })
+
+      apiService.changePartsCategory(ids, this.bulkEditNewCategory)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.fetchParts(1, null)
+
+          this.$nextTick(() => {
+            this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id, by: ids.length })
+            this.$store.commit('incrementCategoryPartsCount', { nodeId: this.bulkEditNewCategory, by: ids.length })
+            this.bulkEditNewCategoryPopover = false
+          })
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Error with category part update', err)
+          this.fetchParts(1, null)
+        })
+    },
+    onBulkEditNewStorageLocationPopoverClose () {
+      this.bulkEditNewStorageLocation = null
+      this.bulkEditNewStorageLocationPopover = false
+    },
+    onBulkEditNewStorageLocationPopoverOk () {
+      if (!(this.selectedParts && this.selectedParts.length)) {
+        return
+      }
+
+      let ids = this.selectedParts.map(x => { return x.id })
+
+      apiService.changePartsStorageLocation(ids, this.bulkEditNewStorageLocation)
+        .then((val) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
+            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'primary',
+            toaster: 'b-toaster-top-center'
+          })
+          this.fetchParts(1, null)
+
+          this.$nextTick(() => {
+            this.bulkEditNewStorageLocationPopover = false
+          })
+        })
+        .catch((err) => {
+          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
+            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger',
+            toaster: 'b-toaster-top-center'
+          })
+          logger.default.error('Error with category storage location update', err)
+          this.fetchParts(1, null)
+        })
     }
   }
 }

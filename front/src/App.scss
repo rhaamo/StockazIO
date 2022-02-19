@@ -171,6 +171,11 @@ table#tablePartsList td.qrCode {
   text-align: center;
 }
 
+table#tablePartsList td.select {
+  width: 1em;
+  text-align: center;
+}
+
 span.qtyMinWarning {
   color: red;
   font-weight: bold;

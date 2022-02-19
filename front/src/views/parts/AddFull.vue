@@ -619,7 +619,7 @@ export default {
             variant: 'primary',
             toaster: 'b-toaster-top-center'
           })
-          this.$store.commit('incrementCategoryPartsCount', this.form.category)
+          this.$store.commit('incrementCategoryPartsCount', { nodeId: this.form.category })
           if (mode === 'add_new') {
             this.clearForm()
             this.$refs.inputname.focus()
