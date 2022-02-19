@@ -105,7 +105,7 @@
           Change category
         </b-button>&nbsp;
         <b-popover
-          target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover" triggers="focus"
+          target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover"
         >
           <template #title>
             For selected parts
@@ -134,7 +134,7 @@
           Change location
         </b-button>&nbsp;
         <b-popover
-          target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover" triggers="focus"
+          target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover"
         >
           <template #title>
             For selected parts
@@ -257,6 +257,7 @@
                 triggers="click"
                 placement="auto"
                 container="tablePartsList"
+                @show="closeBulkEditPopovers()"
               >
                 <template #title>
                   Change stock qty
@@ -596,6 +597,8 @@ export default {
       return `web+stockazio:part,${uuid}`
     },
     showLabelGenerator (part) {
+      this.closeBulkEditPopovers()
+
       this.modalLabelGeneratorItems = [part]
       // We need to wait a tick or the previous set will not be finalized before the modal is shown
       this.$nextTick(() => {
@@ -648,6 +651,8 @@ export default {
         })
     },
     deletePart (part) {
+      this.closeBulkEditPopovers()
+
       let categoryId = part.category ? part.category.id : null
 
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
@@ -695,6 +700,8 @@ export default {
         })
     },
     deleteAllSelected () {
+      this.closeBulkEditPopovers()
+
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete all the selected parts ?`, {
         title: 'Please Confirm',
         size: 'sm',
@@ -747,6 +754,8 @@ export default {
         })
     },
     viewPartModal (part) {
+      this.closeBulkEditPopovers()
+
       apiService.getPart(part.id)
         .then((val) => {
           this.partDetails = val.data
@@ -812,11 +821,17 @@ export default {
         }
       })[0] // return first item
     },
+    closeBulkEditPopovers () {
+      this.bulkEditNewCategoryPopover = false
+      this.bulkEditNewStorageLocationPopover = false
+    },
     onBulkEditNewCategoryPopoverClose () {
       this.bulkEditNewCategory = null
       this.bulkEditNewCategoryPopover = false
     },
     onBulkEditNewCategoryPopoverOk () {
+      this.bulkEditNewStorageLocationPopover = false
+
       if (!(this.selectedParts && this.selectedParts.length)) {
         return
       }
@@ -837,7 +852,7 @@ export default {
           this.$nextTick(() => {
             this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id, by: ids.length })
             this.$store.commit('incrementCategoryPartsCount', { nodeId: this.bulkEditNewCategory, by: ids.length })
-            this.bulkEditNewCategoryPopover = false
+            this.closeBulkEditPopovers()
           })
         })
         .catch((err) => {
@@ -856,6 +871,8 @@ export default {
       this.bulkEditNewStorageLocationPopover = false
     },
     onBulkEditNewStorageLocationPopoverOk () {
+      this.bulkEditNewCategoryPopover = false
+
       if (!(this.selectedParts && this.selectedParts.length)) {
         return
       }
