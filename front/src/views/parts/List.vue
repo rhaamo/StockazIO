@@ -104,7 +104,7 @@
         <b-button id="popoverChangeCategory" variant="info">
           Change category
         </b-button>&nbsp;
-        <b-popover target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover">
+        <b-popover target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover" @show="bulkEditNewStorageLocationPopover = false">
           <template #title>
             For selected parts
           </template>
@@ -131,7 +131,7 @@
         <b-button id="popoverChangeStorageLocation" variant="info">
           Change location
         </b-button>&nbsp;
-        <b-popover target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover">
+        <b-popover target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover" @show="bulkEditNewCategoryPopover = false">
           <template #title>
             For selected parts
           </template>
