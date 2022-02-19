@@ -101,10 +101,12 @@
     <div v-if="bulkEditMode" class="row mb-3">
       <div class="col-3">
         Bulk edit options:<br>
-        <b-button size="sm" id="popoverChangeCategory" variant="info">
+        <b-button id="popoverChangeCategory" size="sm" variant="info">
           Change category
         </b-button>&nbsp;
-        <b-popover target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover" @show="bulkEditNewStorageLocationPopover = false">
+        <b-popover
+          target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover" triggers="focus"
+        >
           <template #title>
             For selected parts
           </template>
@@ -128,10 +130,12 @@
           </div>
         </b-popover>
 
-        <b-button size="sm" id="popoverChangeStorageLocation" variant="info">
+        <b-button id="popoverChangeStorageLocation" size="sm" variant="info">
           Change location
         </b-button>&nbsp;
-        <b-popover target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover" @show="bulkEditNewCategoryPopover = false">
+        <b-popover
+          target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover" triggers="focus"
+        >
           <template #title>
             For selected parts
           </template>
@@ -592,7 +596,6 @@ export default {
       return `web+stockazio:part,${uuid}`
     },
     showLabelGenerator (part) {
-      this.closeBulkEditPopovers()
       this.modalLabelGeneratorItems = [part]
       // We need to wait a tick or the previous set will not be finalized before the modal is shown
       this.$nextTick(() => {
@@ -645,7 +648,6 @@ export default {
         })
     },
     deletePart (part) {
-      this.closeBulkEditPopovers()
       let categoryId = part.category ? part.category.id : null
 
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
@@ -693,7 +695,6 @@ export default {
         })
     },
     deleteAllSelected () {
-      this.closeBulkEditPopovers()
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete all the selected parts ?`, {
         title: 'Please Confirm',
         size: 'sm',
@@ -746,7 +747,6 @@ export default {
         })
     },
     viewPartModal (part) {
-      this.closeBulkEditPopovers()
       apiService.getPart(part.id)
         .then((val) => {
           this.partDetails = val.data
@@ -852,12 +852,7 @@ export default {
           this.fetchParts(1, null)
         })
     },
-    closeBulkEditPopovers () {
-      this.bulkEditNewCategoryPopover = false
-      this.bulkEditNewStorageLocationPopover = false
-    },
     onBulkEditNewStorageLocationPopoverClose () {
-      this.closeBulkEditPopovers()
       this.bulkEditNewStorageLocationPopover = false
     },
     onBulkEditNewStorageLocationPopoverOk () {
@@ -879,7 +874,7 @@ export default {
           this.fetchParts(1, null)
 
           this.$nextTick(() => {
-            this.closeBulkEditPopovers()
+            this.bulkEditNewStorageLocationPopover = false
           })
         })
         .catch((err) => {
