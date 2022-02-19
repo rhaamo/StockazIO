@@ -101,7 +101,7 @@
     <div v-if="bulkEditMode" class="row mb-3">
       <div class="col-3">
         Bulk edit options:<br>
-        <b-button id="popoverChangeCategory" variant="info">
+        <b-button size="sm" id="popoverChangeCategory" variant="info">
           Change category
         </b-button>&nbsp;
         <b-popover target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover" @show="bulkEditNewStorageLocationPopover = false">
@@ -128,7 +128,7 @@
           </div>
         </b-popover>
 
-        <b-button id="popoverChangeStorageLocation" variant="info">
+        <b-button size="sm" id="popoverChangeStorageLocation" variant="info">
           Change location
         </b-button>&nbsp;
         <b-popover target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover" @show="bulkEditNewCategoryPopover = false">
@@ -156,7 +156,7 @@
           </div>
         </b-popover>
 
-        <b-button variant="danger" @click.prevent="deleteAllSelected">
+        <b-button size="sm" variant="danger" @click.prevent="deleteAllSelected">
           Delete
         </b-button>
       </div>
