@@ -4,6 +4,7 @@ Manage your inventory of electronic stuff
 
 # Features
 
+- API first! Everything is done through the backend API, auth via oauth2.
 - yummy bugs
 - partkeepr import from CSV (fixed fields, see [here](https://github.com/rhaamo/StockazIO/blob/master/api/controllers/part/management/commands/import_partkeepr.py#L14) for them) 
 - Categories tree for parts
