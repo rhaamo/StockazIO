@@ -351,7 +351,10 @@ class BulkEditChangeStorageLocation(views.APIView):
     anonymous_policy = False
 
     def post(self, request, format=None):
-        storage_location = get_object_or_404(StorageLocation, id=request.data["storage_location"])
+        if not request.data["storage_location"]:
+            storage_location = None
+        else:
+            storage_location = get_object_or_404(StorageLocation, id=request.data["storage_location"])
         for partId in request.data["parts"]:
             part = get_object_or_404(Part, id=partId)
             part.storage = storage_location

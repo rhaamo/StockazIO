@@ -148,7 +148,7 @@
             </b-button>
             &nbsp;
             <b-button
-              size="sm" variant="primary" :disabled="!bulkEditNewStorageLocation"
+              size="sm" variant="primary"
               @click="onBulkEditNewStorageLocationPopoverOk"
             >
               Ok
