@@ -152,7 +152,7 @@ const preloads = {
     preloadSidebar ({ commit, state }) {
       // Preload sidebar
       let dateRefreshed = state.lastUpdate.categories
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Categories do not need reload')
         return
@@ -170,7 +170,7 @@ const preloads = {
     preloadFootprints ({ commit, state }) {
       // Preload footprints
       let dateRefreshed = state.lastUpdate.footprints
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Footprints do not need reload')
         return
@@ -188,7 +188,7 @@ const preloads = {
     preloadStorages ({ commit, state }) {
       // Preload storages
       let dateRefreshed = state.lastUpdate.storages
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Storages do not need reload')
         return
@@ -206,7 +206,7 @@ const preloads = {
     preloadParametersUnits ({ commit, state }) {
       // Preload units
       let dateRefreshed = state.lastUpdate.parameters_units
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Parameters Units do not need reload')
         return
@@ -224,7 +224,7 @@ const preloads = {
     preloadPartUnits ({ commit, state }) {
       // Preload part-units
       let dateRefreshed = state.lastUpdate.part_units
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Part Units do not need reload')
         return
@@ -242,7 +242,7 @@ const preloads = {
     preloadManufacturers ({ commit, state }) {
       // Preload manufacturers
       let dateRefreshed = state.lastUpdate.manufacturers
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Manufacturers do not need reload')
         return
@@ -259,7 +259,7 @@ const preloads = {
     preloadDistributors ({ commit, state }) {
       // Preload distributors
       let dateRefreshed = state.lastUpdate.distributors
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Distributors do not need reload')
         return
@@ -277,7 +277,7 @@ const preloads = {
     preloadLabelTemplates ({ commit, state }) {
       // Preload Label Templates
       let dateRefreshed = state.lastUpdate.label_templates
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Label Templates do not need reload')
         return
@@ -295,7 +295,7 @@ const preloads = {
     preloadPartParametersPresets ({ commit, state }) {
       // Preload part parameters presets
       let dateRefreshed = state.lastUpdate.parameters_presets
-      if (dateRefreshed && differenceInMinutes(parseISO(dateRefreshed), new Date()) < REFRESH_TIME) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         console.log('Part parameters do not need reload')
         return
