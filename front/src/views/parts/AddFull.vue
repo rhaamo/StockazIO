@@ -432,6 +432,7 @@ import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 import ViewModal from '@/components/parts/view_modal'
 import BtnDeleteInline from '@/components/btn_delete_inline'
+import utils from '@/utils'
 
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
@@ -544,7 +545,9 @@ export default {
         return state.preloads.part_units.map(x => { return { value: x.id, text: `${x.name} (${x.short_name})` } })
       },
       choicesCategory: state => { return [state.preloads.categories] },
-      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesStorageLocation: (state) => {
+        return state.preloads.storages.filter(utils.removeStorageCatWithoutLocs)
+      },
       choicesPartParametersUnit: (state) => {
         return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.symbol})` } })
       },

@@ -430,6 +430,7 @@ import { validationMixin } from 'vuelidate'
 import { required, minValue, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 import BtnDeleteInline from '@/components/btn_delete_inline'
+import utils from '@/utils'
 
 export default {
   name: 'PartsEdit',
@@ -476,7 +477,9 @@ export default {
         return state.preloads.part_units.map(x => { return { value: x.id, text: `${x.name} (${x.short_name})` } })
       },
       choicesCategory: state => { return [state.preloads.categories] },
-      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesStorageLocation: (state) => {
+        return state.preloads.storages.filter(utils.removeStorageCatWithoutLocs)
+      },
       choicesPartParametersUnit: (state) => {
         return state.preloads.parameters_unit.map(x => { return { value: x.id, text: `${x.name} (${x.symbol})` } })
       },

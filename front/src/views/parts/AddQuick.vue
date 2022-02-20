@@ -236,6 +236,7 @@
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 import ViewModal from '@/components/parts/view_modal'
+import utils from '@/utils'
 
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
@@ -326,7 +327,9 @@ export default {
         return state.preloads.part_units.map(x => { return { value: x.id, text: `${x.name} (${x.short_name})` } })
       },
       choicesCategory: state => { return [state.preloads.categories] },
-      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesStorageLocation: (state) => {
+        return state.preloads.storages.filter(utils.removeStorageCatWithoutLocs)
+      },
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
       }

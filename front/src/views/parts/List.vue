@@ -385,6 +385,7 @@ import { mapState } from 'vuex'
 import ViewModal from '@/components/parts/view_modal'
 import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
 import _ from '@/lodash'
+import utils from '@/utils'
 
 export default {
   name: 'PartsList',
@@ -444,7 +445,9 @@ export default {
       currentCategory: state => { return state.preloads.currentCategory },
       serverSettings: state => state.server.settings,
       choicesCategory: state => { return [state.preloads.categories] },
-      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesStorageLocation: (state) => {
+        return state.preloads.storages.filter(utils.removeStorageCatWithoutLocs)
+      },
       choicesFootprint: (state) => {
         return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
       },
