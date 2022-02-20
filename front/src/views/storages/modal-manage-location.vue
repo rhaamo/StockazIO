@@ -57,7 +57,7 @@
                 :required="true" :multiple="false" :options="choicesStorageLocation"
                 search-nested :default-expand-level="Infinity" clearable
                 no-children-text placeholder="In the House ? The Workshop ?"
-                :disable-branch-nodes="true" :normalizer="storagesNormalizer"
+                :disable-branch-nodes="false"
               />
             </b-form-group>
 
@@ -125,7 +125,16 @@ export default {
   },
   computed: {
     ...mapState({
-      choicesStorageLocation: (state) => state.preloads.storages,
+      choicesStorageLocation: (state) => {
+        const cb = (e) => {
+          return {
+            id: e.id,
+            label: e.name,
+            children: e.children && e.children.length ? e.children.map(cb) : 0
+          }
+        }
+        return state.preloads.storages.map(cb)
+      },
       serverSettings: state => state.server.settings
     }),
     allowedUploadTypes () {
@@ -134,19 +143,12 @@ export default {
     }
   },
   methods: {
-    storagesNormalizer: function (node) {
-      let childs = (node.children || []).concat(node.storage_locations || [])
-      let id = node.uuid ? node.id : `cat_${node.id}`
-      return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
-    },
     manageLocationShow () {
-      // the ID is prefixed with 'cat_' for categories when normalized in the treeselect
-      // to avoid clashes between category IDs and location IDs that could be identical
-      this.form.parent_id = `cat_${this.parent}`
+      this.form.parent_id = this.parent
       if (this.item) {
         this.form.name = this.item.name
         this.form.description = this.item.description
-        this.form.parent_id = `cat_${this.item.category}`
+        this.form.parent_id = this.item.category
         this.form.picture = this.item.picture
       }
     },
@@ -172,7 +174,7 @@ export default {
       let storageLocation = {
         name: this.form.name,
         description: this.form.description,
-        category: this.form.parent_id.split('_')[1],
+        category: this.form.parent_id,
         picture: this.form.picture
       }
 
@@ -208,7 +210,7 @@ export default {
       let storageLocation = {
         name: this.form.name,
         description: this.form.description,
-        category: this.form.parent_id.split('_')[1],
+        category: this.form.parent_id,
         picture: this.form.picture
       }
 
