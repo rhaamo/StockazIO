@@ -93,6 +93,9 @@
               <b-dropdown-item to="#" @click.prevent="forceReloadDatas">
                 <i class="fa fa-refresh" /> Force reload datas
               </b-dropdown-item>
+              <b-dropdown-item to="#" @click.prevent="registerUrlHandler">
+                <i class="fa fa-link" /> Register URL Handler
+              </b-dropdown-item>
               <b-dropdown-divider />
               <b-dropdown-item @click.prevent="logout">
                 <i class="fa fa-sign-out fa-fw" /> Logout
@@ -234,6 +237,9 @@ export default {
             })
           }
         })
+    },
+    registerUrlHandler () {
+      navigator.registerProtocolHandler('web+stockazio', `${window.location.origin}/parts?q=%s`, 'StockazIO handler')
     }
   }
 }
