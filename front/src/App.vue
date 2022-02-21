@@ -247,7 +247,7 @@ export default {
         })
     },
     registerUrlHandler () {
-      navigator.registerProtocolHandler('web+stockazio', `${window.location.origin}/parts?q=%s`, 'StockazIO handler')
+      navigator.registerProtocolHandler('web+stockazio', `${window.location.origin}/urlhandler?q=%s`, 'StockazIO handler')
     }
   }
 }

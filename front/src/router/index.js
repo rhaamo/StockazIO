@@ -25,6 +25,7 @@ import ProjectsEdit from '../views/projects/edit'
 import ProjectsDetails from '../views/projects/details'
 import StoragesList from '../views/storages/list'
 import LabelTemplatesList from '@/views/labeltemplates/list'
+import UrlHandler from '@/views/UrlHandler'
 
 export default (store) => {
   const validateAuthenticatedRoute = (to, from, next) => {
@@ -41,6 +42,13 @@ export default (store) => {
       path: '/',
       name: 'home',
       redirect: _to => { return (store.state.oauth.loggedIn ? '/parts' : '/login') }
+    },
+    // Url Handler
+    {
+      path: '/urlhandler',
+      name: 'urlhandler',
+      component: UrlHandler,
+      beforeEnter: validateAuthenticatedRoute
     },
     // Parts
     {
