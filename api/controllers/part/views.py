@@ -119,7 +119,7 @@ class PartViewSet(ModelViewSet):
             # UUID
             queryset = Part.objects.all()
             obj = get_object_or_404(queryset, uuid=kwargs["pk"])
-            serializer = PartRetrieveSerializer(obj)
+            serializer = PartRetrieveSerializer(obj, context={'request': request})
             return Response(serializer.data)
 
 
