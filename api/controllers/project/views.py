@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from datetime import datetime
 from controllers.app.renderers import PlainTextRenderer
 from rest_framework_csv.renderers import CSVRenderer
-from drf_renderer_xlsx.renderers import XLSXRenderer
+from drf_excel.renderers import XLSXRenderer
 import urllib
 
 from .models import Project, ProjectAttachment, ProjectPart
