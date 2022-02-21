@@ -189,12 +189,20 @@ export default {
       event.preventDefault()
       let search = this.searchTerm
       this.searchTerm = ''
-      if (search.startsWith('stockazio://storageLocation/') || search.startsWith('web+stockazio:storageLocation,')) {
+      if (search.startsWith('stockazio://storageLocation/')) {
         let str = search.split('/')
         let uuid = str[str.length - 1]
         this.$router.replace({ name: 'parts-list', query: { storage_uuid: uuid } }).catch(() => {})
-      } else if (search.startsWith('stockazio://part/') || search.startsWith('web+stockazio:part,')) {
+      } else if (search.startsWith('web+stockazio:storageLocation,')) {
+        let str = search.split(',')
+        let uuid = str[str.length - 1]
+        this.$router.replace({ name: 'parts-list', query: { storage_uuid: uuid } }).catch(() => {})
+      } else if (search.startsWith('stockazio://part/')) {
         let str = search.split('/')
+        let uuid = str[str.length - 1]
+        this.$router.replace({ name: 'parts-details', params: { partId: uuid } }).catch(() => {})
+      } else if (search.startsWith('web+stockazio:part,')) {
+        let str = search.split(',')
         let uuid = str[str.length - 1]
         this.$router.replace({ name: 'parts-details', params: { partId: uuid } }).catch(() => {})
       } else {

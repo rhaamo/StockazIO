@@ -154,7 +154,7 @@ export default {
       return text
     },
     qrCodeUri (item) {
-      if (item.category) {
+      if (item.picture) {
         // location
         return `web+stockazio:storageLocation,${item.uuid}`
       } else {
