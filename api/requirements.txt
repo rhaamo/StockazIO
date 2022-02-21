@@ -52,5 +52,5 @@ persisting-theory==0.2.1
 pytest-env==0.6.2
 django-silk==4.2.0
 djangorestframework-csv==2.1.1
-drf-renderer-xlsx==0.4.5
+drf-renderer-xlsx==1.0.0
 fpdf==1.7.2
