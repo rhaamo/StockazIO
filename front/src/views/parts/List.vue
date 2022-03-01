@@ -612,6 +612,9 @@ export default {
       this.modalLabelGeneratorItems = []
     },
     fetchParts (page, opts) {
+      // Set current page to what has been asked to fetch
+      this.currentPage = page
+
       console.log('we have', this.perPage, 'per page')
       let params = {
         page: page,
