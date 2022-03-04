@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@capacitor/android": "3.4.1",
-    "@capacitor/ios": "3.4.1",
+    "@capacitor/ios": "3.4.2",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@pdfme/generator": "^1.0.0-beta.8",
     "@riophae/vue-treeselect": "^0.4.0",

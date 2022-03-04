@@ -1127,10 +1127,10 @@
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/ios@3.4.1":
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-3.4.1.tgz#0ae173056924294aa1e468b70377d603abea790e"
-  integrity sha512-ycFCyKI8DsgedVg7PW5MpCVgqFuD0PMHQGVfC5ichXc2C/jAATX32EVdEMCB0N3guKoH2k6T3Efwg59+Fcdx2w==
+"@capacitor/ios@3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-3.4.2.tgz#0017d81b1455d82cab94eddfb9e483a810b9cfe0"
+  integrity sha512-ouuXY5CcQJmXADvfs0C3GjWK4atenZViiRmh061BypJUYDwVypZxJDnh/k00vP6jwJakj4Mcu7REfTm9cGAviw==
 
 "@chenfengyuan/vue-qrcode@^1.0.2":
   version "1.0.2"
