@@ -50,7 +50,7 @@ pytest-cov==3.0.0
 factory_boy==3.2.1
 persisting-theory==0.2.1
 pytest-env==0.6.2
-django-silk==4.2.0
+django-silk==4.3.0
 djangorestframework-csv==2.1.1
 drf-excel==1.0.0
 fpdf==1.7.2
