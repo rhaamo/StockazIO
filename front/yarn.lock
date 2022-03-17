@@ -1335,20 +1335,20 @@
   dependencies:
     pako "^1.0.10"
 
-"@pdfme/common@^1.0.0-beta.8":
-  version "1.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@pdfme/common/-/common-1.0.0-beta.8.tgz#74b28a52cc784a8c269358a0d89c813d29a692f7"
-  integrity sha512-fGiRskOrxrVfyN76h9Ee9Lqx7mTaZWNuojExeENGpdyHdqI8DUhf34uZaXjaOfTF3tbIkkcr3mQOXgcxIHWKOQ==
+"@pdfme/common@^1.0.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@pdfme/common/-/common-1.0.5.tgz#4c309b08fe16fbf5c451c6f6831bef287fb82b7c"
+  integrity sha512-ZqE2WZAGgIE2brP+kZ0WQ7xDdkhVX9zAYD583Eu+fqfOziOJWLBlyVMMsb0s0s3x9G5lY9qXiwJ9HRLnMqPYLQ==
   dependencies:
     zod "^3.11.6"
 
-"@pdfme/generator@^1.0.0-beta.8":
-  version "1.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@pdfme/generator/-/generator-1.0.0-beta.8.tgz#9034671f39bd829bd97a103322c7e749d03bdbb0"
-  integrity sha512-DPkdbwbAGKNHUyXHbMxtvsUvzUgXc42+jzNK1XFXnZzPZW1TPZ/SHe9UmpStGvaX5tcrQK53jeNjK7P35f8TYw==
+"@pdfme/generator@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@pdfme/generator/-/generator-1.0.5.tgz#717a6980673081b1d20c7598a73e837ee4400349"
+  integrity sha512-yMLL4qKaewWh+jjhsXqenED0lX/lG4aRiNh2KGHNTlkoXGDLSaMBtdWQITPga/cUfBqiGuTkyFXmm9GNBsgQOQ==
   dependencies:
     "@pdf-lib/fontkit" "^1.1.1"
-    "@pdfme/common" "^1.0.0-beta.8"
+    "@pdfme/common" "^1.0.0"
     bwip-js "^2.1.3"
     pdf-lib "^1.17.1"
 
