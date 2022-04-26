@@ -13,7 +13,7 @@
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@pdfme/generator": "^1.0.0-beta.8",
     "@riophae/vue-treeselect": "^0.4.0",
-    "axios": "^0.26.0",
+    "axios": "^0.27.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.21.1",
     "date-fns": "^2.28.0",
