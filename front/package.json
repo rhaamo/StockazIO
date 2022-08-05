@@ -22,7 +22,7 @@
     "js-file-download": "^0.4.12",
     "js-logger": "^1.6.0",
     "qrcode": "^1.5.0",
-    "sass": "^1.48.0",
+    "sass": "^1.54.3",
     "sass-loader": "^10.1.1",
     "vue": "^2",
     "vue-axios": "^3.4.1",
