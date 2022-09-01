@@ -122,9 +122,10 @@
         You can add other fixed elements if wanted.<br><br><br>
         The following substitutions for the Text Template is available, depending if it's a Storage Location or Part:
         <ul>
-          <li>{name} (storage, part)</li>
-          <li>{description} (storage, part)</li>
-          <li>{qrcode} (storage, part)</li>
+          <li><code>{name}</code> Name of the element <small>(storage, part)</small></li>
+          <li><code>{description}</code> Description of the element <small>(storage, part)</small></li>
+          <li><code>{qrcode}</code> QrCode of the element <small>(storage, part)</small></li>
+          <li><code>{category_name}</code> Name of the parent category (if any) of the element <small>(storage)</small></li>
         </ul>
       </div>
     </div>

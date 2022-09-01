@@ -56,6 +56,9 @@ class PartSerializer(serializers.ModelSerializer):
     part_stock_history = PartStockHistory(many=True, read_only=True)
     part_attachments = PartAttachmentSerializer(many=True, read_only=True)
 
+    def get_category_name(self, obj):
+        return obj.category.name if obj.category else None
+
     class Meta:
         model = Part
         fields = (
@@ -72,6 +75,7 @@ class PartSerializer(serializers.ModelSerializer):
             "internal_part_number",
             "part_unit",
             "category",
+            "category_name",
             "storage",
             "footprint",
             "uuid",
@@ -82,6 +86,7 @@ class PartSerializer(serializers.ModelSerializer):
             "part_stock_history",
             "part_attachments",
         )
+PartSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
 
 
 class PartParameterSerializer(serializers.ModelSerializer):
@@ -157,6 +162,9 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     part_attachments = PartAttachmentSerializer(many=True, read_only=True)
     part_stock_history = PartStockHistory(many=True, read_only=True)
 
+    def get_category_name(self, obj):
+        return obj.category.name if obj.category else None
+
     class Meta:
         model = Part
         fields = (
@@ -173,6 +181,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "internal_part_number",
             "part_unit",
             "category",
+            "category_name",
             "storage",
             "footprint",
             "uuid",
@@ -186,6 +195,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "updated_at",
             "part_stock_history",
         )
+PartRetrieveSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
 
 
 class PartParametersPresetItemSerializer(serializers.ModelSerializer):

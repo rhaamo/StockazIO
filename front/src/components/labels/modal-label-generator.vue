@@ -151,6 +151,7 @@ export default {
       text = item && item.name ? text.replace('{name}', item.name) : text
       text = item && item.description ? text.replace('{description}', item.description) : text.replace('{description}', '') // description is optional
       text = item && item.uuid ? text.replace('{qrcode}', this.qrCodeUri(item)) : text
+      text = item && item.category_name ? text.replace('{category_name}', item.category_name) : text.replace('{category_name}', '') // category_name is optional
       return text
     },
     qrCodeUri (item) {
