@@ -48,7 +48,7 @@ pytest-django==4.5.2
 pytest==7.1.2
 pytest-cov==3.0.0
 factory_boy==3.2.1
-persisting-theory==0.2.1
+persisting-theory==1.0
 pytest-env==0.6.2
 django-silk==5.0.1
 djangorestframework-csv==2.1.1
