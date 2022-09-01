@@ -12,7 +12,7 @@ django-mptt==0.13.4
 entrypoints==0.4
 flake8==4.0.1
 h11==0.13.0
-httptools==0.3.0
+httptools==0.4.0
 mccabe==0.6.1
 parso==0.8.3
 pathspec==0.9.0
