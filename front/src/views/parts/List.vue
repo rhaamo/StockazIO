@@ -214,7 +214,7 @@
                   placement="left"
                   triggers="hover focus"
                 >
-                  <b-img-lazy :src="partGetDefaultAttachment(data.item.part_attachments).picture_medium" width="250px" />
+                  <b-img lazy :src="partGetDefaultAttachment(data.item.part_attachments).picture_medium" width="250px" />
                 </b-popover>
               &nbsp;&nbsp;
               </template>
@@ -339,7 +339,7 @@
               img-top
             >
               <b-card-text>{{ part.description || 'No description.' }}</b-card-text>
-              <b-card-img-lazy
+              <b-card-img lazy
                 v-if="partGetDefaultAttachment(part.part_attachments)" :src="partGetDefaultAttachment(part.part_attachments).picture_medium"
                 top
               />

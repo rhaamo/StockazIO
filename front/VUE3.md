@@ -14,3 +14,5 @@ Random notes about Vue3 migration...
 shitload of: Extraneous non-emits event listeners (sortChanged) were passed to component but could not be automatically inherited because component renders fragment or text root nodes. If the listener is intended to be a component custom event listener only, declare it using the "emits" option
 
 also others warnings related to router, and bootstrap
+
+b-form-spinbutton to be replaced

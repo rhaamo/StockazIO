@@ -105,7 +105,7 @@
 
           <b-form @submit="doSearch">
             <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-              <b-input id="inline-form-input-search" v-model="searchTerm" placeholder="Search" />
+              <b-form-input id="inline-form-input-search" v-model="searchTerm" placeholder="Search" />
               <b-input-group-append>
                 <b-button type="submit" title="Search">
                   Search
