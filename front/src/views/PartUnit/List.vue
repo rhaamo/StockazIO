@@ -29,6 +29,7 @@
                   required
                   placeholder="Centimeters"
                   :state="$v.modalPartUnit.name.$dirty ? !$v.modalPartUnit.name.$error : null"
+                  autofocus
                 />
                 <div v-if="!$v.modalPartUnit.name.required" class="invalid-feedback d-block">
                   Name is required

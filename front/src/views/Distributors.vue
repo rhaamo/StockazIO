@@ -28,6 +28,7 @@
                   v-model="modalDistributor.name"
                   required
                   :state="$v.modalDistributor.name.$dirty ? !$v.modalDistributor.name.$error : null"
+                  autofocus
                 />
                 <div v-if="!$v.modalDistributor.name.required" class="invalid-feedback d-block">
                   Name is required

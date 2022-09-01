@@ -28,6 +28,7 @@
                   required
                   placeholder="Capacitor XXX"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  autofocus
                 />
                 <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
@@ -44,6 +45,7 @@
                         :id="itemId('name', i)"
                         v-model="form.part_parameters_presets[i].name"
                         required
+                        autofocus
                       />
                       <div v-if="!$v.form.part_parameters_presets.$each[i].name.required" class="invalid-feedback d-block">
                         Name is required

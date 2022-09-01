@@ -28,6 +28,7 @@
                   v-model="modalManufacturer.name"
                   required
                   :state="$v.modalManufacturer.name.$dirty ? !$v.modalManufacturer.name.$error : null"
+                  autofocus
                 />
                 <div v-if="!$v.modalManufacturer.name.required" class="invalid-feedback d-block">
                   Name is required

@@ -29,6 +29,7 @@
                   required
                   placeholder="Ampere"
                   :state="$v.modalParameterUnit.name.$dirty ? !$v.modalParameterUnit.name.$error : null"
+                  autofocus
                 />
                 <div v-if="!$v.modalParameterUnit.name.required" class="invalid-feedback d-block">
                   Name is required

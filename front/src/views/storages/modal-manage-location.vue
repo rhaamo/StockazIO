@@ -29,6 +29,7 @@
                 required
                 placeholder="That one box"
                 :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                autofocus
               />
               <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
                 Location name is required

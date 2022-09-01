@@ -28,6 +28,7 @@
                   required
                   placeholder="My cool project"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  autofocus
                 />
                 <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255

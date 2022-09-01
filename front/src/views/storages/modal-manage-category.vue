@@ -29,6 +29,7 @@
                 required
                 placeholder="Under the bed"
                 :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                autofocus
               />
               <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
                 Category name is required

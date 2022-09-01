@@ -35,6 +35,7 @@
                   placeholder="PIC42ACHU"
                   :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
                   @blur="checkPartExists"
+                  autofocus
                 />
                 <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
                   Name is required
