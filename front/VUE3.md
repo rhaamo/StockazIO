@@ -1,11 +1,16 @@
 Random notes about Vue3 migration...
 
-- https://github.com/fengyuanchen/vue-qrcode/ will need to be upgraded, v1 supports vue2, later dropped it
 - https://github.com/bootstrap-vue/bootstrap-vue/issues/5196 no vue3 yet
-    -> tries https://github.com/cdmoro/bootstrap-vue-3
+    -> try to uses https://github.com/cdmoro/bootstrap-vue-3
+
 - https://github.com/sandanat/vue-pdf-app/issues/46 no vue3 yet
     -> find something else...
-    -> to remove for now :(
+    -> removed for now :(
 
 - vue-treeselect dead
+    fork found, need to consider an alternative
     https://www.primefaces.org/primevue/showcase/#/multiselect
+
+shitload of: Extraneous non-emits event listeners (sortChanged) were passed to component but could not be automatically inherited because component renders fragment or text root nodes. If the listener is intended to be a component custom event listener only, declare it using the "emits" option
+
+also others warnings related to router, and bootstrap
