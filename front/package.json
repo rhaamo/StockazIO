@@ -29,7 +29,7 @@
     "vue-gettext": "^2.1.12",
     "vue-multiselect": "^2.1.6",
     "vue-pdf-app": "^2.1.0",
-    "vue-router": "^3.5.3",
+    "vue-router": "^3.6.4",
     "vuelidate": "^0.7.7",
     "vuex": "^3.6.2",
     "vuex-persist": "^3.1.3",
