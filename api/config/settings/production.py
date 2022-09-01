@@ -12,6 +12,9 @@ from .common import *  # noqa
 
 print("PRODUCTION config included")
 
+# For some reasons, this is needed here...
+ROOT_URLCONF = "config.urls"
+
 # SECRET CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
