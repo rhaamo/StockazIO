@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@capacitor/android": "3.4.1",
+    "@capacitor/android": "3.4.3",
     "@capacitor/ios": "3.4.1",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@pdfme/generator": "^1.0.0-beta.8",
