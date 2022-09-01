@@ -10,7 +10,7 @@ django-debug-toolbar==3.2.4
 django-imagekit==4.1.0
 django-mptt==0.13.4
 entrypoints==0.4
-flake8==4.0.1
+flake8==5.0.4
 h11==0.13.0
 httptools==0.4.0
 mccabe==0.7.0
@@ -48,7 +48,7 @@ pytest-django==4.5.2
 pytest==7.1.2
 pytest-cov==3.0.0
 factory_boy==3.2.1
-persisting-theory==0.2.1
+persisting-theory==1.0
 pytest-env==0.6.2
 django-silk==5.0.1
 djangorestframework-csv==2.1.1
