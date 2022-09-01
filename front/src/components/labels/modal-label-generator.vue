@@ -65,10 +65,10 @@
           Do not hesitate to download the PDF and open it natively if the print preview is showing a bad layout.
         </div>
         <div class="col-md-8">
-          <vue-pdf-app
+          <!-- <vue-pdf-app
             v-if="pdf" :pdf="pdf" :config="pdfJsConfig"
             style="min-height: 40em;"
-          />
+          /> -->
         </div>
       </div>
     </div>
@@ -77,13 +77,13 @@
 
 <script>
 import { generate } from '@pdfme/generator'
-import VuePdfApp from 'vue-pdf-app'
+// import VuePdfApp from 'vue-pdf-app'
 import 'vue-pdf-app/dist/icons/main.css'
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    VuePdfApp
+    // VuePdfApp
   },
   props: {
     items: {

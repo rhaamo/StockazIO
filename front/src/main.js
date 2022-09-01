@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import axios from 'axios'
 import { sync } from 'vuex-router-sync'
 import BootstrapVue3 from 'bootstrap-vue-3'
-import VueRouter from 'vue-router'
-import GetTextPlugin from 'vue-gettext'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { createGettext } from 'vue3-gettext'
 import Multiselect from 'vue-multiselect'
 import Treeselect from '@riophae/vue-treeselect'
 import VueAxios from 'vue-axios'
@@ -32,27 +32,15 @@ const availableLanguages = (function () {
   })
   return l
 })()
-app.use(GetTextPlugin, {
+
+app.use(createGettext({
   availableLanguages: availableLanguages,
   defaultLanguage: 'en_US',
-  muteLanguages: ['en_US'], // Ignore 'translations not found' for en_US since it's our base language
-  // cf https://github.com/Polyconseil/vue-gettext#configuration
-  // not recommended but this is fixing weird bugs with translation nodes
-  // not being updated when in v-if/v-else clauses
-  autoAddKeyAttributes: true,
-  languageVmMixin: {
-    computed: {
-      currentKebabCase: function () {
-        return this.current.toLowerCase().replace('_', '-')
-      }
-    }
-  },
   translations: {},
   silent: false
-})
+}))
 
 app.use(VueAxios, axios)
-app.use(VueRouter)
 app.use(BootstrapVue3)
 app.component(Multiselect.name, Multiselect)
 app.component(Treeselect.name, Treeselect)
@@ -69,7 +57,8 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 
-const router = new VueRouter({
+const router = new createRouter({
+  history: createWebHashHistory(),
   mode: 'history',
   base: process.env.BASE_URL,
   routes: routes(store)
@@ -77,9 +66,9 @@ const router = new VueRouter({
 
 sync(store, router)
 
+app.use(router)
+app.use(store)
+
 app.mount('#app')
 
-initializeSomeStuff({ store, router }).then(() => {
-  app.use(router)
-  app.use(store)
-})
+initializeSomeStuff({ store, router })
