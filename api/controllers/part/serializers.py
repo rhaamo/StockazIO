@@ -86,6 +86,8 @@ class PartSerializer(serializers.ModelSerializer):
             "part_stock_history",
             "part_attachments",
         )
+
+
 PartSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
 
 
@@ -195,6 +197,8 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "updated_at",
             "part_stock_history",
         )
+
+
 PartRetrieveSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
 
 

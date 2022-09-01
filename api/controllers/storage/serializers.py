@@ -17,17 +17,11 @@ class StorageLocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StorageLocation
-        fields = [
-            "id",
-            "name",
-            "description",
-            "picture",
-            "picture_medium",
-            "uuid",
-            "category",
-            "category_name"
-        ]
+        fields = ["id", "name", "description", "picture", "picture_medium", "uuid", "category", "category_name"]
+
+
 StorageLocationSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
+
 
 class StorageSerializer(serializers.ModelSerializer):
     storage_locations = StorageLocationSerializer(many=True, read_only=True)
