@@ -5,7 +5,7 @@ import BootstrapVue3 from 'bootstrap-vue-3'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { createGettext } from 'vue3-gettext'
 import Multiselect from 'vue-multiselect'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from '@bosquig/vue3-treeselect'
 import VueAxios from 'vue-axios'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 

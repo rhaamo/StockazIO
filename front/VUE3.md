@@ -6,3 +6,6 @@ Random notes about Vue3 migration...
 - https://github.com/sandanat/vue-pdf-app/issues/46 no vue3 yet
     -> find something else...
     -> to remove for now :(
+
+- vue-treeselect dead
+    https://www.primefaces.org/primevue/showcase/#/multiselect

@@ -251,4 +251,4 @@ table#tableOrderItems td.category {
   width: 20em;
 }
 </style>
-<style src="@riophae/vue-treeselect/dist/vue-treeselect.css"></style>
+<style src="@bosquig/vue3-treeselect/dist/vue3-treeselect.css"></style>

@@ -439,5 +439,5 @@ export default {
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style src="@riophae/vue-treeselect/dist/vue-treeselect.css"></style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+<style src="@bosquig/vue3-treeselect/dist/vue3-treeselect.css"></style>
