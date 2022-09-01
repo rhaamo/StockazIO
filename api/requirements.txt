@@ -20,7 +20,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 pilkit==2.0
 Pillow==9.0.1
-prompt-toolkit==3.0.28
+prompt-toolkit==3.0.30
 psycopg2==2.9.3
 ptyprocess==0.7.0
 python-magic==0.4.25
@@ -45,7 +45,7 @@ django-extensions==3.1.5
 drf-yasg==1.21.3
 drf-writable-nested==0.6.3
 pytest-django==4.5.2
-pytest==7.0.1
+pytest==7.1.2
 pytest-cov==3.0.0
 factory_boy==3.2.1
 persisting-theory==0.2.1
