@@ -3,8 +3,12 @@ name: StockazIO API backend
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'api/**'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'api/**'
 
 jobs:
   build:
