@@ -1,7 +1,7 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import axios from 'axios'
 import { sync } from 'vuex-router-sync'
-import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue3 from 'bootstrap-vue-3'
 import VueRouter from 'vue-router'
 import GetTextPlugin from 'vue-gettext'
 import Multiselect from 'vue-multiselect'
@@ -16,10 +16,14 @@ import routes from './router'
 import locales from './locales.js'
 import initializeSomeStuff from './store/store_init'
 
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+
 logger.default.info('Loading environment:', process.env.NODE_ENV)
 logger.default.debug('Environment variables:', process.env)
 
-Vue.config.productionTip = false
+const app = createApp(App)
+
+app.config.productionTip = false
 
 const availableLanguages = (function () {
   const l = {}
@@ -28,7 +32,7 @@ const availableLanguages = (function () {
   })
   return l
 })()
-Vue.use(GetTextPlugin, {
+app.use(GetTextPlugin, {
   availableLanguages: availableLanguages,
   defaultLanguage: 'en_US',
   muteLanguages: ['en_US'], // Ignore 'translations not found' for en_US since it's our base language
@@ -47,12 +51,12 @@ Vue.use(GetTextPlugin, {
   silent: false
 })
 
-Vue.use(VueAxios, axios)
-Vue.use(VueRouter)
-Vue.use(BootstrapVue)
-Vue.component(Multiselect.name, Multiselect)
-Vue.component(Treeselect.name, Treeselect)
-Vue.component(VueQrcode.name, VueQrcode)
+app.use(VueAxios, axios)
+app.use(VueRouter)
+app.use(BootstrapVue3)
+app.component(Multiselect.name, Multiselect)
+app.component(Treeselect.name, Treeselect)
+app.component(VueQrcode.name, VueQrcode)
 
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
@@ -73,10 +77,9 @@ const router = new VueRouter({
 
 sync(store, router)
 
+app.mount('#app')
+
 initializeSomeStuff({ store, router }).then(() => {
-  new Vue({
-    router,
-    store,
-    render: h => h(App)
-  }).$mount('#app')
+  app.use(router)
+  app.use(store)
 })

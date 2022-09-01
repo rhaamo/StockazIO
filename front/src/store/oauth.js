@@ -2,7 +2,6 @@
  * File imported from https://git.pleroma.social/pleroma/pleroma-fe/blob/develop/src/modules/oauth.js
  */
 // import { delete as del } from 'vue'
-import Vue from 'vue'
 import logger from '@/logging'
 
 const oauth = {
@@ -36,7 +35,7 @@ const oauth = {
       state.userToken = false
       // state.token is userToken with older name, coming from persistent state
       // let's clear it as well, since it is being used as a fallback of state.userToken
-      Vue.delete(state, 'token')
+      delete state.token
     },
     setLoggedIn (state, value) {
       state.loggedIn = value
