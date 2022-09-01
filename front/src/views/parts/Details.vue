@@ -1,14 +1,18 @@
 <template>
   <div class="details_part">
+    <modalLabelGenerator
+      :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
+    />
+    
     <div v-if="part" class="row">
       <div class="col-lg-9">
-        <span class="float-left" @click="showBigQrCode(part)">
+        <span class="float-left" @click="showLabelGenerator(part)">
           <qrcode
             :id="qrcodeId(part.id)"
             v-b-tooltip.hover
             :value="qrCodePart(part.uuid)"
             :options="{ scale: 1 }"
-            title="click to show bigger QrCode"
+            title="click to show label generator"
             :data-uuid="part.uuid"
             :data-name="part.name"
             data-toggle="modal"
@@ -326,6 +330,7 @@
 
 <script>
 import apiService from '../../services/api/api.service'
+import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
 import QRCode from 'qrcode'
 import logger from '@/logging'
 import { mapState } from 'vuex'
@@ -340,12 +345,16 @@ export default {
       type: Object
     }
   },
+  components: {
+    modalLabelGenerator
+  },
   data: () => ({
     part: null,
     addAttachmentForm: {
       description: '',
       file: null
-    }
+    },
+    modalLabelGeneratorItems: []
   }),
   computed: {
     ...mapState({
@@ -620,6 +629,16 @@ export default {
           logger.default.error('Error with part attachment default set', err)
           this.fetchPart()
         })
+    },
+    showLabelGenerator (part) {
+      this.modalLabelGeneratorItems = [part]
+      // We need to wait a tick or the previous set will not be finalized before the modal is shown
+      this.$nextTick(() => {
+        this.$bvModal.show('modalLabelGenerator')
+      })
+    },
+    labelGeneratorClosed () {
+      this.modalLabelGeneratorItems = []
     }
   }
 }
