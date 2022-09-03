@@ -238,6 +238,8 @@ import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 import ViewModal from '@/components/parts/view_modal'
 import utils from '@/utils'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
@@ -272,6 +274,10 @@ export default {
     partsExists: [],
     partDetails: null
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: {
@@ -364,12 +370,12 @@ export default {
       console.log('submitting', datas)
       apiService.createPart(datas)
         .then((resp) => {
-          this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Add/Toast/Success/Title', 'Adding part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Add/Toast/Success/Title', 'Adding part'),
+              message: this.$pgettext('Part/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.$store.commit('incrementCategoryPartsCount', { nodeId: this.form.category })
           if (mode === 'add_new') {
@@ -381,12 +387,12 @@ export default {
           }
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
+              message: this.$pgettext('Part/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot save part', error.message)
         })

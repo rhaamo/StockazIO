@@ -59,6 +59,8 @@
 <script>
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ParametersPresetsDetails',
@@ -83,6 +85,10 @@ export default {
     this.$nextTick(() => {
       this.fetchPreset(this.presetId)
     })
+  },
+  setup () {
+    const toast = useToast()
+    return { toast }
   },
   methods: {
     fetchPreset (presetId) {
@@ -119,24 +125,24 @@ export default {
           if (value === true) {
             apiService.deletePartParameterPresets(preset.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('Preset/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('Preset/Delete/Toast/Success/Title', 'Deleting preset'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Preset/Delete/Toast/Success/Title', 'Deleting preset'),
+                    message: this.$pgettext('Preset/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.$store.commit('setPartParametersPresets', val.data)
                 this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: new Date() })
                 this.$router.push({ name: 'parameters-presets-list' })
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('Preset/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('Preset/Delete/Toast/Error/Title', 'Deleting preset'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Preset/Delete/Toast/Error/Title', 'Deleting preset'),
+                    message: this.$pgettext('Preset/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with preset deletion', err)
                 this.fetchParts(1, null)

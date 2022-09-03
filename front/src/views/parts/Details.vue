@@ -7,7 +7,7 @@
     <div v-if="part" class="row">
       <div class="col-lg-9">
         <span class="float-left" @click="showLabelGenerator(part)">
-          <qrcode
+          <vue-qrcode
             :id="qrcodeId(part.id)"
             v-b-tooltip.hover
             :value="qrCodePart(part.uuid)"
@@ -337,6 +337,8 @@ import { mapState } from 'vuex'
 import dateFnsFormat from 'date-fns/format'
 import dateFnsParseISO from 'date-fns/parseISO'
 import utils from '@/utils'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'PartsDetails',
@@ -356,6 +358,10 @@ export default {
     },
     modalLabelGeneratorItems: []
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   computed: {
     ...mapState({
       serverSettings: state => state.server.settings
@@ -453,12 +459,12 @@ export default {
           this.part = res.data
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/Details/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Details/Toast/Error/Title', 'Fetching part details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Details/Toast/Error/Title', 'Fetching part details'),
+              message: this.$pgettext('Part/Details/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with part fetch', err.message)
         })
@@ -482,23 +488,23 @@ export default {
 
           apiService.deletePart(part.id)
             .then((val) => {
-              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary',
-                toaster: 'b-toaster-top-center'
+              this.toast.success({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                  message: this.$pgettext('Part/Delete/Toast/Success/Message', 'Success')
+                }
               })
               this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               this.$router.push({ name: 'home' })
             })
             .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger',
-                toaster: 'b-toaster-top-center'
+              this.toast.error({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                  message: this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                }
               })
               logger.default.error('Error with part deletion', err)
               this.fetchPart()
@@ -527,23 +533,23 @@ export default {
     addAttachment () {
       apiService.partAttachmentCreate(this.part.id, this.addAttachmentForm)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('PartAttachment/Create/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('PartAttachment/Create/Toast/Success/Title', 'Saving part attachment'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('PartAttachment/Create/Toast/Success/Title', 'Saving part attachment'),
+              message: this.$pgettext('PartAttachment/Create/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchPart()
           this.addAttachmentForm = { description: '', file: null }
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('PartAttachment/Create/Toast/Error/Message', 'Error occured or file type not allowed.'), {
-            title: this.$pgettext('PartAttachment/Create/Toast/Error/Title', 'Saving part attachment'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('PartAttachment/Create/Toast/Error/Title', 'Saving part attachment'),
+              message: this.$pgettext('PartAttachment/Create/Toast/Error/Message', 'Error occured or file type not allowed.')
+            }
           })
           logger.default.error('Error with part attachment deletion', err)
         })
@@ -565,22 +571,22 @@ export default {
 
           apiService.partAttachmentDelete(this.part.id, attachment.id)
             .then((val) => {
-              this.$bvToast.toast(this.$pgettext('PartAttachment/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('PartAttachment/Delete/Toast/Success/Title', 'Deleting part attachment'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary',
-                toaster: 'b-toaster-top-center'
+              this.toast.success({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('PartAttachment/Delete/Toast/Success/Title', 'Deleting part attachment'),
+                  message: this.$pgettext('PartAttachment/Delete/Toast/Success/Message', 'Success')
+                }
               })
               this.fetchPart()
             })
             .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('PartAttachment/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('PartAttachment/Delete/Toast/Error/Title', 'Deleting part attachment'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger',
-                toaster: 'b-toaster-top-center'
+              this.toast.error({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('PartAttachment/Delete/Toast/Error/Title', 'Deleting part attachment'),
+                  message: this.$pgettext('PartAttachment/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                }
               })
               logger.default.error('Error with part attachment deletion', err)
               this.fetchPart()
@@ -609,22 +615,22 @@ export default {
     setAttachmentAsDefault (partId, fileId) {
       apiService.partAttachmentSetDefault(partId, fileId)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('PartAttachment/SetDefault/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('PartAttachment/SetDefault/Toast/Success/Title', 'Setting default part attachment'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('PartAttachment/SetDefault/Toast/Success/Title', 'Setting default part attachment'),
+              message: this.$pgettext('PartAttachment/SetDefault/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchPart()
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('PartAttachment/SetDefault/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('PartAttachment/SetDefault/Toast/Error/Title', 'Setting default part attachment'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('PartAttachment/SetDefault/Toast/Error/Title', 'Setting default part attachment'),
+              message: this.$pgettext('PartAttachment/SetDefault/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with part attachment default set', err)
           this.fetchPart()

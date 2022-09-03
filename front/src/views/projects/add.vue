@@ -120,6 +120,8 @@ import apiService from '@/services/api/api.service'
 
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, integer, between } from 'vuelidate/lib/validators'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ProjectsAdd',
@@ -147,6 +149,10 @@ export default {
       { value: 99, text: 'Unknown' }
     ]
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: {
@@ -192,22 +198,22 @@ export default {
       }
       apiService.createProject(datas)
         .then((resp) => {
-          this.$bvToast.toast(this.$pgettext('Project/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Project/Add/Toast/Success/Title', 'Adding project'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Project/Add/Toast/Success/Title', 'Adding project'),
+              message: this.$pgettext('Project/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.$router.push({ name: 'projects-details', params: { projectId: resp.data.id } })
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Project/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Project/Add/Toast/Error/Title', 'Adding project'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Project/Add/Toast/Error/Title', 'Adding project'),
+              message: this.$pgettext('Project/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot save project', error.message)
         })

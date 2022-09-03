@@ -228,6 +228,8 @@ import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
 import { required, email, url, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ViewManufacturers',
@@ -262,6 +264,10 @@ export default {
     },
     modalAction: 'create'
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     modalManufacturer: {
       name: { required, maxLength: maxLength(255) },
@@ -302,12 +308,12 @@ export default {
           this.$store.commit('setLastUpdate', { item: 'manufacturers', value: new Date() })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Manufacturers/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Manufacturers/Fetch/Toast/Error/Title', 'Fetching manufacturers'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Manufacturers/Fetch/Toast/Error/Title', 'Fetching manufacturers'),
+              message: this.$pgettext('Manufacturers/Fetch/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error getting manufacturers', err)
         })
@@ -338,48 +344,48 @@ export default {
       if (this.modalAction === 'create') {
         apiService.createManufacturer(this.modalManufacturer)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('Manufacturer/Add/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('Manufacturer/Add/Toast/Success/Title', 'Adding manufacturer'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Manufacturer/Add/Toast/Success/Title', 'Adding manufacturer'),
+                message: this.$pgettext('Manufacturer/Add/Toast/Success/Message', 'Success')
+              }
             })
             this.$bvModal.hide('modalAddManufacturer')
             this.clearForm()
             this.fetchManufacturers()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('Manufacturer/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('Manufacturer/Add/Toast/Error/Title', 'Adding manufacturer'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Manufacturer/Add/Toast/Error/Title', 'Adding manufacturer'),
+                message: this.$pgettext('Manufacturer/Add/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot save distributor', error.message)
           })
       } else {
         apiService.updateManufacturer(this.modalManufacturer.id, this.modalManufacturer)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('Manufacturer/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('Manufacturer/Update/Toast/Success/Title', 'Updating manufacturer'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Manufacturer/Update/Toast/Success/Title', 'Updating manufacturer'),
+                message: this.$pgettext('Manufacturer/Update/Toast/Success/Message', 'Success')
+              }
             })
             this.$bvModal.hide('modalAddManufacturer')
             this.clearForm()
             this.fetchManufacturers()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('Distributor/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('Distributor/Update/Toast/Error/Title', 'Updating manufacturer'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Distributor/Update/Toast/Error/Title', 'Updating manufacturer'),
+                message: this.$pgettext('Distributor/Update/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot update manufacturer', error.message)
           })
@@ -409,22 +415,22 @@ export default {
           if (value === true) {
             apiService.deleteManufacturer(manufacturer.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('Manufacturer/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('Manufacturer/Delete/Toast/Success/Title', 'Deleting manufacturer'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Manufacturer/Delete/Toast/Success/Title', 'Deleting manufacturer'),
+                    message: this.$pgettext('Manufacturer/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.fetchManufacturers()
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('Manufacturer/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('Manufacturer/Delete/Toast/Error/Title', 'Deleting manufacturer'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Manufacturer/Delete/Toast/Error/Title', 'Deleting manufacturer'),
+                    message: this.$pgettext('Manufacturer/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with manufacturer deletion', err)
                 this.fetchManufacturers()

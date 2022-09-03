@@ -16,7 +16,7 @@
               Parts by category
             </li>
             <li class="breadcrumb-item active">
-              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
+              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id } }">
                 {{ actualCurrentCategory.name }}
               </router-link>
             </li>
@@ -188,7 +188,7 @@
 
             <template #cell(qrcode)="data">
               <div @click="showLabelGenerator(data.item)">
-                <qrcode
+                <vue-qrcode
                   :id="qrcodeId(data.item.id)"
                   data-bs-toggle="tooltip"
                   :value="qrCodePart(data.item.uuid)"
@@ -258,7 +258,6 @@
                 :target="popoverStockQtyClass(data.item.id)"
                 triggers="click"
                 placement="auto"
-                container="tablePartsList"
                 @show="closeBulkEditPopovers()"
               >
                 <template #title>
@@ -285,7 +284,6 @@
                 :target="popoverStockQtyMinClass(data.item.id)"
                 triggers="click"
                 placement="auto"
-                container="tablePartsList"
               >
                 <template #title>
                   Change stock min qty
@@ -388,6 +386,8 @@ import ViewModal from '@/components/parts/view_modal'
 import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
 import _ from '@/lodash'
 import utils from '@/utils'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'PartsList',
@@ -517,6 +517,10 @@ export default {
       }
     })
   },
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   methods: {
     categoryChanged () {
       if (!this.categoryId || Number(this.categoryId) === 0) {
@@ -536,23 +540,23 @@ export default {
     popoverQtyUpdatePart (id, qty) {
       apiService.updatePartialPart(id, { stock_qty: qty })
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part qty'),
+              message: this.$pgettext('Part/Update/Toast/Success/Message', 'Success')
+            }
           })
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::hide::popover', this.popoverStockQtyClass(id))
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part qty'),
+              message: this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update part qty', error.message)
         })
@@ -563,23 +567,23 @@ export default {
     popoverQtyMinUpdatePart (id, qty) {
       apiService.updatePartialPart(id, { stock_qty_min: qty })
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating min part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating min part qty'),
+              message: this.$pgettext('Part/Update/Toast/Success/Message', 'Success')
+            }
           })
           // eslint-disable-next-line vue/custom-event-name-casing
           this.$root.$emit('bv::hide::popover', this.popoverStockQtyMinClass(id))
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating min part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating min part qty'),
+              message: this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update min part qty', error.message)
         })
@@ -680,23 +684,23 @@ export default {
           if (value === true) {
             apiService.deletePart(part.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                    message: this.$pgettext('Part/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.fetchParts(1, null)
                 this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                    message: this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with part deletion', err)
                 this.fetchParts(1, null)
@@ -729,22 +733,22 @@ export default {
               for (let x of parts) {
                 await apiService.deletePart(x.id)
                   .then(() => {
-                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                      title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                      autoHideDelay: 5000,
-                      appendToast: true,
-                      variant: 'primary',
-                      toaster: 'b-toaster-top-center'
+                    this.toast.success({
+                      component: ToastyToast,
+                      props: {
+                        title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                        message: this.$pgettext('Part/Delete/Toast/Success/Message', 'Success')
+                      }
                     })
                     this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id })
                   })
                   .catch((err) => {
-                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                      title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                      autoHideDelay: 5000,
-                      appendToast: true,
-                      variant: 'danger',
-                      toaster: 'b-toaster-top-center'
+                    this.toast.error({
+                      component: ToastyToast,
+                      props: {
+                        title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                        message: this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                      }
                     })
                     logger.default.error('Error with part deletion', err)
                   })
@@ -770,12 +774,12 @@ export default {
           this.$bvModal.show('modalManage')
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
+              message: this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error fetching part', err)
           this.partDetails = null
@@ -848,12 +852,12 @@ export default {
 
       apiService.changePartsCategory(ids, this.bulkEditNewCategory)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+              message: this.$pgettext('Part/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchParts(1, null)
 
@@ -864,12 +868,12 @@ export default {
           })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+              message: this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with category part update', err)
           this.fetchParts(1, null)
@@ -889,12 +893,12 @@ export default {
 
       apiService.changePartsStorageLocation(ids, this.bulkEditNewStorageLocation)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+              message: this.$pgettext('Part/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchParts(1, null)
 
@@ -903,12 +907,12 @@ export default {
           })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+              message: this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with category storage location update', err)
           this.fetchParts(1, null)

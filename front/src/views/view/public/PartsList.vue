@@ -13,7 +13,7 @@
               Parts by category
             </li>
             <li class="breadcrumb-item active">
-              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
+              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id } }">
                 {{ actualCurrentCategory.name }}
               </router-link>
             </li>
@@ -95,7 +95,7 @@
         >
           <template #cell(qrcode)="data">
             <div @click="showBigQrCode(data.item)">
-              <qrcode
+              <vue-qrcode
                 :id="qrcodeId(data.item.id)"
                 v-b-tooltip.hover
                 :value="qrCodePart(data.item.uuid)"
@@ -178,6 +178,8 @@ import logger from '@/logging'
 import { mapState } from 'vuex'
 import ViewModal from '@/components/parts/view_modal'
 import apiService from '@/services/api/api.service'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   components: {
@@ -212,6 +214,10 @@ export default {
       sellable: false
     }
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   computed: {
     ...mapState({
       currentCategory: state => { return state.preloads.currentCategory },
@@ -370,12 +376,12 @@ export default {
           this.$bvModal.show('modalManage')
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
+              message: this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error fetching part', err)
           this.partDetails = null

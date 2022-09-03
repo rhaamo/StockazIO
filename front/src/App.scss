@@ -4,9 +4,12 @@ $breadcrumb-padding-x:              1rem;
 $breadcrumb-bg: #e9ecef;
 $breadcrumb-border-radius: .25rem;
 
-// Then import Required Bootstrap stuff
+// Then import Required Bootstrap and other stuff
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
+@import 'vue-toastification/dist/index.css';
+
+// Now our normal (S)CSS
 
 body {
   font-size: 0.875rem;

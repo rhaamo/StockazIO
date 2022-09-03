@@ -106,6 +106,8 @@
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 import BtnDeleteInline from '@/components/btn_delete_inline'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
@@ -126,6 +128,10 @@ export default {
       part_parameters_presets: []
     }
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: {
@@ -169,12 +175,12 @@ export default {
           })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Preset/Details/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Preset/Details/Toast/Error/Title', 'Fetching preset details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Preset/Details/Toast/Error/Title', 'Fetching preset details'),
+              message: this.$pgettext('Preset/Details/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with fetching preset', err.message)
         })
@@ -195,24 +201,24 @@ export default {
       }
       apiService.updatePartParameterPresets(this.preset.id, datas)
         .then((resp) => {
-          this.$bvToast.toast(this.$pgettext('Preset/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Preset/Update/Toast/Success/Title', 'Updating preset'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Preset/Update/Toast/Success/Title', 'Updating preset'),
+              message: this.$pgettext('Preset/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.$store.commit('setPartParametersPresets', resp.data)
           this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: new Date() })
           this.$router.push({ name: 'parameters-presets-details', params: { presetId: this.preset.id } })
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Preset/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Preset/Update/Toast/Error/Title', 'Updating preset'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Preset/Update/Toast/Error/Title', 'Updating preset'),
+              message: this.$pgettext('Preset/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update preset', error.message)
         })

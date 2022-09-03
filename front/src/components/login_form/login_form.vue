@@ -75,6 +75,8 @@ import { required, maxLength } from 'vuelidate/lib/validators'
 import { mapState, mapActions } from 'vuex'
 import oauthApi from '../../backend/oauth/oauth'
 import logger from '@/logging'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [validationMixin],
@@ -82,6 +84,10 @@ export default {
     user: {},
     error: false
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     user: {
       username: { required, maxLength: maxLength(250) },
@@ -150,12 +156,12 @@ export default {
           .catch(error => {
             logger.default.error('Login error:', error)
             this.error = this.$pgettext('Content/Login/Error/Occured', 'An error occured, please try again later')
-            this.$bvToast.toast(this.$pgettext('Content/Login/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('Content/Login/Toast/Error/Title', 'Login'),
-              autoHideDelay: 5000,
-              appendToast: false,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Content/Login/Toast/Error/Title', 'Login'),
+                message: this.$pgettext('Content/Login/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
           })
       })

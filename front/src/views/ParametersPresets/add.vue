@@ -108,6 +108,8 @@
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 import BtnDeleteInline from '@/components/btn_delete_inline'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
@@ -127,6 +129,10 @@ export default {
       part_parameters_presets: []
     }
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: {
@@ -166,24 +172,24 @@ export default {
       }
       apiService.createPartParameterPresets(datas)
         .then((resp) => {
-          this.$bvToast.toast(this.$pgettext('Preset/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Preset/Add/Toast/Success/Title', 'Adding preset'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Preset/Add/Toast/Success/Title', 'Adding preset'),
+              message: this.$pgettext('Preset/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.$store.commit('setPartParametersPresets', resp.data)
           this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: new Date() })
           this.$router.push({ name: 'parameters-presets-details', params: { presetId: resp.data.id } })
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Preset/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Preset/Add/Toast/Error/Title', 'Adding preset'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Preset/Add/Toast/Error/Title', 'Adding preset'),
+              message: this.$pgettext('Preset/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot save preset', error.message)
         })

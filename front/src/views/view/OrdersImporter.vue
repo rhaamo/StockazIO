@@ -72,6 +72,8 @@ import logger from '@/logging'
 import { mapState } from 'vuex'
 import dateFnsFormat from 'date-fns/format'
 import dateFnsParseISO from 'date-fns/parseISO'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [
@@ -111,6 +113,10 @@ export default {
   created () {
     this.fetchOrders()
   },
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   methods: {
     formatDate (date) {
       return date ? dateFnsFormat(dateFnsParseISO(date), 'E d MMM yyyy') : ''
@@ -130,12 +136,12 @@ export default {
           this.orders = val.data
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('OrdersImporter/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('OrdersImporter/Fetch/Toast/Error/Title', 'Fetching orders'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('OrdersImporter/Fetch/Toast/Error/Title', 'Fetching orders'),
+              message: this.$pgettext('OrdersImporter/Fetch/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error getting orders', err)
         })
@@ -158,24 +164,24 @@ export default {
             apiService.importOrderToInventory(item.id)
               .then((val) => {
                 const msg = this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Message', 'Success, created: %{created}, updated: %{updated}, total: %{total}.')
-                this.$bvToast.toast(this.$gettextInterpolate(msg, { created: val.data.stats.created, updated: val.data.stats.updated, total: val.data.stats.created + val.data.stats.updated }), {
-                  title: this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Title', 'Import to inventory'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('ImportOrderToInventory/Add/Toast/Success/Title', 'Import to inventory'),
+                    message: this.$gettextInterpolate(msg, { created: val.data.stats.created, updated: val.data.stats.updated, total: val.data.stats.created + val.data.stats.updated })
+                  }
                 })
                 this.fetchOrders()
                 // why reload categories ?
                 this.$store.dispatch('preloadSidebar')
               })
               .catch((error) => {
-                this.$bvToast.toast(this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Title', 'Import to inventory'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Title', 'Import to inventory'),
+                    message: this.$pgettext('ImportOrderToInventory/Add/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Cannot import to inventory', error.message)
               })

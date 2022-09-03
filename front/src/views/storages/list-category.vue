@@ -60,6 +60,8 @@
 import ListLocation from './list-location'
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ListCategory',
@@ -76,6 +78,10 @@ export default {
   },
   computed: {
 
+  },
+  setup () {
+    const toast = useToast()
+    return { toast }
   },
   methods: {
     addCategory (id) {
@@ -126,12 +132,12 @@ export default {
           if (value === true) {
             apiService.deleteStorageCategory(item.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('StorageCategory/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('StorageCategory/Delete/Toast/Success/Title', 'Deleting category'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('StorageCategory/Delete/Toast/Success/Title', 'Deleting category'),
+                    message: this.$pgettext('StorageCategory/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 // triggers a reload of the storage tree
                 this.$nextTick(() => {
@@ -139,12 +145,12 @@ export default {
                 })
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('StorageCategory/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('StorageCategory/Delete/Toast/Error/Title', 'Deleting category'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('StorageCategory/Delete/Toast/Error/Title', 'Deleting category'),
+                    message: this.$pgettext('StorageCategory/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with storage category deletion', err)
                 // triggers a reload of the storage tree

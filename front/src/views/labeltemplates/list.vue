@@ -138,6 +138,8 @@ import apiService from '@/services/api/api.service'
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minValue } from 'vuelidate/lib/validators'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'LabelTemplatesList',
@@ -158,6 +160,10 @@ export default {
       text_template: ''
     }
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: { required, maxLength: maxLength(255) },
@@ -219,23 +225,23 @@ export default {
         // update
         apiService.updateLabelTemplate(this.form.id, lt)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('LabelTemplate/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('LabelTemplate/Update/Toast/Success/Title', 'Update label template'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('LabelTemplate/Update/Toast/Success/Title', 'Update label template'),
+                message: this.$pgettext('LabelTemplate/Update/Toast/Success/Message', 'Success')
+              }
             })
             this.switchToTab(null)
             this.fetchLabelTemplates()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('LabelTemplate/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('LabelTemplate/Update/Toast/Error/Title', 'Update label template'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('LabelTemplate/Update/Toast/Error/Title', 'Update label template'),
+                message: this.$pgettext('LabelTemplate/Update/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot update label template', error.message)
           })
@@ -243,23 +249,23 @@ export default {
         // create
         apiService.createLabelTemplate(lt)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('LabelTemplate/Add/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('LabelTemplate/Add/Toast/Success/Title', 'Add label template'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('LabelTemplate/Add/Toast/Success/Title', 'Add label template'),
+                message: this.$pgettext('LabelTemplate/Add/Toast/Success/Message', 'Success')
+              }
             })
             this.switchToTab(null)
             this.fetchLabelTemplates()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('LabelTemplate/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('LabelTemplate/Add/Toast/Error/Title', 'Add label template'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('LabelTemplate/Add/Toast/Error/Title', 'Add label template'),
+                message: this.$pgettext('LabelTemplate/Add/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot add label template', error.message)
           })
@@ -283,12 +289,12 @@ export default {
           if (value === true) {
             apiService.deleteLabelTemplate(this.form.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('LabelTemplate/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('LabelTemplate/Delete/Toast/Success/Title', 'Deleting label template'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('LabelTemplate/Delete/Toast/Success/Title', 'Deleting label template'),
+                    message: this.$pgettext('LabelTemplate/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.$nextTick(() => {
                   this.switchToTab(null)
@@ -296,12 +302,12 @@ export default {
                 })
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('LabelTemplate/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('LabelTemplate/Delete/Toast/Error/Title', 'Deleting label template'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('LabelTemplate/Delete/Toast/Error/Title', 'Deleting label template'),
+                    message: this.$pgettext('LabelTemplate/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with label template deletion', err)
                 this.switchToTab(null)

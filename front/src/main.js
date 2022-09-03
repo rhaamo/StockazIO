@@ -8,7 +8,7 @@ import Multiselect from 'vue-multiselect'
 import Treeselect from '@bosquig/vue3-treeselect'
 import VueAxios from 'vue-axios'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
-
+import Toast from 'vue-toastification'
 
 import logger from '@/logging'
 import store from './store'
@@ -42,6 +42,11 @@ app.use(createGettext({
 
 app.use(VueAxios, axios)
 app.use(BootstrapVue3)
+app.use(Toast, {
+  timeout: 5000,
+  newestOnTop: true,
+  shareAppContext: true
+})
 app.component(Multiselect.name, Multiselect)
 app.component(Treeselect.name, Treeselect)
 app.component(VueQrcode.name, VueQrcode)

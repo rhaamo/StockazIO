@@ -184,6 +184,8 @@ import { validationMixin } from 'vuelidate'
 import { required, minValue, integer, maxLength } from 'vuelidate/lib/validators'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [
@@ -219,6 +221,10 @@ export default {
     parts: [],
     partSelected: null
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       part_id: { required, integer },
@@ -289,48 +295,48 @@ export default {
       if (this.partToEdit) {
         apiService.projectUpdatePart(this.project.id, this.partToEdit.id, part)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('ProjectManagePart/Update/Toast/Success/Title', 'Updating inventory part'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ProjectManagePart/Update/Toast/Success/Title', 'Updating inventory part'),
+                message: this.$pgettext('ProjectManagePart/Update/Toast/Success/Message', 'Success')
+              }
             })
             this.clearForm()
             this.$bvModal.hide('modalManageInventoryPart')
             this.$emit('manage-part-inventory-saved')
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('ProjectManagePart/Update/Toast/Error/Title', 'Updating inventory part'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ProjectManagePart/Update/Toast/Error/Title', 'Updating inventory part'),
+                message: this.$pgettext('ProjectManagePart/Update/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot update inventory part', error.message)
           })
       } else {
         apiService.projectAddPart(this.project.id, part)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('ProjectManagePart/Update/Toast/Success/Title', 'Adding inventory part'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ProjectManagePart/Update/Toast/Success/Title', 'Adding inventory part'),
+                message: this.$pgettext('ProjectManagePart/Update/Toast/Success/Message', 'Success')
+              }
             })
             this.clearForm()
             this.$bvModal.hide('modalManageInventoryPart')
             this.$emit('manage-part-inventory-saved')
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('ProjectManagePart/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('ProjectManagePart/Update/Toast/Error/Title', 'Adding inventory part'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ProjectManagePart/Update/Toast/Error/Title', 'Adding inventory part'),
+                message: this.$pgettext('ProjectManagePart/Update/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot add inventory part', error.message)
           })

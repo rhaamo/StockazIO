@@ -87,6 +87,8 @@ import logger from '@/logging'
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, integer } from 'vuelidate/lib/validators'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 import dateFnsFormat from 'date-fns/format'
 import dateFnsParseISO from 'date-fns/parseISO'
@@ -126,6 +128,10 @@ export default {
   created () {
     this.fetchMatchers()
   },
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   methods: {
     ignoreIdCbox (id) {
       return `ignore-${id}`
@@ -145,12 +151,12 @@ export default {
           })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('CategoryMatchers/Fetch/Toast/Error/Title', 'Fetching categories matchers'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('CategoryMatchers/Fetch/Toast/Error/Title', 'Fetching categories matchers'),
+              message: this.$pgettext('CategoryMatchers/Fetch/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error getting categories matcher', err)
         })
@@ -167,21 +173,21 @@ export default {
 
       apiService.updateCategoryMatchers({ update: this.matchers, delete: this.deleted })
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating matchers'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating matchers'),
+              message: this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success')
+            }
           })
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating matchers'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating matchers'),
+              message: this.$pgettext('CategoryMatchers/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update matchers', error.message)
         })

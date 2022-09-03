@@ -209,6 +209,8 @@ import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
 import { required, email, url, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ViewDistributors',
@@ -268,6 +270,10 @@ export default {
   },
   created () {
   },
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   methods: {
     fetchDistributors () {
       apiService.getDistributors()
@@ -276,12 +282,12 @@ export default {
           this.$store.commit('setLastUpdate', { item: 'distributors', value: new Date() })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('distributors/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('distributors/Fetch/Toast/Error/Title', 'Fetching distributors'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('distributors/Fetch/Toast/Error/Title', 'Fetching distributors'),
+              message: this.$pgettext('distributors/Fetch/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error getting distributors', err)
         })
@@ -312,48 +318,48 @@ export default {
       if (this.modalAction === 'create') {
         apiService.createDistributor(this.modalDistributor)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('Distributor/Add/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('Distributor/Add/Toast/Success/Title', 'Adding distributor'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Distributor/Add/Toast/Success/Title', 'Adding distributor'),
+                message: this.$pgettext('Distributor/Add/Toast/Success/Message', 'Success')
+              }
             })
             this.$bvModal.hide('modalAddDistributor')
             this.clearForm()
             this.fetchDistributors()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('Distributor/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('Distributor/Add/Toast/Error/Title', 'Adding distributor'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Distributor/Add/Toast/Error/Title', 'Adding distributor'),
+                message: this.$pgettext('Distributor/Add/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot save distributor', error.message)
           })
       } else {
         apiService.updateDistributor(this.modalDistributor.id, this.modalDistributor)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('Distributor/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('Distributor/Update/Toast/Success/Title', 'Updating distributor'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Distributor/Update/Toast/Success/Title', 'Updating distributor'),
+                message: this.$pgettext('Distributor/Update/Toast/Success/Message', 'Success')
+              }
             })
             this.$bvModal.hide('modalAddDistributor')
             this.clearForm()
             this.fetchDistributors()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('Distributor/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('Distributor/Update/Toast/Error/Title', 'Updating distributor'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('Distributor/Update/Toast/Error/Title', 'Updating distributor'),
+                message: this.$pgettext('Distributor/Update/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot update distributor', error.message)
           })
@@ -383,22 +389,22 @@ export default {
           if (value === true) {
             apiService.deleteDistributor(distributor.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('Distributor/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('Distributor/Delete/Toast/Success/Title', 'Deleting distributor'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Distributor/Delete/Toast/Success/Title', 'Deleting distributor'),
+                    message: this.$pgettext('Distributor/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.fetchDistributors()
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('Distributor/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('Distributor/Delete/Toast/Error/Title', 'Deleting distributor'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Distributor/Delete/Toast/Error/Title', 'Deleting distributor'),
+                    message: this.$pgettext('Distributor/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with distributor deletion', err)
                 this.fetchDistributors()

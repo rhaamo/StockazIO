@@ -64,6 +64,8 @@ import { required, maxLength } from 'vuelidate/lib/validators'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 import apiService from '@/services/api/api.service'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [
@@ -87,6 +89,10 @@ export default {
       parent_id: ''
     }
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: { required, maxLength: maxLength(200) },
@@ -141,22 +147,22 @@ export default {
 
       apiService.createStorageCategory(storageCategory)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('StorageCategory/Add/Toast/Success/Title', 'Add storage category'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageCategory/Add/Toast/Success/Title', 'Add storage category'),
+              message: this.$pgettext('StorageCategory/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.manageCategoryClose()
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('StorageCategory/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('StorageCategory/Add/Toast/Error/Title', 'Add storage category'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageCategory/Add/Toast/Error/Title', 'Add storage category'),
+              message: this.$pgettext('StorageCategory/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot add storage category', error.message)
         })
@@ -175,22 +181,22 @@ export default {
 
       apiService.updateStorageCategory(this.item.id, storageCategory)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('StorageCategory/Update/Toast/Success/Title', 'Update storage category'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageCategory/Update/Toast/Success/Title', 'Update storage category'),
+              message: this.$pgettext('StorageCategory/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.manageCategoryClose()
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('StorageCategory/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('StorageCategory/Update/Toast/Error/Title', 'Update storage category'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageCategory/Update/Toast/Error/Title', 'Update storage category'),
+              message: this.$pgettext('StorageCategory/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update storage category', error.message)
         })

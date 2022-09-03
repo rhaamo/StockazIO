@@ -85,6 +85,8 @@ import logger from '@/logging'
 import { mapState } from 'vuex'
 import dateFnsFormat from 'date-fns/format'
 import dateFnsParseISO from 'date-fns/parseISO'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [
@@ -130,6 +132,10 @@ export default {
   created () {
     this.fetchOrder(this.orderId)
   },
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   methods: {
     ignoreIdCbox (id) {
       return `ignore-${id}`
@@ -165,12 +171,12 @@ export default {
           }
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('OrdersImporterDetails/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('OrdersImporterDetails/Fetch/Toast/Error/Title', 'Fetching order'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('OrdersImporterDetails/Fetch/Toast/Error/Title', 'Fetching order'),
+              message: this.$pgettext('OrdersImporterDetails/Fetch/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error getting order', err)
         })
@@ -199,22 +205,22 @@ export default {
       })
       apiService.updateOrderImporter(this.order.id, datas)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Title', 'Updating order'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Title', 'Updating order'),
+              message: this.$pgettext('OrdersImporterDetails/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchOrder(this.orderId)
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Title', 'Updating order'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Title', 'Updating order'),
+              message: this.$pgettext('OrdersImporterDetails/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot rematch items', error.message)
         })
@@ -222,22 +228,22 @@ export default {
     rematchCategories () {
       apiService.rematchOrderItems()
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating categories'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('CategoryMatchers/Add/Toast/Success/Title', 'Updating categories'),
+              message: this.$pgettext('CategoryMatchers/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchOrder(this.orderId)
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('CategoryMatchers/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating categories'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('CategoryMatchers/Add/Toast/Error/Title', 'Updating categories'),
+              message: this.$pgettext('CategoryMatchers/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot rematch items', error.message)
         })

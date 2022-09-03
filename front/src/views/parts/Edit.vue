@@ -3,7 +3,7 @@
     <div v-if="part" class="row">
       <div class="col-lg-9">
         <div class="float-left" @click="showBigQrCode(part)">
-          <qrcode
+          <vue-qrcode
             :id="qrcodeId(part.id)"
             v-b-tooltip.hover
             :value="qrCodePart(part.uuid)"
@@ -431,6 +431,8 @@ import { required, minValue, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
 import BtnDeleteInline from '@/components/btn_delete_inline'
 import utils from '@/utils'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'PartsEdit',
@@ -471,6 +473,10 @@ export default {
     },
     origCategory: null
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   computed: {
     ...mapState({
       choicesPartUnit: (state) => {
@@ -656,12 +662,12 @@ export default {
           this.origCategory = this.form.category
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/Details/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Details/Toast/Error/Title', 'Fetching part details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Details/Toast/Error/Title', 'Fetching part details'),
+              message: this.$pgettext('Part/Details/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with fetching part', err.message)
         })
@@ -685,23 +691,23 @@ export default {
 
           apiService.deletePart(part.id)
             .then((val) => {
-              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary',
-                toaster: 'b-toaster-top-center'
+              this.toast.success({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
+                  message: this.$pgettext('Part/Delete/Toast/Success/Message', 'Success')
+                }
               })
               this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
               this.$router.push({ name: 'home' })
             })
             .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger',
-                toaster: 'b-toaster-top-center'
+              this.toast.error({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
+                  message: this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                }
               })
               logger.default.error('Error with part deletion', err)
             })
@@ -716,12 +722,12 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         logger.default.error('Form has errors')
-        this.$bvToast.toast(this.$pgettext('Part/Add/Toast/Error/Message', 'Form has errors, please check all fields.'), {
-          title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
-          autoHideDelay: 5000,
-          appendToast: true,
-          variant: 'danger',
-          toaster: 'b-toaster-top-center'
+        this.toast.error({
+          component: ToastyToast,
+          props: {
+            title: this.$pgettext('Part/Add/Toast/Error/Title', 'Adding part'),
+            message: this.$pgettext('Part/Add/Toast/Error/Message', 'Form has errors, please check all fields.')
+          }
         })
         return
       }
@@ -760,12 +766,12 @@ export default {
       }
       apiService.updatePart(this.part.id, datas)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
+              message: this.$pgettext('Part/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.$v.$reset()
           if (this.origCategory !== newCategoryId) {
@@ -777,12 +783,12 @@ export default {
           }
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
+              message: this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update part', error.message)
         })

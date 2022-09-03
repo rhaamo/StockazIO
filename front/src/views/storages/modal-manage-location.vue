@@ -91,6 +91,8 @@ import { required, maxLength } from 'vuelidate/lib/validators'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 import apiService from '@/services/api/api.service'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [
@@ -116,6 +118,10 @@ export default {
       picture: null
     }
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: { required, maxLength: maxLength(255) },
@@ -181,22 +187,22 @@ export default {
 
       apiService.createStorageLocation(storageLocation)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('StorageLocation/Add/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('StorageLocation/Add/Toast/Success/Title', 'Add storage Location'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageLocation/Add/Toast/Success/Title', 'Add storage Location'),
+              message: this.$pgettext('StorageLocation/Add/Toast/Success/Message', 'Success')
+            }
           })
           this.manageLocationClose()
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('StorageLocation/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('StorageLocation/Add/Toast/Error/Title', 'Add storage Location'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageLocation/Add/Toast/Error/Title', 'Add storage Location'),
+              message: this.$pgettext('StorageLocation/Add/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot add storage Location', error.message)
         })
@@ -217,22 +223,22 @@ export default {
 
       apiService.updateStorageLocation(this.item.id, storageLocation)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('StorageLocation/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('StorageLocation/Update/Toast/Success/Title', 'Update storage Location'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageLocation/Update/Toast/Success/Title', 'Update storage Location'),
+              message: this.$pgettext('StorageLocation/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.manageLocationClose()
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('StorageLocation/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('StorageLocation/Update/Toast/Error/Title', 'Update storage Location'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('StorageLocation/Update/Toast/Error/Title', 'Update storage Location'),
+              message: this.$pgettext('StorageLocation/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update storage Location', error.message)
         })

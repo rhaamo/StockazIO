@@ -149,6 +149,9 @@
 
 import CategoryTree from './components/categories/tree'
 
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
+
 export default {
   components: {
     CategoryTree
@@ -170,6 +173,10 @@ export default {
     }
   },
   created () {
+  },
+  setup () {
+    const toast = useToast()
+    return { toast }
   },
   methods: {
     logout () {
@@ -227,12 +234,12 @@ export default {
             this.$store.commit('setLastUpdate', { item: 'label_templates', value: null })
             this.$store.commit('setLastUpdate', { item: 'parameters_presets', value: null })
             this.$store.dispatch('preloadStuff').then(() => {
-              this.$bvToast.toast(this.$pgettext('Datas/Preloading/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('Datas/Preloading/Toast/Success/Title', 'Reloading datas'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary',
-                toaster: 'b-toaster-top-center'
+              this.toast.success({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Datas/Preloading/Toast/Success/Title', 'Reloading datas'),
+                  message: this.$pgettext('Datas/Preloading/Toast/Success/Message', 'Success')
+                }
               })
             })
           }

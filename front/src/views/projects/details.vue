@@ -290,6 +290,8 @@ import logger from '@/logging'
 import { mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ProjectsDetails',
@@ -340,6 +342,10 @@ export default {
     boards: 1,
     partToEdit: null
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   computed: {
     ...mapState({
       serverSettings: state => state.server.settings
@@ -372,12 +378,12 @@ export default {
           this.project = res.data
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Project/Details/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Project/Details/Toast/Error/Title', 'Fetching project details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Project/Details/Toast/Error/Title', 'Fetching project details'),
+              message: this.$pgettext('Project/Details/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with project fetch', err.message)
         })
@@ -399,22 +405,22 @@ export default {
 
           apiService.deleteProject(project.id)
             .then((val) => {
-              this.$bvToast.toast(this.$pgettext('Project/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('Project/Delete/Toast/Success/Title', 'Deleting project'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary',
-                toaster: 'b-toaster-top-center'
+              this.toast.success({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Project/Delete/Toast/Success/Title', 'Deleting project'),
+                  message: this.$pgettext('Project/Delete/Toast/Success/Message', 'Success')
+                }
               })
               this.$router.push({ name: 'projects-list' })
             })
             .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('Project/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('Project/Delete/Toast/Error/Title', 'Deleting project'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger',
-                toaster: 'b-toaster-top-center'
+              this.toast.error({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('Project/Delete/Toast/Error/Title', 'Deleting project'),
+                  message: this.$pgettext('Project/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                }
               })
               logger.default.error('Error with project deletion', err)
               this.fetchProject()
@@ -430,23 +436,23 @@ export default {
 
       apiService.projectAttachmentCreate(this.project.id, this.addAttachmentForm)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('ProjectAttachment/Create/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('ProjectAttachment/Create/Toast/Success/Title', 'Saving project attachment'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('ProjectAttachment/Create/Toast/Success/Title', 'Saving project attachment'),
+              message: this.$pgettext('ProjectAttachment/Create/Toast/Success/Message', 'Success')
+            }
           })
           this.fetchProject()
           this.addAttachmentForm = { description: '', file: null }
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('ProjectAttachment/Create/Toast/Error/Message', 'Error occured or file type not allowed.'), {
-            title: this.$pgettext('ProjectAttachment/Create/Toast/Error/Title', 'Saving project attachment'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('ProjectAttachment/Create/Toast/Error/Title', 'Saving project attachment'),
+              message: this.$pgettext('ProjectAttachment/Create/Toast/Error/Message', 'Error occured or file type not allowed.')
+            }
           })
           logger.default.error('Error with project attachment deletion', err)
         })
@@ -468,22 +474,22 @@ export default {
 
           apiService.projectAttachmentDelete(this.project.id, attachment.id)
             .then((val) => {
-              this.$bvToast.toast(this.$pgettext('ProjectAttachment/Delete/Toast/Success/Message', 'Success'), {
-                title: this.$pgettext('ProjectAttachment/Delete/Toast/Success/Title', 'Deleting project attachment'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'primary',
-                toaster: 'b-toaster-top-center'
+              this.toast.success({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('ProjectAttachment/Delete/Toast/Success/Title', 'Deleting project attachment'),
+                  message: this.$pgettext('ProjectAttachment/Delete/Toast/Success/Message', 'Success')
+                }
               })
               this.fetchProject()
             })
             .catch((err) => {
-              this.$bvToast.toast(this.$pgettext('ProjectAttachment/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                title: this.$pgettext('ProjectAttachment/Delete/Toast/Error/Title', 'Deleting project attachment'),
-                autoHideDelay: 5000,
-                appendToast: true,
-                variant: 'danger',
-                toaster: 'b-toaster-top-center'
+              this.toast.error({
+                component: ToastyToast,
+                props: {
+                  title: this.$pgettext('ProjectAttachment/Delete/Toast/Error/Title', 'Deleting project attachment'),
+                  message: this.$pgettext('ProjectAttachment/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                }
               })
               logger.default.error('Error with project attachment deletion', err)
               this.fetchProject()
@@ -537,22 +543,22 @@ export default {
           if (value === true) {
             apiService.projectDeletePart(this.project.id, part.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('ProjectPart/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('ProjectPart/Delete/Toast/Success/Title', 'Deleting project part'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('ProjectPart/Delete/Toast/Success/Title', 'Deleting project part'),
+                    message: this.$pgettext('ProjectPart/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.fetchProject()
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('ProjectPart/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('ProjectPart/Delete/Toast/Error/Title', 'Deleting project part'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('ProjectPart/Delete/Toast/Error/Title', 'Deleting project part'),
+                    message: this.$pgettext('ProjectPart/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with project part deletion', err)
                 this.fetchProject()

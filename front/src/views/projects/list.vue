@@ -97,6 +97,8 @@
 <script>
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   name: 'ProjectsList',
@@ -140,6 +142,10 @@ export default {
     this.$nextTick(() => {
       this.fetchProjects(1, null)
     })
+  },
+  setup () {
+    const toast = useToast()
+    return { toast }
   },
   methods: {
     fetchProjects (page, opts) {
@@ -189,22 +195,22 @@ export default {
           if (value === true) {
             apiService.deleteProject(project.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('Project/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('Project/Delete/Toast/Success/Title', 'Deleting project'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Project/Delete/Toast/Success/Title', 'Deleting project'),
+                    message: this.$pgettext('Project/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.fetchProjects(this.currentPage, null)
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('Project/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('Project/Delete/Toast/Error/Title', 'Deleting project'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('Project/Delete/Toast/Error/Title', 'Deleting project'),
+                    message: this.$pgettext('Project/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with project deletion', err)
                 this.fetchParts(1, null)

@@ -103,6 +103,8 @@
 <script>
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
@@ -134,6 +136,10 @@ export default {
       { value: 99, text: 'Unknown' }
     ]
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     form: {
       name: {
@@ -179,12 +185,12 @@ export default {
           this.form.state_notes = this.project.state_notes
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Project/Details/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Project/Details/Toast/Error/Title', 'Fetching project details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Project/Details/Toast/Error/Title', 'Fetching project details'),
+              message: this.$pgettext('Project/Details/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Error with fetching project', err.message)
         })
@@ -206,22 +212,22 @@ export default {
       }
       apiService.updateProject(this.project.id, datas)
         .then(() => {
-          this.$bvToast.toast(this.$pgettext('Project/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Project/Update/Toast/Success/Title', 'Updating project'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
+          this.toast.success({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Project/Update/Toast/Success/Title', 'Updating project'),
+              message: this.$pgettext('Project/Update/Toast/Success/Message', 'Success')
+            }
           })
           this.$router.push({ name: 'projects-details', params: { projectId: this.project.id } })
         })
         .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Project/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Project/Update/Toast/Error/Title', 'Updating project'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
+          this.toast.error({
+            component: ToastyToast,
+            props: {
+              title: this.$pgettext('Project/Update/Toast/Error/Title', 'Updating project'),
+              message: this.$pgettext('Project/Update/Toast/Error/Message', 'An error occured, please try again later')
+            }
           })
           logger.default.error('Cannot update project', error.message)
         })

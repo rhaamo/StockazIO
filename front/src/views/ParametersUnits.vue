@@ -144,6 +144,8 @@ import logger from '@/logging'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
+import { useToast } from 'vue-toastification'
+import ToastyToast from '@/components/toasty-toast'
 
 export default {
   mixins: [
@@ -170,6 +172,10 @@ export default {
     },
     modalAction: 'create'
   }),
+  setup () {
+    const toast = useToast()
+    return { toast }
+  },
   validations: {
     modalParameterUnit: {
       name: { required, maxLength: maxLength(255) },
@@ -201,13 +207,13 @@ export default {
           this.$store.commit('setLastUpdate', { item: 'parameters_units', value: new Date() })
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('ParametersUnits/Fetch/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('ParametersUnits/Fetch/Toast/Error/Title', 'Fetching part units'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
-          })
+          this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ParametersUnits/Fetch/Toast/Error/Title', 'Fetching part units'),
+                message: this.$pgettext('ParametersUnits/Fetch/Toast/Error/Message', 'An error occured, please try again later')
+              }
+            })
           logger.default.error('Error getting part units', err)
         })
     },
@@ -237,48 +243,48 @@ export default {
       if (this.modalAction === 'create') {
         apiService.createParametersUnits(this.modalParameterUnit)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('ParametersUnit/Add/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('ParametersUnit/Add/Toast/Success/Title', 'Adding part unit'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ParametersUnit/Add/Toast/Success/Title', 'Adding part unit'),
+                message: this.$pgettext('ParametersUnit/Add/Toast/Success/Message', 'Success')
+              }
             })
             this.$bvModal.hide('modalAddParametersUnit')
             this.clearForm()
             this.fetchParametersUnits()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('ParametersUnit/Add/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('ParametersUnit/Add/Toast/Error/Title', 'Adding part unit'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ParametersUnit/Add/Toast/Error/Title', 'Adding part unit'),
+                message: this.$pgettext('ParametersUnit/Add/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot save part unit', error.message)
           })
       } else {
         apiService.updateParametersUnits(this.modalParameterUnit.id, this.modalParameterUnit)
           .then(() => {
-            this.$bvToast.toast(this.$pgettext('ParametersUnit/Update/Toast/Success/Message', 'Success'), {
-              title: this.$pgettext('ParametersUnit/Update/Toast/Success/Title', 'Updating part unit'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'primary',
-              toaster: 'b-toaster-top-center'
+            this.toast.success({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ParametersUnit/Update/Toast/Success/Title', 'Updating part unit'),
+                message: this.$pgettext('ParametersUnit/Update/Toast/Success/Message', 'Success')
+              }
             })
             this.$bvModal.hide('modalAddParametersUnit')
             this.clearForm()
             this.fetchParametersUnits()
           })
           .catch((error) => {
-            this.$bvToast.toast(this.$pgettext('ParametersUnit/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-              title: this.$pgettext('ParametersUnit/Update/Toast/Error/Title', 'Updating part unit'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger',
-              toaster: 'b-toaster-top-center'
+            this.toast.error({
+              component: ToastyToast,
+              props: {
+                title: this.$pgettext('ParametersUnit/Update/Toast/Error/Title', 'Updating part unit'),
+                message: this.$pgettext('ParametersUnit/Update/Toast/Error/Message', 'An error occured, please try again later')
+              }
             })
             logger.default.error('Cannot update part unit', error.message)
           })
@@ -308,22 +314,22 @@ export default {
           if (value === true) {
             apiService.deleteParametersUnits(ParametersUnit.id)
               .then((val) => {
-                this.$bvToast.toast(this.$pgettext('ParametersUnit/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('ParametersUnit/Delete/Toast/Success/Title', 'Deleting part unit'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
+                this.toast.success({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('ParametersUnit/Delete/Toast/Success/Title', 'Deleting part unit'),
+                    message: this.$pgettext('ParametersUnit/Delete/Toast/Success/Message', 'Success')
+                  }
                 })
                 this.fetchParametersUnits()
               })
               .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('ParametersUnit/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('ParametersUnit/Delete/Toast/Error/Title', 'Deleting part unit'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
+                this.toast.error({
+                  component: ToastyToast,
+                  props: {
+                    title: this.$pgettext('ParametersUnit/Delete/Toast/Error/Title', 'Deleting part unit'),
+                    message: this.$pgettext('ParametersUnit/Delete/Toast/Error/Message', 'An error occured, please try again later')
+                  }
                 })
                 logger.default.error('Error with part unit deletion', err)
                 this.fetchParametersUnits()
