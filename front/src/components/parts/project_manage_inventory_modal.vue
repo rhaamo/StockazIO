@@ -21,8 +21,8 @@
       <div class="row">
         <div class="col-md-11 mx-auto">
           <b-form @submit.prevent="save">
-            <b-row>
-              <b-col>
+            <div class="row">
+              <div class="col">
                 <b-form-group id="input-group-qty" label="Qty*" label-for="qty">
                   <b-form-input
                     id="qty"
@@ -39,8 +39,8 @@
                     Qty is required
                   </div>
                 </b-form-group>
-              </b-col>
-              <b-col>
+              </div>
+              <div class="col">
                 <b-form-group id="input-group-notes" label="Notes" label-for="notes">
                   <b-form-input
                     id="notes"
@@ -52,8 +52,8 @@
                     Maximum length is 255
                   </div>
                 </b-form-group>
-              </b-col>
-            </b-row>
+              </div>
+            </div>
             <b-form-group>
               <b-form-checkbox
                 id="sourced"

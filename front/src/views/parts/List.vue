@@ -190,10 +190,10 @@
               <div @click="showLabelGenerator(data.item)">
                 <qrcode
                   :id="qrcodeId(data.item.id)"
-                  v-b-tooltip.hover
+                  data-bs-toggle="tooltip"
                   :value="qrCodePart(data.item.uuid)"
                   :options="{ scale: 1, color: {dark: '#000000', light:'#0000'} }"
-                  title="show label generator"
+                  data-bs-title="show label generator"
                   :data-uuid="data.item.uuid"
                   :data-name="data.item.name"
                   data-toggle="modal"
@@ -242,14 +242,16 @@
                 class="qtyMinWarning"
               >{{ data.item.stock_qty }}
                 <i
-                  v-b-tooltip.hover class="fa fa-circle"
+                  data-bs-toggle="tooltip"
+                  class="fa fa-circle"
                   aria-hidden="true"
-                  title="Current stock is below minimum stock quantity or exhausted"
+                  data-bs-title="Current stock is below minimum stock quantity or exhausted"
                 />
               </span>
               <span
-                v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
-                title="click to change qty"
+                v-else :id="popoverStockQtyClass(data.item.id)"
+                data-bs-toggle="tooltip"
+                data-bs-title="click to change qty"
               >{{ data.item.stock_qty }}</span>
 
               <b-popover
@@ -304,8 +306,8 @@
 
             <template #cell(footprint)="data">
               <span
-                v-b-tooltip.hover
-                :title="data.item.footprint ? data.item.footprint.description : ''"
+                data-bs-toggle="tooltip"
+                :data-bs-title="data.item.footprint ? data.item.footprint.description : ''"
               >
                 {{ data.item.footprint ? data.item.footprint.name : '-' }}
               </span>
@@ -364,8 +366,8 @@
       </b-tabs>
     </b-card>
 
-    <b-row>
-      <b-col md="6" offset-md="1">
+    <div class="row">
+      <div class="col-md-6 col col-offset-md-1">
         <b-pagination
           v-model="currentPage"
           :total-rows="partsCount"
@@ -373,8 +375,8 @@
           aria-controls="tablePartsList"
           @change="pageChanged"
         />
-      </b-col>
-    </b-row>
+      </div>
+    </div>
   </div>
 </template>
 

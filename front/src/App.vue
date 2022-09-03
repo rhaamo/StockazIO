@@ -1,146 +1,137 @@
 <template>
   <div id="app" :key="String($store.state.server.serverUrl)">
     <!-- navigation -->
-    <b-navbar type="dark" fixed="top" class="navbar-expand-lg bg-dark p-0 shadow">
-      <b-navbar-brand :to="{ name: 'home' }" class="col-sm-3 col-md-2 mr-0">
-        StockazIO <small>- {{ backendVersion }}</small>
-      </b-navbar-brand>
-      <button
-        class="navbar-toggler" type="button" data-toggle="collapse"
-        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon" />
-      </button>
+    <header class="navbar navbar-dark navbar-expand-lg bg-dark p-0 shadow fixed-top">
+      <div class="container-fluid">
+        <router-link :to="{ name: 'home' }" class="navbar-brand col-sm-3 col-md-2 mr-0">
+          StockazIO <small>- {{ backendVersion }}</small>
+        </router-link>
+        <button
+          class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon" />
+        </button>
 
-      <div id="navbarSupportedContent" class="collapse navbar-collapse">
-        <template v-if="currentUser">
-          <ul class="navbar-nav mr-auto">
-            <b-nav-item-dropdown id="editDropdown">
-              <template #button-content>
-                <i class="fa fa-cogs fa-fw" /> Edit
-              </template>
-              <b-dropdown-item :to="{}">
-                <i class="fa fa-paw fa-fw" /> Footprints
-              </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'manufacturers-list'}">
-                <i class="fa fa-home fa-fw" /> Manufacturers
-              </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'distributors-list'}">
-                <i class="fa fa-car fa-fw" /> Distributors
-              </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'storages-list'}">
-                <i class="fa fa-archive fa-fw" /> Storage
-              </b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'part-units-list' }">
-                <i class="fa fa-cogs fa-fw" /> Parts units
-              </b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'parameters-units-list' }">
-                <i class="fa fa-cogs fa-fw" /> Parameters Units
-              </b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'parameters-presets-list' }">
-                <i class="fa fa-cogs fa-fw" /> Part Parameters Presets
-              </b-dropdown-item>
-              <b-dropdown-item :to="{ name: 'label-templates-list' }">
-                <i class="fa fa-cogs fa-fw" /> Label Templates
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+          <template v-if="currentUser">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown" id="editDropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fa fa-cogs fa-fw" /> Edit
+                </a>
+                <ul class="dropdown-menu">
+                  <li><router-link :to="{}" class="dropdown-item"><i class="fa fa-paw fa-fw" /> Footprints</router-link></li>
+                  <li><router-link :to="{name: 'manufacturers-list'}" class="dropdown-item"><i class="fa fa-home fa-fw" /> Manufacturers</router-link></li>
+                  <li><router-link :to="{name: 'distributors-list'}" class="dropdown-item"><i class="fa fa-car fa-fw" /> Distributors</router-link></li>
+                  <li><router-link :to="{name: 'storages-list'}" class="dropdown-item"><i class="fa fa-archive fa-fw" /> Storage</router-link></li>
+                  <li><router-link :to="{name: 'part-units-list'}" class="dropdown-item"><i class="fa fa-cogs fa-fw" /> Parts units</router-link></li>
+                  <li><router-link :to="{name: 'parameters-units-list'}" class="dropdown-item"><i class="fa fa-cogs fa-fw" /> Parameters Units</router-link></li>
+                  <li><router-link :to="{name: 'parameters-presets-list'}" class="dropdown-item"><i class="fa fa-cogs fa-fw" /> Part Parameters Presets</router-link></li>
+                  <li><router-link :to="{name: 'label-templates-list'}" class="dropdown-item"><i class="fa fa-cogs fa-fw" /> Label Templates</router-link></li>
+                </ul>
+              </li>
 
-            <b-nav-item-dropdown id="viewDropdown">
-              <template #button-content>
+              <li class="nav-item dropdown" id="viewDropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                 <i class="fa fa-list fa-fw" /> View
-              </template>
-              <b-dropdown-item :to="{name: 'view-infos'}">
-                <i class="fa fa-cogs fa-fw" /> Informations
-              </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'view-storage-tree'}">
-                <i class="fa fa-list-alt fa-fw" /> Storage tree
-              </b-dropdown-item>
-              <b-dropdown-item :to="{name: 'public-parts'}">
-                <i class="fa fa-list-alt fa-fw" /> Public parts
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><router-link :to="{name: 'view-infos'}" class="dropdown-item"><i class="fa fa-cogs fa-fw" /> Informations</router-link></li>
+                  <li><router-link :to="{name: 'view-storage-tree'}" class="dropdown-item"><i class="fa fa-list-alt fa-fw" /> Storage tree</router-link></li>
+                  <li><router-link :to="{name: 'public-parts'}" class="dropdown-item"><i class="fa fa-list-alt fa-fw" /> Public parts</router-link></li>
+                </ul>
+              </li>
 
-            <b-nav-item-dropdown id="manageDropdown">
-              <template #button-content>
+              <li class="nav-item dropdown" id="toolsDropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                 <i class="fa fa-tasks fa-fw" /> Tools
-              </template>
-              <b-dropdown-item :to="{name: 'orders-importer'}">
-                <i class="fa fa-shopping-cart fa-fw" /> Orders importer
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><router-link :to="{name: 'orders-importer'}" class="dropdown-item"><i class="fa fa-shopping-cart fa-fw" /> Orders importer</router-link></li>
+                </ul>
+              </li>
 
-            <b-nav-item :to="{name: 'projects-list'}">
-              <i class="fa fa-list-ul fa-fw" /> Projects
-            </b-nav-item>
-            <b-nav-item :to="{name: 'parts-new'}" class="ml-4" title="Full form">
-              <i class="fa fa-plus fa-fw" /> Add part
-            </b-nav-item>
-            <b-nav-item :to="{name: 'parts-quick-new'}" title="Simplified form">
-              <i class="fa fa-fast-forward fa-fw" /> Quick add part
-            </b-nav-item>
-          </ul>
+              <li class="nav-item">
+                <router-link :to="{name: 'projects-list'}" class="nav-link"><i class="fa fa-list-ul fa-fw" /> Projects</router-link>
+              </li>
 
-          <ul class="navbar-nav">
-            <b-nav-item-dropdown id="userDropdown">
-              <template #button-content>
-                <i class="fa fa-user fa-fw" /> {{ currentUser.username }}
-              </template>
-              <b-dropdown-item :to="{}">
-                <i class="fa fa-key fa-fw" /> Change password
-              </b-dropdown-item>
-              <b-dropdown-divider />
-              <b-dropdown-item to="#" @click.prevent="forceReloadDatas">
-                <i class="fa fa-refresh" /> Force reload datas
-              </b-dropdown-item>
-              <b-dropdown-item to="#" @click.prevent="registerUrlHandler">
-                <i class="fa fa-link" /> Register URL Handler
-              </b-dropdown-item>
-              <b-dropdown-divider />
-              <b-dropdown-item @click.prevent="logout">
-                <i class="fa fa-sign-out fa-fw" /> Logout
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
-          </ul>
+              <li class="nav-item ml-4" title="Full form">
+                <router-link :to="{name: 'parts-new'}" class="nav-link"><i class="fa fa-plus fa-fw" /> Add part</router-link>
+              </li>
 
-          <b-form @submit="doSearch">
-            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-              <b-form-input id="inline-form-input-search" v-model="searchTerm" placeholder="Search" />
-              <b-input-group-append>
-                <b-button type="submit" title="Search">
-                  Search
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form>
-        </template>
-        <template v-else>
-          <b-navbar-nav class="mr-auto">
-            <b-nav-item :to="{name: 'login_form'}">
-              Login
-            </b-nav-item>
-            <b-nav-item :to="{name: 'public-parts'}">
-              Public parts list
-            </b-nav-item>
-            <b-nav-item :to="{name: 'about'}">
-              About
-            </b-nav-item>
-          </b-navbar-nav>
-        </template>
+              <li class="nav-item" title="Simplified form">
+                <router-link :to="{name: 'parts-quick-new'}" class="nav-link"><i class="fa fa-fast-forward fa-fw" /> Quick add part</router-link>
+              </li>
+            </ul>
+
+            <ul class="navbar-nav d-flex">
+              <li class="nav-item dropdown" id="userDropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                <i class="fa fa-user fa-fw" /> {{ currentUsername }}
+                </a>
+                <ul class="dropdown-menu">
+                  <li><router-link :to="{}" class="dropdown-item"><i class="fa fa-key fa-fw" /> Change password</router-link></li>
+                  <li><router-link to="#reloadDatas" @click.prevent="forceReloadDatas" class="dropdown-item"><i class="fa fa-refresh" /> Force reload datas</router-link></li>
+                  <li><router-link to="#urlHandler" @click.prevent="registerUrlHandler" class="dropdown-item"><i class="fa fa-link" /> Register URL Handler</router-link></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><router-link to="#logout" @click.prevent="logout" class="dropdown-item"><i class="fa fa-sign-out fa-fw" /> Logout</router-link></li>
+                </ul>
+              </li>
+            </ul>
+
+            <form class="d-flex" role="search" @submit="doSearch">
+              <input class="form-control me-2" type="search" placeholder="Search"
+                aria-label="Search"
+                v-model="searchTerm"
+              >
+              <button class="btn btn-outline-success" type="submit" title="Search">Search</button>
+            </form>
+
+          </template>
+          <template v-else>
+            <b-navbar-nav class="mr-auto">
+              <b-nav-item :to="{name: 'login_form'}">
+                Login
+              </b-nav-item>
+              <b-nav-item :to="{name: 'public-parts'}">
+                Public parts list
+              </b-nav-item>
+              <b-nav-item :to="{name: 'about'}">
+                About
+              </b-nav-item>
+            </b-navbar-nav>
+          </template>
+        </div>
       </div>
-    </b-navbar>
+    </header>
 
     <div v-if="shouldDisplayCategories" class="container-fluid">
       <div class="row">
-        <nav v-if="shouldDisplayCategories" class="col-md-3 col-xl-2 d-none d-md-block bg-light sidebar">
-          <div class="sidebar-sticky">
+        <nav v-if="shouldDisplayCategories" class="col-md-3 col-xl-2 d-md-block bg-light sidebar">
+          <div class="sidebar-sticky position-sticky pt-3">
             <CategoryTree :tree-data="categories" />
           </div>
         </nav>
 
-        <div role="main" class="col-md-9 ml-auto col-xl-10">
-          <router-view />
-        </div>
+        <main role="main" class="col-md-9 ms-sm-auto ml-auto col-xl-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <router-view />
+          </div>
+        </main>
       </div>
     </div>
     <div v-else class="container-fluid">
@@ -170,6 +161,7 @@ export default {
   computed: {
     backendVersion () { return this.$store.state.server.settings.backendVersion },
     currentUser () { return this.$store.state.user.currentUser && this.$store.state.oauth.loggedIn },
+    currentUsername () { return this.$store.state.user.currentUser.username },
     categories () { return this.$store.state.preloads.categories },
     shouldDisplayCategories () {
       if (this.currentUser) { return true }
