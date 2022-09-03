@@ -2,7 +2,7 @@
   <b-modal
     id="modalManage" ref="modalManage"
     size="xl" @cancel="partModalClose" @close="partModalClose"
-    @hidden="partModalClose"
+    @hidden="partModalClose" v-model="showModal"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
@@ -273,8 +273,14 @@ export default {
     canDelete: {
       type: Boolean,
       default: true
+    },
+    visible: {
+      type: Boolean
     }
   },
+  data: () => ({
+    showModal: false
+  }),
   computed: {
     partDetailsQty () { return this.part ? this.part.stock_qty : 0 },
     partDetailsQtyMin () { return this.part ? this.part.stock_qty_min : 0 },
@@ -341,12 +347,17 @@ export default {
       }).slice(0, 4) : []
     }
   },
+  watch: {
+    'visible': function () {
+      this.showModal = this.visible
+    }
+  },
   methods: {
     formatDate (date) {
       return dateFnsFormat(dateFnsParseISO(date), 'E MMM d yyyy HH:mm')
     },
     partModalClose () {
-      this.$bvModal.hide('modalManage')
+      this.showModal = false
       this.$emit('view-part-modal-closed')
     },
     deletePart (part) {

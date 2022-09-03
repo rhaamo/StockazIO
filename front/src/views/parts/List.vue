@@ -2,10 +2,11 @@
   <div class="add_part">
     <ViewModal
       :part="partDetails" :can-delete="true" @delete-part="deletePart"
-      @view-part-modal-closed="onPartModalClosed"
+      @view-part-modal-closed="onPartModalClosed" :visible="modalPartDetailsVisible"
     />
     <modalLabelGenerator
       :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
+      :visible="modalLabelGeneratorVisible"
     />
 
     <div class="row">
@@ -440,7 +441,9 @@ export default {
     bulkEditNewCategoryPopover: false,
     bulkEditNewCategory: null,
     bulkEditNewStorageLocationPopover: false,
-    bulkEditNewStorageLocation: null
+    bulkEditNewStorageLocation: null,
+    modalPartDetailsVisible: false,
+    modalLabelGeneratorVisible: false
   }),
   computed: {
     ...mapState({
@@ -611,11 +614,12 @@ export default {
       this.modalLabelGeneratorItems = [part]
       // We need to wait a tick or the previous set will not be finalized before the modal is shown
       this.$nextTick(() => {
-        this.$bvModal.show('modalLabelGenerator')
+        this.modalLabelGeneratorVisible = true
       })
     },
     labelGeneratorClosed () {
       this.modalLabelGeneratorItems = []
+      this.modalLabelGeneratorVisible = false
     },
     fetchParts (page, opts) {
       // Set current page to what has been asked to fetch
@@ -771,7 +775,7 @@ export default {
       apiService.getPart(part.id)
         .then((val) => {
           this.partDetails = val.data
-          this.$bvModal.show('modalManage')
+          this.modalPartDetailsVisible = true
         })
         .catch((err) => {
           this.toast.error({
@@ -809,6 +813,7 @@ export default {
     },
     onPartModalClosed () {
       this.partDetails = null
+      this.modalPartDetailsVisible = false
     },
     partGetDefaultAttachment (attachments) {
       // If only one attachment, and it is a picture, elect as default

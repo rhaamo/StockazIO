@@ -5,6 +5,7 @@
     @show="modalLabelGeneratorShow"
     @cancel="modalLabelGeneratorClose"
     @close="modalLabelGeneratorClose" @hidden="modalLabelGeneratorClose"
+    v-model="showModal"
   >
     <template #modal-header="{ close }">
       <h5 id="modalPartTitle">
@@ -88,6 +89,9 @@ export default {
   props: {
     items: {
       type: Array
+    },
+    visible: {
+      type: Boolean
     }
   },
   data: () => ({
@@ -136,8 +140,14 @@ export default {
         }
       },
       errorWrapper: true
-    }
+    },
+    showModal: false
   }),
+  watch: {
+    'visible': function () {
+      this.showModal = this.visible
+    }
+  },
   computed: {
     ...mapState({
       labelTemplates: (state) => {
