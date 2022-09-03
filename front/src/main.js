@@ -9,6 +9,7 @@ import Treeselect from '@bosquig/vue3-treeselect'
 import VueAxios from 'vue-axios'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
+
 import logger from '@/logging'
 import store from './store'
 import App from './App.vue'
@@ -16,7 +17,6 @@ import routes from './router'
 import locales from './locales.js'
 import initializeSomeStuff from './store/store_init'
 
-import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
 logger.default.info('Loading environment:', process.env.NODE_ENV)
 logger.default.debug('Environment variables:', process.env)
