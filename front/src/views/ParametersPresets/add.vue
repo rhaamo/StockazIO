@@ -27,10 +27,10 @@
                   v-model="form.name"
                   required
                   placeholder="Capacitor XXX"
-                  :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  :state="v$.form.name.$dirty ? !v$.form.name.$error : null"
                   autofocus
                 />
-                <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -47,10 +47,10 @@
                         required
                         autofocus
                       />
-                      <div v-if="!$v.form.part_parameters_presets.$each[i].name.required" class="invalid-feedback d-block">
+                      <div v-if="!v$.form.part_parameters_presets.$each[i].name.required" class="invalid-feedback d-block">
                         Name is required
                       </div>
-                      <div v-if="!$v.form.part_parameters_presets.$each[i].name.maxLength" class="invalid-feedback d-block">
+                      <div v-if="!v$.form.part_parameters_presets.$each[i].name.maxLength" class="invalid-feedback d-block">
                         Maximum length is 255
                       </div>
                     </b-form-group>
@@ -61,7 +61,7 @@
                         :id="itemId('description', i)"
                         v-model="form.part_parameters_presets[i].description"
                       />
-                      <div v-if="!$v.form.part_parameters_presets.$each[i].description.maxLength" class="invalid-feedback d-block">
+                      <div v-if="!v$.form.part_parameters_presets.$each[i].description.maxLength" class="invalid-feedback d-block">
                         Maximum length is 255
                       </div>
                     </b-form-group>
@@ -111,18 +111,15 @@ import BtnDeleteInline from '@/components/btn_delete_inline'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
 
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength } from '@vuelidate/validators'
 import { mapState } from 'vuex'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'ParametersPresetsAdd',
   components: {
     BtnDeleteInline
   },
-  mixins: [
-    validationMixin
-  ],
   data: () => ({
     form: {
       name: '',
@@ -131,7 +128,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -157,8 +155,8 @@ export default {
   },
   methods: {
     addPreset: function () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }

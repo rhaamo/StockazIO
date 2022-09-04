@@ -27,13 +27,13 @@
                   id="name"
                   v-model="modalManufacturer.name"
                   required
-                  :state="$v.modalManufacturer.name.$dirty ? !$v.modalManufacturer.name.$error : null"
+                  :state="v$.modalManufacturer.name.$dirty ? !v$.modalManufacturer.name.$error : null"
                   autofocus
                 />
-                <div v-if="!$v.modalManufacturer.name.required" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.name.required" class="invalid-feedback d-block">
                   Name is required
                 </div>
-                <div v-if="!$v.modalManufacturer.name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -41,7 +41,7 @@
                 <b-form-textarea
                   id="address"
                   v-model="modalManufacturer.address"
-                  :state="$v.modalManufacturer.address.$dirty ? !$v.modalManufacturer.address.$error : null"
+                  :state="v$.modalManufacturer.address.$dirty ? !v$.modalManufacturer.address.$error : null"
                 />
               </b-form-group>
               <b-form-group id="input-group-url" label="Website" label-for="short-url">
@@ -49,12 +49,12 @@
                   id="url"
                   v-model="modalManufacturer.url"
                   type="url"
-                  :state="$v.modalManufacturer.url.$dirty ? !$v.modalManufacturer.url.$error : null"
+                  :state="v$.modalManufacturer.url.$dirty ? !v$.modalManufacturer.url.$error : null"
                 />
-                <div v-if="!$v.modalManufacturer.url.url" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.url.url" class="invalid-feedback d-block">
                   Invalid url
                 </div>
-                <div v-if="!$v.modalManufacturer.url.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.url.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -63,12 +63,12 @@
                   id="email"
                   v-model="modalManufacturer.email"
                   type="email"
-                  :state="$v.modalManufacturer.email.$dirty ? !$v.modalManufacturer.email.$error : null"
+                  :state="v$.modalManufacturer.email.$dirty ? !v$.modalManufacturer.email.$error : null"
                 />
-                <div v-if="!$v.modalManufacturer.email.email" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.email.email" class="invalid-feedback d-block">
                   Invalid email
                 </div>
-                <div v-if="!$v.modalManufacturer.email.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.email.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -76,7 +76,7 @@
                 <b-form-textarea
                   id="comment"
                   v-model="modalManufacturer.comment"
-                  :state="$v.modalManufacturer.comment.$dirty ? !$v.modalManufacturer.comment.$error : null"
+                  :state="v$.modalManufacturer.comment.$dirty ? !v$.modalManufacturer.comment.$error : null"
                 />
               </b-form-group>
               <b-form-group id="input-group-phone" label="Phone" label-for="phone">
@@ -84,9 +84,9 @@
                   id="phone"
                   v-model="modalManufacturer.phone"
                   type="tel"
-                  :state="$v.modalManufacturer.phone.$dirty ? !$v.modalManufacturer.phone.$error : null"
+                  :state="v$.modalManufacturer.phone.$dirty ? !v$.modalManufacturer.phone.$error : null"
                 />
-                <div v-if="!$v.modalManufacturer.phone.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.phone.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -95,9 +95,9 @@
                   id="fax"
                   v-model="modalManufacturer.fax"
                   type="tel"
-                  :state="$v.modalManufacturer.fax.$dirty ? !$v.modalManufacturer.fax.$error : null"
+                  :state="v$.modalManufacturer.fax.$dirty ? !v$.modalManufacturer.fax.$error : null"
                 />
-                <div v-if="!$v.modalManufacturer.fax.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalManufacturer.fax.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -108,7 +108,7 @@
                   ref="file"
                   v-model="modalManufacturer.logo"
                   :accept="allowedUploadTypes"
-                  :state="$v.modalManufacturer.logo.$dirty ? !$v.modalManufacturer.logo.$error : null"
+                  :state="v$.modalManufacturer.logo.$dirty ? !v$.modalManufacturer.logo.$error : null"
                 />
                 <template v-if="modalAction==='edit' && typeof modalManufacturer.logo === 'string'">
                   Current <a :href="modalManufacturer.logo" target="_blank">file</a>.
@@ -225,17 +225,14 @@
 <script>
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
-import { validationMixin } from 'vuelidate'
-import { required, email, url, maxLength } from 'vuelidate/lib/validators'
+import { required, email, url, maxLength } from '@vuelidate/validators'
 import { mapState } from 'vuex'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'ViewManufacturers',
-  mixins: [
-    validationMixin
-  ],
   props: {
   },
   data: () => ({
@@ -266,7 +263,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     modalManufacturer: {
@@ -335,8 +333,8 @@ export default {
       this.clearForm()
     },
     saveManufacturer () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }
@@ -395,7 +393,7 @@ export default {
       this.modalManufacturer.name = ''
       this.modalManufacturer.short_name = ''
       this.modalManufacturer.description = ''
-      this.$v.$reset()
+      this.v$.$reset()
     },
     deleteManufacturer (manufacturer) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the manufacturer '${manufacturer.name}' ? All associated parts SKU will be lost.`, {

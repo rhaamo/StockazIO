@@ -27,7 +27,7 @@
                   v-model="form.name"
                   required
                   placeholder="My cool project"
-                  :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  :state="v$.form.name.$dirty ? !v$.form.name.$error : null"
                 />
               </b-form-group>
 
@@ -36,7 +36,7 @@
                   id="description"
                   v-model="form.description"
                   placeholder="Project description"
-                  :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
+                  :state="v$.form.description.$dirty ? !v$.form.description.$error : null"
                 />
               </b-form-group>
 
@@ -45,7 +45,7 @@
                   id="notes"
                   v-model="form.notes"
                   placeholder="Project notes"
-                  :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
+                  :state="v$.form.notes.$dirty ? !v$.form.notes.$error : null"
                 />
               </b-form-group>
 
@@ -55,7 +55,7 @@
                   v-model="form.ibomUrl"
                   type="url"
                   inputmode="url"
-                  :state="$v.form.ibomUrl.$dirty ? !$v.form.ibomUrl.$error : null"
+                  :state="v$.form.ibomUrl.$dirty ? !v$.form.ibomUrl.$error : null"
                 />
               </b-form-group>
 
@@ -71,7 +71,7 @@
                   id="state_notes"
                   v-model="form.state_notes"
                   placeholder="State notes"
-                  :state="$v.form.state_notes.$dirty ? !$v.form.state_notes.$error : null"
+                  :state="v$.form.state_notes.$dirty ? !v$.form.state_notes.$error : null"
                 />
               </b-form-group>
 
@@ -83,7 +83,7 @@
                   :value="true"
                   :unchecked-value="false"
                   inline
-                  :state="$v.form.public.$dirty ? !$v.form.public.$error : null"
+                  :state="v$.form.public.$dirty ? !v$.form.public.$error : null"
                 >
                   Public
                 </b-form-checkbox>
@@ -106,16 +106,13 @@ import apiService from '@/services/api/api.service'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
 
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'ProjectsEdit',
   components: {
   },
-  mixins: [
-    validationMixin
-  ],
   data: () => ({
     project: null,
     form: {
@@ -138,7 +135,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -196,8 +194,8 @@ export default {
         })
     },
     updateProject: function () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }

@@ -7,16 +7,10 @@
     @close="modalLabelGeneratorClose" @hidden="modalLabelGeneratorClose"
     v-model="showModal"
   >
-    <template #modal-header="{ close }">
+    <template #title>
       <h5 id="modalPartTitle">
         QrCode Label Generator
       </h5>
-      <button
-        type="button" class="close" data-dismiss="modal"
-        aria-label="Close" @click="close()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
     </template>
 
     <div class="container">
@@ -179,8 +173,10 @@ export default {
       this.generatePdf()
     },
     modalLabelGeneratorClose () {
+      this.showModal = false
       this.template = null
       this.pdf = null
+      this.$emit('modal-label-generator-closed')
     },
     templateChanged (item) {
       // We need to wait next tick or we get a delay in change of this.template

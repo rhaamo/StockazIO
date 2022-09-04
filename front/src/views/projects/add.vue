@@ -27,10 +27,10 @@
                   v-model="form.name"
                   required
                   placeholder="My cool project"
-                  :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  :state="v$.form.name.$dirty ? !v$.form.name.$error : null"
                   autofocus
                 />
-                <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -40,7 +40,7 @@
                   id="description"
                   v-model="form.description"
                   placeholder="Project description"
-                  :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
+                  :state="v$.form.description.$dirty ? !v$.form.description.$error : null"
                 />
               </b-form-group>
 
@@ -49,7 +49,7 @@
                   id="notes"
                   v-model="form.notes"
                   placeholder="Project notes"
-                  :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
+                  :state="v$.form.notes.$dirty ? !v$.form.notes.$error : null"
                 />
               </b-form-group>
 
@@ -59,9 +59,9 @@
                   v-model="form.ibomUrl"
                   type="url"
                   inputmode="url"
-                  :state="$v.form.ibomUrl.$dirty ? !$v.form.ibomUrl.$error : null"
+                  :state="v$.form.ibomUrl.$dirty ? !v$.form.ibomUrl.$error : null"
                 />
-                <div v-if="!$v.form.ibomUrl.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.ibomUrl.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -72,7 +72,7 @@
                   track-by="value" label="text" required
                   :allow-empty="false"
                 />
-                <div v-if="!$v.form.state.value.integer || !$v.form.state.value.between || !$v.form.state.value.required || !$v.form.state.required" class="invalid-feedback d-block">
+                <div v-if="!v$.form.state.value.integer || !v$.form.state.value.between || !v$.form.state.value.required || !v$.form.state.required" class="invalid-feedback d-block">
                   Invalid state
                 </div>
               </b-form-group>
@@ -82,7 +82,7 @@
                   id="state_notes"
                   v-model="form.state_notes"
                   placeholder="blocked by X, waiting for Y"
-                  :state="$v.form.state_notes.$dirty ? !$v.form.state_notes.$error : null"
+                  :state="v$.form.state_notes.$dirty ? !v$.form.state_notes.$error : null"
                 />
               </b-form-group>
 
@@ -94,7 +94,7 @@
                   :value="true"
                   :unchecked-value="false"
                   inline
-                  :state="$v.form.public.$dirty ? !$v.form.public.$error : null"
+                  :state="v$.form.public.$dirty ? !v$.form.public.$error : null"
                 >
                   Public
                 </b-form-checkbox>
@@ -118,18 +118,15 @@
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer, between } from 'vuelidate/lib/validators'
+import { required, maxLength, integer, between } from '@vuelidate/validators'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'ProjectsAdd',
   components: {
   },
-  mixins: [
-    validationMixin
-  ],
   data: () => ({
     form: {
       name: '',
@@ -151,7 +148,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -182,8 +180,8 @@ export default {
   },
   methods: {
     addProject: function () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }

@@ -28,13 +28,13 @@
                 v-model="form.name"
                 required
                 placeholder="That one box"
-                :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                :state="v$.form.name.$dirty ? !v$.form.name.$error : null"
                 autofocus
               />
-              <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
+              <div v-if="!v$.form.name.required" class="invalid-feedback d-block">
                 Location name is required
               </div>
-              <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+              <div v-if="!v$.form.name.maxLength" class="invalid-feedback d-block">
                 Maximum length is 255
               </div>
             </b-form-group>
@@ -45,9 +45,9 @@
                 ref="inputdescription"
                 v-model="form.description"
                 placeholder="Full of emptyness"
-                :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
+                :state="v$.form.description.$dirty ? !v$.form.description.$error : null"
               />
-              <div v-if="!$v.form.description.maxLength" class="invalid-feedback d-block">
+              <div v-if="!v$.form.description.maxLength" class="invalid-feedback d-block">
                 Maximum length is 255
               </div>
             </b-form-group>
@@ -68,7 +68,7 @@
                 ref="file"
                 v-model="form.picture"
                 :accept="allowedUploadTypes"
-                :state="$v.form.picture.$dirty ? !$v.form.picture.$error : null"
+                :state="v$.form.picture.$dirty ? !v$.form.picture.$error : null"
               />
               <template v-if="mode==='edit' && typeof item.picture === 'string'">
                 Current <a :href="item.picture" target="_blank">file</a>.
@@ -86,18 +86,15 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength } from '@vuelidate/validators'
 import logger from '@/logging'
 import { mapState } from 'vuex'
 import apiService from '@/services/api/api.service'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
-  mixins: [
-    validationMixin
-  ],
   props: {
     parent: {
       type: Number
@@ -120,7 +117,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -172,8 +170,8 @@ export default {
       }
     },
     save () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('form has errors')
         return
       }
@@ -208,8 +206,8 @@ export default {
         })
     },
     update () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('form has errors')
         return
       }
@@ -248,7 +246,7 @@ export default {
       this.form.description = ''
       this.form.parent_id = ''
       this.form.picture = null
-      this.$v.$reset()
+      this.v$.$reset()
     }
   }
 }

@@ -30,12 +30,12 @@
                     required
                     type="number"
                     inputmode="numeric"
-                    :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
+                    :state="v$.form.qty.$dirty ? !v$.form.qty.$error : null"
                   />
-                  <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+                  <div v-if="!v$.form.qty.minValue" class="invalid-feedback d-block">
                     Qty has to be positive
                   </div>
-                  <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+                  <div v-if="!v$.form.qty.required" class="invalid-feedback d-block">
                     Qty is required
                   </div>
                 </b-form-group>
@@ -46,9 +46,9 @@
                     id="notes"
                     ref="inputnotes"
                     v-model="form.notes"
-                    :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
+                    :state="v$.form.notes.$dirty ? !v$.form.notes.$error : null"
                   />
-                  <div v-if="!$v.form.notes.maxLength" class="invalid-feedback d-block">
+                  <div v-if="!v$.form.notes.maxLength" class="invalid-feedback d-block">
                     Maximum length is 255
                   </div>
                 </b-form-group>
@@ -62,7 +62,7 @@
                 :value="true"
                 :unchecked-value="false"
                 inline
-                :state="$v.form.sourced.$dirty ? !$v.form.sourced.$error : null"
+                :state="v$.form.sourced.$dirty ? !v$.form.sourced.$error : null"
               >
                 Sourced
               </b-form-checkbox>
@@ -180,17 +180,14 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minValue, integer, maxLength } from 'vuelidate/lib/validators'
+import { required, minValue, integer, maxLength } from '@vuelidate/validators'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
-  mixins: [
-    validationMixin
-  ],
   props: {
     project: {
       type: Object
@@ -223,7 +220,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -248,7 +246,7 @@ export default {
         this.form.qty = this.partToEdit.qty
         this.form.sourced = this.partToEdit.sourced
         this.form.notes = this.partToEdit.notes
-        this.$v.$reset()
+        this.v$.$reset()
 
         // limit the parts list to the actually selected part
         this.searchTerm = this.partToEdit.part.name
@@ -278,8 +276,8 @@ export default {
       this.$emit('manage-part-inventory-modal-closed')
     },
     save () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('form has errors')
         return
       }
@@ -350,7 +348,7 @@ export default {
       this.partSelected = null
       this.searchTerm = ''
       this.parts = []
-      this.$v.$reset()
+      this.v$.$reset()
     },
     sortTableChanged (ctx) {
       // When changing the sorting order, reset the pagination to page 1

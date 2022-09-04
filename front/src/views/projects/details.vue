@@ -198,10 +198,10 @@
                   placeholder="File description"
                   class="mb-2 mr-sm-2 mb-sm-0"
                 />
-                <div v-if="!$v.addAttachmentForm.description.required" class="invalid-feedback d-block">
+                <div v-if="!v$.addAttachmentForm.description.required" class="invalid-feedback d-block">
                   Description is required
                 </div>
-                <div v-if="!$v.addAttachmentForm.description.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.addAttachmentForm.description.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -215,7 +215,7 @@
                   :accept="allowedUploadTypes"
                   required
                 />
-                <div v-if="!$v.addAttachmentForm.file.required" class="invalid-feedback d-block">
+                <div v-if="!v$.addAttachmentForm.file.required" class="invalid-feedback d-block">
                   File is required
                 </div>
               </b-form-group>
@@ -288,10 +288,10 @@ import ViewModal from '@/components/parts/view_modal'
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength } from '@vuelidate/validators'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'ProjectsDetails',
@@ -300,7 +300,6 @@ export default {
     ManagePartExternalModal,
     ViewModal
   },
-  mixins: [ validationMixin ],
   props: {
   },
   validations: {
@@ -344,7 +343,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   computed: {
     ...mapState({
@@ -431,8 +431,8 @@ export default {
         })
     },
     addAttachment () {
-      this.$v.addAttachmentForm.$touch()
-      if (this.$v.addAttachmentForm.$invalid) { return }
+      this.v$.addAttachmentForm.$touch()
+      if (this.v$.addAttachmentForm.$invalid) { return }
 
       apiService.projectAttachmentCreate(this.project.id, this.addAttachmentForm)
         .then((val) => {

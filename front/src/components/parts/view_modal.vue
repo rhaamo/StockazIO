@@ -4,16 +4,10 @@
     size="xl" @cancel="partModalClose" @close="partModalClose"
     @hidden="partModalClose" v-model="showModal"
   >
-    <template #modal-header="{ close }">
-      <h5 id="modalPartTitle">
+    <template #title>
+      <h5 id="modalPartTitle2">
         <i title="Private" :class="partDetailsPrivate" /> <span class="modal-title">{{ partDetailsName }}</span>
       </h5>
-      <button
-        type="button" class="close" data-dismiss="modal"
-        aria-label="Close" @click="close()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
     </template>
     <div class="container">
       <div class="row">

@@ -17,7 +17,7 @@
               autocapitalize="off"
               type="text"
               :placeholder="labels.usernamePlaceholder"
-              :state="$v.user.username.$dirty ? !$v.user.username.$error : null"
+              :state="v$.user.username.$dirty ? !v$.user.username.$error : null"
               aria-describedby="login-live-feedback"
             />
             <b-form-invalid-feedback id="login-live-feedback">
@@ -38,7 +38,7 @@
               type="password"
               autocapitalize="off"
               :placeholder="labels.passwordPlaceholder"
-              :state="$v.user.password.$dirty ? !$v.user.password.$error : null"
+              :state="v$.user.password.$dirty ? !v$.user.password.$error : null"
               aria-describedby="password-live-feedback"
             />
             <b-form-invalid-feedback id="password-live-feedback">
@@ -70,23 +70,23 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength } from '@vuelidate/validators'
 import { mapState, mapActions } from 'vuex'
 import oauthApi from '../../backend/oauth/oauth'
 import logger from '@/logging'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
-  mixins: [validationMixin],
   data: () => ({
     user: {},
     error: false
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     user: {
@@ -118,9 +118,9 @@ export default {
   methods: {
     ...mapActions({ login: 'user/login' }),
     submitPassword: function () {
-      this.$v.$touch()
+      this.v$.$touch()
 
-      if (this.$v.$invalid) {
+      if (this.v$.$invalid) {
         return false
       }
 

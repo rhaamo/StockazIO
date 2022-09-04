@@ -28,13 +28,13 @@
                   v-model="modalPartUnit.name"
                   required
                   placeholder="Centimeters"
-                  :state="$v.modalPartUnit.name.$dirty ? !$v.modalPartUnit.name.$error : null"
+                  :state="v$.modalPartUnit.name.$dirty ? !v$.modalPartUnit.name.$error : null"
                   autofocus
                 />
-                <div v-if="!$v.modalPartUnit.name.required" class="invalid-feedback d-block">
+                <div v-if="!v$.modalPartUnit.name.required" class="invalid-feedback d-block">
                   Name is required
                 </div>
-                <div v-if="!$v.modalPartUnit.name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalPartUnit.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -44,12 +44,12 @@
                   v-model="modalPartUnit.short_name"
                   required
                   placeholder="cm"
-                  :state="$v.modalPartUnit.short_name.$dirty ? !$v.modalPartUnit.short_name.$error : null"
+                  :state="v$.modalPartUnit.short_name.$dirty ? !v$.modalPartUnit.short_name.$error : null"
                 />
-                <div v-if="!$v.modalPartUnit.short_name.required" class="invalid-feedback d-block">
+                <div v-if="!v$.modalPartUnit.short_name.required" class="invalid-feedback d-block">
                   Short name is required
                 </div>
-                <div v-if="!$v.modalPartUnit.short_name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalPartUnit.short_name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -58,9 +58,9 @@
                   id="description"
                   v-model="modalPartUnit.description"
                   placeholder=""
-                  :state="$v.modalPartUnit.description.$dirty ? !$v.modalPartUnit.description.$error : null"
+                  :state="v$.modalPartUnit.description.$dirty ? !v$.modalPartUnit.description.$error : null"
                 />
-                <div v-if="!$v.modalPartUnit.description.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalPartUnit.description.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -131,17 +131,14 @@
 <script>
 import apiService from '../../services/api/api.service'
 import logger from '@/logging'
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+import { required, maxLength } from '@vuelidate/validators'
 import { mapState } from 'vuex'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'PartUnitList',
-  mixins: [
-    validationMixin
-  ],
   props: {
   },
   data: () => ({
@@ -165,7 +162,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     modalPartUnit: {
@@ -216,8 +214,8 @@ export default {
       this.clearForm()
     },
     savePartUnit () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }
@@ -276,7 +274,7 @@ export default {
       this.modalPartUnit.name = ''
       this.modalPartUnit.short_name = ''
       this.modalPartUnit.description = ''
-      this.$v.$reset()
+      this.v$.$reset()
     },
     deletePartUnit (partUnit) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${partUnit.name}' ? Any associated part will loose that information.`, {

@@ -28,12 +28,12 @@
                 v-model="form.part_name"
                 required
                 placeholder="PIC42ACHU"
-                :state="$v.form.part_name.$dirty ? !$v.form.part_name.$error : null"
+                :state="v$.form.part_name.$dirty ? !v$.form.part_name.$error : null"
               />
-              <div v-if="!$v.form.part_name.required" class="invalid-feedback d-block">
+              <div v-if="!v$.form.part_name.required" class="invalid-feedback d-block">
                 Part name is required
               </div>
-              <div v-if="!$v.form.part_name.maxLength" class="invalid-feedback d-block">
+              <div v-if="!v$.form.part_name.maxLength" class="invalid-feedback d-block">
                 Maximum length is 255
               </div>
             </b-form-group>
@@ -45,12 +45,12 @@
                 required
                 type="number"
                 inputmode="numeric"
-                :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
+                :state="v$.form.qty.$dirty ? !v$.form.qty.$error : null"
               />
-              <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+              <div v-if="!v$.form.qty.minValue" class="invalid-feedback d-block">
                 Qty has to be positive
               </div>
-              <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+              <div v-if="!v$.form.qty.required" class="invalid-feedback d-block">
                 Qty is required
               </div>
             </b-form-group>
@@ -60,9 +60,9 @@
                 id="notes"
                 ref="inputnotes"
                 v-model="form.notes"
-                :state="$v.form.notes.$dirty ? !$v.form.notes.$error : null"
+                :state="v$.form.notes.$dirty ? !v$.form.notes.$error : null"
               />
-              <div v-if="!$v.form.notes.maxLength" class="invalid-feedback d-block">
+              <div v-if="!v$.form.notes.maxLength" class="invalid-feedback d-block">
                 Maximum length is 255
               </div>
             </b-form-group>
@@ -75,7 +75,7 @@
                 :value="true"
                 :unchecked-value="false"
                 inline
-                :state="$v.form.sourced.$dirty ? !$v.form.sourced.$error : null"
+                :state="v$.form.sourced.$dirty ? !v$.form.sourced.$error : null"
               >
                 Sourced
               </b-form-checkbox>
@@ -92,17 +92,14 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minValue, maxLength } from 'vuelidate/lib/validators'
+import { required, minValue, maxLength } from '@vuelidate/validators'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
-  mixins: [
-    validationMixin
-  ],
   props: {
     project: {
       type: Object
@@ -121,7 +118,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -143,8 +141,8 @@ export default {
       this.$emit('add-part-external-modal-closed')
     },
     save () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('form has errors')
         return
       }
@@ -212,7 +210,7 @@ export default {
       this.form.qty = 1
       this.form.sourced = false
       this.form.notes = ''
-      this.$v.$reset()
+      this.v$.$reset()
     },
     fillPart () {
       if (this.partToEdit) {
@@ -220,7 +218,7 @@ export default {
         this.form.qty = this.partToEdit.qty
         this.form.sourced = this.partToEdit.sourced
         this.form.notes = this.partToEdit.notes
-        this.$v.$reset()
+        this.v$.$reset()
       }
     }
   }

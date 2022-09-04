@@ -36,12 +36,12 @@
               v-model="form.name"
               required
               placeholder="Brother 69x42mm"
-              :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+              :state="v$.form.name.$dirty ? !v$.form.name.$error : null"
             />
-            <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
+            <div v-if="!v$.form.name.required" class="invalid-feedback d-block">
               Template name is required
             </div>
-            <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+            <div v-if="!v$.form.name.maxLength" class="invalid-feedback d-block">
               Maximum length is 255
             </div>
           </b-form-group>
@@ -53,11 +53,11 @@
               v-model="form.width"
               required
               placeholder="69"
-              :state="$v.form.width.$dirty ? !$v.form.width.$error : null"
+              :state="v$.form.width.$dirty ? !v$.form.width.$error : null"
               type="number"
               description="In mm"
             />
-            <div v-if="!$v.form.width.required" class="invalid-feedback d-block">
+            <div v-if="!v$.form.width.required" class="invalid-feedback d-block">
               Width is required
             </div>
           </b-form-group>
@@ -69,11 +69,11 @@
               v-model="form.height"
               required
               placeholder="42"
-              :state="$v.form.height.$dirty ? !$v.form.height.$error : null"
+              :state="v$.form.height.$dirty ? !v$.form.height.$error : null"
               type="number"
               description="In mm"
             />
-            <div v-if="!$v.form.height.required" class="invalid-feedback d-block">
+            <div v-if="!v$.form.height.required" class="invalid-feedback d-block">
               Height is required
             </div>
           </b-form-group>
@@ -82,7 +82,7 @@
             <b-form-textarea
               id="template"
               v-model="form.template"
-              :state="$v.form.template.$dirty ? !$v.form.template.$error : null"
+              :state="v$.form.template.$dirty ? !v$.form.template.$error : null"
               rows="10"
               required
             />
@@ -92,7 +92,7 @@
             <b-form-textarea
               id="text-template"
               v-model="form.text_template"
-              :state="$v.form.text_template.$dirty ? !$v.form.text_template.$error : null"
+              :state="v$.form.text_template.$dirty ? !v$.form.text_template.$error : null"
               rows="5"
               required
             />
@@ -136,19 +136,16 @@
 import logger from '@/logging'
 import apiService from '@/services/api/api.service'
 import { mapState } from 'vuex'
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, minValue } from 'vuelidate/lib/validators'
+import { required, maxLength, minValue } from '@vuelidate/validators'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'LabelTemplatesList',
   components: {
 
   },
-  mixins: [
-    validationMixin
-  ],
   data: () => ({
     labelTemplate: null,
     form: {
@@ -162,7 +159,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -207,8 +205,8 @@ export default {
       this.form.text_template = lt ? lt.text_template : ''
     },
     save () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('form has errors')
         return
       }

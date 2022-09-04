@@ -33,14 +33,14 @@
                   v-model="form.name"
                   required
                   placeholder="PIC42ACHU"
-                  :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+                  :state="v$.form.name.$dirty ? !v$.form.name.$error : null"
                   @blur="checkPartExists"
                   autofocus
                 />
-                <div v-if="!$v.form.name.required" class="invalid-feedback d-block">
+                <div v-if="!v$.form.name.required" class="invalid-feedback d-block">
                   Name is required
                 </div>
-                <div v-if="!$v.form.name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -55,9 +55,9 @@
                   id="description"
                   v-model="form.description"
                   placeholder="A cute little mcu"
-                  :state="$v.form.description.$dirty ? !$v.form.description.$error : null"
+                  :state="v$.form.description.$dirty ? !v$.form.description.$error : null"
                 />
-                <div v-if="!$v.form.description.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.description.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -67,9 +67,9 @@
                   id="comment"
                   v-model="form.comment"
                   placeholder="Any comment about this part ?"
-                  :state="$v.form.comment.$dirty ? !$v.form.comment.$error : null"
+                  :state="v$.form.comment.$dirty ? !v$.form.comment.$error : null"
                 />
-                <div v-if="!$v.form.comment.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.comment.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -81,12 +81,12 @@
                   required
                   type="number"
                   inputmode="numeric"
-                  :state="$v.form.qty.$dirty ? !$v.form.qty.$error : null"
+                  :state="v$.form.qty.$dirty ? !v$.form.qty.$error : null"
                 />
-                <div v-if="!$v.form.qty.minValue" class="invalid-feedback d-block">
+                <div v-if="!v$.form.qty.minValue" class="invalid-feedback d-block">
                   Qty has to be positive
                 </div>
-                <div v-if="!$v.form.qty.required" class="invalid-feedback d-block">
+                <div v-if="!v$.form.qty.required" class="invalid-feedback d-block">
                   Qty is required
                 </div>
               </b-form-group>
@@ -97,12 +97,12 @@
                   required
                   type="number"
                   inputmode="numeric"
-                  :state="$v.form.qty_min.$dirty ? !$v.form.qty_min.$error : null"
+                  :state="v$.form.qty_min.$dirty ? !v$.form.qty_min.$error : null"
                 />
-                <div v-if="!$v.form.qty_min.minValue" class="invalid-feedback d-block">
+                <div v-if="!v$.form.qty_min.minValue" class="invalid-feedback d-block">
                   Qty has to be positive
                 </div>
-                <div v-if="!$v.form.qty_min.required" class="invalid-feedback d-block">
+                <div v-if="!v$.form.qty_min.required" class="invalid-feedback d-block">
                   Qty is required
                 </div>
               </b-form-group>
@@ -110,9 +110,9 @@
                 <b-form-input
                   id="sheet-status"
                   v-model="form.sheet_status"
-                  :state="$v.form.sheet_status.$dirty ? !$v.form.sheet_status.$error : null"
+                  :state="v$.form.sheet_status.$dirty ? !v$.form.sheet_status.$error : null"
                 />
-                <div v-if="!$v.form.sheet_status.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.sheet_status.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -121,9 +121,9 @@
                   id="condition"
                   v-model="form.condition"
                   placeholder="Condition of the part"
-                  :state="$v.form.condition.$dirty ? !$v.form.condition.$error : null"
+                  :state="v$.form.condition.$dirty ? !v$.form.condition.$error : null"
                 />
-                <div v-if="!$v.form.condition.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.condition.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -131,9 +131,9 @@
                 <b-form-input
                   id="production-remarks"
                   v-model="form.production_remarks"
-                  :state="$v.form.production_remarks.$dirty ? !$v.form.production_remarks.$error : null"
+                  :state="v$.form.production_remarks.$dirty ? !v$.form.production_remarks.$error : null"
                 />
-                <div v-if="!$v.form.production_remarks.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.production_remarks.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -141,9 +141,9 @@
                 <b-form-input
                   id="internal-pn"
                   v-model="form.internal_pn"
-                  :state="$v.form.internal_pn.$dirty ? !$v.form.internal_pn.$error : null"
+                  :state="v$.form.internal_pn.$dirty ? !v$.form.internal_pn.$error : null"
                 />
-                <div v-if="!$v.form.internal_pn.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.form.internal_pn.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -156,7 +156,7 @@
                   value="true"
                   unchecked-value="false"
                   inline
-                  :state="$v.form.needs_review.$dirty ? !$v.form.needs_review.$error : null"
+                  :state="v$.form.needs_review.$dirty ? !v$.form.needs_review.$error : null"
                 >
                   This sheet needs review
                 </b-form-checkbox>
@@ -167,7 +167,7 @@
                   value="true"
                   unchecked-value="false"
                   inline
-                  :state="$v.form.can_be_sold.$dirty ? !$v.form.can_be_sold.$error : null"
+                  :state="v$.form.can_be_sold.$dirty ? !v$.form.can_be_sold.$error : null"
                 >
                   That part can be sold
                 </b-form-checkbox>
@@ -178,7 +178,7 @@
                   value="true"
                   unchecked-value="false"
                   inline
-                  :state="$v.form.private.$dirty ? !$v.form.private.$error : null"
+                  :state="v$.form.private.$dirty ? !v$.form.private.$error : null"
                 >
                   That part is private
                 </b-form-checkbox>
@@ -240,18 +240,15 @@ import ViewModal from '@/components/parts/view_modal'
 import utils from '@/utils'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 import { mapState } from 'vuex'
-import { validationMixin } from 'vuelidate'
-import { required, minValue, maxLength, integer } from 'vuelidate/lib/validators'
+import { required, minValue, maxLength, integer } from '@vuelidate/validators'
 
 export default {
   components: {
     ViewModal
   },
-  mixins: [
-    validationMixin
-  ],
   data: () => ({
     form: {
       name: '',
@@ -276,7 +273,8 @@ export default {
   }),
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   validations: {
     form: {
@@ -344,8 +342,8 @@ export default {
   },
   methods: {
     addPart: function (mode) {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }
@@ -417,7 +415,7 @@ export default {
       this.form.needs_review = false
       this.form.footprint = null
       this.form.production_remarks = ''
-      this.$v.$reset()
+      this.v$.$reset()
     },
     checkPartExists (event) {
       if (this.form.name === '') { return }

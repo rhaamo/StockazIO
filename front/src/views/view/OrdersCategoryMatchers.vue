@@ -32,10 +32,10 @@
                       required
                     />
                   </b-input-group>
-                  <div v-if="!$v.matchers.$each[i].regexp.required" class="invalid-feedback d-block">
+                  <div v-if="!v$.matchers.$each[i].regexp.required" class="invalid-feedback d-block">
                     Regexp string is required
                   </div>
-                  <div v-if="!$v.matchers.$each[i].regexp.maxLength" class="invalid-feedback d-block">
+                  <div v-if="!v$.matchers.$each[i].regexp.maxLength" class="invalid-feedback d-block">
                     Maximum length is 255
                   </div>
                 </b-form-group>
@@ -49,10 +49,10 @@
                     clearable :normalizer="categoriesNormalizer" no-children-text
                     placeholder="Film resistors ? MCUS ?"
                   />
-                  <div v-if="!$v.matchers.$each[i].category.required" class="invalid-feedback d-block">
+                  <div v-if="!v$.matchers.$each[i].category.required" class="invalid-feedback d-block">
                     Category is required
                   </div>
-                  <div v-if="!$v.matchers.$each[i].category.integer" class="invalid-feedback d-block">
+                  <div v-if="!v$.matchers.$each[i].category.integer" class="invalid-feedback d-block">
                     Category is invalid
                   </div>
                 </b-form-group>
@@ -85,21 +85,18 @@ import BtnDeleteInline from '@/components/btn_delete_inline'
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
 import { mapState } from 'vuex'
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, integer } from 'vuelidate/lib/validators'
+import { required, maxLength, integer } from '@vuelidate/validators'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
 
 import dateFnsFormat from 'date-fns/format'
 import dateFnsParseISO from 'date-fns/parseISO'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   components: {
     BtnDeleteInline
   },
-  mixins: [
-    validationMixin
-  ],
   props: {
   },
   data: () => ({
@@ -130,7 +127,8 @@ export default {
   },
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   methods: {
     ignoreIdCbox (id) {
@@ -165,8 +163,8 @@ export default {
       return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
     },
     updateMatchers () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }

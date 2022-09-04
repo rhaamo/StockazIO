@@ -27,13 +27,13 @@
                   id="name"
                   v-model="modalDistributor.name"
                   required
-                  :state="$v.modalDistributor.name.$dirty ? !$v.modalDistributor.name.$error : null"
+                  :state="v$.modalDistributor.name.$dirty ? !v$.modalDistributor.name.$error : null"
                   autofocus
                 />
-                <div v-if="!$v.modalDistributor.name.required" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.name.required" class="invalid-feedback d-block">
                   Name is required
                 </div>
-                <div v-if="!$v.modalDistributor.name.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.name.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -41,7 +41,7 @@
                 <b-form-textarea
                   id="address"
                   v-model="modalDistributor.address"
-                  :state="$v.modalDistributor.address.$dirty ? !$v.modalDistributor.address.$error : null"
+                  :state="v$.modalDistributor.address.$dirty ? !v$.modalDistributor.address.$error : null"
                 />
               </b-form-group>
               <b-form-group id="input-group-url" label="Website" label-for="short-url">
@@ -49,12 +49,12 @@
                   id="url"
                   v-model="modalDistributor.url"
                   type="url"
-                  :state="$v.modalDistributor.url.$dirty ? !$v.modalDistributor.url.$error : null"
+                  :state="v$.modalDistributor.url.$dirty ? !v$.modalDistributor.url.$error : null"
                 />
-                <div v-if="!$v.modalDistributor.url.url" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.url.url" class="invalid-feedback d-block">
                   Invalid url
                 </div>
-                <div v-if="!$v.modalDistributor.url.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.url.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -63,12 +63,12 @@
                   id="email"
                   v-model="modalDistributor.email"
                   type="email"
-                  :state="$v.modalDistributor.email.$dirty ? !$v.modalDistributor.email.$error : null"
+                  :state="v$.modalDistributor.email.$dirty ? !v$.modalDistributor.email.$error : null"
                 />
-                <div v-if="!$v.modalDistributor.email.email" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.email.email" class="invalid-feedback d-block">
                   Invalid email
                 </div>
-                <div v-if="!$v.modalDistributor.email.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.email.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -76,7 +76,7 @@
                 <b-form-textarea
                   id="comment"
                   v-model="modalDistributor.comment"
-                  :state="$v.modalDistributor.comment.$dirty ? !$v.modalDistributor.comment.$error : null"
+                  :state="v$.modalDistributor.comment.$dirty ? !v$.modalDistributor.comment.$error : null"
                 />
               </b-form-group>
               <b-form-group id="input-group-phone" label="Phone" label-for="phone">
@@ -84,9 +84,9 @@
                   id="phone"
                   v-model="modalDistributor.phone"
                   type="tel"
-                  :state="$v.modalDistributor.phone.$dirty ? !$v.modalDistributor.phone.$error : null"
+                  :state="v$.modalDistributor.phone.$dirty ? !v$.modalDistributor.phone.$error : null"
                 />
-                <div v-if="!$v.modalDistributor.phone.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.phone.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -95,9 +95,9 @@
                   id="fax"
                   v-model="modalDistributor.fax"
                   type="tel"
-                  :state="$v.modalDistributor.fax.$dirty ? !$v.modalDistributor.fax.$error : null"
+                  :state="v$.modalDistributor.fax.$dirty ? !v$.modalDistributor.fax.$error : null"
                 />
-                <div v-if="!$v.modalDistributor.fax.maxLength" class="invalid-feedback d-block">
+                <div v-if="!v$.modalDistributor.fax.maxLength" class="invalid-feedback d-block">
                   Maximum length is 255
                 </div>
               </b-form-group>
@@ -206,17 +206,14 @@
 <script>
 import apiService from '@/services/api/api.service'
 import logger from '@/logging'
-import { validationMixin } from 'vuelidate'
-import { required, email, url, maxLength } from 'vuelidate/lib/validators'
+import { required, email, url, maxLength } from '@vuelidate/validators'
 import { mapState } from 'vuex'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'ViewDistributors',
-  mixins: [
-    validationMixin
-  ],
   props: {
   },
   data: () => ({
@@ -272,7 +269,8 @@ export default {
   },
   setup () {
     const toast = useToast()
-    return { toast }
+    const v$ = useVuelidate()
+    return { toast, v$ }
   },
   methods: {
     fetchDistributors () {
@@ -309,8 +307,8 @@ export default {
       this.clearForm()
     },
     saveDistributor () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         logger.default.error('Form has errors')
         return
       }
@@ -369,7 +367,7 @@ export default {
       this.modalDistributor.name = ''
       this.modalDistributor.short_name = ''
       this.modalDistributor.description = ''
-      this.$v.$reset()
+      this.v$.$reset()
     },
     deleteDistributor (distributor) {
       this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the distributor '${distributor.name}' ? All associated parts SKU will be lost.`, {
