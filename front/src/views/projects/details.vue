@@ -82,8 +82,9 @@
 
             <div>
               <label for="boardsCount">Boards:</label>
-              <b-form-spinbutton
-                id="boardsCount" v-model="boards" min="1"
+              <InputSpinbutton
+                id="boardsCount" :initial="boards" min="1"
+                @update:initial="boards = $event"
                 class="w-25 ml-1"
               />
             </div>
@@ -292,13 +293,15 @@ import { required, maxLength } from '@vuelidate/validators'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
 import useVuelidate from '@vuelidate/core'
+import InputSpinbutton from '@/components/input-spinbutton.vue'
 
 export default {
   name: 'ProjectsDetails',
   components: {
     ManagePartInventoryModal,
     ManagePartExternalModal,
-    ViewModal
+    ViewModal,
+    InputSpinbutton
   },
   props: {
   },

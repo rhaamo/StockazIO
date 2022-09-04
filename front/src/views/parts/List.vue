@@ -266,7 +266,7 @@
                 </template>
 
                 <div align="center">
-                  <b-form-spinbutton v-model="data.item.stock_qty" min="0" />
+                  <InputSpinbutton :initial="data.item.stock_qty" min="0" @update:initial="data.item.stock_qty = $event" />
                   <br>
                   <b-button
                     size="sm" type="submit" variant="primary"
@@ -291,7 +291,7 @@
                 </template>
 
                 <div align="center">
-                  <b-form-spinbutton v-model="data.item.stock_qty_min" min="0" />
+                  <InputSpinbutton :initial="data.item.stock_qty_min" min="0" @update:initial="data.item.stock_qty_min = $event" />
                   <br>
                   <b-button
                     size="sm" type="submit" variant="primary"
@@ -389,12 +389,14 @@ import _ from '@/lodash'
 import utils from '@/utils'
 import { useToast } from 'vue-toastification'
 import ToastyToast from '@/components/toasty-toast'
+import InputSpinbutton from '@/components/input-spinbutton.vue'
 
 export default {
   name: 'PartsList',
   components: {
     ViewModal,
-    modalLabelGenerator
+    modalLabelGenerator,
+    InputSpinbutton
   },
   props: {
     category: {
