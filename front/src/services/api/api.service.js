@@ -1,11 +1,13 @@
 import Axios from "axios";
 import fileDownload from "js-file-download";
 
+const OAUTH_REVOKE = "/oauth/revoke";
 const CHECK_TOKEN_URL = "/oauth/check_token/";
 
 const CATEGORIES_URL = "/api/v1/categories/";
 
 const APP_INFORMATIONS_URL = "/api/v1/app/informations";
+const APP_SETTINGS_URL = "/api/v1/app/settings";
 
 const FOOTPRINTS_URL = "/api/v1/footprints/";
 
@@ -111,6 +113,14 @@ const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL);
 };
 
+const oauthRevoke = (token, client_id, client_secret) => {
+  return Axios.post(OAUTH_REVOKE, {
+    token: token,
+    client_id: client_id,
+    client_secret: client_secret,
+  });
+};
+
 // Categories
 
 const getCategories = () => {
@@ -121,6 +131,12 @@ const getCategories = () => {
 
 const getInformations = () => {
   return Axios.get(APP_INFORMATIONS_URL);
+};
+
+// Settings
+
+const getSettings = () => {
+  return Axios.get(APP_SETTINGS_URL);
 };
 
 // Footprints
@@ -529,8 +545,10 @@ const deleteLabelTemplate = (id) => {
 
 const apiService = {
   verifyCredentials,
+  oauthRevoke,
   getCategories,
   getInformations,
+  getSettings,
   getFootprints,
   getStorages,
   createStorageCategory,
