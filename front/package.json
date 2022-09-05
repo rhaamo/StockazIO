@@ -16,7 +16,7 @@
     "axios": "^0.26.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.21.1",
-    "date-fns": "^2.28.0",
+    "date-fns": "^2.29.2",
     "fork-awesome": "^1.2.0",
     "glob-all": "^3.2.1",
     "js-file-download": "^0.4.12",
