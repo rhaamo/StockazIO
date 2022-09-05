@@ -1,22 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import { useOauthStore } from "@/stores/oauth";
+
+import LoginForm from "@/components/login_form/login_form.vue";
+
+const validateAuthenticatedRoute = (to, from, next) => {
+  const oauthStore = useOauthStore();
+  if (oauthStore.loggedIn) {
+    next();
+  } else {
+    next("/");
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // Main stuff
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      redirect: (_to) => {
+        const oauthStore = useOauthStore();
+        return oauthStore.loggedIn ? "/parts" : "/login";
+      },
     },
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
-    },
+    // Auth
+    { path: "/login", name: "login_form", component: LoginForm },
   ],
 });
 

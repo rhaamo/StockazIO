@@ -116,6 +116,7 @@ export const usePreloadsStore = defineStore("preloads", {
       await this.preloadDistributors;
       await this.preloadLabelTemplates;
       await this.preloadPartParametersPresets;
+      return;
     },
     preloadSidebar() {
       // Preload sidebar

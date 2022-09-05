@@ -4,7 +4,9 @@
 
     <RouterView />
   </template>
-  <template v-else>oh no no preloaded stuff :(</template>
+  <template v-else
+    ><div id="preloadScreen">Preloading in progress...</div></template
+  >
 </template>
 
 <script>
@@ -48,12 +50,6 @@ export default {
 
     this.serverStore.fetchSettings();
 
-    // doesn't work...
-    this.preloadsStore.preloadStuff().then(() => {
-      console.log("preloading finished");
-      this.isLoaded = true;
-    });
-
     Promise.allSettled([
       // Check token and try to log user if found
       checkOAuthToken(this.userStore),
@@ -68,12 +64,20 @@ export default {
     logger.default.info("Initialization done.");
 
     if (this.oauthStore.loggedIn) {
-      this.preloadsStore.preloadStuff();
+      this.preloadsStore.preloadStuff().then(() => {
+        console.log("authenticated preloading finished");
+        this.isLoaded = true;
+      });
     } else {
       // Only preload stuff needed for unauthenticated views
-      this.preloadsStore.preloadSidebar();
-      this.preloadsStore.preloadFootprints();
-      this.preloadsStore.preloadStorages();
+      Promise.allSettled([
+        this.preloadsStore.preloadSidebar(),
+        this.preloadsStore.preloadFootprints(),
+        this.preloadsStore.preloadStorages(),
+      ]).then(() => {
+        console.log("unauthenticated preloading finished");
+        this.isLoaded = true;
+      });
     }
 
     console.log("Initialization finished.");
