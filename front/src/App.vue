@@ -46,7 +46,7 @@ export default {
     let defaultServerUrl =
       process.env.VUE_APP_SERVER_URL || this.serverStore.defaultUrl;
     logger.default.info("Detected server url:", defaultServerUrl);
-    this.serverStore.serverUrl(defaultServerUrl);
+    this.serverStore.setServerUrl(defaultServerUrl);
 
     this.serverStore.fetchSettings();
 
@@ -90,3 +90,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" src="./App.scss"></style>

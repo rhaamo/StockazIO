@@ -32,7 +32,7 @@ export const useServerStore = defineStore("server", {
     },
   },
   actions: {
-    serverUrl(value) {
+    setServerUrl(value) {
       logger.default.info("Setting serverUrl with", value);
       if (value && !value.endsWith("/")) {
         value = value + "/";
@@ -44,7 +44,7 @@ export const useServerStore = defineStore("server", {
       }
       axios.defaults.baseURL = this.serverUrl;
     },
-    settings(value) {
+    setSettings(value) {
       logger.default.info("Merging settings with", value);
       merge(this.settings, value);
       this.settings = {
