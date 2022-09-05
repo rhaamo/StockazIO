@@ -1,6 +1,6 @@
 import axios from "axios";
 import logger from "@/logging";
-import _ from "@/lodash";
+import { merge } from "lodash";
 import { defineStore } from "pinia";
 import apiService from "@/services/api/api.service";
 
@@ -46,7 +46,11 @@ export const useServerStore = defineStore("server", {
     },
     settings(value) {
       logger.default.info("Merging settings with", value);
-      _.merge(this.settings, value);
+      merge(this.settings, value);
+      this.settings = {
+        ...this.settings,
+        ...value,
+      };
     },
     parts_uncategorized_count(value) {
       this.parts_uncategorized_count = value;
