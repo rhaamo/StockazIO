@@ -1,7 +1,8 @@
-//@import "primevue/resources/themes/bootstrap4-light-purple/theme.css";
-@import "primevue/resources/themes/bootstrap4-dark-purple/theme.css";
+@import "primevue/resources/themes/bootstrap4-light-purple/theme.css";
+// @import "primevue/resources/themes/bootstrap4-dark-purple/theme.css";
 @import "primevue/resources/primevue.min.css";
 @import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
 
 div#preloadScreen {
     font-size: 1.5em;
@@ -15,4 +16,10 @@ div#preloadScreen {
     -ms-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
+}
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }

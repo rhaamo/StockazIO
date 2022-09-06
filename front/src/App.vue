@@ -1,25 +1,27 @@
 <template>
-  <template v-if="isLoaded">
-    <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
-      <template #start>StockazIO - {{ backendVersion }}</template>
-      <template #end>
-        <div class="p-inputgroup">
-          <InputText placeholder="Keyword" />
-          <Button label="Search" />
-        </div>
-      </template>
-    </Menubar>
-    <Menubar :model="menuItemsLoggedOut" v-else>
-      <template #start>StockazIO - {{ backendVersion }}</template>
-      <template #end> </template>
-    </Menubar>
+  <div id="app">
+    <template v-if="isLoaded">
+      <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
+        <template #start>StockazIO - {{ backendVersion }}</template>
+        <template #end>
+          <div class="p-inputgroup">
+            <InputText placeholder="Keyword" />
+            <Button label="Search" />
+          </div>
+        </template>
+      </Menubar>
+      <Menubar :model="menuItemsLoggedOut" v-else>
+        <template #start>StockazIO - {{ backendVersion }}</template>
+        <template #end> </template>
+      </Menubar>
 
-    <RouterView />
-  </template>
-  <template v-else
-    ><div id="preloadScreen">
-      Preloading in progress.<br /><ProgressSpinner /></div
-  ></template>
+      <RouterView />
+    </template>
+    <template v-else
+      ><div id="preloadScreen">
+        Preloading in progress.<br /><ProgressSpinner /></div
+    ></template>
+  </div>
 </template>
 
 <script>

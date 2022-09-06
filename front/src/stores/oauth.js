@@ -46,11 +46,14 @@ export const useOauthStore = defineStore("oauth", {
       this.userToken = false;
     },
     // Get the clientId and clientSecret if any or generate a new one
-    getOrCreateApp(cid, csecret) {
+    getOrCreateApp() {
       logger.default.debug("getOrCreateApp called");
-      if (cid && csecret) {
+      if (this.clientId && this.clientSecret) {
         logger.default.info("We are using already known OAuth App infos");
-        return Promise.resolve({ cid, csecret });
+        return Promise.resolve({
+          clientId: this.clientId,
+          clientSecret: this.clientSecret,
+        });
       }
 
       // TODO move to api.service.js
