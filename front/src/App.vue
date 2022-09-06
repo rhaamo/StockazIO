@@ -1,6 +1,18 @@
 <template>
   <template v-if="isLoaded">
-    <header>my super app</header>
+    <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
+      <template #start>StockazIO - {{ backendVersion }}</template>
+      <template #end>
+        <div class="p-inputgroup">
+          <InputText placeholder="Keyword" />
+          <Button label="Search" />
+        </div>
+      </template>
+    </Menubar>
+    <Menubar :model="menuItemsLoggedOut" v-else>
+      <template #start>StockazIO - {{ backendVersion }}</template>
+      <template #end> </template>
+    </Menubar>
 
     <RouterView />
   </template>
@@ -17,7 +29,7 @@ import { useServerStore } from "@/stores/server";
 import { usePreloadsStore } from "@/stores/preloads";
 import logger from "@/logging";
 import { getOrCreateApp } from "@/backend/oauth/oauth.js";
-import ProgressSpinner from "primevue/progressspinner";
+import { mapState } from "pinia";
 
 // TODO move to oauth store
 const checkOAuthToken = async (userStore) => {
@@ -36,9 +48,6 @@ const checkOAuthToken = async (userStore) => {
 };
 
 export default {
-  components: {
-    ProgressSpinner,
-  },
   setup() {
     const oauthStore = useOauthStore();
     const userStore = useUserStore();
@@ -91,7 +100,25 @@ export default {
   data() {
     return {
       isLoaded: false,
+      menuItemsLoggedIn: [],
+      menuItemsLoggedOut: [
+        { separator: true },
+        { label: "Login", to: { name: "login_form" } },
+        { label: "Public parts list", to: { name: "public-parts" } },
+        { label: "About", to: { name: "about" } },
+      ],
     };
+  },
+  computed: {
+    ...mapState(useServerStore, {
+      backendVersion: (store) => store.settings.backendVersion,
+    }),
+    ...mapState(useUserStore, {
+      currentUser: (store) => store.currentUser,
+    }),
+    ...mapState(useOauthStore, {
+      isLoggedIn: (store) => store.loggedIn,
+    }),
   },
 };
 </script>

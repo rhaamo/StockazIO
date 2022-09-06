@@ -4,6 +4,10 @@ import { createPersistedState } from "pinia-plugin-persistedstate";
 import axios from "axios";
 import { useOauthStore } from "@/stores/oauth";
 import PrimeVue from "primevue/config";
+import ProgressSpinner from "primevue/progressspinner";
+import Menubar from "primevue/menubar";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
 
 import App from "./App.vue";
 import router from "./router";
@@ -38,5 +42,10 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+app.component("ProgressSpinner", ProgressSpinner);
+app.component("Menubar", Menubar);
+app.component("InputText", InputText);
+app.component("Button", Button);
 
 app.mount("#app");
