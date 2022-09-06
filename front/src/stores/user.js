@@ -13,6 +13,9 @@ export const useUserStore = defineStore("user", {
     getSettings() {
       return this.settings;
     },
+    currentUsername() {
+      return this.currentUser ? this.currentUser.username : false;
+    },
   },
   actions: {
     setCurrentUser(user) {
@@ -42,17 +45,44 @@ export const useUserStore = defineStore("user", {
       oauthStore.setToken(access_token);
 
       // Check the token validity
-      await apiService.verifyCredentials().then((result) => {
-        logger.default.info("credentials validated");
-        oauthStore.setLoggedIn(true);
-        this.currentUser = result.data.user;
+      await apiService
+        .verifyCredentials()
+        .then((result) => {
+          logger.default.info("credentials validated");
+          oauthStore.setLoggedIn(true);
+          this.currentUser = result.data.user;
+        })
+        .catch((error) => {
+          logger.default.error("cannot verify credentials", error.message);
+          oauthStore.setLoggedIn(false);
+          this.currentUser = {};
+        });
+    },
+    loginUser() {
+      return new Promise((resolve, reject) => {
+        const oauthStore = useOauthStore();
+        logger.default.info("verifying credentials");
+        apiService
+          .verifyCredentials()
+          .then((result) => {
+            logger.default.info("credentials validated");
+            oauthStore.setLoggedIn(true);
+            this.currentUser = result.data.user;
+          })
+          .catch((error) => {
+            logger.default.error("cannot verify credentials", error.message);
+            oauthStore.setLoggedIn(false);
+            this.currentUser = {};
+            reject(error);
+          });
       });
     },
     async checkOauthToken() {
       return new Promise(async (resolve, reject) => {
-        if (this.getUserToken) {
+        const oauthStore = useOauthStore();
+        if (oauthStore.getUserToken) {
           try {
-            this.loginUser(this.getUserToken());
+            this.loginUser();
           } catch (e) {
             logger.default.error(e);
           }

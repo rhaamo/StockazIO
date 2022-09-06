@@ -96,7 +96,7 @@ export default {
         { label: "Quick add part", icon: "fa fa-fast-forward fa-fw" },
         { separator: true },
         {
-          label: this.currentUser ? this.currentUser.username : ":3",
+          label: this.currentUsername,
           icon: "fa fa-user fa-fw",
           items: [
             { label: "Change password", icon: "fa fa-key fa-fw" },
@@ -129,6 +129,7 @@ export default {
     }),
     ...mapState(useUserStore, {
       currentUser: (store) => store.currentUser,
+      currentUsername: (store) => store.currentUsername,
     }),
     ...mapState(useOauthStore, {
       isLoggedIn: (store) => store.loggedIn,
