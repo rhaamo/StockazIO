@@ -32,9 +32,11 @@ const oauthStore = useOauthStore();
 
 axios.interceptors.request.use(
   function (config) {
-    if (oauthStore.userToken) {
+    if (oauthStore.userToken.access_token) {
       console.log("Axios interceptor set");
-      config.headers["Authorization"] = `Bearer ${oauthStore.userToken}`;
+      config.headers[
+        "Authorization"
+      ] = `Bearer ${oauthStore.userToken.access_token}`;
     } else {
       console.log("No Axios interceptor to set");
     }
