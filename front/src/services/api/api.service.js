@@ -1,7 +1,7 @@
 import Axios from "axios";
 import fileDownload from "js-file-download";
 
-const OAUTH_REVOKE = "/oauth/revoke";
+const OAUTH_REVOKE = "/oauth/revoke/";
 const CHECK_TOKEN_URL = "/oauth/check_token/";
 
 const CATEGORIES_URL = "/api/v1/categories/";
