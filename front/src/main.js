@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import { createPersistedState } from "pinia-plugin-persistedstate";
 import axios from "axios";
 import { useOauthStore } from "@/stores/oauth";
+import PrimeVue from "primevue/config";
 
 import App from "./App.vue";
 import router from "./router";
@@ -18,6 +19,7 @@ pinia.use(
 
 app.use(pinia);
 app.use(router);
+app.use(PrimeVue);
 
 const oauthStore = useOauthStore();
 

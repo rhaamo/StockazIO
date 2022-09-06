@@ -5,8 +5,9 @@
     <RouterView />
   </template>
   <template v-else
-    ><div id="preloadScreen">Preloading in progress...</div></template
-  >
+    ><div id="preloadScreen">
+      Preloading in progress.<br /><ProgressSpinner /></div
+  ></template>
 </template>
 
 <script>
@@ -16,6 +17,7 @@ import { useServerStore } from "@/stores/server";
 import { usePreloadsStore } from "@/stores/preloads";
 import logger from "@/logging";
 import { getOrCreateApp } from "@/backend/oauth/oauth.js";
+import ProgressSpinner from "primevue/progressspinner";
 
 // TODO move to oauth store
 const checkOAuthToken = async (userStore) => {
@@ -34,6 +36,9 @@ const checkOAuthToken = async (userStore) => {
 };
 
 export default {
+  components: {
+    ProgressSpinner,
+  },
   setup() {
     const oauthStore = useOauthStore();
     const userStore = useUserStore();
