@@ -26,8 +26,8 @@ export const useUserStore = defineStore("user", {
       await apiService
         .oauthRevoke(
           oauthStore.userToken.access_token,
-          oauthStore.clientId.clientId,
-          oauthStore.clientId.clientSecret
+          oauthStore.clientId,
+          oauthStore.clientSecret
         )
         .then(() => {
           this.currentUser = null;

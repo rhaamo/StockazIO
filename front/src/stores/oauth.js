@@ -19,9 +19,9 @@ export const useOauthStore = defineStore("oauth", {
   // could also be defined as
   // state: () => ({ count: 0 })
   actions: {
-    setClientData(clientId, clientSecret) {
-      this.clientId = clientId;
-      this.clientSecret = clientSecret;
+    setClientData(datas) {
+      this.clientId = datas.clientId;
+      this.clientSecret = datas.clientSecret;
       logger.default.info("A new OAuth app has been registered");
     },
     setAppToken(token) {
