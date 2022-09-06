@@ -96,6 +96,7 @@ export default {
         { label: "Quick add part", icon: "fa fa-fast-forward fa-fw" },
         { separator: true },
         {
+          // somehow that won't change in the UI...
           label: this.currentUsername,
           icon: "fa fa-user fa-fw",
           items: [
