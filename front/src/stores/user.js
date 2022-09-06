@@ -23,11 +23,17 @@ export const useUserStore = defineStore("user", {
 
       logger.default.info("logging out");
 
-      await apiService.oauthRevoke().then(() => {
-        this.currentUser = null;
-        oauthStore.setLoggedIn(false);
-        oauthStore.clearTokens();
-      });
+      await apiService
+        .oauthRevoke(
+          oauthStore.userToken.accessToken,
+          oauthStore.clientId.clientId,
+          oauthStore.clientId.clientSecret
+        )
+        .then(() => {
+          this.currentUser = null;
+          oauthStore.setLoggedIn(false);
+          oauthStore.clearTokens();
+        });
     },
     async login(access_token) {
       const oauthStore = useOauthStore();

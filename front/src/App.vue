@@ -85,7 +85,36 @@ export default {
   data() {
     return {
       isLoaded: false,
-      menuItemsLoggedIn: [],
+      menuItemsLoggedIn: [
+        { separator: true },
+        { label: "Edit", icon: "fa fa-cogs fa-fw", items: [] },
+        { label: "View", icon: "fa fa-list fa-fw", items: [] },
+        { label: "Tools", icon: "fa fa-tasks fa-fw", items: [] },
+        { separator: true },
+        { label: "Projects", icon: "fa fa-list-ul fa-fw" },
+        { label: "Add part", icon: "fa fa-plus fa-fw" },
+        { label: "Quick add part", icon: "fa fa-fast-forward fa-fw" },
+        { separator: true },
+        {
+          label: this.currentUser ? this.currentUser.username : ":3",
+          icon: "fa fa-user fa-fw",
+          items: [
+            { label: "Change password", icon: "fa fa-key fa-fw" },
+            { label: "Force reload datas", icon: "fa fa-refresh" },
+            { label: "Register URL Handler", icon: "fa fa-link" },
+            { separator: true },
+            {
+              label: "Logout",
+              icon: "fa fa-sign-out fa-fw",
+              command: (event) => {
+                this.userStore.logout().then(() => {
+                  this.$router.replace({ name: "login_form" });
+                });
+              },
+            },
+          ],
+        },
+      ],
       menuItemsLoggedOut: [
         { separator: true },
         { label: "Login", to: { name: "login_form" } },

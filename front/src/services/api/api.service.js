@@ -113,9 +113,9 @@ const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL);
 };
 
-const oauthRevoke = (token, client_id, client_secret) => {
+const oauthRevoke = (access_token, client_id, client_secret) => {
   return Axios.post(OAUTH_REVOKE, {
-    token: token,
+    token: access_token,
     client_id: client_id,
     client_secret: client_secret,
   });
