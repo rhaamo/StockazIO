@@ -28,24 +28,7 @@ import { useUserStore } from "@/stores/user";
 import { useServerStore } from "@/stores/server";
 import { usePreloadsStore } from "@/stores/preloads";
 import logger from "@/logging";
-import { getOrCreateApp } from "@/backend/oauth/oauth.js";
 import { mapState } from "pinia";
-
-// TODO move to oauth store
-const checkOAuthToken = async (userStore) => {
-  return new Promise(async (resolve, reject) => {
-    if (userStore.getUserToken) {
-      try {
-        userStore.loginUser(userStore.getUserToken());
-      } catch (e) {
-        logger.default.error(e);
-      }
-    } else {
-      logger.default.info("no user token present in cache");
-    }
-    resolve();
-  });
-};
 
 export default {
   setup() {
@@ -66,9 +49,9 @@ export default {
 
     Promise.allSettled([
       // Check token and try to log user if found
-      checkOAuthToken(this.userStore),
+      this.userStore.checkOauthToken(),
       // Try to get or create oauth2 app and token thingy
-      getOrCreateApp(
+      this.oauthStore.getOrCreateApp(
         this.oauthStore.getClientId,
         this.oauthStore.getClientSecret
       ),

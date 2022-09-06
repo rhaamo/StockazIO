@@ -42,5 +42,19 @@ export const useUserStore = defineStore("user", {
         this.currentUser = result.data.user;
       });
     },
+    async checkOauthToken() {
+      return new Promise(async (resolve, reject) => {
+        if (this.getUserToken) {
+          try {
+            this.loginUser(this.getUserToken());
+          } catch (e) {
+            logger.default.error(e);
+          }
+        } else {
+          logger.default.info("no user token present in cache");
+        }
+        resolve();
+      });
+    },
   },
 });
