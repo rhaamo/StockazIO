@@ -22,9 +22,9 @@
       </Menubar>
 
       <div v-if="shouldDisplayCategories" class="grid">
-        <div v-if="shouldDisplayCategories" class="col-2 sidebar">
+        <div v-if="shouldDisplayCategories" class="col-2 sidebar mt-3">
           <div class="sidebar-sticky position-sticky">
-            <Tree :value="categories"></Tree>
+            <CategoryTree :tree-data="categories" />
           </div>
         </div>
 
@@ -58,6 +58,7 @@ import logger from "@/logging";
 import { mapState } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import CategoryTree from "@/components/categories/tree.vue";
 
 export default {
   setup: () => ({
@@ -68,6 +69,9 @@ export default {
     confirm: useConfirm(),
     toast: useToast(),
   }),
+  components: {
+    CategoryTree,
+  },
   created() {
     logger.default.info("Doing preliminary app initialization...");
     let defaultServerUrl =
