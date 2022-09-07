@@ -17,7 +17,24 @@
         <template #end> </template>
       </Menubar>
 
-      <RouterView />
+      <div v-if="shouldDisplayCategories" class="grid">
+        <div v-if="shouldDisplayCategories" class="col-2 sidebar">
+          <div class="sidebar-sticky position-sticky">sidebar here</div>
+        </div>
+
+        <div role="main" class="col-9">
+          <div class="pt-3 pb-2 mb-3">
+            <router-view />
+          </div>
+        </div>
+      </div>
+      <div v-else class="grid">
+        <div class="row">
+          <div role="main" class="col-10">
+            <router-view />
+          </div>
+        </div>
+      </div>
     </template>
     <template v-else
       ><div id="preloadScreen">
@@ -162,6 +179,18 @@ export default {
     ...mapState(useOauthStore, {
       isLoggedIn: (store) => store.loggedIn,
     }),
+    shouldDisplayCategories() {
+      if (this.currentUser) {
+        return true;
+      }
+      if (
+        this.$route.name === "public-parts" ||
+        this.$route.name === "public-parts-category-list"
+      ) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     forceReloadDatas() {
