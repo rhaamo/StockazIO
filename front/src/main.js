@@ -10,6 +10,8 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Password from "primevue/password";
 import ToastService from "primevue/toastservice";
+import ConfirmationService from "primevue/confirmationservice";
+import ConfirmDialog from "primevue/confirmdialog";
 
 import App from "./App.vue";
 import router from "./router";
@@ -27,6 +29,7 @@ app.use(pinia);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
+app.use(ConfirmationService);
 
 const oauthStore = useOauthStore();
 
@@ -53,5 +56,6 @@ app.component("Menubar", Menubar);
 app.component("InputText", InputText);
 app.component("Button", Button);
 app.component("Password", Password);
+app.component("ConfirmDialog", ConfirmDialog);
 
 app.mount("#app");

@@ -68,14 +68,13 @@ export const usePreloadsStore = defineStore("preloads", {
     setPartParametersPresets(value) {
       this.partParametersPresets = value;
     },
-    // setLastUpdate take a dict as value {item: 'xxx', value: 'date 42'}
-    setLastUpdate(value) {
-      if (value && value.value) {
+    setLastUpdate(category, date) {
+      if (category && date) {
         // Cannot save a Date() object in LocalStorage, so convert it to ISO String
-        this.lastUpdate[value.item] = value.value.toISOString();
+        this.lastUpdate[category] = date.toISOString();
       } else {
         // When nulled to force reload
-        this.lastUpdate[value.item] = value.value;
+        this.lastUpdate[category] = date;
       }
     },
     incrementCategoryPartsCount(nodeId, by = 1) {
@@ -106,6 +105,7 @@ export const usePreloadsStore = defineStore("preloads", {
         decrementNode(this.categories, nodeId);
       }
     },
+    // Doesn't really works when called, async fucked
     async preloadStuff() {
       await this.preloadSidebar;
       await this.preloadFootprints;

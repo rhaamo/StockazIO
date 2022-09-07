@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <ConfirmDialog></ConfirmDialog>
+
     <template v-if="isLoaded">
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
         <template #start>StockazIO - {{ backendVersion }}</template>
@@ -31,15 +33,18 @@ import { useServerStore } from "@/stores/server";
 import { usePreloadsStore } from "@/stores/preloads";
 import logger from "@/logging";
 import { mapState } from "pinia";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 export default {
-  setup() {
-    const oauthStore = useOauthStore();
-    const userStore = useUserStore();
-    const serverStore = useServerStore();
-    const preloadsStore = usePreloadsStore();
-    return { oauthStore, userStore, serverStore, preloadsStore };
-  },
+  setup: () => ({
+    oauthStore: useOauthStore(),
+    userStore: useUserStore(),
+    serverStore: useServerStore(),
+    preloadsStore: usePreloadsStore(),
+    confirm: useConfirm(),
+    toast: useToast(),
+  }),
   created() {
     logger.default.info("Doing preliminary app initialization...");
     let defaultServerUrl =
@@ -63,7 +68,17 @@ export default {
     logger.default.info("Initialization done.");
 
     if (this.oauthStore.loggedIn) {
-      this.preloadsStore.preloadStuff().then(() => {
+      Promise.allSettled([
+        this.preloadsStore.preloadSidebar(),
+        this.preloadsStore.preloadFootprints(),
+        this.preloadsStore.preloadStorages(),
+        this.preloadsStore.preloadParametersUnits(),
+        this.preloadsStore.preloadPartUnits(),
+        this.preloadsStore.preloadManufacturers(),
+        this.preloadsStore.preloadDistributors(),
+        this.preloadsStore.preloadLabelTemplates(),
+        this.preloadsStore.preloadPartParametersPresets(),
+      ]).then(() => {
         console.log("authenticated preloading finished");
         this.isLoaded = true;
       });
@@ -101,8 +116,20 @@ export default {
           icon: "fa fa-user fa-fw",
           items: [
             { label: "Change password", icon: "fa fa-key fa-fw" },
-            { label: "Force reload datas", icon: "fa fa-refresh" },
-            { label: "Register URL Handler", icon: "fa fa-link" },
+            {
+              label: "Force reload datas",
+              icon: "fa fa-refresh",
+              command: (event) => {
+                this.forceReloadDatas();
+              },
+            },
+            {
+              label: "Register URL Handler",
+              icon: "fa fa-link",
+              command: (event) => {
+                this.registerUrlHandler();
+              },
+            },
             { separator: true },
             {
               label: "Logout",
@@ -135,6 +162,60 @@ export default {
     ...mapState(useOauthStore, {
       isLoggedIn: (store) => store.loggedIn,
     }),
+  },
+  methods: {
+    forceReloadDatas() {
+      this.confirm.require({
+        message: "Are you sure you want to force reload of all datas ?",
+        header: "Please confirm",
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          this.isLoaded = false;
+
+          logger.default.info("Was asked to reload datas");
+          this.preloadsStore.setLastUpdate("categories", null);
+          this.preloadsStore.setLastUpdate("footprints", null);
+          this.preloadsStore.setLastUpdate("storages", null);
+          this.preloadsStore.setLastUpdate("parameters_units", null);
+          this.preloadsStore.setLastUpdate("part_units", null);
+          this.preloadsStore.setLastUpdate("manufacturers", null);
+          this.preloadsStore.setLastUpdate("distributors", null);
+          this.preloadsStore.setLastUpdate("label_templates", null);
+          this.preloadsStore.setLastUpdate("parameters_presets", null);
+
+          Promise.allSettled([
+            this.preloadsStore.preloadSidebar(),
+            this.preloadsStore.preloadFootprints(),
+            this.preloadsStore.preloadStorages(),
+            this.preloadsStore.preloadParametersUnits(),
+            this.preloadsStore.preloadPartUnits(),
+            this.preloadsStore.preloadManufacturers(),
+            this.preloadsStore.preloadDistributors(),
+            this.preloadsStore.preloadLabelTemplates(),
+            this.preloadsStore.preloadPartParametersPresets(),
+          ]).then(() => {
+            logger.default.info("force preloading finished");
+            this.isLoaded = true;
+            this.toast.add({
+              severity: "success",
+              summary: "Reloading datas",
+              detail: "Success",
+              life: 5000,
+            });
+          });
+        },
+        reject: () => {
+          return;
+        },
+      });
+    },
+    registerUrlHandler() {
+      navigator.registerProtocolHandler(
+        "web+stockazio",
+        `${window.location.origin}/urlhandler?q=%s`,
+        "StockazIO handler"
+      );
+    },
   },
 };
 </script>

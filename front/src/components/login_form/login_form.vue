@@ -143,8 +143,20 @@ export default {
               return;
             }
             this.userStore.login(result.data).then(() => {
-              this.preloadsStore.preloadStuff();
-              this.$router.push({ name: "home" });
+              Promise.allSettled([
+                this.preloadsStore.preloadSidebar(),
+                this.preloadsStore.preloadFootprints(),
+                this.preloadsStore.preloadStorages(),
+                this.preloadsStore.preloadParametersUnits(),
+                this.preloadsStore.preloadPartUnits(),
+                this.preloadsStore.preloadManufacturers(),
+                this.preloadsStore.preloadDistributors(),
+                this.preloadsStore.preloadLabelTemplates(),
+                this.preloadsStore.preloadPartParametersPresets(),
+              ]).then(() => {
+                console.log("post-login preloading finished");
+                this.$router.push({ name: "home" });
+              });
             });
           })
           .catch((error) => {
