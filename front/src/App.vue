@@ -4,7 +4,11 @@
 
     <template v-if="isLoaded">
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
-        <template #start>StockazIO - {{ backendVersion }}</template>
+        <template #start
+          ><router-link :to="{ name: 'home' }" class="no-underline"
+            >StockazIO - {{ backendVersion }}</router-link
+          ></template
+        >
         <template #end>
           <div class="p-inputgroup">
             <InputText placeholder="Keyword" />
@@ -19,7 +23,9 @@
 
       <div v-if="shouldDisplayCategories" class="grid">
         <div v-if="shouldDisplayCategories" class="col-2 sidebar">
-          <div class="sidebar-sticky position-sticky">sidebar here</div>
+          <div class="sidebar-sticky position-sticky">
+            <Tree :value="categories"></Tree>
+          </div>
         </div>
 
         <div role="main" class="col-9">
@@ -178,6 +184,9 @@ export default {
     }),
     ...mapState(useOauthStore, {
       isLoggedIn: (store) => store.loggedIn,
+    }),
+    ...mapState(usePreloadsStore, {
+      categories: (store) => store.categories,
     }),
     shouldDisplayCategories() {
       if (this.currentUser) {
