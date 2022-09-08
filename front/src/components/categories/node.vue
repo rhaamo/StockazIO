@@ -7,7 +7,6 @@
           name: categoriesRouteName,
           params: {
             categoryId: node.id,
-            category: { id: node.id, name: node.name },
           },
         }"
         :title="node.name"
@@ -24,7 +23,6 @@
           name: categoriesRouteName,
           params: {
             categoryId: node.id,
-            category: { id: node.id, name: node.name },
           },
         }"
         :title="node.name"

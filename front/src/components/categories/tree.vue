@@ -5,7 +5,7 @@
       <router-link
         :to="{
           name: categoriesRouteName,
-          params: { categoryId: 0, category: {} },
+          params: { categoryId: 0 },
         }"
         title="Uncategorized parts"
       >
