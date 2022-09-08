@@ -6,13 +6,16 @@
       <div class="formgrid grid">
         <div class="field col-12 md:col-6">
           <label
-            for="Name"
+            for="name"
             :class="{
               block: true,
               'p-error': v$.form.name.$invalid && submitted,
+              'w-10': true,
             }"
-            >Name*</label>
+            >Name*</label
+          >
           <InputText
+            id="name"
             type="text"
             v-model="form.name"
             placeholder="PIC42ACHU"
@@ -20,6 +23,7 @@
               'p-invalid': v$.form.name.$invalid && submitted,
               'w-10': true,
             }"
+            @blur="checkIfPartExists"
           />
           <small
             v-if="
@@ -27,16 +31,63 @@
               v$.form.name.$pending.$response
             "
             class="p-error"
-            ><br />{{ v$.form.name.required.$message }}</small>
+            ><br />
+            {{ v$.form.name.required.$message }}
+            <template v-if="v$.form.name.required && v$.form.name.maxLength"
+              ><br
+            /></template>
+            {{ v$.form.name.maxLength.$message }}
+          </small>
+          <div v-if="partsExists && partsExists.length">
+            One or more parts exists with this name:
+            <div v-for="p in partsExists" :key="p.uuid">
+              <a href="#">{{ p.name }}</a
+              >&nbsp;
+            </div>
+          </div>
         </div>
         <div class="field col-12 md:col-6">
           <label for="part_unit" class="block">Part unit</label>
-          <MultiSelect placeholder="Centimeters ? Pieces ?" class="w-7" />
+          <MultiSelect
+            v-model="form.part_unit"
+            placeholder="Centimeters ? Pieces ?"
+            class="w-7"
+            :options="choicesPartUnit"
+            optionLabel="text"
+            optionValue="value"
+            :selectionLimit="1"
+          />
         </div>
 
         <div class="field col-12 md:col-6">
-          <label for="Name" class="block">Description</label>
-          <InputText type="text" placeholder="A cute little mcu" class="w-10" />
+          <label
+            for="description"
+            :class="{
+              block: true,
+              'p-error': v$.form.description.$invalid && submitted,
+              'w-10': true,
+            }"
+            >Description</label
+          >
+          <InputText
+            id="description"
+            type="text"
+            placeholder="A cute little mcu"
+            :class="{
+              'p-invalid': v$.form.description.$invalid && submitted,
+              'w-10': true,
+            }"
+            v-model="form.description"
+          />
+          <small
+            v-if="
+              (v$.form.description.$invalid && submitted) ||
+              v$.form.description.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.description.maxLength.$message }}
+          </small>
         </div>
         <div class="field col-12 md:col-6">
           <label for="part_unit" class="block">Category</label>
@@ -44,12 +95,34 @@
         </div>
 
         <div class="field col-12 md:col-6">
-          <label for="Name" class="block">Comment</label>
+          <label
+            for="comment"
+            :class="{
+              block: true,
+              'p-error': v$.form.comment.$invalid && submitted,
+              'w-10': true,
+            }"
+            >Comment</label
+          >
           <InputText
+            id="comment"
             type="text"
             placeholder="Any comment about this part ?"
-            class="w-10"
+            v-model="form.comment"
+            :class="{
+              'p-invalid': v$.form.description.$invalid && submitted,
+              'w-10': true,
+            }"
           />
+          <small
+            v-if="
+              (v$.form.comment.$invalid && submitted) ||
+              v$.form.comment.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.comment.maxLength.$message }}
+          </small>
         </div>
         <div class="field col-12 md:col-6">
           <label for="part_unit" class="block">Storage Location</label>
@@ -60,34 +133,122 @@
         </div>
 
         <div class="field col-12 md:col-3">
-          <label for="Name" class="block">Stock Qty*</label>
+          <label
+            for="qty"
+            :class="{
+              block: true,
+              'p-error': v$.form.qty.$invalid && submitted,
+              'w-8': true,
+            }"
+            >Stock Qty*</label
+          >
           <InputNumber
-            inputId="minmax-buttons"
+            id="qty"
             mode="decimal"
             showButtons
             :min="0"
-            class="w-8"
+            :class="{
+              'p-invalid': v$.form.qty.$invalid && submitted,
+              'w-8': true,
+            }"
+            v-model="form.qty"
           />
+          <small
+            v-if="
+              (v$.form.qty.$invalid && submitted) ||
+              v$.form.qty.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.qty.required.$message }}
+            <template v-if="v$.form.qty.required && v$.form.qty.minValue"
+              ><br
+            /></template>
+            {{ v$.form.qty.minValue.$message }}
+          </small>
         </div>
         <div class="field col-12 md:col-3">
-          <label for="Name" class="block">Stock Qty Min*</label>
+          <label
+            for="qty_min"
+            :class="{
+              block: true,
+              'p-error': v$.form.qty_min.$invalid && submitted,
+              'w-8': true,
+            }"
+            >Stock Qty Min*</label
+          >
           <InputNumber
-            inputId="minmax-buttons"
+            id="qty_min"
             mode="decimal"
             showButtons
             :min="0"
-            class="w-8"
+            :class="{
+              'p-invalid': v$.form.qty_min.$invalid && submitted,
+              'w-8': true,
+            }"
+            v-model="form.qty_min"
+          />
+          <small
+            v-if="
+              (v$.form.qty_min.$invalid && submitted) ||
+              v$.form.qty_min.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.qty_min.required.$message }}
+            <template
+              v-if="v$.form.qty_min.required && v$.form.qty_min.minValue"
+              ><br
+            /></template>
+            {{ v$.form.qty_min.minValue.$message }}
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="footprint" class="block">Footprint</label>
+          <MultiSelect
+            id="footprint"
+            v-model="form.footprint"
+            placeholder="PDIP, BGA, SOIC, who knows"
+            class="w-7"
+            :options="choicesFootprint"
+            optionLabel="name"
+            optionValue="id"
+            optionGroupLabel="category"
+            optionGroupChildren="footprints"
+            :selectionLimit="1"
+            :filter="true"
           />
         </div>
 
         <div class="field col-12 md:col-6">
-          <label for="part_unit" class="block">Footprint</label>
-          <MultiSelect placeholder="PDIP, BGA, SOIC, who knows" class="w-7" />
-        </div>
-
-        <div class="field col-12 md:col-6">
-          <label for="Name" class="block">Sheet status</label>
-          <InputText type="text" class="w-10" />
+          <label
+            for="sheet_status"
+            :class="{
+              block: true,
+              'p-error': v$.form.sheet_status.$invalid && submitted,
+              'w-10': true,
+            }"
+            >Sheet status</label
+          >
+          <InputText
+            id="sheet_status"
+            type="text"
+            :class="{
+              'p-invalid': v$.form.sheet_status.$invalid && submitted,
+              'w-10': true,
+            }"
+            v-model="form.sheet_status"
+          />
+          <small
+            v-if="
+              (v$.form.sheet_status.$invalid && submitted) ||
+              v$.form.sheet_status.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.sheet_status.maxLength.$message }}
+          </small>
         </div>
 
         <div class="field col-12 md:col-6">
@@ -105,35 +266,146 @@
         </div>
 
         <div class="field col-12 md:col-12">
-          <label for="Name" class="block">Part Condition</label>
+          <label
+            for="condition"
+            :class="{
+              block: true,
+              'p-error': v$.form.condition.$invalid && submitted,
+              'w-5': true,
+            }"
+            >Part Condition</label
+          >
           <InputText
             type="text"
+            id="condition"
+            v-model="form.condition"
             placeholder="Condition of the part"
-            class="w-5"
+            :class="{
+              'p-invalid': v$.form.condition.$invalid && submitted,
+              'w-5': true,
+            }"
           />
+          <small
+            v-if="
+              (v$.form.condition.$invalid && submitted) ||
+              v$.form.condition.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.condition.maxLength.$message }}
+          </small>
         </div>
 
         <div class="field col-12 md:col-12">
-          <label for="Name" class="block">Production Remarks</label>
-          <InputText type="text" class="w-5" />
+          <label
+            for="production_remarks"
+            :class="{
+              block: true,
+              'p-error': v$.form.production_remarks.$invalid && submitted,
+              'w-5': true,
+            }"
+            >Production Remarks</label
+          >
+          <InputText
+            id="production_remarks"
+            v-model="form.production_remarks"
+            type="text"
+            :class="{
+              'p-invalid': v$.form.production_remarks.$invalid && submitted,
+              'w-5': true,
+            }"
+          />
+          <small
+            v-if="
+              (v$.form.production_remarks.$invalid && submitted) ||
+              v$.form.production_remarks.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.production_remarks.maxLength.$message }}
+          </small>
         </div>
 
         <div class="field col-12 md:col-12">
-          <label for="Name" class="block">Internal Part Number</label>
-          <InputText type="text" class="w-5" />
+          <label
+            for="internal_pn"
+            :class="{
+              block: true,
+              'p-error': v$.form.internal_pn.$invalid && submitted,
+              'w-5': true,
+            }"
+            >Internal Part Number</label
+          >
+          <InputText
+            id="internal_pn"
+            v-model="form.internal_pn"
+            type="text"
+            :class="{
+              'p-invalid': v$.form.internal_pn.$invalid && submitted,
+              'w-5': true,
+            }"
+          />
+          <small
+            v-if="
+              (v$.form.internal_pn.$invalid && submitted) ||
+              v$.form.internal_pn.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.form.internal_pn.maxLength.$message }}
+          </small>
         </div>
 
         <div class="field-checkbox col-12 md:col-2">
-          <Checkbox inputId="binary" :binary="true" />
-          <label for="Name">This sheet needs review</label>
+          <Checkbox
+            :class="{
+              'p-invalid': v$.form.needs_review.$invalid && submitted,
+            }"
+            inputId="needs_review"
+            v-model="form.needs_review"
+            :binary="true"
+          />
+          <label
+            for="needs_review"
+            :class="{
+              'p-error': v$.form.needs_review.$invalid && submitted,
+            }"
+            >This sheet needs review</label
+          >
         </div>
         <div class="field-checkbox col-12 md:col-2">
-          <Checkbox inputId="binary" :binary="true" />
-          <label for="Name">That part can be sold</label>
+          <Checkbox
+            :class="{
+              'p-invalid': v$.form.can_be_sold.$invalid && submitted,
+            }"
+            inputId="can_be_sold"
+            :binary="true"
+            v-model="form.can_be_sold"
+          />
+          <label
+            :class="{
+              'p-error': v$.form.can_be_sold.$invalid && submitted,
+            }"
+            for="can_be_sold"
+            >That part can be sold</label
+          >
         </div>
         <div class="field-checkbox col-12 md:col-2">
-          <Checkbox inputId="binary" :binary="true" />
-          <label for="Name">That part is private</label>
+          <Checkbox
+            :class="{
+              'p-invalid': v$.form.private.$invalid && submitted,
+            }"
+            inputId="private"
+            :binary="true"
+            v-model="form.private"
+          />
+          <label
+            :class="{
+              'p-error': v$.form.private.$invalid && submitted,
+            }"
+            for="private"
+            >That part is private</label
+          >
         </div>
       </div>
     </form>
@@ -145,6 +417,9 @@ import { useVuelidate } from "@vuelidate/core";
 import { usePreloadsStore } from "@/stores/preloads";
 import { required, maxLength, integer, minValue } from "@vuelidate/validators";
 import logger from "@/logging";
+import apiService from "@/services/api/api.service";
+import { mapState } from "pinia";
+import utils from "@/utils.js";
 
 export default {
   data: () => ({
@@ -178,6 +453,26 @@ export default {
     v$: useVuelidate(),
     preloadsStore: usePreloadsStore(),
   }),
+  computed: {
+    ...mapState(usePreloadsStore, {
+      choicesPartUnit: (store) =>
+        store.part_units.map((x) => {
+          return { value: x.id, text: `${x.name} (${x.short_name})` };
+        }),
+      choicesCategory: (store) => store.categories,
+      choicesStorageLocation: (store) =>
+        store.storages.filter(utils.removeStorageCatWithoutLocs),
+      choicesFootprint: (store) =>
+        store.footprints.map((x) => {
+          return {
+            category: x.name,
+            footprints: x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            }),
+          };
+        }),
+    }),
+  },
   validations: {
     form: {
       name: {
@@ -228,6 +523,27 @@ export default {
       if (!isFormValid) {
         return;
       }
+    },
+    checkIfPartExists(event) {
+      if (this.form.name === "") {
+        return;
+      }
+      apiService
+        .partsAutocompleteQuick(this.form.name)
+        .then((res) => {
+          this.partsExists = res.data;
+        })
+        .catch((err) => {
+          if (err.response.status === 404) {
+            logger.default.info("Autocompleter said part not found");
+          } else {
+            logger.default.error(
+              "Got an error from the autocompleter",
+              err.message
+            );
+          }
+          this.partsExists = [];
+        });
     },
   },
 };
