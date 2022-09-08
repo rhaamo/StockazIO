@@ -90,8 +90,15 @@
           </small>
         </div>
         <div class="field col-12 md:col-6">
-          <label for="part_unit" class="block">Category</label>
-          <TreeSelect placeholder="Film resistors ? MCUs ?" class="w-7" />
+          <label for="category" class="block">Category</label>
+          <TreeSelect
+            id="category"
+            placeholder="Film resistors ? MCUs ?"
+            v-model="form.category"
+            :options="choicesCategory"
+            selectionMode="single"
+            class="w-7"
+          />
         </div>
 
         <div class="field col-12 md:col-6">
@@ -463,7 +470,20 @@ export default {
         store.part_units.map((x) => {
           return { value: x.id, text: `${x.name} (${x.short_name})` };
         }),
-      choicesCategory: (store) => store.categories,
+      choicesCategory: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.id,
+            label: e.name,
+            icon: `fa fa-folder-o`,
+          };
+          obj["selectable"] = true;
+          obj["children"] = e.children.map(cb);
+          return obj;
+        };
+        return [store.categories].map(cb);
+      },
       choicesStorageLocation: (store) => {
         const cb = (e) => {
           // base object
