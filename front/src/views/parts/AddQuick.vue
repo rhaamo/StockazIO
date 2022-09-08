@@ -11,8 +11,7 @@
               block: true,
               'p-error': v$.form.name.$invalid && submitted,
             }"
-            >Name*</label
-          >
+            >Name*</label>
           <InputText
             type="text"
             v-model="form.name"
@@ -28,8 +27,7 @@
               v$.form.name.$pending.$response
             "
             class="p-error"
-            ><br />{{ v$.form.name.required.$message }}</small
-          >
+            ><br />{{ v$.form.name.required.$message }}</small>
         </div>
         <div class="field col-12 md:col-6">
           <label for="part_unit" class="block">Part unit</label>

@@ -4,11 +4,7 @@
 
     <template v-if="isLoaded">
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
-        <template #start
-          ><router-link :to="{ name: 'home' }" class="no-underline"
-            >StockazIO - {{ backendVersion }}</router-link
-          ></template
-        >
+        <template #start><router-link :to="{ name: 'home' }" class="no-underline">StockazIO - {{ backendVersion }}</router-link></template>
         <template #end>
           <div class="p-inputgroup">
             <InputText placeholder="Keyword" />
@@ -42,10 +38,8 @@
         </div>
       </div>
     </template>
-    <template v-else
-      ><div id="preloadScreen">
-        Preloading in progress.<br /><ProgressSpinner /></div
-    ></template>
+    <template v-else><div id="preloadScreen">
+        Preloading in progress.<br /><ProgressSpinner /></div></template>
   </div>
 </template>
 

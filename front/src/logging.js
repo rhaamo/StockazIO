@@ -1,8 +1,8 @@
-import jsLogger from 'js-logger'
+import jsLogger from "js-logger";
 
-jsLogger.useDefaults()
+jsLogger.useDefaults();
 
 export default {
   get: jsLogger.get,
-  default: jsLogger.get('default')
-}
+  default: jsLogger.get("default"),
+};
