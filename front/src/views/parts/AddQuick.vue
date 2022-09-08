@@ -601,7 +601,6 @@ export default {
       apiService
         .createPart(datas)
         .then((resp) => {
-          // doesn't work either
           this.toast.add({
             severity: "success",
             summary: "Adding part",
@@ -664,6 +663,7 @@ export default {
       this.form.production_remarks = "";
       this.v$.$reset();
       this.$refs.name.$el.focus();
+      this.partsExists = [];
     },
   },
 };
