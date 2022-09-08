@@ -13,6 +13,11 @@ import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
 import Tree from "primevue/tree";
+import Breadcrumb from "primevue/breadcrumb";
+import InputNumber from "primevue/inputnumber";
+import Checkbox from "primevue/checkbox";
+import MultiSelect from "primevue/multiselect";
+import TreeSelect from "primevue/treeselect";
 
 import App from "./App.vue";
 import router from "./router";
@@ -55,9 +60,14 @@ axios.interceptors.request.use(
 app.component("ProgressSpinner", ProgressSpinner);
 app.component("Menubar", Menubar);
 app.component("InputText", InputText);
+app.component("InputNumber", InputNumber);
 app.component("Button", Button);
 app.component("Password", Password);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Tree", Tree);
+app.component("Breadcrumb", Breadcrumb);
+app.component("Checkbox", Checkbox);
+app.component("MultiSelect", MultiSelect);
+app.component("TreeSelect", TreeSelect);
 
 app.mount("#app");

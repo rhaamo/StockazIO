@@ -29,7 +29,7 @@
         </div>
 
         <div role="main" class="col-9">
-          <div class="pt-3 pb-2 mb-3">
+          <div class="pt-3 pb-2 mb-3 ml-1">
             <router-view />
           </div>
         </div>
