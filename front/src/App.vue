@@ -133,9 +133,21 @@ export default {
         { label: "View", icon: "fa fa-list fa-fw", items: [] },
         { label: "Tools", icon: "fa fa-tasks fa-fw", items: [] },
         { separator: true },
-        { label: "Projects", icon: "fa fa-list-ul fa-fw" },
-        { label: "Add part", icon: "fa fa-plus fa-fw" },
-        { label: "Quick add part", icon: "fa fa-fast-forward fa-fw" },
+        {
+          label: "Projects",
+          icon: "fa fa-list-ul fa-fw",
+          to: { name: "projects-list" },
+        },
+        {
+          label: "Add part",
+          icon: "fa fa-plus fa-fw",
+          to: { name: "parts-new" },
+        },
+        {
+          label: "Quick add part",
+          icon: "fa fa-fast-forward fa-fw",
+          to: { name: "parts-quick-new" },
+        },
         { separator: true },
         {
           // somehow that won't change in the UI...
