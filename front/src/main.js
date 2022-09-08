@@ -18,6 +18,7 @@ import InputNumber from "primevue/inputnumber";
 import Checkbox from "primevue/checkbox";
 import MultiSelect from "primevue/multiselect";
 import TreeSelect from "primevue/treeselect";
+import Toast from "primevue/toast";
 
 import App from "./App.vue";
 import router from "./router";
@@ -69,6 +70,7 @@ app.component("Breadcrumb", Breadcrumb);
 app.component("Checkbox", Checkbox);
 app.component("MultiSelect", MultiSelect);
 app.component("TreeSelect", TreeSelect);
+app.component("Toast", Toast);
 
 // Register a global custom directive called `v-focus`
 app.directive("focus", {

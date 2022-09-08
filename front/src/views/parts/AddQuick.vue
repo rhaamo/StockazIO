@@ -601,6 +601,7 @@ export default {
       apiService
         .createPart(datas)
         .then((resp) => {
+          // doesn't work either
           this.toast.add({
             severity: "success",
             summary: "Adding part",

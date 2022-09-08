@@ -77,7 +77,6 @@ export const usePreloadsStore = defineStore("preloads", {
         this.lastUpdate[category] = date;
       }
     },
-    // TODO check if working properly
     incrementCategoryPartsCount(nodeId, by = 1) {
       function incrementNode(node, nodeId) {
         if (node.id === nodeId) {
@@ -89,6 +88,9 @@ export const usePreloadsStore = defineStore("preloads", {
         }
       }
       if (nodeId !== null) {
+        if (typeof nodeId === "string") {
+          nodeId = parseInt(nodeId);
+        }
         incrementNode(this.categories, nodeId);
       }
     },
@@ -103,6 +105,9 @@ export const usePreloadsStore = defineStore("preloads", {
         }
       }
       if (nodeId !== null) {
+        if (typeof nodeId === "string") {
+          nodeId = parseInt(nodeId);
+        }
         decrementNode(this.categories, nodeId);
       }
     },
