@@ -125,10 +125,14 @@
           </small>
         </div>
         <div class="field col-12 md:col-6">
-          <label for="part_unit" class="block">Storage Location</label>
+          <label for="storage_location" class="block">Storage Location</label>
           <TreeSelect
+            id="storage_location"
             placeholder="A box under the bench or some drawer ?"
             class="w-7"
+            v-model="form.storage_location"
+            :options="choicesStorageLocation"
+            selectionMode="single"
           />
         </div>
 
@@ -460,8 +464,25 @@ export default {
           return { value: x.id, text: `${x.name} (${x.short_name})` };
         }),
       choicesCategory: (store) => store.categories,
-      choicesStorageLocation: (store) =>
-        store.storages.filter(utils.removeStorageCatWithoutLocs),
+      choicesStorageLocation: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.uuid ? e.id : `cat-${e.id}`,
+            label: e.name,
+            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+          };
+          // Selectable only if no locations
+          obj["selectable"] = e.storage_locations ? false : true;
+          // Merge children with storage_locations
+          if (e.storage_locations && e.children) {
+            obj["children"] = e.children.concat(e.storage_locations).map(cb);
+          }
+          // return obj
+          return obj;
+        };
+        return store.storages.filter(utils.removeStorageCatWithoutLocs).map(cb);
+      },
       choicesFootprint: (store) =>
         store.footprints.map((x) => {
           return {
