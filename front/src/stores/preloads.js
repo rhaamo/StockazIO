@@ -77,6 +77,7 @@ export const usePreloadsStore = defineStore("preloads", {
         this.lastUpdate[category] = date;
       }
     },
+    // TODO check if working properly
     incrementCategoryPartsCount(nodeId, by = 1) {
       function incrementNode(node, nodeId) {
         if (node.id === nodeId) {

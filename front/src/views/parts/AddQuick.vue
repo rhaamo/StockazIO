@@ -15,7 +15,10 @@
             >Name*</label
           >
           <InputText
-            id="name"
+            autofocus
+            v-focus
+            ref="name"
+            inputId="name"
             type="text"
             v-model="form.name"
             placeholder="PIC42ACHU"
@@ -70,7 +73,7 @@
             >Description</label
           >
           <InputText
-            id="description"
+            inputId="description"
             type="text"
             placeholder="A cute little mcu"
             :class="{
@@ -92,7 +95,7 @@
         <div class="field col-12 md:col-6">
           <label for="category" class="block">Category</label>
           <TreeSelect
-            id="category"
+            inputId="category"
             placeholder="Film resistors ? MCUs ?"
             v-model="form.category"
             :options="choicesCategory"
@@ -112,7 +115,7 @@
             >Comment</label
           >
           <InputText
-            id="comment"
+            inputId="comment"
             type="text"
             placeholder="Any comment about this part ?"
             v-model="form.comment"
@@ -134,7 +137,7 @@
         <div class="field col-12 md:col-6">
           <label for="storage_location" class="block">Storage Location</label>
           <TreeSelect
-            id="storage_location"
+            inputId="storage_location"
             placeholder="A box under the bench or some drawer ?"
             class="w-7"
             v-model="form.storage_location"
@@ -154,7 +157,7 @@
             >Stock Qty*</label
           >
           <InputNumber
-            id="qty"
+            inputId="qty"
             mode="decimal"
             showButtons
             :min="0"
@@ -189,7 +192,7 @@
             >Stock Qty Min*</label
           >
           <InputNumber
-            id="qty_min"
+            inputId="qty_min"
             mode="decimal"
             showButtons
             :min="0"
@@ -218,7 +221,7 @@
         <div class="field col-12 md:col-6">
           <label for="footprint" class="block">Footprint</label>
           <MultiSelect
-            id="footprint"
+            inputId="footprint"
             v-model="form.footprint"
             placeholder="PDIP, BGA, SOIC, who knows"
             class="w-7"
@@ -243,7 +246,7 @@
             >Sheet status</label
           >
           <InputText
-            id="sheet_status"
+            inputId="sheet_status"
             type="text"
             :class="{
               'p-invalid': v$.form.sheet_status.$invalid && submitted,
@@ -288,7 +291,7 @@
           >
           <InputText
             type="text"
-            id="condition"
+            inputId="condition"
             v-model="form.condition"
             placeholder="Condition of the part"
             :class="{
@@ -318,7 +321,7 @@
             >Production Remarks</label
           >
           <InputText
-            id="production_remarks"
+            inputId="production_remarks"
             v-model="form.production_remarks"
             type="text"
             :class="{
@@ -348,7 +351,7 @@
             >Internal Part Number</label
           >
           <InputText
-            id="internal_pn"
+            inputId="internal_pn"
             v-model="form.internal_pn"
             type="text"
             :class="{
@@ -431,6 +434,9 @@ import logger from "@/logging";
 import apiService from "@/services/api/api.service";
 import { mapState } from "pinia";
 import utils from "@/utils.js";
+import { useToast } from "primevue/usetoast";
+
+// TODO modal for parts exists not done yet
 
 export default {
   data: () => ({
@@ -463,6 +469,7 @@ export default {
   setup: () => ({
     v$: useVuelidate(),
     preloadsStore: usePreloadsStore(),
+    toast: useToast(),
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -564,6 +571,62 @@ export default {
       if (!isFormValid) {
         return;
       }
+
+      let datas = {
+        name: this.form.name,
+        description: this.form.description,
+        comment: this.form.comment,
+        stock_qty: this.form.qty,
+        stock_qty_min: this.form.qty_min,
+        status: this.form.sheet_status,
+        needs_review: this.form.needs_review,
+        condition: this.form.condition,
+        can_be_sold: this.form.can_be_sold,
+        private: this.form.private,
+        production_remarks: this.form.production_remarks,
+        internal_part_number: this.form.internal_pn,
+
+        part_unit: this.form.part_unit ? this.form.part_unit[0] : null,
+        category: this.form.category
+          ? Object.keys(this.form.category)[0]
+          : null,
+        storage: this.form.storage_location
+          ? Object.keys(this.form.storage_location)[0]
+          : null,
+        footprint: this.form.footprint ? this.form.footprint[0] : null,
+      };
+
+      logger.default.info("submitting part", datas);
+
+      apiService
+        .createPart(datas)
+        .then((resp) => {
+          this.toast.add({
+            severity: "success",
+            summary: "Adding part",
+            detail: "Success",
+            life: 5000,
+          });
+          this.preloadsStore.incrementCategoryPartsCount(datas.category);
+          if (mode === "add_new") {
+            this.clearForm();
+          } else {
+            // mode === continue
+            this.$router.push({
+              name: "parts-details",
+              params: { partId: resp.data.id },
+            });
+          }
+        })
+        .catch((error) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Adding part",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Cannot save part", error.message);
+        });
     },
     checkIfPartExists(event) {
       if (this.form.name === "") {
@@ -585,6 +648,21 @@ export default {
           }
           this.partsExists = [];
         });
+    },
+    clearForm: function () {
+      this.form.name = "";
+      this.form.description = "";
+      this.form.comment = "";
+      this.form.qty = 1;
+      this.form.qty_min = 0;
+      this.form.sheet_status = "";
+      this.form.condition = "";
+      this.form.internal_pn = "";
+      this.form.needs_review = false;
+      this.form.footprint = null;
+      this.form.production_remarks = "";
+      this.v$.$reset();
+      this.$refs.name.$el.focus();
     },
   },
 };

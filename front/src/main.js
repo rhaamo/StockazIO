@@ -70,4 +70,13 @@ app.component("Checkbox", Checkbox);
 app.component("MultiSelect", MultiSelect);
 app.component("TreeSelect", TreeSelect);
 
+// Register a global custom directive called `v-focus`
+app.directive("focus", {
+  // When the bound element is mounted into the DOM...
+  mounted(el) {
+    // Focus the element
+    el.focus();
+  },
+});
+
 app.mount("#app");
