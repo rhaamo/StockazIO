@@ -333,6 +333,8 @@ OAUTH2_PROVIDER_GRANT_MODEL = "oauth.Grant"
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "oauth.RefreshToken"
 OAUTH2_PROVIDER_ID_TOKEN_MODEL = "oauth.IDToken"
 
+# No thanks, true will results in error: invalid_client, and I have no will to handle that yet
+PKCE_REQUIRED = False
 
 REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": (
