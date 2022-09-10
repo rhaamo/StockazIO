@@ -33,6 +33,25 @@ class PartParametersPresetsViewSetPagination(PageNumberPagination):
     page_size_query_param = "size"
 
 
+# Query content:
+# originalEvent {isTrusted: true}  # ???
+# first: number  # start at row X
+# rows: number  # of rows to return
+# filters:
+#  filters={"name":{"value":null,"matchMode":"contains"},
+#           "storage.name":{"value":null,"matchMode":"equals"},
+#           "stock_qty":{"value":null,"matchMode":"gte"},
+#           "stock_qty_min":{"value":null,"matchMode":"gte"},
+#           "part_unit.name":{"value":null,"matchMode":"contains"},
+#           "footprint.name":{"value":null,"matchMode":"equals"}}
+# Filtering will change the value to a value and matchMode to wanted one
+# matchModes: startsWith, contains, notContains, endsWith, equals, notEquals, in, between, lt, lte, gt, gte, dateIs, dateIsNot, dateBefore, dateAfter
+# Front can request for fields:
+# name: startsWith, contains, notContains, endsWith, equals, notEquals
+# storage and footprint: equals, notEquals
+# qty: equals, lt, lte, gt, gte
+# Ordering adds a "sortField" with a sortOrder (1 or -1)
+
 class PartViewSet(ModelViewSet):
     anonymous_policy = True
     required_scope = {

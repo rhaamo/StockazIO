@@ -50,7 +50,12 @@
               </div>
             </template>
           </Column>
-          <Column header="Name" :sortable="true" field="name">
+          <Column
+            header="Name"
+            :sortable="true"
+            field="name"
+            :filterMatchModeOptions="matchModes.name"
+          >
             <template #body="slotProps">
               <div>
                 <template
@@ -116,7 +121,12 @@
               />
             </template>
           </Column>
-          <Column header="Storage" :sortable="true" field="storage.name">
+          <Column
+            header="Storage"
+            :sortable="true"
+            field="storage.name"
+            :filterMatchModeOptions="matchModes.storage"
+          >
             <template #body="slotProps">{{
               slotProps.data.storage && slotProps.data.storage.name
                 ? slotProps.data.storage.name
@@ -127,6 +137,8 @@
                 v-model="filterModel.value"
                 class="p-column-filter"
                 placeholder="Search by storage"
+                :options="choicesStorageLocation"
+                selectionMode="single"
               />
             </template>
           </Column>
@@ -135,6 +147,7 @@
             :sortable="true"
             field="stock_qty"
             dataType="numeric"
+            :filterMatchModeOptions="matchModes.qty"
           >
             <template #body="slotProps">
               <Inplace :closable="true">
@@ -171,7 +184,12 @@
                 : "-"
             }}</template>
           </Column>
-          <Column header="Footprint" :sortable="true" field="footprint.name">
+          <Column
+            header="Footprint"
+            :sortable="true"
+            field="footprint.name"
+            :filterMatchModeOptions="matchModes.footprint"
+          >
             <template #body="slotProps">
               <span
                 v-tooltip="{
@@ -191,6 +209,13 @@
                 v-model="filterModel.value"
                 class="p-column-filter"
                 placeholder="Search by footprint"
+                :options="choicesFootprint"
+                optionLabel="name"
+                optionValue="id"
+                optionGroupLabel="category"
+                optionGroupChildren="footprints"
+                :selectionLimit="1"
+                :filter="true"
               />
             </template>
           </Column>
@@ -229,6 +254,8 @@ import { mapState } from "pinia";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { FilterMatchMode } from "primevue/api";
+import utils from "@/utils.js";
+import { cloneDeep } from "lodash";
 
 export default {
   data: () => ({
@@ -236,6 +263,37 @@ export default {
     lazyParams: {},
     parts: [],
     totalRecords: 0,
+    matchModes: {
+      name: [
+        { label: "Starts with", value: FilterMatchMode.STARTS_WITH },
+        { label: "Contains", value: FilterMatchMode.CONTAINS },
+        { label: "Not contains", value: FilterMatchMode.NOT_CONTAINS },
+        { label: "Ends with", value: FilterMatchMode.ENDS_WITH },
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
+      ],
+      storage: [
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
+      ],
+      qty: [
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Less than", value: FilterMatchMode.LESS_THAN },
+        {
+          label: "Less than or equal to",
+          value: FilterMatchMode.LESS_THAN_OR_EQUAL_TO,
+        },
+        { label: "Greater than", value: FilterMatchMode.GREATER_THAN },
+        {
+          label: "Greater than or equal to",
+          value: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO,
+        },
+      ],
+      footprint: [
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
+      ],
+    },
     filters: {
       name: { value: null, matchMode: FilterMatchMode.CONTAINS },
       "storage.name": { value: null, matchMode: FilterMatchMode.EQUALS },
@@ -257,6 +315,34 @@ export default {
     ...mapState(usePreloadsStore, {
       categories: (store) => [store.categories],
       currentCategory: (store) => store.currentCategory,
+      choicesStorageLocation: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.uuid ? e.id : `cat-${e.id}`,
+            label: e.name,
+            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+          };
+          // Selectable only if no locations
+          obj["selectable"] = e.storage_locations ? false : true;
+          // Merge children with storage_locations
+          if (e.storage_locations && e.children) {
+            obj["children"] = e.children.concat(e.storage_locations).map(cb);
+          }
+          // return obj
+          return obj;
+        };
+        return store.storages.filter(utils.removeStorageCatWithoutLocs).map(cb);
+      },
+      choicesFootprint: (store) =>
+        store.footprints.map((x) => {
+          return {
+            category: x.name,
+            footprints: x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            }),
+          };
+        }),
     }),
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.PARTS || 10,
@@ -374,7 +460,19 @@ export default {
     loadLazyData() {
       this.loading = true;
 
-      apiService.getParts(this.lazyParams).then((res) => {
+      // Do a quick cleanup of datas before sending them
+      const params = cloneDeep(this.lazyParams);
+      if (params.filters["storage.name"].value) {
+        params.filters["storage.name"].value = Object.keys(
+          params.filters["storage.name"].value
+        )[0];
+      }
+      if (params.filters["footprint.name"].value) {
+        params.filters["footprint.name"].value =
+          params.filters["footprint.name"].value[0];
+      }
+
+      apiService.getParts(params).then((res) => {
         this.parts = res.data.results;
         this.totalRecords = res.data.count;
         this.loading = false;
