@@ -295,18 +295,18 @@ export default {
       ],
     },
     filters: {
-      name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      "storage.name": { value: null, matchMode: FilterMatchMode.EQUALS },
+      name: {
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+      },
+      "storage.name": {
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
+      },
       stock_qty: {
-        value: null,
-        matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO,
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
       },
-      stock_qty_min: {
-        value: null,
-        matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO,
+      "footprint.name": {
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
       },
-      "part_unit.name": { value: null, matchMode: FilterMatchMode.CONTAINS },
-      "footprint.name": { value: null, matchMode: FilterMatchMode.EQUALS },
     },
     selectAll: false,
     selectedParts: null,

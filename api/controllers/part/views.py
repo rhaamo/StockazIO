@@ -1,15 +1,17 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
+import json
 
 from controllers.categories.models import Category
 from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 from controllers.storage.models import StorageLocation
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.pagination import PageNumberPagination
-from rest_framework import filters, views
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework import views
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter, SearchFilter
 
 from controllers.part.serializers import (
     PartSerializer,
@@ -33,19 +35,32 @@ class PartParametersPresetsViewSetPagination(PageNumberPagination):
     page_size_query_param = "size"
 
 
+class PrimeVuePagination(LimitOffsetPagination):
+    limit_query_param = "rows"
+    offset_query_param = "first"
+
+
 # Query content:
-# originalEvent {isTrusted: true}  # ???
+# originalEvent {isTrusted: true}
+#               it will also contains {page: 1, first: 20, rows: 20, pageCount: 2} when using the paginator
+#
+# page 0 will have first 0, page 1 first 20 etc. assumming we have a perPage of 20 (we have)
 # first: number  # start at row X
 # rows: number  # of rows to return
+# pageCount: number
+# page: number
+#
+# LimitOffsetPagination will uses rows (limit) and first (offset)
+#
 # filters:
-#  filters={"name":{"value":null,"matchMode":"contains"},
-#           "storage.name":{"value":null,"matchMode":"equals"},
-#           "stock_qty":{"value":null,"matchMode":"gte"},
-#           "stock_qty_min":{"value":null,"matchMode":"gte"},
-#           "part_unit.name":{"value":null,"matchMode":"contains"},
-#           "footprint.name":{"value":null,"matchMode":"equals"}}
+#  filters={
+#           "name":{"constraints":[{"value":"das","matchMode":"startsWith"}]},
+#           "storage.name":{"constraints":[{"value":null,"matchMode":"equals"}]},
+#           "stock_qty":{"constraints":[{"value":null,"matchMode":"equals"}]},
+#           "footprint.name":{"constraints":[{"value":null,"matchMode":"equals"}]}}
+# due to some weirdness of the "menu" type of datatables, and that we have only *one* constraint, the match and value are in constraints[0]
 # Filtering will change the value to a value and matchMode to wanted one
-# matchModes: startsWith, contains, notContains, endsWith, equals, notEquals, in, between, lt, lte, gt, gte, dateIs, dateIsNot, dateBefore, dateAfter
+# matchMode: startsWith, contains, notContains, endsWith, equals, notEquals, in, between, lt, lte, gt, gte, dateIs, dateIsNot, dateBefore, dateAfter
 # Front can request for fields:
 # name: startsWith, contains, notContains, endsWith, equals, notEquals
 # storage and footprint: equals, notEquals
@@ -62,22 +77,8 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
-    ordering = ["name"]
-    pagination_class = PartViewSetPagination
+    pagination_class = PrimeVuePagination
     lookup_fields = ("id", "uuid")
-    # ^starts-with, =exact, @FTS, $regex
-    search_fields = [
-        "name",
-        "description",
-        "comment",
-        "production_remarks",
-        "status",
-        "condition",
-        "internal_part_number",
-        "uuid",
-    ]
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -89,14 +90,21 @@ class PartViewSet(ModelViewSet):
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
-        footprint_id = self.request.query_params.get("footprint_id", None)
         storage_id = self.request.query_params.get("storage_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
-        qty_type = self.request.query_params.get("qtyType", None)
         sellable = self.request.query_params.get("sellable", None)
+
+        filters = self.request.query_params.get("filters", None)
+        originalEvent = self.request.query_params.get("originalEvent", None)
+        first = self.request.query_params.get("first", None)
+        page = self.request.query_params.get("page", None)
+        rows = self.request.query_params.get("rows", None)
+        sortField = self.request.query_params.get("sortField", None)
+        sortOrder = self.request.query_params.get("sortOrder", None)
 
         queryset = Part.objects.all()
 
+        # TODO how to threat all of thoses
         # category is recursive, thaks to .get_descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
@@ -104,11 +112,6 @@ class PartViewSet(ModelViewSet):
             category = Category.objects.get(id=category_id).get_descendants(include_self=True)
             if category is not None:
                 queryset = queryset.filter(category__in=category)
-
-        if footprint_id in ["0", 0]:
-            queryset = queryset.filter(footprint_id__isnull=True)
-        elif footprint_id:
-            queryset = queryset.filter(footprint_id=footprint_id)
 
         if storage_id in ["0", 0]:
             queryset = queryset.filter(storage_id__isnull=True)
@@ -118,14 +121,56 @@ class PartViewSet(ModelViewSet):
         if storage_uuid:
             queryset = queryset.filter(storage__uuid=storage_uuid)
 
-        if qty_type == "qty":
-            queryset = queryset.filter(stock_qty=0)
-
-        if qty_type == "qtyMin":
-            queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
-
         if sellable:
             queryset = queryset.filter(can_be_sold=True)
+        # TODO end
+
+        # sortField & sortOrder
+
+        # if footprint_id in ["0", 0]:
+        #     queryset = queryset.filter(footprint_id__isnull=True)
+        # elif footprint_id:
+        #     queryset = queryset.filter(footprint_id=footprint_id)
+
+
+        # if qty_type == "qty":
+        #     queryset = queryset.filter(stock_qty=0)
+
+        # if qty_type == "qtyMin":
+        #     queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
+
+        # Filtering
+        if (filters):
+            filters = json.loads(filters)
+            for field in ["name", "storage.name", "stock_qty", "footprint.name"]:
+                # not implemented: in, between, and dates
+                # probably need special case for footprint and storage
+                if filters[field]["constraints"][0]["value"]:
+                    # fixme FIELDNAME__xxx
+                    column_filter = f"{field}__"
+                    if filters[field]["constraints"][0]["matchMode"] == "startsWith":
+                        queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "contains":
+                        queryset = queryset.filter(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "notContains":
+                        queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "endsWith":
+                        queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "equals":
+                        queryset = queryset.filter(**{f"{field}__iexact": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
+                        queryset = queryset.exclude(**{f"{field}__iexact": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "lt":
+                        queryset = queryset.filter(**{f"{field}__lt": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "lte":
+                        queryset = queryset.filter(**{f"{field}__lte": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "gt":
+                        queryset = queryset.filter(**{f"{field}__gt": filters[field]["constraints"][0]["value"]})
+                    elif filters[field]["constraints"][0]["matchMode"] == "gte":
+                        queryset = queryset.filter(**{f"{field}__gte": filters[field]["constraints"][0]["value"]})
+
+        if (sortField and sortOrder):
+            queryset = queryset.order_by(f"{sortOrder}{sortField}")
 
         return queryset
 
@@ -189,7 +234,7 @@ class PartsPublic(ModelViewSet):
         "list": None,
     }
 
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    filter_backends = [OrderingFilter, SearchFilter]
     ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
     ordering = ["name"]
     pagination_class = PartViewSetPagination
