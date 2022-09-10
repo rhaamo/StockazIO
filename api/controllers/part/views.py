@@ -142,12 +142,10 @@ class PartViewSet(ModelViewSet):
         # Filtering
         if (filters):
             filters = json.loads(filters)
-            for field in ["name", "storage.name", "stock_qty", "footprint.name"]:
+            for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
                 # not implemented: in, between, and dates
-                # probably need special case for footprint and storage
                 if filters[field]["constraints"][0]["value"]:
-                    # fixme FIELDNAME__xxx
-                    column_filter = f"{field}__"
+                    column_name = field
                     if filters[field]["constraints"][0]["matchMode"] == "startsWith":
                         queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["constraints"][0]["value"]})
                     elif filters[field]["constraints"][0]["matchMode"] == "contains":
@@ -157,9 +155,9 @@ class PartViewSet(ModelViewSet):
                     elif filters[field]["constraints"][0]["matchMode"] == "endsWith":
                         queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["constraints"][0]["value"]})
                     elif filters[field]["constraints"][0]["matchMode"] == "equals":
-                        queryset = queryset.filter(**{f"{field}__iexact": filters[field]["constraints"][0]["value"]})
+                        queryset = queryset.filter(**{field: filters[field]["constraints"][0]["value"]})
                     elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
-                        queryset = queryset.exclude(**{f"{field}__iexact": filters[field]["constraints"][0]["value"]})
+                        queryset = queryset.exclude(**{field: filters[field]["constraints"][0]["value"]})
                     elif filters[field]["constraints"][0]["matchMode"] == "lt":
                         queryset = queryset.filter(**{f"{field}__lt": filters[field]["constraints"][0]["value"]})
                     elif filters[field]["constraints"][0]["matchMode"] == "lte":

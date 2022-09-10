@@ -124,7 +124,7 @@
           <Column
             header="Storage"
             :sortable="true"
-            field="storage.name"
+            field="storage_id"
             :filterMatchModeOptions="matchModes.storage"
           >
             <template #body="slotProps">{{
@@ -187,7 +187,7 @@
           <Column
             header="Footprint"
             :sortable="true"
-            field="footprint.name"
+            field="footprint_id"
             :filterMatchModeOptions="matchModes.footprint"
           >
             <template #body="slotProps">
@@ -298,13 +298,13 @@ export default {
       name: {
         constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
       },
-      "storage.name": {
+      storage_id: {
         constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
       },
       stock_qty: {
         constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
       },
-      "footprint.name": {
+      footprint_id: {
         constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
       },
     },
@@ -462,14 +462,14 @@ export default {
 
       // Do a quick cleanup of datas before sending them
       const params = cloneDeep(this.lazyParams);
-      if (params.filters["storage.name"].value) {
-        params.filters["storage.name"].value = Object.keys(
-          params.filters["storage.name"].value
+      if (params.filters["storage_id"]["constraints"][0].value) {
+        params.filters["storage_id"]["constraints"][0].value = Object.keys(
+          params.filters["storage_id"]["constraints"][0].value
         )[0];
       }
-      if (params.filters["footprint.name"].value) {
-        params.filters["footprint.name"].value =
-          params.filters["footprint.name"].value[0];
+      if (params.filters["footprint_id"]["constraints"][0].value) {
+        params.filters["footprint_id"]["constraints"][0].value =
+          params.filters["footprint_id"]["constraints"][0].value[0];
       }
 
       apiService.getParts(params).then((res) => {
