@@ -170,7 +170,11 @@ class PartViewSet(ModelViewSet):
                         queryset = queryset.filter(**{f"{field}__gte": filters[field]["constraints"][0]["value"]})
 
         if (sortField and sortOrder):
-            queryset = queryset.order_by(f"{sortOrder}{sortField}")
+            if sortOrder == 1:
+                queryset = queryset.order_by(sortField)
+            else:
+                # -1
+                queryset = queryset.order_by(f"-{sortField}")
 
         return queryset
 
