@@ -19,6 +19,15 @@ import Checkbox from "primevue/checkbox";
 import MultiSelect from "primevue/multiselect";
 import TreeSelect from "primevue/treeselect";
 import Toast from "primevue/toast";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
+import VueQrcode from "@chenfengyuan/vue-qrcode";
+import OverlayPanel from "primevue/overlaypanel";
+import Image from "primevue/image";
+import Tooltip from "primevue/tooltip";
+import Inplace from "primevue/inplace";
 
 import App from "./App.vue";
 import router from "./router";
@@ -58,6 +67,7 @@ axios.interceptors.request.use(
   }
 );
 
+app.component(VueQrcode.name, VueQrcode);
 app.component("ProgressSpinner", ProgressSpinner);
 app.component("Menubar", Menubar);
 app.component("InputText", InputText);
@@ -71,6 +81,15 @@ app.component("Checkbox", Checkbox);
 app.component("MultiSelect", MultiSelect);
 app.component("TreeSelect", TreeSelect);
 app.component("Toast", Toast);
+app.component("DataTable", DataTable);
+app.component("Column", Column);
+app.component("TabView", TabView);
+app.component("TabPanel", TabPanel);
+app.component("OverlayPanel", OverlayPanel);
+app.component("Image", Image);
+app.component("Inplace", Inplace);
+
+app.directive("tooltip", Tooltip);
 
 // Register a global custom directive called `v-focus`
 app.directive("focus", {

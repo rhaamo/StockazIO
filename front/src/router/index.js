@@ -7,7 +7,7 @@ import PublicPartsList from "@/views/About.vue";
 import UrlHandler from "@/views/About.vue";
 import PartsAddFull from "@/views/About.vue";
 import PartsAddQuick from "@/views/parts/AddQuick.vue";
-import PartsList from "@/views/About.vue";
+import PartsList from "@/views/parts/List.vue";
 import PartsDetails from "@/views/About.vue";
 import PartsEdit from "@/views/About.vue";
 import PartUnitsList from "@/views/About.vue";
