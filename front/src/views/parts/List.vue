@@ -34,8 +34,33 @@
           <template #empty> No parts found. </template>
 
           <template #header v-if="selectedParts && selectedParts.length">
-            <Button label="Change category" class="p-button-secondary" />
-            <Button label="Change location" class="p-button-secondary ml-2" />
+            <Button
+              label="Change category"
+              class="p-button-info"
+              @click="toggleOverlayPanel($event, 'btnChangeCat')"
+            />
+            <OverlayPanel ref="btnChangeCat">owo</OverlayPanel>
+
+            <Button
+              label="Change location"
+              class="p-button-help ml-2"
+              @click="toggleOverlayPanel($event, 'btnChangeLoc')"
+            />
+            <OverlayPanel ref="btnChangeLoc">
+              <TreeSelect
+                class="p-column-filter"
+                placeholder="Search by storage"
+                :options="choicesStorageLocation"
+                selectionMode="single"
+                v-model="bulkEditStorage"
+              />
+              <Button
+                label="Save"
+                class="ml-1"
+                @click="bulkChangeStorageLocation($event)"
+              ></Button>
+            </OverlayPanel>
+
             <Button
               label="Delete"
               class="p-button-danger ml-2"
@@ -82,7 +107,7 @@
                     class="fa fa-picture-o mr-1"
                     aria-hidden="true"
                     @click="
-                      showOverlayPanelImage($event, `p_a_${slotProps.data.id}`)
+                      toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)
                     "
                   />
                   <OverlayPanel
@@ -330,6 +355,8 @@ export default {
     },
     selectAll: false,
     selectedParts: null,
+    bulkEditStorage: null,
+    bulkEditCategory: null,
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -544,7 +571,7 @@ export default {
     },
     viewPartModal(item) {},
     showLabelGenerator(item) {},
-    showOverlayPanelImage(event, ref) {
+    toggleOverlayPanel(event, ref) {
       this.$refs[ref].toggle(event);
     },
     onPage(event) {
@@ -654,6 +681,40 @@ export default {
           return;
         },
       });
+    },
+    bulkChangeStorageLocation(event) {
+      let ids = this.selectedParts.map((x) => {
+        return x.id;
+      });
+      let storageId = Object.keys(this.bulkEditStorage)[0];
+
+      apiService
+        .changePartsStorageLocation(ids, storageId)
+        .then((val) => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating parts`,
+            detail: "Success",
+            life: 5000,
+          });
+          this.$nextTick(() => {
+            this.bulkEditStorage = null;
+            this.toggleOverlayPanel(event, "btnChangeLoc");
+            this.loadLazyData();
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating parts`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with storage part update", err);
+          this.bulkEditStorage = null;
+          this.toggleOverlayPanel(event, "btnChangeLoc");
+          this.loadLazyData();
+        });
     },
   },
 };
