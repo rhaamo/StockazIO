@@ -1,397 +1,401 @@
 <template>
-  <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
+  <div>
+    <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-  <div class="card ml-5 mt-4">
-    <TabView>
-      <TabPanel>
-        <template #header>
-          <i class="fa fa-table mr-2"></i><span>Table</span>
-        </template>
-        <DataTable
-          :value="parts"
-          :lazy="true"
-          :paginator="true"
-          :rows="perPage"
-          v-model:filters="filters"
-          ref="dt"
-          dataKey="id"
-          :totalRecords="totalRecords"
-          :loading="loading"
-          @page="onPage($event)"
-          @sort="onSort($event)"
-          @filter="onFilter($event)"
-          filterDisplay="menu"
-          responsiveLayout="scroll"
-          v-model:selection="selectedParts"
-          :selectAll="selectAll"
-          @select-all-change="onSelectAllChange"
-          @row-select="onRowSelect"
-          @row-unselect="onRowUnselect"
-          stripedRows
-          class="p-datatable-sm"
-          removableSort
-        >
-          <template #empty> No parts found. </template>
-
-          <template #header v-if="selectedParts && selectedParts.length">
-            <Button
-              label="Change category"
-              class="p-button-info"
-              @click="toggleOverlayPanel($event, 'btnChangeCat')"
-            />
-            <OverlayPanel ref="btnChangeCat">
-              <TreeSelect
-                inputId="category"
-                placeholder="Film resistors ? MCUs ?"
-                v-model="bulkEditCategory"
-                :options="choicesCategory"
-                selectionMode="single"
-              />
-              <Button
-                label="Save"
-                class="ml-1"
-                @click="bulkChangeCategory($event)"
-              ></Button>
-            </OverlayPanel>
-
-            <Button
-              label="Change location"
-              class="p-button-help ml-2"
-              @click="toggleOverlayPanel($event, 'btnChangeLoc')"
-            />
-            <OverlayPanel ref="btnChangeLoc">
-              <TreeSelect
-                class="p-column-filter"
-                placeholder="Select storage"
-                :options="choicesStorageLocation"
-                selectionMode="single"
-                v-model="bulkEditStorage"
-              />
-              <Button
-                label="Save"
-                class="ml-1"
-                @click="bulkChangeStorageLocation($event)"
-              ></Button>
-            </OverlayPanel>
-
-            <Button
-              label="Delete"
-              class="p-button-danger ml-2"
-              @click="deletePartMultiple($event)"
-            />
+    <div class="card ml-5 mt-4">
+      <TabView>
+        <TabPanel>
+          <template #header>
+            <i class="fa fa-table mr-2"></i><span>Table</span>
           </template>
+          <DataTable
+            :value="parts"
+            :lazy="true"
+            :paginator="true"
+            :rows="perPage"
+            v-model:filters="filters"
+            ref="dt"
+            dataKey="id"
+            :totalRecords="totalRecords"
+            :loading="loading"
+            @page="onPage($event)"
+            @sort="onSort($event)"
+            @filter="onFilter($event)"
+            filterDisplay="menu"
+            responsiveLayout="scroll"
+            v-model:selection="selectedParts"
+            :selectAll="selectAll"
+            @select-all-change="onSelectAllChange"
+            @row-select="onRowSelect"
+            @row-unselect="onRowUnselect"
+            stripedRows
+            class="p-datatable-sm"
+            removableSort
+          >
+            <template #empty> No parts found. </template>
 
-          <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-          <Column :sortable="false">
-            <template #body="slotProps">
-              <div @click="showLabelGenerator(slotProps.data)">
-                <vue-qrcode
-                  :id="qrcodeId(slotProps.data.id)"
-                  :value="qrCodePart(slotProps.data.uuid)"
-                  :options="{
-                    scale: 1,
-                    color: { dark: '#000000', light: '#0000' },
-                  }"
-                  v-tooltip="'show label generator'"
-                  :data-uuid="slotProps.data.uuid"
-                  :data-name="slotProps.data.name"
-                  data-toggle="modal"
-                  data-target="#modalQrCode"
+            <template #header v-if="selectedParts && selectedParts.length">
+              <Button
+                label="Change category"
+                class="p-button-info"
+                @click="toggleOverlayPanel($event, 'btnChangeCat')"
+              />
+              <OverlayPanel ref="btnChangeCat">
+                <TreeSelect
+                  inputId="category"
+                  placeholder="Film resistors ? MCUs ?"
+                  v-model="bulkEditCategory"
+                  :options="choicesCategory"
+                  selectionMode="single"
                 />
-              </div>
+                <Button
+                  label="Save"
+                  class="ml-1"
+                  @click="bulkChangeCategory($event)"
+                ></Button>
+              </OverlayPanel>
+
+              <Button
+                label="Change location"
+                class="p-button-help ml-2"
+                @click="toggleOverlayPanel($event, 'btnChangeLoc')"
+              />
+              <OverlayPanel ref="btnChangeLoc">
+                <TreeSelect
+                  class="p-column-filter"
+                  placeholder="Select storage"
+                  :options="choicesStorageLocation"
+                  selectionMode="single"
+                  v-model="bulkEditStorage"
+                />
+                <Button
+                  label="Save"
+                  class="ml-1"
+                  @click="bulkChangeStorageLocation($event)"
+                ></Button>
+              </OverlayPanel>
+
+              <Button
+                label="Delete"
+                class="p-button-danger ml-2"
+                @click="deletePartMultiple($event)"
+              />
             </template>
-          </Column>
-          <Column
-            header="Name"
-            :sortable="true"
-            field="name"
-            :filterMatchModeOptions="matchModes.name"
-          >
-            <template #body="slotProps">
-              <div>
-                <template
-                  v-if="
-                    partGetDefaultAttachment(slotProps.data.part_attachments)
-                  "
-                >
-                  <i
-                    :id="`p_a_${slotProps.data.id}`"
-                    v-tooltip="'Click to show picture'"
-                    class="fa fa-picture-o mr-1"
-                    aria-hidden="true"
-                    @click="
-                      toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)
-                    "
+
+            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
+            <Column :sortable="false">
+              <template #body="slotProps">
+                <div @click="showLabelGenerator(slotProps.data)">
+                  <vue-qrcode
+                    :id="qrcodeId(slotProps.data.id)"
+                    :value="qrCodePart(slotProps.data.uuid)"
+                    :options="{
+                      scale: 1,
+                      color: { dark: '#000000', light: '#0000' },
+                    }"
+                    v-tooltip="'show label generator'"
+                    :data-uuid="slotProps.data.uuid"
+                    :data-name="slotProps.data.name"
+                    data-toggle="modal"
+                    data-target="#modalQrCode"
                   />
-                  <OverlayPanel
-                    :ref="`p_a_${slotProps.data.id}`"
-                    appendTo="body"
-                    :showCloseIcon="true"
-                    :id="`p_a_${slotProps.data.id}`"
+                </div>
+              </template>
+            </Column>
+            <Column
+              header="Name"
+              :sortable="true"
+              field="name"
+              :filterMatchModeOptions="matchModes.name"
+            >
+              <template #body="slotProps">
+                <div>
+                  <template
+                    v-if="
+                      partGetDefaultAttachment(slotProps.data.part_attachments)
+                    "
                   >
-                    <Image
-                      preview
-                      width="250"
-                      :src="
-                        partGetDefaultAttachment(
-                          slotProps.data.part_attachments
-                        ).picture_medium
+                    <i
+                      :id="`p_a_${slotProps.data.id}`"
+                      v-tooltip="'Click to show picture'"
+                      class="fa fa-picture-o mr-1"
+                      aria-hidden="true"
+                      @click="
+                        toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)
                       "
-                    ></Image>
-                  </OverlayPanel>
-                </template>
-                <a
-                  href="#"
-                  class="no-underline"
-                  @click.prevent="viewPartModal(slotProps.data)"
-                  >{{ slotProps.data.name }}</a
-                >
-                <br />
-                <template v-if="slotProps.data.description">
-                  {{
-                    slotProps.data.category
-                      ? slotProps.data.category.name
-                      : "No category"
-                  }}: {{ slotProps.data.description }}
-                </template>
-                <template v-else>
-                  {{
-                    slotProps.data.category
-                      ? slotProps.data.category.name
-                      : "No category"
-                  }}
-                </template>
-              </div>
-            </template>
-            <template #filter="{ filterModel }">
-              <InputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search by name"
-              />
-            </template>
-          </Column>
-          <Column
-            header="Storage"
-            :sortable="true"
-            field="storage_id"
-            :filterMatchModeOptions="matchModes.storage"
-          >
-            <template #body="slotProps">{{
-              slotProps.data.storage && slotProps.data.storage.name
-                ? slotProps.data.storage.name
-                : "-"
-            }}</template>
-            <template #filter="{ filterModel }">
-              <TreeSelect
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search by storage"
-                :options="choicesStorageLocationWithNo"
-                selectionMode="single"
-              />
-            </template>
-          </Column>
-          <Column
-            header="Stock"
-            :sortable="true"
-            field="stock_qty"
-            dataType="numeric"
-            :filterMatchModeOptions="matchModes.qty"
-          >
-            <template #body="slotProps">
-              <Inplace
-                :ref="`inplace_qty_${slotProps.data.id}`"
-                :closable="true"
-              >
-                <template #display
-                  ><span>{{ slotProps.data.stock_qty }}</span></template
-                >
-                <template #content>
-                  <InputNumber
-                    :inputId="`qty_${slotProps.data.id}`"
-                    mode="decimal"
-                    showButtons
-                    :min="0"
-                    v-model="slotProps.data.stock_qty"
-                    class="w-3"
-                  />
+                    />
+                    <OverlayPanel
+                      :ref="`p_a_${slotProps.data.id}`"
+                      appendTo="body"
+                      :showCloseIcon="true"
+                      :id="`p_a_${slotProps.data.id}`"
+                    >
+                      <Image
+                        preview
+                        width="250"
+                        :src="
+                          partGetDefaultAttachment(
+                            slotProps.data.part_attachments
+                          ).picture_medium
+                        "
+                      ></Image>
+                    </OverlayPanel>
+                  </template>
+                  <a
+                    href="#"
+                    class="no-underline"
+                    @click.prevent="viewPartModal(slotProps.data)"
+                    >{{ slotProps.data.name }}</a
+                  >
                   <br />
-                  <Button
-                    class="mt-1 mr-1"
-                    label="update"
-                    @click.prevent="
-                      updateInplaceQty(
-                        $event,
-                        slotProps.data,
-                        slotProps.data.stock_qty
-                      )
-                    "
-                  ></Button>
-                </template>
-              </Inplace>
-            </template>
-            <template #filter="{ filterModel }">
-              <InputNumber
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="qty"
-              />
-            </template>
-          </Column>
-          <Column
-            header="Min"
-            :sortable="true"
-            field="stock_qty_min"
-            dataType="numeric"
-            ><template #body="slotProps">
-              <Inplace
-                :ref="`inplace_qty_min_${slotProps.data.id}`"
-                :closable="true"
-              >
-                <template #display
-                  ><span>{{ slotProps.data.stock_qty_min }}</span></template
+                  <template v-if="slotProps.data.description">
+                    {{
+                      slotProps.data.category
+                        ? slotProps.data.category.name
+                        : "No category"
+                    }}: {{ slotProps.data.description }}
+                  </template>
+                  <template v-else>
+                    {{
+                      slotProps.data.category
+                        ? slotProps.data.category.name
+                        : "No category"
+                    }}
+                  </template>
+                </div>
+              </template>
+              <template #filter="{ filterModel }">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search by name"
+                />
+              </template>
+            </Column>
+            <Column
+              header="Storage"
+              :sortable="true"
+              field="storage_id"
+              :filterMatchModeOptions="matchModes.storage"
+            >
+              <template #body="slotProps">{{
+                slotProps.data.storage && slotProps.data.storage.name
+                  ? slotProps.data.storage.name
+                  : "-"
+              }}</template>
+              <template #filter="{ filterModel }">
+                <TreeSelect
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search by storage"
+                  :options="choicesStorageLocationWithNo"
+                  selectionMode="single"
+                />
+              </template>
+            </Column>
+            <Column
+              header="Stock"
+              :sortable="true"
+              field="stock_qty"
+              dataType="numeric"
+              :filterMatchModeOptions="matchModes.qty"
+            >
+              <template #body="slotProps">
+                <Inplace
+                  :ref="`inplace_qty_${slotProps.data.id}`"
+                  :closable="true"
                 >
-                <template #content>
-                  <InputNumber
-                    :inputId="`qty_${slotProps.data.id}`"
-                    mode="decimal"
-                    showButtons
-                    :min="0"
-                    v-model="slotProps.data.stock_qty_min"
-                    class="w-3"
-                  />
-                  <br />
-                  <Button
-                    class="mt-1 mr-1"
-                    label="update"
-                    @click.prevent="
-                      updateInplaceQtyMin(
-                        $event,
-                        slotProps.data,
-                        slotProps.data.stock_qty_min
-                      )
-                    "
-                  ></Button>
-                </template>
-              </Inplace> </template
-          ></Column>
-          <Column header="Unit" :sortable="true" field="part_unit.name">
-            <template #body="slotProps">{{
-              slotProps.data.part_unit && slotProps.data.part_unit.name
-                ? slotProps.data.part_unit.name
-                : "-"
-            }}</template>
-          </Column>
-          <Column
-            header="Footprint"
-            :sortable="true"
-            field="footprint_id"
-            :filterMatchModeOptions="matchModes.footprint"
-          >
-            <template #body="slotProps">
-              <span
-                v-tooltip="{
-                  value: slotProps.data.footprint
-                    ? slotProps.data.footprint.description
-                    : '',
-                  disabled: false,
-                }"
-              >
-                {{
-                  slotProps.data.footprint ? slotProps.data.footprint.name : "-"
-                }}
-              </span>
-            </template>
-            <template #filter="{ filterModel }">
-              <MultiSelect
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search by footprint"
-                :options="choicesFootprintWithNo"
-                optionLabel="name"
-                optionValue="id"
-                optionGroupLabel="category"
-                optionGroupChildren="footprints"
-                :selectionLimit="1"
-                :filter="true"
-              />
-            </template>
-          </Column>
-          <Column :sortable="false" headerStyle="width: 6em"
-            ><template #body="slotProps">
-              <span class="p-buttonset">
-                <router-link
-                  :to="{
-                    name: 'parts-edit',
-                    params: { partId: slotProps.data.id },
+                  <template #display
+                    ><span>{{ slotProps.data.stock_qty }}</span></template
+                  >
+                  <template #content>
+                    <InputNumber
+                      :inputId="`qty_${slotProps.data.id}`"
+                      mode="decimal"
+                      showButtons
+                      :min="0"
+                      v-model="slotProps.data.stock_qty"
+                      class="w-3"
+                    />
+                    <br />
+                    <Button
+                      class="mt-1 mr-1"
+                      label="update"
+                      @click.prevent="
+                        updateInplaceQty(
+                          $event,
+                          slotProps.data,
+                          slotProps.data.stock_qty
+                        )
+                      "
+                    ></Button>
+                  </template>
+                </Inplace>
+              </template>
+              <template #filter="{ filterModel }">
+                <InputNumber
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="qty"
+                />
+              </template>
+            </Column>
+            <Column
+              header="Min"
+              :sortable="true"
+              field="stock_qty_min"
+              dataType="numeric"
+              ><template #body="slotProps">
+                <Inplace
+                  :ref="`inplace_qty_min_${slotProps.data.id}`"
+                  :closable="true"
+                >
+                  <template #display
+                    ><span>{{ slotProps.data.stock_qty_min }}</span></template
+                  >
+                  <template #content>
+                    <InputNumber
+                      :inputId="`qty_${slotProps.data.id}`"
+                      mode="decimal"
+                      showButtons
+                      :min="0"
+                      v-model="slotProps.data.stock_qty_min"
+                      class="w-3"
+                    />
+                    <br />
+                    <Button
+                      class="mt-1 mr-1"
+                      label="update"
+                      @click.prevent="
+                        updateInplaceQtyMin(
+                          $event,
+                          slotProps.data,
+                          slotProps.data.stock_qty_min
+                        )
+                      "
+                    ></Button>
+                  </template>
+                </Inplace> </template
+            ></Column>
+            <Column header="Unit" :sortable="true" field="part_unit.name">
+              <template #body="slotProps">{{
+                slotProps.data.part_unit && slotProps.data.part_unit.name
+                  ? slotProps.data.part_unit.name
+                  : "-"
+              }}</template>
+            </Column>
+            <Column
+              header="Footprint"
+              :sortable="true"
+              field="footprint_id"
+              :filterMatchModeOptions="matchModes.footprint"
+            >
+              <template #body="slotProps">
+                <span
+                  v-tooltip="{
+                    value: slotProps.data.footprint
+                      ? slotProps.data.footprint.description
+                      : '',
+                    disabled: false,
                   }"
                 >
+                  {{
+                    slotProps.data.footprint
+                      ? slotProps.data.footprint.name
+                      : "-"
+                  }}
+                </span>
+              </template>
+              <template #filter="{ filterModel }">
+                <MultiSelect
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search by footprint"
+                  :options="choicesFootprintWithNo"
+                  optionLabel="name"
+                  optionValue="id"
+                  optionGroupLabel="category"
+                  optionGroupChildren="footprints"
+                  :selectionLimit="1"
+                  :filter="true"
+                />
+              </template>
+            </Column>
+            <Column :sortable="false" headerStyle="width: 6em"
+              ><template #body="slotProps">
+                <span class="p-buttonset">
+                  <router-link
+                    :to="{
+                      name: 'parts-edit',
+                      params: { partId: slotProps.data.id },
+                    }"
+                  >
+                    <Button
+                      type="button"
+                      icon="fa fa-edit"
+                      class="p-button-primary"
+                      v-tooltip="'edit'"
+                    ></Button>
+                  </router-link>
                   <Button
                     type="button"
-                    icon="fa fa-edit"
-                    class="p-button-primary"
-                    v-tooltip="'edit'"
+                    icon="fa fa-trash-o"
+                    class="p-button-danger"
+                    v-tooltip="'delete'"
+                    @click="deletePart($event, slotProps.data)"
                   ></Button>
-                </router-link>
-                <Button
-                  type="button"
-                  icon="fa fa-trash-o"
-                  class="p-button-danger"
-                  v-tooltip="'delete'"
-                  @click="deletePart($event, slotProps.data)"
-                ></Button>
-              </span>
-            </template>
-          </Column>
-        </DataTable>
-      </TabPanel>
-      <TabPanel>
-        <template #header>
-          <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
-        </template>
-        <div class="grid">
-          <div class="col-2" v-for="part in parts" :key="part.id">
-            <Card :title="part.name">
-              <template #title>
-                {{ part.name }}
+                </span>
               </template>
-              <template #content>
-                <div class="mb-1 text-sm">
-                  {{ part.description || "No description." }}
-                </div>
-                <Image
-                  v-if="partGetDefaultAttachment(part.part_attachments)"
-                  preview
-                  width="150"
-                  :src="
-                    partGetDefaultAttachment(part.part_attachments)
-                      .picture_medium
-                  "
-                ></Image>
-                <template v-else>
-                  <span class="fa-stack fa-5x">
-                    <i class="fa fa-file-picture-o fa-stack-2x" />
-                    <i class="fa fa-question fa-stack-1x text-orange-400" />
-                  </span>
+            </Column>
+          </DataTable>
+        </TabPanel>
+        <TabPanel>
+          <template #header>
+            <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
+          </template>
+          <div class="grid">
+            <div class="col-2" v-for="part in parts" :key="part.id">
+              <Card :title="part.name">
+                <template #title>
+                  {{ part.name }}
                 </template>
-              </template>
-              <template #footer>
-                <div class="text-center">
-                  <div class="text-sm">qty: {{ part.stock_qty }}</div>
-                  <Button
-                    class="p-button-outlined mt-1"
-                    label="View details"
-                    @click.prevent="viewPartModal(slotProps.data)"
-                  ></Button>
-                </div>
-              </template>
-            </Card>
+                <template #content>
+                  <div class="mb-1 text-sm">
+                    {{ part.description || "No description." }}
+                  </div>
+                  <Image
+                    v-if="partGetDefaultAttachment(part.part_attachments)"
+                    preview
+                    width="150"
+                    :src="
+                      partGetDefaultAttachment(part.part_attachments)
+                        .picture_medium
+                    "
+                  ></Image>
+                  <template v-else>
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-file-picture-o fa-stack-2x" />
+                      <i class="fa fa-question fa-stack-1x text-orange-400" />
+                    </span>
+                  </template>
+                </template>
+                <template #footer>
+                  <div class="text-center">
+                    <div class="text-sm">qty: {{ part.stock_qty }}</div>
+                    <Button
+                      class="p-button-outlined mt-1"
+                      label="View details"
+                      @click.prevent="viewPartModal(slotProps.data)"
+                    ></Button>
+                  </div>
+                </template>
+              </Card>
+            </div>
           </div>
-        </div>
-      </TabPanel>
-    </TabView>
+        </TabPanel>
+      </TabView>
+    </div>
   </div>
 </template>
 
