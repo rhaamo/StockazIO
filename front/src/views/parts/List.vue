@@ -352,6 +352,7 @@ export default {
         { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
       ],
     },
+    // Note: this is duplicated in watch: categoryId()
     filters: {
       name: {
         constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
@@ -495,6 +496,20 @@ export default {
   },
   watch: {
     categoryId: function () {
+      // Reset filters
+      this.filters.name.constraints = [
+        { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+      ];
+      this.filters.storage_id.constraints = [
+        { value: null, matchMode: FilterMatchMode.EQUALS },
+      ];
+      this.filters.stock_qty.constraints = [
+        { value: null, matchMode: FilterMatchMode.EQUALS },
+      ];
+      this.filters.footprint_id.constraints = [
+        { value: null, matchMode: FilterMatchMode.EQUALS },
+      ];
+
       this.categoryChanged();
       this.loadLazyData();
     },
