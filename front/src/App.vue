@@ -133,9 +133,80 @@ export default {
       searchTerm: "",
       menuItemsLoggedIn: [
         { separator: true },
-        { label: "Edit", icon: "fa fa-cogs fa-fw", items: [] },
-        { label: "View", icon: "fa fa-list fa-fw", items: [] },
-        { label: "Tools", icon: "fa fa-tasks fa-fw", items: [] },
+        {
+          label: "Edit",
+          icon: "fa fa-cogs fa-fw",
+          items: [
+            { label: "Footprints", icon: "fa fa-paw fa-fw", to: {} },
+            {
+              label: "Manufacturers",
+              icon: "fa fa-home fa-fw",
+              to: { name: "manufacturers-list" },
+            },
+            {
+              label: "Distributors",
+              icon: "fa fa-car fa-fw",
+              to: { name: "distributors-list" },
+            },
+            {
+              label: "Storage",
+              icon: "fa fa-archive fa-fw",
+              to: { name: "storages-list" },
+            },
+            {
+              label: "Parts units",
+              icon: "fa fa-cogs fa-fw",
+              to: { name: "part-units-list" },
+            },
+            {
+              label: "Parameters Units",
+              icon: "fa fa-cogs fa-fw",
+              to: { name: "parameters-units-list" },
+            },
+            {
+              label: "Part Parameters Presets",
+              icon: "fa fa-list fa-fw",
+              to: { name: "parameters-presets-list" },
+            },
+            {
+              label: "Label Templates",
+              icon: "fa fa-file-text fa-fw",
+              to: { name: "label-templates-list" },
+            },
+          ],
+        },
+        {
+          label: "View",
+          icon: "fa fa-list fa-fw",
+          items: [
+            {
+              label: "Informations",
+              icon: "fa fa-cogs fa-fw",
+              to: { name: "view-infos" },
+            },
+            {
+              label: "Storage tree",
+              icon: "fa fa-list-alt fa-fw",
+              to: { name: "view-storage-tree" },
+            },
+            {
+              label: "Public parts",
+              icon: "fa fa-list-alt fa-fw",
+              to: { name: "public-parts" },
+            },
+          ],
+        },
+        {
+          label: "Tools",
+          icon: "fa fa-tasks fa-fw",
+          items: [
+            {
+              label: "Orders importer",
+              icon: "fa fa-shopping-cart fa-fw",
+              to: { name: "orders-importer" },
+            },
+          ],
+        },
         { separator: true },
         {
           label: "Projects",
