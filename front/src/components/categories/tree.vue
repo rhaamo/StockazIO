@@ -40,7 +40,10 @@ export default {
   }),
   computed: {
     ...mapState(useServerStore, {
-      parts_uncategorized_count: (store) => store.parts_uncategorized_count,
+      parts_uncategorized_count: (store) =>
+        typeof store.parts_uncategorized_count == "number"
+          ? store.parts_uncategorized_count
+          : "n/a",
     }),
     currentUser() {
       return this.userStore.currentUser && this.oauthStore.loggedIn;
