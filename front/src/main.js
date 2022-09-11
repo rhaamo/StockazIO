@@ -28,6 +28,7 @@ import OverlayPanel from "primevue/overlaypanel";
 import Image from "primevue/image";
 import Tooltip from "primevue/tooltip";
 import Inplace from "primevue/inplace";
+import Card from "primevue/card";
 
 import App from "./App.vue";
 import router from "./router";
@@ -88,6 +89,7 @@ app.component("TabPanel", TabPanel);
 app.component("OverlayPanel", OverlayPanel);
 app.component("Image", Image);
 app.component("Inplace", Inplace);
+app.component("Card", Card);
 
 app.directive("tooltip", Tooltip);
 

@@ -302,7 +302,45 @@
         <template #header>
           <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
         </template>
-        TODO
+        <div class="grid">
+          <div class="col-2" v-for="part in parts" :key="part.id">
+            <Card :title="part.name">
+              <template #title>
+                {{ part.name }}
+              </template>
+              <template #content>
+                <div class="mb-1 text-sm">
+                  {{ part.description || "No description." }}
+                </div>
+                <Image
+                  v-if="partGetDefaultAttachment(part.part_attachments)"
+                  preview
+                  width="150"
+                  :src="
+                    partGetDefaultAttachment(part.part_attachments)
+                      .picture_medium
+                  "
+                ></Image>
+                <template v-else>
+                  <span class="fa-stack fa-5x">
+                    <i class="fa fa-file-picture-o fa-stack-2x" />
+                    <i class="fa fa-question fa-stack-1x text-orange-400" />
+                  </span>
+                </template>
+              </template>
+              <template #footer>
+                <div class="text-center">
+                  <div class="text-sm">qty: {{ part.stock_qty }}</div>
+                  <Button
+                    class="p-button-outlined mt-1"
+                    label="View details"
+                    @click.prevent="viewPartModal(slotProps.data)"
+                  ></Button>
+                </div>
+              </template>
+            </Card>
+          </div>
+        </div>
       </TabPanel>
     </TabView>
   </div>
@@ -316,7 +354,7 @@ import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { FilterMatchMode } from "primevue/api";
 import utils from "@/utils.js";
-import { cloneDeep } from "lodash";
+import { cloneDeep, chunk } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 
@@ -497,6 +535,9 @@ export default {
     },
     storageUuid() {
       return this.$route.query.storage_uuid;
+    },
+    thumbnailsChunked() {
+      return chunk(this.parts, 6);
     },
   },
   watch: {
