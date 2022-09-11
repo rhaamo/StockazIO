@@ -36,7 +36,11 @@
           <template #header v-if="selectedParts && selectedParts.length">
             <Button label="Change category" class="p-button-secondary" />
             <Button label="Change location" class="p-button-secondary ml-2" />
-            <Button label="Delete" class="p-button-danger ml-2" />
+            <Button
+              label="Delete"
+              class="p-button-danger ml-2"
+              @click="deletePartMultiple($event)"
+            />
           </template>
 
           <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
@@ -600,6 +604,51 @@ export default {
               logger.default.error("Error with part deletion", err);
               this.loadLazyData();
             });
+        },
+        reject: () => {
+          return;
+        },
+      });
+    },
+    deletePartMultiple(event) {
+      this.confirm.require({
+        message: `Are you sure you want to delete all the selected parts ?`,
+        header: `Deleting ${this.selectedParts.length} parts.`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          const _bulkDelete = async (parts) => {
+            for (let part of parts) {
+              console.log("delete part", part.name);
+              await apiService
+                .deletePart(part.id)
+                .then((val) => {
+                  this.toast.add({
+                    severity: "success",
+                    summary: `Deleting ${part.name}`,
+                    detail: "Success",
+                    life: 5000,
+                  });
+                  this.preloadsStore.decrementCategoryPartsCount(
+                    this.categoryId
+                  );
+                })
+                .catch((err) => {
+                  this.toast.add({
+                    severity: "error",
+                    summary: `Deleting ${part.name}`,
+                    detail: "An error occured, please try again later",
+                    life: 5000,
+                  });
+                  logger.default.error("Error with part deletion", err);
+                });
+            }
+          };
+
+          _bulkDelete(this.selectedParts).then(() => {
+            console.log("reload");
+            this.selectedParts = [];
+            this.loadLazyData();
+          });
         },
         reject: () => {
           return;
