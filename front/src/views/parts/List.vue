@@ -425,6 +425,7 @@ import { cloneDeep, chunk } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import PartViewModal from "@/components/parts/view.vue";
+import LabelGeneratorModal from "@/components/label/generator.vue";
 import { h } from "vue";
 import Button from "primevue/button";
 
@@ -827,7 +828,29 @@ export default {
           logger.default.error("Error with getting part details", err);
         });
     },
-    showLabelGenerator(item) {},
+    showLabelGenerator(item) {
+      const viewPartRef = this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [
+              h("h3", [
+                h("i", { class: "fa fa-qrcode mr-1" }),
+                h("span", "Label Generator"),
+              ]),
+            ];
+          },
+        },
+        data: {
+          items: [item],
+        },
+      });
+    },
     toggleOverlayPanel(event, ref) {
       this.$refs[ref].toggle(event);
     },
