@@ -11,6 +11,20 @@
         <div class="mt-2 mb-2 surface-50 p-2">{{ part.description }}</div>
 
         <div>
+          <DataTable
+            :value="mainTableItems"
+            class="p-datatable-sm"
+            stripedRows
+            responsiveLayout="scroll"
+          >
+            <Column field="item" header="Item"></Column>
+            <Column field="value" header="Value"></Column>
+          </DataTable>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="mb-3">
           <Galleria
             :value="pictureAttachments"
             containerStyle="max-width: 640px"
@@ -33,54 +47,142 @@
           </Galleria>
         </div>
 
-        <div>
-          <DataTable
-            :value="mainTableItems"
-            class="p-datatable-sm"
-            stripedRows
-            responsiveLayout="scroll"
-          >
-            <Column field="item"></Column>
-            <Column field="value"></Column>
-          </DataTable>
-        </div>
-      </div>
-
-      <div class="col-6">
         <TabView :scrollable="true">
           <TabPanel>
             <template #header>
               <span>Parameters</span>
             </template>
-            coin
+            <DataTable
+              :value="part.part_parameters_value"
+              class="p-datatable-sm"
+              stripedRows
+              responsiveLayout="scroll"
+            >
+              <Column field="name" header="Name"></Column>
+              <Column field="description" header="Description"></Column>
+              <Column header="Value">
+                <template #body="slotProps">{{
+                  slotProps.data.unit
+                    ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})`
+                    : ""
+                }}</template>
+              </Column>
+            </DataTable>
           </TabPanel>
 
           <TabPanel>
             <template #header>
               <span>Distributors</span>
             </template>
-            yyy
+            <DataTable
+              :value="part.distributors_sku"
+              class="p-datatable-sm"
+              stripedRows
+              responsiveLayout="scroll"
+            >
+              <Column field="sku" header="SKU"></Column>
+              <Column header="Distributor">
+                <template #body="slotProps">{{
+                  slotProps.data.distributor
+                    ? slotProps.data.distributor.name
+                    : "No name"
+                }}</template>
+              </Column>
+              <Column header="Datasheet">
+                <template #body="slotProps">
+                  <template v-if="slotProps.data.datasheet_url">
+                    <a :href="slotProps.data.datasheet_url" target="_blank"
+                      ><i class="fa fa-file-pdf-o"></i>
+                      {{ slotProps.data.datasheet_url }}</a
+                    ></template
+                  ></template
+                >
+              </Column>
+            </DataTable>
           </TabPanel>
 
           <TabPanel>
             <template #header>
               <span>Manufacturers</span>
             </template>
-            zzz
+            <DataTable
+              :value="part.manufacturers_sku"
+              class="p-datatable-sm"
+              stripedRows
+              responsiveLayout="scroll"
+            >
+              <Column field="sku" header="SKU"></Column>
+              <Column header="Manufacturer">
+                <template #body="slotProps">{{
+                  slotProps.data.manufacturer
+                    ? slotProps.data.manufacturer.name
+                    : "No name"
+                }}</template>
+              </Column>
+              <Column header="Datasheet">
+                <template #body="slotProps">
+                  <template v-if="slotProps.data.datasheet_url">
+                    <a :href="slotProps.data.datasheet_url" target="_blank"
+                      ><i class="fa fa-file-pdf-o"></i>
+                      {{ slotProps.data.datasheet_url }}</a
+                    ></template
+                  ></template
+                >
+              </Column>
+            </DataTable>
           </TabPanel>
 
           <TabPanel>
             <template #header>
               <span>Files</span>
             </template>
-            111
+            <DataTable
+              :value="part.part_attachments"
+              class="p-datatable-sm"
+              stripedRows
+              responsiveLayout="scroll"
+            >
+              <Column header="Link"
+                ><template #body="slotProps">
+                  <template
+                    v-if="
+                      slotProps.data.picture && slotProps.data.picture_medium
+                    "
+                  >
+                    <i class="fa fa-picture-o"></i>
+                    <a :href="slotProps.data.picture">{{
+                      stripPathFromFileUrl(slotProps.data.picture)
+                    }}</a>
+                  </template>
+                  <template v-else>
+                    <i class="fa fa-code-o"></i>
+                    <a :href="slotProps.data.file">{{
+                      stripPathFromFileUrl(slotProps.data.file)
+                    }}</a>
+                  </template>
+                </template></Column
+              >
+              <Column field="description" header="Description"> </Column>
+            </DataTable>
           </TabPanel>
 
           <TabPanel>
             <template #header>
               <span>Stock history</span>
             </template>
-            222
+            <DataTable
+              :value="part.part_stock_history"
+              class="p-datatable-sm"
+              stripedRows
+              responsiveLayout="scroll"
+            >
+              <Column field="created_at" header="Date"
+                ><template #body="slotProps">{{
+                  formatDate(slotProps.data.created_at)
+                }}</template></Column
+              >
+              <Column field="diff" header="Amount"> </Column>
+            </DataTable>
           </TabPanel>
         </TabView>
       </div>
@@ -91,6 +193,7 @@
 <script>
 import dateFnsFormat from "date-fns/format";
 import dateFnsParseISO from "date-fns/parseISO";
+import utils from "@/utils.js";
 
 export default {
   inject: ["dialogRef"],
@@ -114,34 +217,34 @@ export default {
     mainTableItems() {
       return [
         {
-          item: "Footprint:",
+          item: "Footprint",
           value: this.part.footprint ? this.part.footprint.name : "",
         },
         {
-          item: "Storage:",
+          item: "Storage",
           value: this.part.storage ? this.part.storage.name : "",
         },
         {
-          item: "Category:",
+          item: "Category",
           value: this.part.category ? this.part.category.name : "",
         },
         {
-          item: "Internal part number:",
+          item: "Internal part number",
           value: this.part.internal_part_number || "",
         },
-        { item: "Comment:", value: this.part.comment || "" },
+        { item: "Comment", value: this.part.comment || "" },
         {
-          item: "Production remarks:",
+          item: "Production remarks",
           value: this.part.production_remarks || "",
         },
         {
-          item: "Sheet Need review:",
+          item: "Sheet Need review",
           value: this.part.needs_review ? "yes" : "no",
         },
-        { item: "Part Condition:", value: this.part.condition || "" },
-        { item: "Can be sold:", value: this.part.can_be_sold ? "yes" : "no" },
-        { item: "Added:", value: this.formatDate(this.part.created_at) },
-        { item: "Updated:", value: this.formatDate(this.part.updated_at) },
+        { item: "Part Condition", value: this.part.condition || "" },
+        { item: "Can be sold", value: this.part.can_be_sold ? "yes" : "no" },
+        { item: "Added", value: this.formatDate(this.part.created_at) },
+        { item: "Updated", value: this.formatDate(this.part.updated_at) },
       ];
     },
     pictureAttachments() {
@@ -157,6 +260,9 @@ export default {
   methods: {
     formatDate(date) {
       return dateFnsFormat(dateFnsParseISO(date), "E MMM d yyyy HH:mm");
+    },
+    stripPathFromFileUrl(url) {
+      return utils.baseName(url);
     },
   },
 };

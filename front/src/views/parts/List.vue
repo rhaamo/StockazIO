@@ -759,59 +759,73 @@ export default {
       })[0]; // return first item
     },
     viewPartModal(part) {
-      const viewPartRef = this.$dialog.open(PartViewModal, {
-        props: {
-          modal: true,
-          style: {
-            width: "70vw",
-          },
-        },
-        templates: {
-          header: () => {
-            if (part.private) {
-              return [
-                h("h3", [
-                  h("i", { class: "fa fa-lock mr-1" }),
-                  h("span", part.name),
-                ]),
-              ];
-            } else {
-              return [h("h3", part.name)];
-            }
-          },
-          footer: () => {
-            return [
-              h(Button, {
-                label: "Show full details",
-                onClick: () => {
-                  viewPartRef.close();
-                  this.$router.replace({
-                    name: "parts-details",
-                    params: { partId: part.id },
-                  });
-                },
-                class: "p-button-outlined",
-              }),
-              h(Button, {
-                label: "Delete",
-                onClick: () => {
-                  this.deletePart(null, part);
-                  viewPartRef.close();
-                },
-                class: "p-button-danger",
-              }),
-              h(Button, {
-                label: "Close",
-                onClick: () => viewPartRef.close(),
-                class: "p-button-success",
-              }),
-            ];
-          },
-        },
-        data: {
-          part: part,
-        },
-      });
+      // Get full part object infos
+      apiService
+        .getPart(part.id)
+        .then((val) => {
+          const viewPartRef = this.$dialog.open(PartViewModal, {
+            props: {
+              modal: true,
+              style: {
+                width: "70vw",
+              },
+            },
+            templates: {
+              header: () => {
+                if (part.private) {
+                  return [
+                    h("h3", [
+                      h("i", { class: "fa fa-lock mr-1" }),
+                      h("span", part.name),
+                    ]),
+                  ];
+                } else {
+                  return [h("h3", part.name)];
+                }
+              },
+              footer: () => {
+                return [
+                  h(Button, {
+                    label: "Show full details",
+                    onClick: () => {
+                      viewPartRef.close();
+                      this.$router.replace({
+                        name: "parts-details",
+                        params: { partId: part.id },
+                      });
+                    },
+                    class: "p-button-outlined",
+                  }),
+                  h(Button, {
+                    label: "Delete",
+                    onClick: () => {
+                      this.deletePart(null, part);
+                      viewPartRef.close();
+                    },
+                    class: "p-button-danger",
+                  }),
+                  h(Button, {
+                    label: "Close",
+                    onClick: () => viewPartRef.close(),
+                    class: "p-button-success",
+                  }),
+                ];
+              },
+            },
+            data: {
+              part: val.data,
+            },
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with getting part details", err);
+        });
     },
     showLabelGenerator(item) {},
     toggleOverlayPanel(event, ref) {
