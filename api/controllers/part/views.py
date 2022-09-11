@@ -4,12 +4,12 @@ from django.db.models import F
 import json
 
 from controllers.categories.models import Category
-from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 from controllers.storage.models import StorageLocation
+from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 
+from rest_framework import views
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
-from rest_framework import views
 from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter, SearchFilter
 
@@ -90,7 +90,6 @@ class PartViewSet(ModelViewSet):
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
-        storage_id = self.request.query_params.get("storage_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
         sellable = self.request.query_params.get("sellable", None)
 
@@ -112,11 +111,6 @@ class PartViewSet(ModelViewSet):
             category = Category.objects.get(id=category_id).get_descendants(include_self=True)
             if category is not None:
                 queryset = queryset.filter(category__in=category)
-
-        if storage_id in ["0", 0]:
-            queryset = queryset.filter(storage_id__isnull=True)
-        elif storage_id:
-            queryset = queryset.filter(storage_id=storage_id)
 
         if storage_uuid:
             queryset = queryset.filter(storage__uuid=storage_uuid)
@@ -144,28 +138,36 @@ class PartViewSet(ModelViewSet):
             filters = json.loads(filters)
             for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
                 # not implemented: in, between, and dates
-                if filters[field]["constraints"][0]["value"]:
-                    column_name = field
-                    if filters[field]["constraints"][0]["matchMode"] == "startsWith":
-                        queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "contains":
-                        queryset = queryset.filter(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "notContains":
-                        queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "endsWith":
-                        queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "equals":
-                        queryset = queryset.filter(**{field: filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
-                        queryset = queryset.exclude(**{field: filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "lt":
-                        queryset = queryset.filter(**{f"{field}__lt": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "lte":
-                        queryset = queryset.filter(**{f"{field}__lte": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "gt":
-                        queryset = queryset.filter(**{f"{field}__gt": filters[field]["constraints"][0]["value"]})
-                    elif filters[field]["constraints"][0]["matchMode"] == "gte":
-                        queryset = queryset.filter(**{f"{field}__gte": filters[field]["constraints"][0]["value"]})
+                if filters[field]["constraints"][0]["value"] is not None:
+                    # if field = (storage_id|footprint_id) and value == 0
+                    if (field == "storage_id" or field == "footprint_id") and int(filters[field]["constraints"][0]["value"]) == 0:
+                        # They need to have 0 handled properly
+                        if filters[field]["constraints"][0]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{f"{field}__isnull": True})
+                        elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{f"{field}__isnull": True})
+                    else:
+                        # any other field or value != 0 (for storage and footprint)
+                        if filters[field]["constraints"][0]["matchMode"] == "startsWith":
+                            queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "contains":
+                            queryset = queryset.filter(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "notContains":
+                            queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "endsWith":
+                            queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{field: filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{field: filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "lt":
+                            queryset = queryset.filter(**{f"{field}__lt": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "lte":
+                            queryset = queryset.filter(**{f"{field}__lte": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "gt":
+                            queryset = queryset.filter(**{f"{field}__gt": filters[field]["constraints"][0]["value"]})
+                        elif filters[field]["constraints"][0]["matchMode"] == "gte":
+                            queryset = queryset.filter(**{f"{field}__gte": filters[field]["constraints"][0]["value"]})
 
         if (sortField and sortOrder):
             if sortOrder == 1:

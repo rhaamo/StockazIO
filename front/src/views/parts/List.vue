@@ -137,7 +137,7 @@
                 v-model="filterModel.value"
                 class="p-column-filter"
                 placeholder="Search by storage"
-                :options="choicesStorageLocation"
+                :options="choicesStorageLocationWithNo"
                 selectionMode="single"
               />
             </template>
@@ -209,7 +209,7 @@
                 v-model="filterModel.value"
                 class="p-column-filter"
                 placeholder="Search by footprint"
-                :options="choicesFootprint"
+                :options="choicesFootprintWithNo"
                 optionLabel="name"
                 optionValue="id"
                 optionGroupLabel="category"
@@ -217,6 +217,7 @@
                 :selectionLimit="1"
                 :filter="true"
               />
+              label + checkbox (empty filter and set id to 0)
             </template>
           </Column>
           <Column :sortable="false"
@@ -347,6 +348,19 @@ export default {
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.PARTS || 10,
     }),
+    choicesFootprintWithNo() {
+      return [
+        {
+          category: "No footprint",
+          footprints: [{ id: 0, name: "No footprint" }],
+        },
+      ].concat(this.choicesFootprint);
+    },
+    choicesStorageLocationWithNo() {
+      return [
+        { key: "0", label: "No Storage Location", icon: "fa fa-close" },
+      ].concat(this.choicesStorageLocation);
+    },
     searchQuery() {
       return this.$route.query.q;
     },
