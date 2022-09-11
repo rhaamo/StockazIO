@@ -31,6 +31,15 @@
           class="p-datatable-sm"
           removableSort
         >
+          <template #empty> No parts found. </template>
+
+          <template #header v-if="selectedParts && selectedParts.length">
+            <Button label="Change category" class="p-button-secondary" />
+            <Button label="Change location" class="p-button-secondary ml-2" />
+            <Button label="Delete" class="p-button-danger ml-2" />
+          </template>
+
+          <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
           <Column :sortable="false">
             <template #body="slotProps">
               <div @click="showLabelGenerator(slotProps.data)">
@@ -217,22 +226,26 @@
                 :selectionLimit="1"
                 :filter="true"
               />
-              label + checkbox (empty filter and set id to 0)
             </template>
           </Column>
           <Column :sortable="false"
-            ><template #body>
+            ><template #body="slotProps">
               <Button
                 type="button"
                 icon="fa fa-edit"
                 class="p-button-primary"
                 v-tooltip="'edit'"
+                :to="{
+                  name: 'parts-edit',
+                  params: { partId: slotProps.data.id },
+                }"
               ></Button>
               <Button
                 type="button"
                 icon="fa fa-trash-o"
                 class="p-button-danger ml-2"
                 v-tooltip="'delete'"
+                @click="deletePart($event, slotProps.data)"
               ></Button
             ></template>
           </Column>
@@ -257,6 +270,8 @@ import logger from "@/logging";
 import { FilterMatchMode } from "primevue/api";
 import utils from "@/utils.js";
 import { cloneDeep } from "lodash";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 export default {
   data: () => ({
@@ -425,6 +440,8 @@ export default {
   setup: () => ({
     preloadsStore: usePreloadsStore(),
     serverStore: useServerStore(),
+    confirm: useConfirm(),
+    toast: useToast(),
   }),
   created() {},
   mounted() {
@@ -542,7 +559,8 @@ export default {
       const selectAll = event.checked;
 
       if (selectAll) {
-        // do something
+        this.selectAll = true;
+        this.selectedParts = cloneDeep(this.parts);
       } else {
         this.selectAll = false;
         this.selectedParts = [];
@@ -553,6 +571,40 @@ export default {
     },
     onRowUnselect() {
       this.selectAll = false;
+    },
+    deletePart(event, part) {
+      this.confirm.require({
+        message: `Are you sure you want to delete the part '${part.name}' ?`,
+        header: `Deleting '${part.name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .deletePart(part.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Deleting part",
+                detail: "Success",
+                life: 5000,
+              });
+              this.loadLazyData();
+              this.preloadsStore.decrementCategoryPartsCount(this.categoryId);
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Deleting part",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with part deletion", err);
+              this.loadLazyData();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
   },
 };
