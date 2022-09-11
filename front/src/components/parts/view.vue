@@ -3,12 +3,29 @@
     <div class="grid">
       <div class="col-6">
         <div class="grid">
-          <div class="col-3"><b>Qty:</b> {{ part.stock_qty }}</div>
+          <div class="col-3">
+            <template v-if="part.stock_qty >= part.stock_qty_min"
+              ><b>Qty:</b
+              ><span class="ml-1">{{ part.stock_qty }}</span></template
+            >
+            <template v-else>
+              <b>Qty:</b>
+              <span
+                class="text-red-500 ml-1"
+                v-tooltip="
+                  'Current stock is below minimum stock quantity or exhausted'
+                "
+                >{{ part.stock_qty }} <i class="fa fa-circle"></i
+              ></span>
+            </template>
+          </div>
           <div class="col-3"><b>Qty min:</b> {{ part.stock_qty_min }}</div>
           <div class="col-6"><b>Unit: </b> {{ partUnit }}</div>
         </div>
 
-        <div class="mt-2 mb-2 surface-50 p-2">{{ part.description }}</div>
+        <div class="mt-2 mb-2 surface-50 p-2">
+          {{ part.description || "No description" }}
+        </div>
 
         <div>
           <DataTable
