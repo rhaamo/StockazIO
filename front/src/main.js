@@ -31,6 +31,7 @@ import Inplace from "primevue/inplace";
 import Card from "primevue/card";
 import DialogService from "primevue/dialogservice";
 import DynamicDialog from "primevue/dynamicdialog";
+import Galleria from "primevue/galleria";
 
 import App from "./App.vue";
 import router from "./router";
@@ -94,6 +95,7 @@ app.component("Image", Image);
 app.component("Inplace", Inplace);
 app.component("Card", Card);
 app.component("DynamicDialog", DynamicDialog);
+app.component("Galleria", Galleria);
 
 app.directive("tooltip", Tooltip);
 

@@ -747,10 +747,24 @@ export default {
     viewPartModal(part) {
       const viewPartRef = this.$dialog.open(PartViewModal, {
         props: {
-          header: part.name,
           modal: true,
+          style: {
+            width: "70vw",
+          },
         },
         templates: {
+          header: () => {
+            if (part.private) {
+              return [
+                h("h3", [
+                  h("i", { class: "fa fa-lock mr-1" }),
+                  h("span", part.name),
+                ]),
+              ];
+            } else {
+              return [h("h3", part.name)];
+            }
+          },
           footer: () => {
             return [
               h(Button, {
