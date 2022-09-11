@@ -459,6 +459,17 @@ export default {
             },
           ],
         };
+      } else if (this.categoryId && this.categoryId == 0) {
+        return {
+          home: {
+            icon: "fa fa-folder-o mr-1",
+            to: {
+              name: "parts-category-list",
+              params: { categoryId: this.actualCurrentCategory.id },
+            },
+            label: "Uncategorized parts",
+          },
+        };
       } else {
         return {
           home: {
@@ -484,15 +495,8 @@ export default {
   },
   watch: {
     categoryId: function () {
-      this.lazyParams = {
-        first: 0,
-        rows: this.$refs.dt.rows,
-        sortField: null,
-        sortOrder: null,
-        filters: this.filters,
-      };
-      this.loadLazyData();
       this.categoryChanged();
+      this.loadLazyData();
     },
   },
   setup: () => ({
@@ -513,26 +517,37 @@ export default {
 
     this.$nextTick(() => {
       if (this.searchQuery) {
+        logger.default.info("mounted(): search query");
         this.lazyParams.search = this.searchQuery;
         this.loadLazyData();
       } else if (this.storageUuid) {
+        logger.default.info("mounted(): storage UUID");
         this.lazyParams.storageUuid = this.storageUuid;
         this.loadLazyData();
       } else {
-        this.loadLazyData();
+        logger.default.info("mounted(): default");
         this.categoryChanged();
+        this.loadLazyData();
       }
     });
   },
   methods: {
     categoryChanged() {
+      // on mount() we set the current category in the store
+      // instead of setting from the tree/node, so that way we get the
+      // category name even on direct access (otherwise we would only have the ID)
+      // if we have a 0 category (uncategorized)
       if (!this.categoryId || Number(this.categoryId) === 0) {
         this.preloadsStore.setCurrentCategory({
           id: this.categoryId,
           name: "none",
         });
+        // set the lazy params field
+        this.lazyParams.category_id = this.categoryId;
         return;
       }
+
+      // Else it is an existing category
       let curCat = null;
       const cb = (e) => {
         if (e.id === Number(this.categoryId)) {
@@ -540,13 +555,18 @@ export default {
         }
         e.children.forEach(cb);
       };
+      // we cycle over all categories to find the name too
       this.categories.forEach(cb);
       this.preloadsStore.setCurrentCategory({
         id: this.categoryId,
         name: curCat.name,
       });
+
+      // set the lazy params field
+      this.lazyParams.category_id = this.categoryId;
     },
     loadLazyData() {
+      logger.default.info("lazy loading", this.lazyParams);
       this.loading = true;
 
       // Do a quick cleanup of datas before sending them
