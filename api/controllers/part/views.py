@@ -150,36 +150,36 @@ class PartViewSet(ModelViewSet):
             filters = json.loads(filters)
             for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
                 # not implemented: in, between, and dates
-                if filters[field]["constraints"][0]["value"] is not None:
+                if filters[field]["value"] is not None:
                     # if field = (storage_id|footprint_id) and value == 0
-                    if (field == "storage_id" or field == "footprint_id") and int(filters[field]["constraints"][0]["value"]) == 0:
+                    if (field == "storage_id" or field == "footprint_id") and int(filters[field]["value"]) == 0:
                         # They need to have 0 handled properly
-                        if filters[field]["constraints"][0]["matchMode"] == "equals":
+                        if filters[field]["matchMode"] == "equals":
                             queryset = queryset.filter(**{f"{field}__isnull": True})
-                        elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
+                        elif filters[field]["matchMode"] == "notEquals":
                             queryset = queryset.exclude(**{f"{field}__isnull": True})
                     else:
                         # any other field or value != 0 (for storage and footprint)
-                        if filters[field]["constraints"][0]["matchMode"] == "startsWith":
-                            queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "contains":
-                            queryset = queryset.filter(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "notContains":
-                            queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "endsWith":
-                            queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "equals":
-                            queryset = queryset.filter(**{field: filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "notEquals":
-                            queryset = queryset.exclude(**{field: filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "lt":
-                            queryset = queryset.filter(**{f"{field}__lt": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "lte":
-                            queryset = queryset.filter(**{f"{field}__lte": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "gt":
-                            queryset = queryset.filter(**{f"{field}__gt": filters[field]["constraints"][0]["value"]})
-                        elif filters[field]["constraints"][0]["matchMode"] == "gte":
-                            queryset = queryset.filter(**{f"{field}__gte": filters[field]["constraints"][0]["value"]})
+                        if filters[field]["matchMode"] == "startsWith":
+                            queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "contains":
+                            queryset = queryset.filter(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notContains":
+                            queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "endsWith":
+                            queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lt":
+                            queryset = queryset.filter(**{f"{field}__lt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lte":
+                            queryset = queryset.filter(**{f"{field}__lte": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gt":
+                            queryset = queryset.filter(**{f"{field}__gt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gte":
+                            queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
 
         if (sortField and sortOrder):
             if sortOrder == 1:

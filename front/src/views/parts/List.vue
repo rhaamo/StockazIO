@@ -20,7 +20,7 @@
             :loading="loading"
             @page="onPage($event)"
             @sort="onSort($event)"
-            @update:filters="onFilter($event)"
+            @filter="onFilter($event)"
             filterDisplay="menu"
             responsiveLayout="scroll"
             v-model:selection="selectedParts"
@@ -467,18 +467,10 @@ export default {
     },
     // Note: this is duplicated in watch: categoryId()
     filters: {
-      name: {
-        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
-      },
-      storage_id: {
-        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
-      },
-      stock_qty: {
-        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
-      },
-      footprint_id: {
-        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
-      },
+      name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+      storage_id: { value: null, matchMode: FilterMatchMode.EQUALS },
+      stock_qty: { value: null, matchMode: FilterMatchMode.EQUALS },
+      footprint_id: { value: null, matchMode: FilterMatchMode.EQUALS },
     },
     selectAll: false,
     selectedParts: null,
@@ -613,18 +605,10 @@ export default {
   watch: {
     categoryId: function () {
       // Reset filters
-      this.filters.name.constraints = [
-        { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-      ];
-      this.filters.storage_id.constraints = [
-        { value: null, matchMode: FilterMatchMode.EQUALS },
-      ];
-      this.filters.stock_qty.constraints = [
-        { value: null, matchMode: FilterMatchMode.EQUALS },
-      ];
-      this.filters.footprint_id.constraints = [
-        { value: null, matchMode: FilterMatchMode.EQUALS },
-      ];
+      this.filters.name.value = null;
+      this.filters.storage_id.value = null;
+      this.filters.stock_qty.value = null;
+      this.filters.footprint_id.value = null;
       // Also delete search term from lazyParams object
       delete this.lazyParams.search;
 
@@ -713,9 +697,9 @@ export default {
 
       // Do a quick cleanup of datas before sending them
       const params = cloneDeep(this.lazyParams);
-      if (params.filters["storage_id"]["constraints"][0].value) {
-        params.filters["storage_id"]["constraints"][0].value = Object.keys(
-          params.filters["storage_id"]["constraints"][0].value
+      if (params.filters["storage_id"].value) {
+        params.filters["storage_id"].value = Object.keys(
+          params.filters["storage_id"].value
         )[0];
       }
 
