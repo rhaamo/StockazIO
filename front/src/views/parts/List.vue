@@ -20,7 +20,7 @@
             :loading="loading"
             @page="onPage($event)"
             @sort="onSort($event)"
-            @filter="onFilter($event)"
+            @update:filters="onFilter($event)"
             filterDisplay="menu"
             responsiveLayout="scroll"
             v-model:selection="selectedParts"
