@@ -270,26 +270,31 @@
               />
             </template>
           </Column>
-          <Column :sortable="false"
+          <Column :sortable="false" headerStyle="width: 6em"
             ><template #body="slotProps">
-              <Button
-                type="button"
-                icon="fa fa-edit"
-                class="p-button-primary"
-                v-tooltip="'edit'"
-                :to="{
-                  name: 'parts-edit',
-                  params: { partId: slotProps.data.id },
-                }"
-              ></Button>
-              <Button
-                type="button"
-                icon="fa fa-trash-o"
-                class="p-button-danger ml-2"
-                v-tooltip="'delete'"
-                @click="deletePart($event, slotProps.data)"
-              ></Button
-            ></template>
+              <span class="p-buttonset">
+                <router-link
+                  :to="{
+                    name: 'parts-edit',
+                    params: { partId: slotProps.data.id },
+                  }"
+                >
+                  <Button
+                    type="button"
+                    icon="fa fa-edit"
+                    class="p-button-primary"
+                    v-tooltip="'edit'"
+                  ></Button>
+                </router-link>
+                <Button
+                  type="button"
+                  icon="fa fa-trash-o"
+                  class="p-button-danger"
+                  v-tooltip="'delete'"
+                  @click="deletePart($event, slotProps.data)"
+                ></Button>
+              </span>
+            </template>
           </Column>
         </DataTable>
       </TabPanel>
