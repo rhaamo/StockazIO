@@ -39,7 +39,20 @@
               class="p-button-info"
               @click="toggleOverlayPanel($event, 'btnChangeCat')"
             />
-            <OverlayPanel ref="btnChangeCat">owo</OverlayPanel>
+            <OverlayPanel ref="btnChangeCat">
+              <TreeSelect
+                inputId="category"
+                placeholder="Film resistors ? MCUs ?"
+                v-model="bulkEditCategory"
+                :options="choicesCategory"
+                selectionMode="single"
+              />
+              <Button
+                label="Save"
+                class="ml-1"
+                @click="bulkChangeCategory($event)"
+              ></Button>
+            </OverlayPanel>
 
             <Button
               label="Change location"
@@ -49,7 +62,7 @@
             <OverlayPanel ref="btnChangeLoc">
               <TreeSelect
                 class="p-column-filter"
-                placeholder="Search by storage"
+                placeholder="Select storage"
                 :options="choicesStorageLocation"
                 selectionMode="single"
                 v-model="bulkEditStorage"
@@ -390,6 +403,20 @@ export default {
             }),
           };
         }),
+      choicesCategory: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.id,
+            label: e.name,
+            icon: `fa fa-folder-o`,
+          };
+          obj["selectable"] = true;
+          obj["children"] = e.children.map(cb);
+          return obj;
+        };
+        return [store.categories].map(cb);
+      },
     }),
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.PARTS || 10,
@@ -713,6 +740,52 @@ export default {
           logger.default.error("Error with storage part update", err);
           this.bulkEditStorage = null;
           this.toggleOverlayPanel(event, "btnChangeLoc");
+          this.selectedParts = null;
+          this.loadLazyData();
+        });
+    },
+    bulkChangeCategory(event) {
+      let ids = this.selectedParts.map((x) => {
+        return x.id;
+      });
+      let categoryId = Object.keys(this.bulkEditCategory)[0];
+
+      apiService
+        .changePartsCategory(ids, categoryId)
+        .then((val) => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating parts`,
+            detail: "Success",
+            life: 5000,
+          });
+          this.$nextTick(() => {
+            this.bulkEditCategory = null;
+            this.toggleOverlayPanel(event, "btnChangeCat");
+            for (let part of this.selectedParts) {
+              this.preloadsStore.decrementCategoryPartsCount(
+                part.category.id,
+                ids.length
+              );
+              this.preloadsStore.incrementCategoryPartsCount(
+                categoryId,
+                ids.length
+              );
+            }
+            this.selectedParts = null;
+            this.loadLazyData();
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating parts`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with category part update", err);
+          this.bulkEditCategory = null;
+          this.toggleOverlayPanel(event, "btnChangeCat");
           this.loadLazyData();
         });
     },
