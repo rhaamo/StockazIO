@@ -51,14 +51,13 @@
         </div>
         <div class="field col-12 md:col-6">
           <label for="part_unit" class="block">Part unit</label>
-          <MultiSelect
+          <Dropdown
             v-model="form.part_unit"
             placeholder="Centimeters ? Pieces ?"
             class="w-7"
             :options="choicesPartUnit"
             optionLabel="text"
             optionValue="value"
-            :selectionLimit="1"
           />
         </div>
 
@@ -220,7 +219,7 @@
 
         <div class="field col-12 md:col-6">
           <label for="footprint" class="block">Footprint</label>
-          <MultiSelect
+          <Dropdown
             inputId="footprint"
             v-model="form.footprint"
             placeholder="PDIP, BGA, SOIC, who knows"
@@ -230,7 +229,6 @@
             optionValue="id"
             optionGroupLabel="category"
             optionGroupChildren="footprints"
-            :selectionLimit="1"
             :filter="true"
           />
         </div>
@@ -586,14 +584,14 @@ export default {
         production_remarks: this.form.production_remarks,
         internal_part_number: this.form.internal_pn,
 
-        part_unit: this.form.part_unit ? this.form.part_unit[0] : null,
+        part_unit: this.form.part_unit,
         category: this.form.category
           ? Object.keys(this.form.category)[0]
           : null,
         storage: this.form.storage_location
           ? Object.keys(this.form.storage_location)[0]
           : null,
-        footprint: this.form.footprint ? this.form.footprint[0] : null,
+        footprint: this.form.footprint,
       };
 
       logger.default.info("submitting part", datas);

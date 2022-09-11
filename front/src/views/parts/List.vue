@@ -322,7 +322,7 @@
                 </span>
               </template>
               <template #filter="{ filterModel }">
-                <MultiSelect
+                <Dropdown
                   v-model="filterModel.value"
                   class="p-column-filter"
                   placeholder="Search by footprint"
@@ -331,7 +331,6 @@
                   optionValue="id"
                   optionGroupLabel="category"
                   optionGroupChildren="footprints"
-                  :selectionLimit="1"
                   :filter="true"
                 />
               </template>
@@ -718,10 +717,6 @@ export default {
         params.filters["storage_id"]["constraints"][0].value = Object.keys(
           params.filters["storage_id"]["constraints"][0].value
         )[0];
-      }
-      if (params.filters["footprint_id"]["constraints"][0].value) {
-        params.filters["footprint_id"]["constraints"][0].value =
-          params.filters["footprint_id"]["constraints"][0].value[0];
       }
 
       apiService.getParts(params).then((res) => {
