@@ -410,6 +410,9 @@ import utils from "@/utils.js";
 import { cloneDeep, chunk } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import PartViewModal from "@/components/parts/view.vue";
+import { h } from "vue";
+import Button from "primevue/button";
 
 export default {
   data: () => ({
@@ -741,7 +744,47 @@ export default {
         }
       })[0]; // return first item
     },
-    viewPartModal(item) {},
+    viewPartModal(part) {
+      const viewPartRef = this.$dialog.open(PartViewModal, {
+        props: {
+          header: part.name,
+          modal: true,
+        },
+        templates: {
+          footer: () => {
+            return [
+              h(Button, {
+                label: "Show full details",
+                onClick: () => {
+                  viewPartRef.close();
+                  this.$router.replace({
+                    name: "parts-details",
+                    params: { partId: part.id },
+                  });
+                },
+                class: "p-button-outlined",
+              }),
+              h(Button, {
+                label: "Delete",
+                onClick: () => {
+                  this.deletePart(null, part);
+                  viewPartRef.close();
+                },
+                class: "p-button-danger",
+              }),
+              h(Button, {
+                label: "Close",
+                onClick: () => viewPartRef.close(),
+                class: "p-button-success",
+              }),
+            ];
+          },
+        },
+        data: {
+          part: part,
+        },
+      });
+    },
     showLabelGenerator(item) {},
     toggleOverlayPanel(event, ref) {
       this.$refs[ref].toggle(event);

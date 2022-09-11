@@ -2,6 +2,7 @@
   <div id="app">
     <ConfirmDialog></ConfirmDialog>
     <Toast />
+    <DynamicDialog />
 
     <template v-if="isLoaded">
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">

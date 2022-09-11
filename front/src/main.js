@@ -29,6 +29,8 @@ import Image from "primevue/image";
 import Tooltip from "primevue/tooltip";
 import Inplace from "primevue/inplace";
 import Card from "primevue/card";
+import DialogService from "primevue/dialogservice";
+import DynamicDialog from "primevue/dynamicdialog";
 
 import App from "./App.vue";
 import router from "./router";
@@ -47,6 +49,7 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.use(DialogService);
 
 const oauthStore = useOauthStore();
 
@@ -90,6 +93,7 @@ app.component("OverlayPanel", OverlayPanel);
 app.component("Image", Image);
 app.component("Inplace", Inplace);
 app.component("Card", Card);
+app.component("DynamicDialog", DynamicDialog);
 
 app.directive("tooltip", Tooltip);
 
