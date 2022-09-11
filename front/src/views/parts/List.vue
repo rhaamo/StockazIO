@@ -201,11 +201,33 @@
             :filterMatchModeOptions="matchModes.qty"
           >
             <template #body="slotProps">
-              <Inplace :closable="true">
+              <Inplace :ref="`inplace_${slotProps.data.id}`" :closable="true">
                 <template #display
                   ><span>{{ slotProps.data.stock_qty }}</span></template
-                ><template #content>TODO</template></Inplace
-              >
+                >
+                <template #content>
+                  <InputNumber
+                    :inputId="`qty_${slotProps.data.id}`"
+                    mode="decimal"
+                    showButtons
+                    :min="0"
+                    v-model="slotProps.data.stock_qty"
+                    class="w-3"
+                  />
+                  <br />
+                  <Button
+                    class="mt-1 mr-1"
+                    label="update"
+                    @click.prevent="
+                      updateInplaceQty(
+                        $event,
+                        slotProps.data,
+                        slotProps.data.stock_qty
+                      )
+                    "
+                  ></Button>
+                </template>
+              </Inplace>
             </template>
             <template #filter="{ filterModel }">
               <InputNumber
@@ -880,6 +902,29 @@ export default {
           this.toggleOverlayPanel(event, "btnChangeCat");
           this.loadLazyData();
         });
+    },
+    updateInplaceQty(event, part, qty) {
+      logger.default.info("update inplace qty", part.id, qty);
+      apiService
+        .updatePartialPart(part.id, { stock_qty: qty })
+        .then(() => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating part quantity`,
+            detail: "Success",
+            life: 5000,
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating part quantity`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with quantity part update", err);
+        });
+      this.$refs[`inplace_${part.id}`].close();
     },
   },
 };
