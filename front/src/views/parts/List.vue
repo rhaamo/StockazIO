@@ -201,7 +201,10 @@
             :filterMatchModeOptions="matchModes.qty"
           >
             <template #body="slotProps">
-              <Inplace :ref="`inplace_${slotProps.data.id}`" :closable="true">
+              <Inplace
+                :ref="`inplace_qty_${slotProps.data.id}`"
+                :closable="true"
+              >
                 <template #display
                   ><span>{{ slotProps.data.stock_qty }}</span></template
                 >
@@ -243,13 +246,37 @@
             field="stock_qty_min"
             dataType="numeric"
             ><template #body="slotProps">
-              <Inplace :closable="true">
+              <Inplace
+                :ref="`inplace_qty_min_${slotProps.data.id}`"
+                :closable="true"
+              >
                 <template #display
                   ><span>{{ slotProps.data.stock_qty_min }}</span></template
-                ><template #content>TODO</template></Inplace
-              >
-            </template></Column
-          >
+                >
+                <template #content>
+                  <InputNumber
+                    :inputId="`qty_${slotProps.data.id}`"
+                    mode="decimal"
+                    showButtons
+                    :min="0"
+                    v-model="slotProps.data.stock_qty_min"
+                    class="w-3"
+                  />
+                  <br />
+                  <Button
+                    class="mt-1 mr-1"
+                    label="update"
+                    @click.prevent="
+                      updateInplaceQtyMin(
+                        $event,
+                        slotProps.data,
+                        slotProps.data.stock_qty_min
+                      )
+                    "
+                  ></Button>
+                </template>
+              </Inplace> </template
+          ></Column>
           <Column header="Unit" :sortable="true" field="part_unit.name">
             <template #body="slotProps">{{
               slotProps.data.part_unit && slotProps.data.part_unit.name
@@ -924,7 +951,30 @@ export default {
           });
           logger.default.error("Error with quantity part update", err);
         });
-      this.$refs[`inplace_${part.id}`].close();
+      this.$refs[`inplace_qty_${part.id}`].close();
+    },
+    updateInplaceQtyMin(event, part, qty) {
+      logger.default.info("update inplace qty min", part.id, qty);
+      apiService
+        .updatePartialPart(part.id, { stock_qty_min: qty })
+        .then(() => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating min part quantity`,
+            detail: "Success",
+            life: 5000,
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating min part quantity`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with min quantity part update", err);
+        });
+      this.$refs[`inplace_qty_min_${part.id}`].close();
     },
   },
 };
