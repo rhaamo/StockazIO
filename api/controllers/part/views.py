@@ -77,8 +77,20 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
+    filter_backends = [SearchFilter]
     pagination_class = PrimeVuePagination
     lookup_fields = ("id", "uuid")
+    # ^starts-with, =exact, @FTS, $regex
+    search_fields = [
+        "name",
+        "description",
+        "comment",
+        "production_remarks",
+        "status",
+        "condition",
+        "internal_part_number",
+        "uuid",
+    ]
 
     def get_serializer_class(self):
         if self.action == "list":

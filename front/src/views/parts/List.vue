@@ -514,8 +514,19 @@ export default {
       this.filters.footprint_id.constraints = [
         { value: null, matchMode: FilterMatchMode.EQUALS },
       ];
+      // Also delete search term from lazyParams object
+      delete this.lazyParams.search;
 
       this.categoryChanged();
+      this.loadLazyData();
+    },
+    searchQuery: function () {
+      // define search param
+      this.lazyParams.search = this.searchQuery;
+      // delete category_id
+      delete this.lazyParams.category_id;
+
+      // reload
       this.loadLazyData();
     },
   },

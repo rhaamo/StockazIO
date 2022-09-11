@@ -11,10 +11,12 @@
           ></template
         >
         <template #end>
-          <div class="p-inputgroup">
-            <InputText placeholder="Keyword" />
-            <Button label="Search" />
-          </div>
+          <form role="search" @submit.prevent="doSearch">
+            <div class="p-inputgroup">
+              <InputText v-model="searchTerm" placeholder="Keyword" />
+              <Button type="submit" label="Search" />
+            </div>
+          </form>
         </template>
       </Menubar>
       <Menubar :model="menuItemsLoggedOut" v-else>
@@ -128,6 +130,7 @@ export default {
   data() {
     return {
       isLoaded: false,
+      searchTerm: "",
       menuItemsLoggedIn: [
         { separator: true },
         { label: "Edit", icon: "fa fa-cogs fa-fw", items: [] },
@@ -270,6 +273,45 @@ export default {
         `${window.location.origin}/urlhandler?q=%s`,
         "StockazIO handler"
       );
+    },
+    doSearch() {
+      let search = this.searchTerm;
+      this.searchTerm = "";
+
+      if (search.startsWith("stockazio://storageLocation/")) {
+        // old url handler (location)
+        let str = search.split("/");
+        let uuid = str[str.length - 1];
+        this.$router
+          .replace({ name: "parts-list", query: { storage_uuid: uuid } })
+          .catch(() => {});
+      } else if (search.startsWith("web+stockazio:storageLocation,")) {
+        // new url handler (location)
+        let str = search.split(",");
+        let uuid = str[str.length - 1];
+        this.$router
+          .replace({ name: "parts-list", query: { storage_uuid: uuid } })
+          .catch(() => {});
+      } else if (search.startsWith("stockazio://part/")) {
+        // old url handler (part)
+        let str = search.split("/");
+        let uuid = str[str.length - 1];
+        this.$router
+          .replace({ name: "parts-details", params: { partId: uuid } })
+          .catch(() => {});
+      } else if (search.startsWith("web+stockazio:part,")) {
+        // new url handler (part)
+        let str = search.split(",");
+        let uuid = str[str.length - 1];
+        this.$router
+          .replace({ name: "parts-details", params: { partId: uuid } })
+          .catch(() => {});
+      } else {
+        // keyword search
+        this.$router
+          .replace({ name: "parts-list", query: { q: search } })
+          .catch(() => {});
+      }
     },
   },
 };
