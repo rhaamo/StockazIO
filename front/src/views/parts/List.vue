@@ -206,9 +206,23 @@
                   :ref="`inplace_qty_${slotProps.data.id}`"
                   :closable="true"
                 >
-                  <template #display
+                  <template
+                    #display
+                    v-if="
+                      slotProps.data.stock_qty >= slotProps.data.stock_qty_min
+                    "
                     ><span>{{ slotProps.data.stock_qty }}</span></template
                   >
+                  <template #display v-else>
+                    <span
+                      class="text-red-500"
+                      v-tooltip="
+                        'Current stock is below minimum stock quantity or exhausted'
+                      "
+                      >{{ slotProps.data.stock_qty }}
+                      <i class="fa fa-circle"></i
+                    ></span>
+                  </template>
                   <template #content>
                     <InputNumber
                       :inputId="`qty_${slotProps.data.id}`"
