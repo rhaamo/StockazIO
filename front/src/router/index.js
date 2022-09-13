@@ -5,7 +5,7 @@ import LoginForm from "@/components/login_form/login_form.vue";
 import About from "@/views/About.vue";
 import PublicPartsList from "@/views/About.vue";
 import UrlHandler from "@/views/About.vue";
-import PartsAddFull from "@/views/About.vue";
+import PartsAddFull from "@/views/parts/AddFull.vue";
 import PartsAddQuick from "@/views/parts/AddQuick.vue";
 import PartsList from "@/views/parts/List.vue";
 import PartsDetails from "@/views/About.vue";
