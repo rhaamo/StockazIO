@@ -44,7 +44,7 @@
           <div v-if="partsExists && partsExists.length">
             One or more parts exists with this name:
             <div v-for="p in partsExists" :key="p.uuid">
-              <a href="#">{{ p.name }}</a
+              <a href="#" @click.prevent="viewPartModal(p)">{{ p.name }}</a
               >&nbsp;
             </div>
           </div>
@@ -433,8 +433,9 @@ import apiService from "@/services/api/api.service";
 import { mapState } from "pinia";
 import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
-
-// TODO modal for parts exists not done yet
+import PartViewModal from "@/components/parts/view.vue";
+import { h } from "vue";
+import Button from "primevue/button";
 
 export default {
   data: () => ({
@@ -662,6 +663,57 @@ export default {
       this.v$.$reset();
       this.$refs.name.$el.focus();
       this.partsExists = [];
+    },
+    viewPartModal(part) {
+      // Get full part object infos
+      apiService
+        .getPart(part.id)
+        .then((val) => {
+          const viewPartRef = this.$dialog.open(PartViewModal, {
+            props: {
+              modal: true,
+              style: {
+                width: "70vw",
+              },
+            },
+            templates: {
+              header: () => {
+                if (part.private) {
+                  return [
+                    h("h3", [
+                      h("i", { class: "fa fa-lock mr-1" }),
+                      h("span", part.name),
+                    ]),
+                  ];
+                } else {
+                  return [h("h3", part.name)];
+                }
+              },
+              footer: () => {
+                return [
+                  h(Button, {
+                    label: "Close",
+                    onClick: () => viewPartRef.close(),
+                    class: "p-button-success",
+                  }),
+                ];
+              },
+            },
+            data: {
+              part: val.data,
+              canDelete: false,
+            },
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with getting part details", err);
+        });
     },
   },
 };
