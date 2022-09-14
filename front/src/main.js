@@ -3,6 +3,10 @@ import { createPinia } from "pinia";
 import { createPersistedState } from "pinia-plugin-persistedstate";
 import axios from "axios";
 import { useOauthStore } from "@/stores/oauth";
+
+// Always needs to be before primevue/ imports for correct (s)css loading
+import App from "./App.vue";
+
 import PrimeVue from "primevue/config";
 import ProgressSpinner from "primevue/progressspinner";
 import Menubar from "primevue/menubar";
@@ -33,8 +37,8 @@ import DynamicDialog from "primevue/dynamicdialog";
 import Galleria from "primevue/galleria";
 import VuePdfEmbed from "vue-pdf-embed";
 import Dropdown from "primevue/dropdown";
+import Divider from "primevue/divider";
 
-import App from "./App.vue";
 import router from "./router";
 
 const app = createApp(App);
@@ -98,6 +102,7 @@ app.component("DynamicDialog", DynamicDialog);
 app.component("Galleria", Galleria);
 app.component("VuePdfEmbed", VuePdfEmbed);
 app.component("Dropdown", Dropdown);
+app.component("Divider", Divider);
 
 app.directive("tooltip", Tooltip);
 

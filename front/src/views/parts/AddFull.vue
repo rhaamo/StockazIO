@@ -441,12 +441,14 @@
                 />
               </div>
 
-              <hr />
-              <Button
-                @click.prevent="addManufacturer($event)"
-                class="p-button-help"
-                label="add item"
-              />
+              <Divider />
+              <div>
+                <Button
+                  @click.prevent="addManufacturer($event)"
+                  class="p-button-help"
+                  label="add item"
+                />
+              </div>
             </TabPanel>
 
             <TabPanel header="Distributors">
@@ -458,7 +460,7 @@
                 />
               </div>
 
-              <hr />
+              <Divider />
               <Button
                 @click.prevent="addDistributor($event)"
                 class="p-button-help"

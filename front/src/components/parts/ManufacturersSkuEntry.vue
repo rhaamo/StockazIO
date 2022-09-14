@@ -79,12 +79,7 @@
           v$.item.datasheet_url.$pending.$response
         "
         class="p-error"
-        ><br />
-        {{ v$.item.datasheet_url.required.$message }}
-        <template
-          v-if="v$.item.datasheet_url.required && v$.item.datasheet_url.url"
-          ><br
-        /></template>
+      >
         {{ v$.item.datasheet_url.url.$message }}
       </small>
     </div>
