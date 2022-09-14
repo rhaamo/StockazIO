@@ -431,7 +431,49 @@
         </div>
         <div class="col-6">
           <TabView>
-            <TabPanel header="Parameters"> Content I </TabPanel>
+            <TabPanel header="Parameters">
+              <div v-for="(_, i) in form.part_parameters_value" :key="i">
+                <PartParametersEntry
+                  v-model:item="form.part_parameters_value[i]"
+                  :submitted="submitted"
+                  @deleteItem="deletePartParameter($event, i)"
+                />
+              </div>
+
+              <Divider />
+              <div class="grid">
+                <div class="col-3">
+                  <Button
+                    @click.prevent="addPartParameter($event)"
+                    class="p-button-help"
+                    label="add item"
+                  />
+                </div>
+                <div class="col-9">
+                  <Dropdown
+                    inputId="preset"
+                    v-model="part_parameters_preset"
+                    class="w-7 mr-1"
+                    :options="choicesPartParametersPreset"
+                    optionLabel="text"
+                    optionValue="value"
+                    :filter="true"
+                    placeholder="Preset to apply"
+                  />
+                  <ButtonDeleteInline
+                    size="p-button-sm"
+                    btn-variant-main="p-button-info"
+                    btn-variant-ok="p-button-success"
+                    btn-variant-cancel="p-button-info"
+                    btn-main-text="apply"
+                    btn-main-text-disabled="Confirm ?"
+                    btn-ok-text="Yes"
+                    btn-cancel-text="No"
+                    @action-confirmed="applyPartParametersPreset"
+                  />
+                </div>
+              </div>
+            </TabPanel>
             <TabPanel header="Manufacturers">
               <div v-for="(_, i) in form.manufacturers_sku" :key="i">
                 <ManufacturersSkuEntry
@@ -485,6 +527,7 @@ import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
 import DistributorsSkuEntry from "@/components/parts/DistributorsSkuEntry.vue";
 import ManufacturersSkuEntry from "@/components/parts/ManufacturersSkuEntry.vue";
+import PartParametersEntry from "@/components/parts/PartParametersEntry.vue";
 import PartViewModal from "@/components/parts/view.vue";
 import { h } from "vue";
 import Button from "primevue/button";
@@ -493,6 +536,7 @@ export default {
   components: {
     DistributorsSkuEntry,
     ManufacturersSkuEntry,
+    PartParametersEntry,
   },
   data: () => ({
     submitted: false,
@@ -519,9 +563,11 @@ export default {
       footprint: null,
       distributors_sku: [],
       manufacturers_sku: [],
+      part_parameters_value: [],
     },
     partsExists: [],
     partDetails: null,
+    part_parameters_preset: null,
   }),
   setup: () => ({
     v$: useVuelidate(),
@@ -576,6 +622,11 @@ export default {
             }),
           };
         }),
+      choicesPartParametersPreset: (store) => {
+        return store.partParametersPresets.map((x) => {
+          return { value: x, text: x.name };
+        });
+      },
     }),
   },
   validations: {
@@ -666,6 +717,7 @@ export default {
             sku: x.manufacturer.sku,
           };
         }),
+        part_parameters_value: this.form.part_parameters_value,
       };
 
       logger.default.info("submitting part", datas);
@@ -735,6 +787,7 @@ export default {
       this.form.production_remarks = "";
       this.form.distributors_sku = [];
       this.form.manufacturers_sku = [];
+      this.form.part_parameters_value = [];
       this.v$.$reset();
       this.$refs.name.$el.focus();
       this.partsExists = [];
@@ -809,6 +862,29 @@ export default {
     },
     deleteManufacturer(event, idx) {
       this.form.manufacturers_sku.splice(idx, 1);
+    },
+    addPartParameter(event) {
+      this.form.part_parameters_value.push({
+        name: "",
+        description: "",
+        value: "",
+        unit: null,
+      });
+    },
+    deletePartParameter(event, idx) {
+      this.form.part_parameters_value.splice(idx, 1);
+    },
+    applyPartParametersPreset() {
+      if (this.part_parameters_preset) {
+        this.part_parameters_preset.part_parameters_presets.forEach((item) => {
+          this.form.part_parameters_value.push({
+            name: item.name,
+            description: item.description,
+            value: "",
+            unit: item.unit ? item.unit.id : null,
+          });
+        });
+      }
     },
   },
 };

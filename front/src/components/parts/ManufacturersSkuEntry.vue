@@ -12,7 +12,7 @@
           >Name*</label
         >
         <InputText
-          ref="`sku"
+          ref="sku"
           inputId="sku"
           type="text"
           v-model="item.sku"

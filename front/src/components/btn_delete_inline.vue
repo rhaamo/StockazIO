@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <span class="p-buttonset">
+  <span class="p-buttonset">
+    <Button
+      :class="(clicked ? 'p-button-secondary' : btnVariantMain) + ' ' + size"
+      :disabled="clicked"
+      @click.prevent="btnClicked"
+      :label="clicked ? btnMainTextDisabled : btnMainText"
+    >
+    </Button>
+    <template v-if="clicked">
       <Button
-        :class="(clicked ? 'p-button-secondary' : btnVariantMain) + ' ' + size"
-        :disabled="clicked"
-        @click.prevent="btnClicked"
-        :label="clicked ? btnMainTextDisabled : btnMainText"
+        :class="btnVariantOk + ' ' + size"
+        @click.prevent="actionConfirmed"
+        :label="btnOkText"
       >
       </Button>
-      <template v-if="clicked">
-        <Button
-          :class="btnVariantOk + ' ' + size"
-          @click.prevent="actionConfirmed"
-          :label="btnOkText"
-        >
-        </Button>
-        <Button
-          :class="btnVariantCancel + ' ' + size"
-          @click.prevent="actionCancelled"
-          :label="btnCancelText"
-        >
-        </Button>
-      </template>
-    </span>
-  </div>
+      <Button
+        :class="btnVariantCancel + ' ' + size"
+        @click.prevent="actionCancelled"
+        :label="btnCancelText"
+      >
+      </Button>
+    </template>
+  </span>
 </template>
 
 <script>
@@ -85,3 +83,43 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.p-button {
+  margin-right: 0.5rem;
+}
+
+.p-buttonset {
+  .p-button {
+    margin-right: 0;
+  }
+}
+
+.sizes {
+  .button {
+    margin-bottom: 0.5rem;
+    display: block;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .p-button {
+    margin-bottom: 0.5rem;
+
+    &:not(.p-button-icon-only) {
+      display: flex;
+      width: 100%;
+    }
+  }
+
+  .p-buttonset {
+    .p-button {
+      margin-bottom: 0;
+    }
+  }
+}
+</style>
