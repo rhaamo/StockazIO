@@ -707,14 +707,14 @@ export default {
           return {
             datasheet_url: x.datasheet_url,
             distributor: x.distributor ? x.distributor.value : null,
-            sku: x.distributor.sku,
+            sku: x.sku,
           };
         }),
         manufacturers_sku: this.form.manufacturers_sku.map((x) => {
           return {
             datasheet_url: x.datasheet_url,
             manufacturer: x.manufacturer ? x.manufacturer.value : null,
-            sku: x.manufacturer.sku,
+            sku: x.sku,
           };
         }),
         part_parameters_value: this.form.part_parameters_value,
