@@ -39,12 +39,12 @@
       </div>
 
       <div class="col-6">
-        <label for="distributor" class="block">Distributor</label>
+        <label for="manufacturer" class="block">Manufacturer</label>
         <Dropdown
-          inputId="distributor"
-          v-model="item.distributor"
+          inputId="manufacturer"
+          v-model="item.manufacturer"
           class="w-10"
-          :options="choicesDistributors"
+          :options="choicesManufacturers"
           optionLabel="text"
           :filter="true"
           @change="updateDatasheetUrl"
@@ -121,8 +121,8 @@ export default {
   },
   computed: {
     ...mapState(usePreloadsStore, {
-      choicesDistributors: (store) =>
-        store.distributors.map((x) => {
+      choicesManufacturers: (store) =>
+        store.manufacturers.map((x) => {
           return { value: x.id, text: x.name, datasheet_url: x.datasheet_url };
         }),
     }),
@@ -133,7 +133,7 @@ export default {
         required,
         maxLength: maxLength(255),
       },
-      distributor: {
+      manufacturer: {
         required,
       },
       datasheet_url: {
@@ -156,19 +156,19 @@ export default {
       return url;
     },
     updateDatasheetUrl() {
-      if (!this.item.distributor) {
+      if (!this.item.manufacturer) {
         return;
       }
 
       if (this.item.sku) {
         if (this.item.datasheet_url) {
           this.item.datasheet_url = this.replaceUrl(
-            this.item.distributor.datasheet_url,
+            this.item.manufacturer.datasheet_url,
             this.item.sku
           );
         }
       } else {
-        this.item.datasheet_url = this.item.distributor.datasheet_url;
+        this.item.datasheet_url = this.item.manufacturer.datasheet_url;
       }
     },
   },

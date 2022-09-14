@@ -432,7 +432,23 @@
         <div class="col-6">
           <TabView>
             <TabPanel header="Parameters"> Content I </TabPanel>
-            <TabPanel header="Manufacturers"> Content II </TabPanel>
+            <TabPanel header="Manufacturers">
+              <div v-for="(_, i) in form.manufacturers_sku" :key="i">
+                <ManufacturersSkuEntry
+                  v-model:item="form.manufacturers_sku[i]"
+                  :submitted="submitted"
+                  @deleteItem="deleteManufacturer($event, i)"
+                />
+              </div>
+
+              <hr />
+              <Button
+                @click.prevent="addManufacturer($event)"
+                class="p-button-help"
+                label="add item"
+              />
+            </TabPanel>
+
             <TabPanel header="Distributors">
               <div v-for="(_, i) in form.distributors_sku" :key="i">
                 <DistributorsSkuEntry
@@ -466,12 +482,14 @@ import { mapState } from "pinia";
 import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
 import DistributorsSkuEntry from "@/components/parts/DistributorsSkuEntry.vue";
+import ManufacturersSkuEntry from "@/components/parts/ManufacturersSkuEntry.vue";
 
 // TODO modal for parts exists not done yet
 
 export default {
   components: {
     DistributorsSkuEntry,
+    ManufacturersSkuEntry,
   },
   data: () => ({
     submitted: false,
@@ -497,6 +515,7 @@ export default {
       storage_location: null,
       footprint: null,
       distributors_sku: [],
+      manufacturers_sku: [],
     },
     partsExists: [],
     partDetails: null,
@@ -637,6 +656,13 @@ export default {
             sku: x.distributor.sku,
           };
         }),
+        manufacturers_sku: this.form.manufacturers_sku.map((x) => {
+          return {
+            datasheet_url: x.datasheet_url,
+            manufacturer: x.manufacturer ? x.manufacturer.value : null,
+            sku: x.manufacturer.sku,
+          };
+        }),
       };
 
       logger.default.info("submitting part", datas);
@@ -705,6 +731,7 @@ export default {
       this.form.footprint = null;
       this.form.production_remarks = "";
       this.form.distributors_sku = [];
+      this.form.manufacturers_sku = [];
       this.v$.$reset();
       this.$refs.name.$el.focus();
       this.partsExists = [];
@@ -717,8 +744,17 @@ export default {
       });
     },
     deleteDistributor(event, idx) {
-      console.log(idx);
       this.form.distributors_sku.splice(idx, 1);
+    },
+    addManufacturer(event) {
+      this.form.manufacturers_sku.push({
+        sku: "",
+        manufacturer: null,
+        datasheet_url: "",
+      });
+    },
+    deleteManufacturer(event, idx) {
+      this.form.manufacturers_sku.splice(idx, 1);
     },
   },
 };
