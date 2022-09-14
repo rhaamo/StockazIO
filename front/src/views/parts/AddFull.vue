@@ -435,13 +435,18 @@
             <TabPanel header="Manufacturers"> Content II </TabPanel>
             <TabPanel header="Distributors">
               <div v-for="(_, i) in form.distributors_sku" :key="i">
-                {{ i }} sku text, distributor dropdown, dsheet url text url
-                <Button
-                  @click.prevent="deleteDistributor($event, i)"
-                  label="remove item"
-                  class="p-button-danger"
+                <DistributorsSkuEntry
+                  :distributor_sku="form.distributors_sku[i]"
+                  :submitted="submitted"
+                  @updateSku="form.distributors_sku[i].sku = $event"
+                  @updateDistributor="
+                    form.distributors_sku[i].distributor = $event
+                  "
+                  @updateUrl="form.distributors_sku[i].datasheet_url = $event"
+                  @deleteItem="deleteDistributor($event, i)"
                 />
               </div>
+
               <hr />
               <Button
                 @click.prevent="addDistributor($event)"
@@ -465,10 +470,14 @@ import apiService from "@/services/api/api.service";
 import { mapState } from "pinia";
 import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
+import DistributorsSkuEntry from "@/components/parts/DistributorsSkuEntry.vue";
 
 // TODO modal for parts exists not done yet
 
 export default {
+  components: {
+    DistributorsSkuEntry,
+  },
   data: () => ({
     submitted: false,
     breadcrumb: {
@@ -625,6 +634,14 @@ export default {
           ? Object.keys(this.form.storage_location)[0]
           : null,
         footprint: this.form.footprint,
+
+        distributors_sku: this.form.distributors_sku.map((x) => {
+          return {
+            datasheet_url: x.datasheet_url,
+            distributor: x.distributor ? x.distributor.id : null,
+            sku: x.distributor.sku,
+          };
+        }),
       };
 
       logger.default.info("submitting part", datas);
@@ -705,6 +722,7 @@ export default {
       });
     },
     deleteDistributor(event, idx) {
+      console.log(idx);
       this.form.distributors_sku.splice(idx, 1);
     },
   },
