@@ -436,13 +436,8 @@
             <TabPanel header="Distributors">
               <div v-for="(_, i) in form.distributors_sku" :key="i">
                 <DistributorsSkuEntry
-                  :distributor_sku="form.distributors_sku[i]"
+                  v-model:item="form.distributors_sku[i]"
                   :submitted="submitted"
-                  @updateSku="form.distributors_sku[i].sku = $event"
-                  @updateDistributor="
-                    form.distributors_sku[i].distributor = $event
-                  "
-                  @updateUrl="form.distributors_sku[i].datasheet_url = $event"
                   @deleteItem="deleteDistributor($event, i)"
                 />
               </div>

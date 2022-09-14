@@ -110,20 +110,18 @@ import { usePreloadsStore } from "@/stores/preloads";
 
 export default {
   props: {
-    distributor_sku: { type: Object, required: true },
+    item: { type: Object, required: true },
     submitted: { type: Boolean, required: true },
   },
-  data: () => ({
-    item: null,
-  }),
+  data: () => ({}),
   setup: () => ({
     v$: useVuelidate(),
     preloadsStore: usePreloadsStore(),
   }),
-  created() {
-    this.item = this.distributor_sku;
+  model: {
+    prop: "item",
+    event: "change",
   },
-  emits: ["updateSku", "updateDistributor", "updateUrl"],
   computed: {
     ...mapState(usePreloadsStore, {
       choicesDistributors: (store) =>
