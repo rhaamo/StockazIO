@@ -85,10 +85,16 @@
     </div>
 
     <div class="mt-2">
-      <Button
-        @click.prevent="$emit('deleteItem', $event)"
-        label="remove item"
-        class="p-button-danger"
+      <ButtonDeleteInline
+        size="p-button-sm"
+        btn-variant-main="p-button-danger"
+        btn-variant-ok="p-button-success"
+        btn-variant-cancel="p-button-danger"
+        btn-main-text="remove item"
+        btn-main-text-disabled="Confirm ?"
+        btn-ok-text="Yes"
+        btn-cancel-text="No"
+        @action-confirmed="$emit('deleteItem', $event)"
       />
     </div>
   </div>
