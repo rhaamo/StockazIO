@@ -633,7 +633,7 @@ export default {
         distributors_sku: this.form.distributors_sku.map((x) => {
           return {
             datasheet_url: x.datasheet_url,
-            distributor: x.distributor ? x.distributor.id : null,
+            distributor: x.distributor ? x.distributor.value : null,
             sku: x.distributor.sku,
           };
         }),

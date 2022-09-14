@@ -21,7 +21,6 @@
             'p-invalid': v$.item.sku.$invalid && submitted,
             'w-10': true,
           }"
-          @update:modelValue="$emit('updateSku', $event)"
           @input="updateDatasheetUrl"
         />
         <small
@@ -48,8 +47,7 @@
           :options="choicesDistributors"
           optionLabel="text"
           :filter="true"
-          @input="updateDatasheetUrl"
-          @update:modelValue="$emit('updateDistributor', $event)"
+          @change="updateDatasheetUrl"
         />
       </div>
     </div>
@@ -74,7 +72,6 @@
           'p-invalid': v$.item.datasheet_url.$invalid && submitted,
           'w-11': true,
         }"
-        @update:modelValue="$emit('updateUrl', $event)"
       />
       <small
         v-if="
@@ -170,11 +167,10 @@ export default {
             this.item.distributor.datasheet_url,
             this.item.sku
           );
-        } else {
-          this.item.datasheet_url = this.item.distributor.datasheet_url;
         }
+      } else {
+        this.item.datasheet_url = this.item.distributor.datasheet_url;
       }
-      this.$emit("updateUrl", this.item.datasheet_url);
     },
   },
 };
