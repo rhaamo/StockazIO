@@ -303,6 +303,38 @@
                 </template></Column
               >
               <Column field="description" header="Description"> </Column>
+              <Column>
+                <template #body="slotProps">
+                  <template
+                    v-if="
+                      slotProps.data.picture && slotProps.data.picture_medium
+                    "
+                  >
+                    <i
+                      v-if="slotProps.data.picture_default"
+                      class="fa fa-check-square-o"
+                      title="Default picture"
+                      aria-hidden="true"
+                    />
+                    <i
+                      v-else
+                      class="fa fa-square-o"
+                      aria-hidden="true"
+                      title="Set as default picture"
+                      @click.prevent="
+                        setAttachmentAsDefault(part.id, slotProps.data.id)
+                      "
+                    />
+                    &nbsp;&nbsp;
+                  </template>
+                  <router-link
+                    to="#"
+                    @click.native.prevent="deleteAttachment(slotProps.data)"
+                  >
+                    <i class="fa fa-trash-o" aria-hidden="true" />
+                  </router-link>
+                </template>
+              </Column>
             </DataTable>
           </TabPanel>
 
@@ -562,6 +594,62 @@ export default {
           });
           logger.default.error("Error with part attachment deletion", err);
         });
+    },
+    setAttachmentAsDefault(partId, fileId) {
+      apiService
+        .partAttachmentSetDefault(partId, fileId)
+        .then((val) => {
+          this.toast.add({
+            severity: "success",
+            summary: "Part attachment",
+            detail: "Set as default with success",
+            life: 5000,
+          });
+          this.fetchPart();
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Part attachment",
+            detail: "Set as default failed",
+            life: 5000,
+          });
+          logger.default.error("Error with part attachment default set", err);
+          this.fetchPart();
+        });
+    },
+    deleteAttachment(attachment) {
+      this.confirm.require({
+        message: `Are you sure you want to delete the attachment '${attachment.description}' ?`,
+        header: `Deleting '${attachment.description}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .partAttachmentDelete(this.part.id, attachment.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Part attachment",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.fetchPart();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Part attachment",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with part attachment deletion", err);
+              this.fetchPart();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
   },
 };
