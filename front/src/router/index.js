@@ -8,7 +8,7 @@ import UrlHandler from "@/views/About.vue";
 import PartsAddFull from "@/views/parts/AddFull.vue";
 import PartsAddQuick from "@/views/parts/AddQuick.vue";
 import PartsList from "@/views/parts/List.vue";
-import PartsDetails from "@/views/About.vue";
+import PartsDetails from "@/views/parts/View.vue";
 import PartsEdit from "@/views/About.vue";
 import PartUnitsList from "@/views/About.vue";
 import ParametersUnitsList from "@/views/About.vue";
