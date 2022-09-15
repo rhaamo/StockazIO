@@ -202,6 +202,80 @@
             <template #header>
               <span>Files attachments</span>
             </template>
+
+            <form
+              enctype="multipart/form-data"
+              @submit.prevent="addAttachment(!v$.$invalid)"
+            >
+              <div class="grid">
+                <div class="col-5">
+                  <InputText
+                    ref="description"
+                    inputId="description"
+                    type="text"
+                    v-model="formAddAttachment.description"
+                    placeholder="File description"
+                    :class="{
+                      'p-invalid':
+                        v$.formAddAttachment.description.$invalid &&
+                        formAddAttachmentSubmitted,
+                      'w-12': true,
+                    }"
+                  />
+                  <small
+                    v-if="
+                      (v$.formAddAttachment.description.$invalid &&
+                        formAddAttachmentSubmitted) ||
+                      v$.formAddAttachment.description.$pending.$response
+                    "
+                    class="p-error"
+                  >
+                    {{ v$.formAddAttachment.description.required.$message }}
+                    <template
+                      v-if="
+                        v$.formAddAttachment.description.required &&
+                        v$.formAddAttachment.description.maxLength
+                      "
+                      ><br
+                    /></template>
+                    {{ v$.formAddAttachment.description.maxLength.$message }}
+                  </small>
+                </div>
+
+                <div class="col-6">
+                  <InputText
+                    ref="file"
+                    inputId="file"
+                    type="file"
+                    v-model="formAddAttachment.file"
+                    @change="attachmentFileChanged($event.target.files)"
+                    :class="{
+                      'p-invalid':
+                        v$.formAddAttachment.file.$invalid &&
+                        formAddAttachmentSubmitted,
+                      'w-12': true,
+                    }"
+                    :accept="allowedUploadTypes"
+                  />
+                  <small
+                    v-if="
+                      (v$.formAddAttachment.file.$invalid &&
+                        formAddAttachmentSubmitted) ||
+                      v$.formAddAttachment.file.$pending.$response
+                    "
+                    class="p-error"
+                  >
+                    {{ v$.formAddAttachment.file.required.$message }}
+                  </small>
+                </div>
+
+                <div class="col-1">
+                  <Button label="add" type="submit" />
+                </div>
+              </div>
+            </form>
+
+            <Divider />
             <DataTable
               :value="part.part_attachments"
               class="p-datatable-sm"
@@ -266,19 +340,52 @@ import { useToast } from "primevue/usetoast";
 import LabelGeneratorModal from "@/components/label/generator.vue";
 import { h } from "vue";
 import { useConfirm } from "primevue/useconfirm";
+import { useVuelidate } from "@vuelidate/core";
+import { required, maxLength } from "@vuelidate/validators";
+import { mapState } from "pinia";
+import { usePreloadsStore } from "@/stores/preloads";
+import { useServerStore } from "@/stores/server";
 
 export default {
   data: () => ({
     part: null,
+    formAddAttachmentSubmitted: false,
+    formAddAttachment: {
+      description: null,
+      file: null,
+    },
   }),
   setup: () => ({
+    v$: useVuelidate(),
     toast: useToast(),
     confirm: useConfirm(),
+    preloadsStore: usePreloadsStore(),
+    serverStore: useServerStore(),
   }),
   created() {
     this.fetchPart();
   },
+  validations: {
+    formAddAttachment: {
+      description: {
+        required,
+        maxLength: maxLength(255),
+      },
+      file: {
+        required,
+      },
+    },
+  },
   computed: {
+    ...mapState(useServerStore, {
+      allowedUploadTypes: (store) => {
+        let types = store.settings.partAttachmentAllowedTypes || [
+          "application/pdf",
+          "image/jpeg",
+        ];
+        return types.join(", ");
+      },
+    }),
     partId() {
       return this.$route.params.partId;
     },
@@ -290,7 +397,7 @@ export default {
           return this.part.part_unit.name;
         }
       }
-      return "";
+      return "No unit defined";
     },
     mainTableItems() {
       return [
@@ -420,6 +527,41 @@ export default {
           return;
         },
       });
+    },
+    attachmentFileChanged(files) {
+      this.formAddAttachment.realFile = files[0];
+    },
+    addAttachment(isFormValid) {
+      this.formAddAttachmentSubmitted = true;
+      if (!isFormValid) {
+        return;
+      }
+
+      apiService
+        .partAttachmentCreate(this.part.id, {
+          description: this.formAddAttachment.description,
+          file: this.formAddAttachment.realFile,
+        })
+        .then((val) => {
+          this.toast.add({
+            severity: "success",
+            summary: "Part attachment",
+            detail: "Upload successfull",
+            life: 5000,
+          });
+          this.fetchPart();
+          this.formAddAttachment = { description: null, file: null };
+          this.formAddAttachmentSubmitted = false;
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Part attachment",
+            detail: "Error occured or file type not allowed.",
+            life: 5000,
+          });
+          logger.default.error("Error with part attachment deletion", err);
+        });
     },
   },
 };

@@ -231,7 +231,7 @@ export default {
           return this.part.part_unit.name;
         }
       }
-      return "";
+      return "No unit defined";
     },
     mainTableItems() {
       return [

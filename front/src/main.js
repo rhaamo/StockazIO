@@ -39,6 +39,7 @@ import VuePdfEmbed from "vue-pdf-embed";
 import Dropdown from "primevue/dropdown";
 import Divider from "primevue/divider";
 import ButtonDeleteInline from "@/components/btn_delete_inline.vue";
+import FileUpload from "primevue/fileupload";
 
 import router from "./router";
 
@@ -105,6 +106,7 @@ app.component("VuePdfEmbed", VuePdfEmbed);
 app.component("Dropdown", Dropdown);
 app.component("Divider", Divider);
 app.component("ButtonDeleteInline", ButtonDeleteInline);
+app.component("FileUpload", FileUpload);
 
 app.directive("tooltip", Tooltip);
 
