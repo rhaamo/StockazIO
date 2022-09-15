@@ -67,7 +67,9 @@
             </template>
           </div>
           <div class="col-3"><b>Qty min:</b> {{ part.stock_qty_min }}</div>
-          <div class="col-6"><b>Unit: </b> {{ partUnit }}</div>
+          <div class="col-6">
+            <b>Unit: </b> {{ partUnit || "None defined" }}
+          </div>
         </div>
 
         <div class="mt-2 mb-2 surface-50 p-2">
