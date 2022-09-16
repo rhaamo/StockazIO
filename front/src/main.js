@@ -40,6 +40,7 @@ import Dropdown from "primevue/dropdown";
 import Divider from "primevue/divider";
 import ButtonDeleteInline from "@/components/btn_delete_inline.vue";
 import FileUpload from "primevue/fileupload";
+import Textarea from "primevue/textarea";
 
 import router from "./router";
 
@@ -107,6 +108,7 @@ app.component("Dropdown", Dropdown);
 app.component("Divider", Divider);
 app.component("ButtonDeleteInline", ButtonDeleteInline);
 app.component("FileUpload", FileUpload);
+app.component("Textarea", Textarea);
 
 app.directive("tooltip", Tooltip);
 
