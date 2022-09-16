@@ -379,6 +379,9 @@ import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
 
 export default {
+  props: {
+    node: Number,
+  },
   data: () => ({
     part: null,
     formAddAttachmentSubmitted: false,

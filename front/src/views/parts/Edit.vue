@@ -1,7 +1,7 @@
 <template>
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
-    <div class="card ml-5">
+    <div class="card ml-5" v-if="part">
       <h2>Basic parts informations</h2>
       <form>
         <div class="grid">
@@ -419,16 +419,10 @@
             </div>
 
             <div class="mb-3">
-              <!-- save and save add another-->
               <Button
-                label="Save and view"
+                label="Update"
                 class="p-button-primary"
-                @click.prevent="submit(!v$.$invalid, 'continue')"
-              />
-              <Button
-                label="Save and add another"
-                class="ml-2 p-button-secondary"
-                @click.prevent="submit(!v$.$invalid, 'add_new')"
+                @click.prevent="submit(!v$.$invalid)"
               />
             </div>
           </div>
@@ -542,11 +536,15 @@ export default {
     ManufacturersSkuEntry,
     PartParametersEntry,
   },
+  props: {
+    node: Number,
+  },
   data: () => ({
     submitted: false,
+    part: null,
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Add new part" }],
+      items: [{ label: "Edit part" }],
     },
     form: {
       name: "",
@@ -572,12 +570,16 @@ export default {
     partsExists: [],
     partDetails: null,
     part_parameters_preset: null,
+    origCategory: null,
   }),
   setup: () => ({
     v$: useVuelidate(),
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
   }),
+  created() {
+    this.fetchPart();
+  },
   computed: {
     ...mapState(usePreloadsStore, {
       choicesPartUnit: (store) =>
@@ -632,6 +634,9 @@ export default {
         });
       },
     }),
+    partId() {
+      return this.$route.params.partId;
+    },
   },
   validations: {
     form: {
@@ -677,12 +682,14 @@ export default {
     },
   },
   methods: {
-    submit(isFormValid, mode) {
+    submit(isFormValid) {
       this.submitted = true;
 
       if (!isFormValid) {
         return;
       }
+
+      let newCategoryId = this.form.category;
 
       let datas = {
         name: this.form.name,
@@ -727,39 +734,52 @@ export default {
       logger.default.info("submitting part", datas);
 
       apiService
-        .createPart(datas)
+        .updatePart(this.part.id, datas)
         .then((resp) => {
           this.toast.add({
             severity: "success",
-            summary: "Adding part",
+            summary: "Updating part",
             detail: "Success",
             life: 5000,
           });
-          this.preloadsStore.incrementCategoryPartsCount(datas.category);
-          if (mode === "add_new") {
-            this.clearForm();
-          } else {
-            // mode === continue
-            this.$router.push({
-              name: "parts-details",
-              params: { partId: resp.data.id },
-            });
+
+          if (
+            Object.keys(this.origCategory)[0] != Object.keys(newCategoryId)[0]
+          ) {
+            logger.default.info(
+              "old category: ",
+              Object.keys(this.origCategory)[0],
+              " new: ",
+              Object.keys(newCategoryId)[0]
+            );
+            this.preloadsStore.decrementCategoryPartsCount(
+              Object.keys(this.origCategory)[0]
+            );
+            this.preloadsStore.incrementCategoryPartsCount(
+              Object.keys(newCategoryId)[0]
+            );
+            this.origCategory = { [Object.keys(newCategoryId)[0]]: true };
           }
         })
         .catch((error) => {
           this.toast.add({
             severity: "error",
-            summary: "Adding part",
+            summary: "Updating part",
             detail: "An error occured, please try again later",
             life: 5000,
           });
-          logger.default.error("Cannot save part", error.message);
+          logger.default.error("Cannot update part", error.message);
         });
     },
     checkIfPartExists(event) {
       if (this.form.name === "") {
         return;
       }
+      // ignore self
+      if (this.part.name == this.form.name) {
+        return;
+      }
+
       apiService
         .partsAutocompleteQuick(this.form.name)
         .then((res) => {
@@ -889,6 +909,86 @@ export default {
           });
         });
       }
+    },
+    fetchPart() {
+      apiService
+        .getPart(this.partId)
+        .then((res) => {
+          this.part = res.data;
+          this.form.name = this.part.name;
+          this.form.description = this.part.description;
+          this.form.comment = this.part.comment;
+          this.form.qty = this.part.stock_qty;
+          this.form.qty_min = this.part.stock_qty_min;
+          this.form.sheet_status = this.part.status;
+          this.form.needs_review = this.part.needs_review;
+          this.form.condition = this.part.condition;
+          this.form.can_be_sold = this.part.can_be_sold;
+          this.form.private = this.part.private;
+          this.form.production_remarks = this.part.production_remarks;
+          this.form.internal_pn = this.part.internal_part_number;
+          this.form.part_parameters_value = this.part.part_parameters_value.map(
+            (x) => {
+              return {
+                id: x.id,
+                name: x.name,
+                description: x.description,
+                value: x.value,
+                unit: x.unit ? x.unit.id : null,
+              };
+            }
+          );
+          this.form.manufacturers_sku = this.part.manufacturers_sku.map((x) => {
+            return {
+              id: x.id,
+              sku: x.sku,
+              manufacturer: {
+                text: x.manufacturer ? x.manufacturer.name : null,
+                value: x.manufacturer ? x.manufacturer.id : null,
+                datasheet_url: x.manufacturer
+                  ? x.manufacturer.datasheet_url
+                  : null,
+              },
+              datasheet_url: x.datasheet_url,
+            };
+          });
+          this.form.distributors_sku = this.part.distributors_sku.map((x) => {
+            return {
+              id: x.id,
+              sku: x.sku,
+              distributor: {
+                text: x.distributor.name,
+                value: x.distributor.id,
+                datasheet_url: x.distributor
+                  ? x.distributor.datasheet_url
+                  : null,
+              },
+              datasheet_url: x.datasheet_url,
+            };
+          });
+          this.form.part_unit = this.part.part_unit
+            ? this.part.part_unit.id
+            : null;
+          this.form.category = this.part.category
+            ? { [this.part.category.id]: true }
+            : null;
+          this.form.storage_location = this.part.storage
+            ? { [this.part.storage.id]: true }
+            : null;
+          this.form.footprint = this.part.footprint
+            ? this.part.footprint.id
+            : null;
+          this.origCategory = this.form.category;
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Fetching part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with fetching part", err.message);
+        });
     },
   },
 };
