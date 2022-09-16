@@ -69,6 +69,11 @@
         >
           {{ v$.item.logo.required.$message }}
         </small>
+
+        <template v-if="mode === 'edit' && typeof item.hasLogo === 'string'">
+          <br />
+          Actual logo <a :href="item.hasLogo" target="_blank">file</a>.
+        </template>
       </div>
 
       <div class="col-6">
@@ -295,7 +300,17 @@ export default {
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit
     if (this.dialogRef.data.item) {
-      this.item = this.dialogRef.data.item;
+      this.item = {
+        id: this.dialogRef.data.item.id,
+        name: this.dialogRef.data.item.name,
+        address: this.dialogRef.data.item.address,
+        url: this.dialogRef.data.item.url,
+        email: this.dialogRef.data.item.email,
+        comment: this.dialogRef.data.item.comment,
+        phone: this.dialogRef.data.item.phone,
+        fax: this.dialogRef.data.item.fax,
+        hasLogo: this.dialogRef.data.item.logo,
+      };
     }
   },
   validations: {
@@ -328,6 +343,13 @@ export default {
         return;
       }
 
+      if (this.mode === "add") {
+        this.save();
+      } else {
+        this.edit();
+      }
+    },
+    save() {
       let manufacturer = {
         name: this.item.name,
         address: this.item.address,
@@ -358,6 +380,43 @@ export default {
             life: 5000,
           });
           logger.default.error("Error with manufacturer saving", err);
+          this.dialogRef.close({ finished: true });
+        });
+    },
+    edit() {
+      let manufacturer = {
+        name: this.item.name,
+        address: this.item.address,
+        url: this.item.url,
+        email: this.item.email,
+        comment: this.item.comment,
+        phone: this.item.phone,
+        fax: this.item.fax,
+      };
+
+      if (this.item.realLogo) {
+        manufacturer.logo = this.item.realLogo;
+      }
+
+      apiService
+        .updateManufacturer(this.item.id, manufacturer)
+        .then(() => {
+          this.toast.add({
+            severity: "success",
+            summary: "Manufacturer",
+            detail: "Updated with success",
+            life: 5000,
+          });
+          this.dialogRef.close({ finished: true });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Manufacturer",
+            detail: "Save failed",
+            life: 5000,
+          });
+          logger.default.error("Error with manufacturer update", err);
           this.dialogRef.close({ finished: true });
         });
     },

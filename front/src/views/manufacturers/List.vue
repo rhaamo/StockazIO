@@ -76,6 +76,27 @@
             </template>
           </template>
         </Column>
+
+        <Column>
+          <template #body="slotProps">
+            <span class="p-buttonset">
+              <Button
+                type="button"
+                icon="fa fa-edit"
+                class="p-button-primary"
+                v-tooltip="'edit'"
+                @click.prevent="editItem($event, slotProps.data)"
+              ></Button>
+              <Button
+                type="button"
+                icon="fa fa-trash-o"
+                class="p-button-danger"
+                v-tooltip="'delete'"
+                @click="deleteItem($event, slotProps.data)"
+              ></Button>
+            </span>
+          </template>
+        </Column>
       </DataTable>
     </div>
   </div>
@@ -91,6 +112,7 @@ import { h } from "vue";
 import apiService from "../../services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
   data: () => ({
@@ -105,6 +127,7 @@ export default {
   setup: () => ({
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
+    confirm: useConfirm(),
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -155,6 +178,64 @@ export default {
             // reload manufacturers
             this.fetchManufacturers();
           }
+        },
+      });
+    },
+    editItem(event, item) {
+      const editManufacturerRef = this.$dialog.open(ManageManufacturerModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "50vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Edit manufacturer")])];
+          },
+        },
+        data: {
+          mode: "edit",
+          item: item,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload manufacturers
+            this.fetchManufacturers();
+          }
+        },
+      });
+    },
+    deleteItem(event, item) {
+      this.confirm.require({
+        message: `Are you sure you want to delete the manufacturer '${item.name}' ?`,
+        header: `Deleting '${item.name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .deleteManufacturer(item.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Manufacturer",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.fetchManufacturers();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Manufacturer",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with part deletion", err);
+              this.fetchManufacturers();
+            });
+        },
+        reject: () => {
+          return;
         },
       });
     },
