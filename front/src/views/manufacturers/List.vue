@@ -10,22 +10,31 @@
         :paginator="true"
         :rows="perPage"
         removableSort
-        filterDisplay="row"
         :globalFilterFields="['name']"
         v-model:filters="filters"
       >
-        <Column field="name" header="Name" :sortable="true">
-          <template #filter="{ filterModel, filterCallback }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              @keydown.enter="filterCallback()"
-              class="p-column-filter"
-              :placeholder="`Search by name - `"
-              v-tooltip.top.focus="'Hit enter key to filter'"
-            />
-          </template>
-        </Column>
+        <template #header>
+          <div class="grid">
+            <div class="col-2">
+              <Button
+                label="Add a manufacturer"
+                @click.prevent="showAddManufacturerModal"
+              />
+            </div>
+
+            <div class="col-2 col-offset-7">
+              <span class="p-input-icon-left">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
+                />
+              </span>
+            </div>
+          </div>
+        </template>
+
+        <Column field="name" header="Name" :sortable="true"></Column>
         <Column field="logo" header="Logo">
           <template #body="slotProps">
             <img
@@ -85,7 +94,7 @@ export default {
       items: [{ label: "Manufacturers" }],
     },
     filters: {
-      name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+      global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     },
   }),
   computed: {
@@ -97,6 +106,9 @@ export default {
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.MANUFACTURERS || 10,
     }),
+  },
+  methods: {
+    showAddManufacturerModal() {},
   },
 };
 </script>
