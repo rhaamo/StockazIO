@@ -1,126 +1,152 @@
 <template>
   <div>
-    <div>
-      <label
-        for="name"
-        :class="{
-          block: true,
-          'p-error': v$.item.name.$invalid && submitted,
-          'w-10': true,
-        }"
-        >Name*</label
-      >
-      <InputText
-        autofocus
-        v-focus
-        ref="name"
-        inputId="name"
-        type="text"
-        v-model="item.name"
-        placeholder="That one box"
-        :class="{
-          'p-invalid': v$.item.name.$invalid && submitted,
-          'w-10': true,
-        }"
-      />
-      <small
-        v-if="
-          (v$.item.name.$invalid && submitted) ||
-          v$.item.name.$pending.$response
-        "
-        class="p-error"
-        ><br />
-        {{ v$.item.name.required.$message }}
-        <template v-if="v$.item.name.required && v$.item.name.maxLength"
-          ><br
-        /></template>
-        {{ v$.item.name.maxLength.$message }}
-      </small>
+    <div class="flex justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="field w-10">
+          <label
+            for="name"
+            :class="{
+              block: true,
+              'p-error': v$.item.name.$invalid && submitted,
+              'w-full': true,
+            }"
+            >Name*</label
+          >
+          <InputText
+            autofocus
+            v-focus
+            ref="name"
+            inputId="name"
+            type="text"
+            v-model="item.name"
+            placeholder="That one box"
+            :class="{
+              'p-invalid': v$.item.name.$invalid && submitted,
+              'w-full': true,
+            }"
+          />
+          <small
+            v-if="
+              (v$.item.name.$invalid && submitted) ||
+              v$.item.name.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.item.name.required.$message }}
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"
+              ><br
+            /></template>
+            {{ v$.item.name.maxLength.$message }}
+          </small>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <label
-        for="description"
-        :class="{
-          block: true,
-          'p-error': v$.item.description.$invalid && submitted,
-          'w-10': true,
-        }"
-        >description</label
-      >
-      <InputText
-        ref="description"
-        inputId="description"
-        type="text"
-        v-model="item.description"
-        placeholder="Full of emptyness"
-        :class="{
-          'p-invalid': v$.item.description.$invalid && submitted,
-          'w-10': true,
-        }"
-      />
-      <small
-        v-if="
-          (v$.item.description.$invalid && submitted) ||
-          v$.item.description.$pending.$response
-        "
-        class="p-error"
-        ><br />
-        {{ v$.item.description.maxLength.$message }}
-      </small>
+    <div class="flex justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="field w-10">
+          <label
+            for="description"
+            :class="{
+              block: true,
+              'p-error': v$.item.description.$invalid && submitted,
+              'w-full': true,
+            }"
+            >description</label
+          >
+          <InputText
+            ref="description"
+            inputId="description"
+            type="text"
+            v-model="item.description"
+            placeholder="Full of emptyness"
+            :class="{
+              'p-invalid': v$.item.description.$invalid && submitted,
+              'w-full': true,
+            }"
+          />
+          <small
+            v-if="
+              (v$.item.description.$invalid && submitted) ||
+              v$.item.description.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.item.description.maxLength.$message }}
+          </small>
+        </div>
+      </div>
     </div>
 
     <template v-if="item.parent_id && !item.parent_id.null">
-      <label for="parent_category" class="block mt-1">Storage place</label>
-      <TreeSelect
-        inputId="parent_category"
-        class="w-10"
-        v-model="item.parent_id"
-        :options="choicesCategories"
-        selectionMode="single"
-      />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label for="parent_category" class="block mt-1"
+              >Storage place</label
+            >
+            <TreeSelect
+              inputId="parent_category"
+              class="w-full"
+              v-model="item.parent_id"
+              :options="choicesCategories"
+              selectionMode="single"
+            />
+          </div>
+        </div>
+      </div>
     </template>
 
-    <div>
-      <label
-        for="picture"
-        :class="{
-          block: true,
-          'p-error': v$.item.picture.$invalid && submitted,
-          'w-10': true,
-        }"
-        >Picture</label
-      >
-      <InputText
-        ref="picture"
-        inputId="picture"
-        type="file"
-        v-model="item.picture"
-        @change="pictureFileChanged($event.target.files)"
-        :class="{
-          'p-invalid': v$.item.picture.$invalid && submitted,
-          'w-10': true,
-        }"
-        :accept="allowedUploadTypes"
-      />
-      <small
-        v-if="
-          (v$.item.picture.$invalid && submitted) ||
-          v$.item.picture.$pending.$response
-        "
-        class="p-error"
-      >
-        {{ v$.item.picture.required.$message }}
-      </small>
+    <div class="flex justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="field w-10">
+          <label
+            for="picture"
+            :class="{
+              block: true,
+              'p-error': v$.item.picture.$invalid && submitted,
+              'w-full': true,
+            }"
+            >Picture</label
+          >
+          <InputText
+            ref="picture"
+            inputId="picture"
+            type="file"
+            v-model="item.picture"
+            @change="pictureFileChanged($event.target.files)"
+            :class="{
+              'p-invalid': v$.item.picture.$invalid && submitted,
+              'w-full': true,
+            }"
+            :accept="allowedUploadTypes"
+          />
+          <small
+            v-if="
+              (v$.item.picture.$invalid && submitted) ||
+              v$.item.picture.$pending.$response
+            "
+            class="p-error"
+          >
+            {{ v$.item.picture.required.$message }}
+          </small>
 
-      <template v-if="mode === 'edit' && typeof item.hasPicture === 'string'">
-        <br />
-        Actual picture <a :href="item.hasPicture" target="_blank">file</a>.
-      </template>
+          <template
+            v-if="mode === 'edit' && typeof item.hasPicture === 'string'"
+          >
+            <br />
+            Actual picture <a :href="item.hasPicture" target="_blank">file</a>.
+          </template>
+        </div>
+      </div>
     </div>
 
-    <div class="mt-2">
-      <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+    <div class="flex justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="field w-10">
+          <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+        </div>
+      </div>
     </div>
   </div>
 </template>

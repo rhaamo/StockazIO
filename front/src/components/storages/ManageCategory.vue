@@ -1,56 +1,71 @@
 <template>
   <div>
-    <div>
-      <label
-        for="name"
-        :class="{
-          block: true,
-          'p-error': v$.item.name.$invalid && submitted,
-          'w-10': true,
-        }"
-        >Name*</label
-      >
-      <InputText
-        autofocus
-        v-focus
-        ref="name"
-        inputId="name"
-        type="text"
-        v-model="item.name"
-        placeholder="Under the bed"
-        :class="{
-          'p-invalid': v$.item.name.$invalid && submitted,
-          'w-10': true,
-        }"
-      />
-      <small
-        v-if="
-          (v$.item.name.$invalid && submitted) ||
-          v$.item.name.$pending.$response
-        "
-        class="p-error"
-        ><br />
-        {{ v$.item.name.required.$message }}
-        <template v-if="v$.item.name.required && v$.item.name.maxLength"
-          ><br
-        /></template>
-        {{ v$.item.name.maxLength.$message }}
-      </small>
+    <div class="flex justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="field w-10">
+          <label
+            for="name"
+            :class="{
+              'p-error': v$.item.name.$invalid && submitted,
+              'w-full': true,
+            }"
+            >Name*</label
+          >
+          <InputText
+            autofocus
+            v-focus
+            ref="name"
+            inputId="name"
+            type="text"
+            v-model="item.name"
+            placeholder="Under the bed"
+            :class="{
+              'p-invalid': v$.item.name.$invalid && submitted,
+              'w-full': true,
+            }"
+          />
+          <small
+            v-if="
+              (v$.item.name.$invalid && submitted) ||
+              v$.item.name.$pending.$response
+            "
+            class="p-error"
+            ><br />
+            {{ v$.item.name.required.$message }}
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"
+              ><br
+            /></template>
+            {{ v$.item.name.maxLength.$message }}
+          </small>
+        </div>
+      </div>
     </div>
 
     <template v-if="item.parent_id && !item.parent_id.null">
-      <label for="parent_category" class="block mt-1">Parent category</label>
-      <TreeSelect
-        inputId="parent_category"
-        class="w-10"
-        v-model="item.parent_id"
-        :options="choicesCategories"
-        selectionMode="single"
-      />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label for="parent_category" class="block mt-1"
+              >Parent category</label
+            >
+            <TreeSelect
+              inputId="parent_category"
+              class="w-full"
+              v-model="item.parent_id"
+              :options="choicesCategories"
+              selectionMode="single"
+            />
+          </div>
+        </div>
+      </div>
     </template>
 
-    <div class="mt-2">
-      <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+    <div class="flex justify-content-center">
+      <div class="flex flex-grow-1 align-items-center justify-content-center">
+        <div class="field w-10">
+          <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
