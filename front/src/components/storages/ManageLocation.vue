@@ -17,7 +17,7 @@
         inputId="name"
         type="text"
         v-model="item.name"
-        placeholder="Under the bed"
+        placeholder="That one box"
         :class="{
           'p-invalid': v$.item.name.$invalid && submitted,
           'w-10': true,
@@ -38,8 +38,40 @@
       </small>
     </div>
 
+    <div>
+      <label
+        for="description"
+        :class="{
+          block: true,
+          'p-error': v$.item.description.$invalid && submitted,
+          'w-10': true,
+        }"
+        >description</label
+      >
+      <InputText
+        ref="description"
+        inputId="description"
+        type="text"
+        v-model="item.description"
+        placeholder="Full of emptyness"
+        :class="{
+          'p-invalid': v$.item.description.$invalid && submitted,
+          'w-10': true,
+        }"
+      />
+      <small
+        v-if="
+          (v$.item.description.$invalid && submitted) ||
+          v$.item.description.$pending.$response
+        "
+        class="p-error"
+        ><br />
+        {{ v$.item.description.maxLength.$message }}
+      </small>
+    </div>
+
     <template v-if="item.parent_id && !item.parent_id.null">
-      <label for="parent_category" class="block mt-1">Parent category</label>
+      <label for="parent_category" class="block mt-1">Storage place</label>
       <TreeSelect
         inputId="parent_category"
         class="w-10"
@@ -48,6 +80,44 @@
         selectionMode="single"
       />
     </template>
+
+    <div>
+      <label
+        for="picture"
+        :class="{
+          block: true,
+          'p-error': v$.item.picture.$invalid && submitted,
+          'w-10': true,
+        }"
+        >Picture</label
+      >
+      <InputText
+        ref="picture"
+        inputId="picture"
+        type="file"
+        v-model="item.picture"
+        @change="pictureFileChanged($event.target.files)"
+        :class="{
+          'p-invalid': v$.item.picture.$invalid && submitted,
+          'w-10': true,
+        }"
+        :accept="allowedUploadTypes"
+      />
+      <small
+        v-if="
+          (v$.item.picture.$invalid && submitted) ||
+          v$.item.picture.$pending.$response
+        "
+        class="p-error"
+      >
+        {{ v$.item.picture.required.$message }}
+      </small>
+
+      <template v-if="mode === 'edit' && typeof item.hasPicture === 'string'">
+        <br />
+        Actual picture <a :href="item.hasPicture" target="_blank">file</a>.
+      </template>
+    </div>
 
     <div class="mt-2">
       <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
@@ -63,6 +133,7 @@ import apiService from "@/services/api/api.service";
 import { usePreloadsStore } from "@/stores/preloads";
 import { mapState } from "pinia";
 import logger from "@/logging";
+import { useServerStore } from "@/stores/server";
 
 export default {
   inject: ["dialogRef"],
@@ -78,15 +149,20 @@ export default {
     toast: useToast(),
   }),
   created() {
+    this.mode = this.dialogRef.data.mode;
+
     this.item.id = this.dialogRef.data.id;
     this.item.name = this.dialogRef.data.name;
     this.item.parent_id = this.dialogRef.data.parent_id;
-    this.mode = this.dialogRef.data.mode;
+    this.item.description = this.dialogRef.data.description;
+    this.item.hasPicture = this.dialogRef.data.picture;
   },
   validations: {
     item: {
       name: { required, maxLength: maxLength(200) },
-      parent_id: {},
+      parent_id: { required },
+      description: { maxLength: maxLength(255) },
+      picture: {},
     },
   },
   computed: {
@@ -106,8 +182,20 @@ export default {
         return store.storages.map(cb);
       },
     }),
+    ...mapState(useServerStore, {
+      allowedUploadTypes: (store) => {
+        let types = store.settings.partAttachmentAllowedTypes || [
+          "image/png",
+          "image/jpeg",
+        ];
+        return types.join(", ");
+      },
+    }),
   },
   methods: {
+    pictureFileChanged(files) {
+      this.item.realPicture = files[0];
+    },
     submit(isFormValid) {
       this.submitted = true;
       if (!isFormValid) {
@@ -121,20 +209,22 @@ export default {
       }
     },
     save() {
-      let storageCategory = {
+      let storageLocation = {
         name: this.item.name,
+        description: this.item.description,
+        picture: this.item.realPicture,
       };
 
       if (this.item.parent_id && !this.item.parent_id.null) {
-        storageCategory.parent = Object.keys(this.item.parent_id)[0];
+        storageLocation.category = Object.keys(this.item.parent_id)[0];
       }
 
       apiService
-        .createStorageCategory(storageCategory)
+        .createStorageLocation(storageLocation)
         .then(() => {
           this.toast.add({
             severity: "success",
-            summary: "Storage Category",
+            summary: "Storage Location",
             detail: "Saved with success",
             life: 5000,
           });
@@ -143,29 +233,34 @@ export default {
         .catch((err) => {
           this.toast.add({
             severity: "error",
-            summary: "Storage Category",
+            summary: "Storage Location",
             detail: "Save failed",
             life: 5000,
           });
-          logger.default.error("Error with storage category saving", err);
+          logger.default.error("Error with storage location saving", err);
           this.dialogRef.close({ finished: true });
         });
     },
     edit() {
-      let storageCategory = {
+      let storageLocation = {
         name: this.item.name,
+        description: this.item.description,
       };
 
       if (this.item.parent_id && !this.item.parent_id.null) {
-        storageCategory.parent = Object.keys(this.item.parent_id)[0];
+        storageLocation.category = Object.keys(this.item.parent_id)[0];
+      }
+
+      if (this.item.realPicture) {
+        storageLocation.picture = this.item.realPicture;
       }
 
       apiService
-        .updateStorageCategory(this.item.id, storageCategory)
+        .updateStorageLocation(this.item.id, storageLocation)
         .then(() => {
           this.toast.add({
             severity: "success",
-            summary: "Storage Category",
+            summary: "Storage Location",
             detail: "Updated with success",
             life: 5000,
           });
@@ -174,11 +269,11 @@ export default {
         .catch((err) => {
           this.toast.add({
             severity: "error",
-            summary: "Storage Category",
+            summary: "Storage Location",
             detail: "Update failed",
             life: 5000,
           });
-          logger.default.error("Error with storage category update", err);
+          logger.default.error("Error with storage location update", err);
           this.dialogRef.close({ finished: true });
         });
     },

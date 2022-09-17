@@ -63,6 +63,14 @@
 </template>
 
 <script>
+import ManageLocationDialog from "@/components/storages/ManageLocation.vue";
+import { h } from "vue";
+import apiService from "../../services/api/api.service";
+import { useToast } from "primevue/usetoast";
+import logger from "@/logging";
+import { useConfirm } from "primevue/useconfirm";
+import { usePreloadsStore } from "@/stores/preloads";
+
 export default {
   props: {
     item: Object,
@@ -72,15 +80,94 @@ export default {
       default: false,
     },
   },
+  setup: () => ({
+    toast: useToast(),
+    confirm: useConfirm(),
+    preloadsStore: usePreloadsStore(),
+  }),
   methods: {
     showLabelGeneratorModal(item) {
       console.log("showLabelGeneratorModal", item);
     },
+    fetchStorages() {
+      logger.default.info("reloading storages");
+      apiService
+        .getStorages()
+        .then((val) => {
+          this.preloadsStore.setStorages(val.data);
+          this.preloadsStore.setLastUpdate("storages", new Date());
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Storages",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error fetching storages", err);
+        });
+    },
     showEditLocationModal(item) {
-      console.log("showEditLocationModal", item);
+      this.$dialog.open(ManageLocationDialog, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Edit storage location")])];
+          },
+        },
+        data: {
+          id: item.id,
+          name: item.name,
+          parent_id: { [item.category]: true },
+          description: item.description,
+          picture: item.picture,
+          mode: "edit",
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload storages
+            this.fetchStorages();
+          }
+        },
+      });
     },
     showDeleteLocationModal(item) {
-      console.log("showDeleteLocationModal", item);
+      this.confirm.require({
+        message: `Are you sure you want to delete the location '${item.name}' ?`,
+        header: `Deleting '${item.name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .deleteStorageLocation(item.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Storage location",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.fetchStorages();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Storage location",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with storage location deletion", err);
+              this.fetchStorages();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
   },
 };

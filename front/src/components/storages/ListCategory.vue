@@ -71,6 +71,7 @@
 import ListLocation from "@/components/storages/ListLocation.vue";
 import { h } from "vue";
 import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
+import ManageLocationDialog from "@/components/storages/ManageLocation.vue";
 import apiService from "../../services/api/api.service";
 import logger from "@/logging";
 import { useToast } from "primevue/usetoast";
@@ -180,7 +181,6 @@ export default {
       });
     },
     addCategoryModal(id) {
-      console.log("addCategoryModal", id);
       this.$dialog.open(ManageCategoryDialog, {
         props: {
           modal: true,
@@ -207,7 +207,32 @@ export default {
       });
     },
     addLocationModal(id) {
-      console.log("addLocationModal", id);
+      this.$dialog.open(ManageLocationDialog, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Add storage location")])];
+          },
+        },
+        data: {
+          name: "",
+          parent_id: { [id]: true },
+          description: "",
+          picture: "",
+          mode: "add",
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload storages
+            this.fetchStorages();
+          }
+        },
+      });
     },
   },
 };
