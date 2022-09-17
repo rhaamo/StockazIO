@@ -48,6 +48,7 @@ import { h } from "vue";
 import ListCategory from "@/components/storages/ListCategory.vue";
 import ListLocation from "@/components/storages/ListLocation.vue";
 import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
+import LabelGeneratorModal from "@/components/label/generator.vue";
 
 export default {
   components: {
@@ -72,7 +73,38 @@ export default {
   },
   methods: {
     showBulkLabelGenerator() {
-      console.log("showBulkLabelGenerator");
+      let slocs = [];
+      const cb = (e) => {
+        if (e.category) {
+          slocs.push(e);
+        } else {
+          e.storage_locations.forEach(cb);
+          e.children.forEach(cb);
+        }
+      };
+      this.storages.forEach(cb);
+
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [
+              h("h3", [
+                h("i", { class: "fa fa-qrcode mr-1" }),
+                h("span", "Label Generator"),
+              ]),
+            ];
+          },
+        },
+        data: {
+          items: slocs,
+        },
+      });
     },
     fetchStorages() {
       logger.default.info("reloading storages");

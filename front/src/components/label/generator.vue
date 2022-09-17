@@ -3,13 +3,24 @@
     <div class="grid">
       <div class="col-4">
         <div>
-          <template v-if="items && items.length == 1">
-            Item infos:<br />
+          <template v-if="items && items.length === 1">
+            <template v-if="items[0].category"
+              >Storage location infos:<br
+            /></template>
+            <template v-else>Item infos:<br /></template>
             <ul>
               <li>Name: {{ items[0].name }}</li>
               <li>Description: {{ items[0].description || "none" }}</li>
               <li>UUID: {{ items[0].uuid }}</li>
               <li>qrCode content: {{ qrCodeUri(items[0]) }}</li>
+            </ul>
+          </template>
+          <template v-else>
+            Multiple items choosen for label generation.
+            <ul>
+              <li v-for="item in items" :key="item.id">
+                {{ item.name }}
+              </li>
             </ul>
           </template>
         </div>
@@ -42,7 +53,8 @@
 
       <div class="col-8">
         <div v-if="template && pdf">
-          <Button @click.prevent="printPdf" label="Print PDF"></Button><br />
+          <Button @click.prevent="printPdf" label="Print Labels PDF"></Button
+          ><br />
           <VuePdfEmbed ref="pdfViewer" :source="pdf" />
         </div>
       </div>
@@ -58,7 +70,7 @@ import { generate } from "@pdfme/generator";
 export default {
   inject: ["dialogRef"],
   data: () => ({
-    items: null,
+    items: [],
     template: null,
     pdf: null,
   }),

@@ -70,6 +70,7 @@ import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
 import { usePreloadsStore } from "@/stores/preloads";
+import LabelGeneratorModal from "@/components/label/generator.vue";
 
 export default {
   props: {
@@ -87,7 +88,27 @@ export default {
   }),
   methods: {
     showLabelGeneratorModal(item) {
-      console.log("showLabelGeneratorModal", item);
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [
+              h("h3", [
+                h("i", { class: "fa fa-qrcode mr-1" }),
+                h("span", "Label Generator"),
+              ]),
+            ];
+          },
+        },
+        data: {
+          items: [this.item],
+        },
+      });
     },
     fetchStorages() {
       logger.default.info("reloading storages");
