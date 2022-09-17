@@ -12,7 +12,7 @@ import PartsDetails from "@/views/parts/View.vue";
 import PartsEdit from "@/views/parts/Edit.vue";
 import PartUnitsList from "@/views/part_units/List.vue";
 import ParametersUnitsList from "@/views/parameters_units/List.vue";
-import ParametersPresetsList from "@/views/About.vue";
+import ParametersPresetsList from "@/views/part_parameters_presets/List.vue";
 import ParametersPresetsDetails from "@/views/About.vue";
 import ParametersPresetsEdit from "@/views/About.vue";
 import ParametersPresetsAdd from "@/views/About.vue";

@@ -32,6 +32,7 @@ export const usePreloadsStore = defineStore("preloads", {
         manufacturers: null,
         distributors: null,
         label_templates: null,
+        parameters_presets: null,
       },
     };
   },
