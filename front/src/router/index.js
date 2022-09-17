@@ -10,7 +10,7 @@ import PartsAddQuick from "@/views/parts/AddQuick.vue";
 import PartsList from "@/views/parts/List.vue";
 import PartsDetails from "@/views/parts/View.vue";
 import PartsEdit from "@/views/parts/Edit.vue";
-import PartUnitsList from "@/views/About.vue";
+import PartUnitsList from "@/views/part_units/List.vue";
 import ParametersUnitsList from "@/views/About.vue";
 import ParametersPresetsList from "@/views/About.vue";
 import ParametersPresetsDetails from "@/views/About.vue";
