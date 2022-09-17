@@ -27,7 +27,7 @@ import ProjectsList from "@/views/About.vue";
 import ProjectsAdd from "@/views/About.vue";
 import ProjectsEdit from "@/views/About.vue";
 import ProjectsDetails from "@/views/About.vue";
-import StoragesList from "@/views/About.vue";
+import StoragesList from "@/views/storages/List.vue";
 import LabelTemplatesList from "@/views/About.vue";
 
 const validateAuthenticatedRoute = (to, from, next) => {
