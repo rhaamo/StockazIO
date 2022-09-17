@@ -42,8 +42,12 @@
 <script>
 import { usePreloadsStore } from "@/stores/preloads";
 import { mapState } from "pinia";
+import apiService from "../../services/api/api.service";
+import logger from "@/logging";
+import { h } from "vue";
 import ListCategory from "@/components/storages/ListCategory.vue";
 import ListLocation from "@/components/storages/ListLocation.vue";
+import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
 
 export default {
   components: {
@@ -70,8 +74,49 @@ export default {
     showBulkLabelGenerator() {
       console.log("showBulkLabelGenerator");
     },
+    fetchStorages() {
+      logger.default.info("reloading storages");
+      apiService
+        .getStorages()
+        .then((val) => {
+          this.preloadsStore.setStorages(val.data);
+          this.preloadsStore.setLastUpdate("storages", new Date());
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Storages",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error fetching storages", err);
+        });
+    },
     showAddCategoryDialog() {
-      console.log("showAddCategoryDialog");
+      this.$dialog.open(ManageCategoryDialog, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Add root category")])];
+          },
+        },
+        data: {
+          name: "",
+          parent_id: null,
+          mode: "add",
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload storages
+            this.fetchStorages();
+          }
+        },
+      });
     },
   },
 };

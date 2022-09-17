@@ -69,6 +69,13 @@
 
 <script>
 import ListLocation from "@/components/storages/ListLocation.vue";
+import { h } from "vue";
+import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
+import apiService from "../../services/api/api.service";
+import logger from "@/logging";
+import { useToast } from "primevue/usetoast";
+import { usePreloadsStore } from "@/stores/preloads";
+import { useConfirm } from "primevue/useconfirm";
 
 export default {
   components: {
@@ -82,6 +89,11 @@ export default {
       default: false,
     },
   },
+  setup: () => ({
+    toast: useToast(),
+    preloadsStore: usePreloadsStore(),
+    confirm: useConfirm(),
+  }),
   methods: {
     addCategoryTitle(name) {
       return `Add category under '${name}'`;
@@ -89,14 +101,110 @@ export default {
     addLocationTitle(name) {
       return `Add location/box under '${name}'`;
     },
+    fetchStorages() {
+      logger.default.info("reloading storages");
+      apiService
+        .getStorages()
+        .then((val) => {
+          this.preloadsStore.setStorages(val.data);
+          this.preloadsStore.setLastUpdate("storages", new Date());
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Storages",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error fetching storages", err);
+        });
+    },
     editCategoryModal(item) {
-      console.log("editCategoryModal", item);
+      this.$dialog.open(ManageCategoryDialog, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Edit category")])];
+          },
+        },
+        data: {
+          id: item.id,
+          name: item.name,
+          parent_id: { [item.parent]: true },
+          mode: "edit",
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload storages
+            this.fetchStorages();
+          }
+        },
+      });
     },
     deleteCategoryModal(item) {
-      console.log("deleteCategoryModal", item);
+      this.confirm.require({
+        message: `Are you sure you want to delete the category '${item.name}' ?`,
+        header: `Deleting '${item.name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .deleteStorageCategory(item.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Storage category",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.fetchStorages();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Storage category",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with storage category deletion", err);
+              this.fetchStorages();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
     addCategoryModal(id) {
       console.log("addCategoryModal", id);
+      this.$dialog.open(ManageCategoryDialog, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Add category")])];
+          },
+        },
+        data: {
+          name: "",
+          parent_id: { [id]: true },
+          mode: "add",
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload storages
+            this.fetchStorages();
+          }
+        },
+      });
     },
     addLocationModal(id) {
       console.log("addLocationModal", id);
