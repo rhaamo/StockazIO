@@ -50,15 +50,28 @@
         <Column field="url" header="URL">
           <template #body="slotProps">
             <template v-if="slotProps.data.url">
+              Website:
               <a :href="slotProps.data.url" target="_blank">{{
                 slotProps.data.url
               }}</a>
             </template>
+
             <template v-if="slotProps.data.url && slotProps.data.email"
               ><br
             /></template>
             <template v-if="slotProps.data.email">
-              {{ slotProps.data.email }}
+              Email: {{ slotProps.data.email }}
+            </template>
+
+            <template
+              v-if="
+                slotProps.data.datasheet_url &&
+                (slotProps.data.email || slotProps.data.url)
+              "
+              ><br
+            /></template>
+            <template v-if="slotProps.data.datasheet_url">
+              Datasheet template: {{ slotProps.data.datasheet_url }}
             </template>
           </template>
         </Column>

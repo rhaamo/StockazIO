@@ -262,6 +262,49 @@
       </div>
 
       <div class="col-6">
+        <label
+          for="datasheet_url"
+          :class="{
+            block: true,
+            'p-error': v$.item.datasheet_url.$invalid && submitted,
+            'w-10': true,
+            'mt-3': true,
+          }"
+          >Datasheet URL Template</label
+        >
+        <InputText
+          ref="datasheet_url"
+          inputId="datasheet_url"
+          type="url"
+          v-model="item.datasheet_url"
+          placeholder="http://somewhere/{sku}.pdf"
+          :class="{
+            'p-invalid': v$.item.datasheet_url.$invalid && submitted,
+            'w-10': true,
+          }"
+        />
+        <small
+          v-if="
+            (v$.item.datasheet_url.$invalid && submitted) ||
+            v$.item.datasheet_url.$pending.$response
+          "
+          class="p-error"
+        >
+          {{ v$.item.datasheet_url.url.$message }}
+          <template
+            v-if="v$.item.datasheet_url.url && v$.item.datasheet_url.maxLength"
+            ><br
+          /></template>
+          {{ v$.item.datasheet_url.maxLength.$message }}
+        </small>
+      </div>
+
+      <div class="col-6 pt-5">
+        You can uses the following template in the datasheet url:<br />
+        {sku}, {sku_lower}, {sku_upper}
+      </div>
+
+      <div class="col-6">
         <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
       </div>
     </div>
@@ -290,6 +333,7 @@ export default {
       phone: "",
       fax: "",
       logo: null,
+      datasheet_url: "",
     },
     submitted: false,
   }),
@@ -310,6 +354,7 @@ export default {
         phone: this.dialogRef.data.item.phone,
         fax: this.dialogRef.data.item.fax,
         hasLogo: this.dialogRef.data.item.logo,
+        datasheet_url: this.dialogRef.data.item.datasheet_url,
       };
     }
   },
@@ -318,6 +363,7 @@ export default {
       name: { required, maxLength: maxLength(255) },
       address: {},
       url: { url, maxLength: maxLength(255) },
+      datasheet_url: { url, maxLength: maxLength(255) },
       email: { email, maxLength: maxLength(255) },
       comment: {},
       phone: { maxLength: maxLength(255) },
@@ -359,6 +405,7 @@ export default {
         phone: this.item.phone,
         fax: this.item.fax,
         logo: this.item.realLogo,
+        datasheet_url: this.item.datasheet_url,
       };
 
       apiService
@@ -392,6 +439,7 @@ export default {
         comment: this.item.comment,
         phone: this.item.phone,
         fax: this.item.fax,
+        datasheet_url: this.item.datasheet_url,
       };
 
       if (this.item.realLogo) {
