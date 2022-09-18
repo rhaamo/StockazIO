@@ -34,6 +34,17 @@
           >
             <template #empty> No parts found. </template>
 
+            <template #header>
+              <div class="field-checkbox">
+                <Checkbox
+                  inputId="only_qty_less_min"
+                  v-model="filter_qty_min"
+                  :binary="true"
+                />
+                <label for="only_qty_less_min">Only qty &lt; min</label>
+              </div>
+            </template>
+
             <template #header v-if="selectedParts && selectedParts.length">
               <Button
                 label="Change category"
@@ -253,6 +264,15 @@
                   class="p-column-filter"
                   placeholder="qty"
                 />
+
+                <div class="field-checkbox mt-2">
+                  <Checkbox
+                    inputId="only_out_of_stock"
+                    v-model="filter_qty"
+                    :binary="true"
+                  />
+                  <label for="only_out_of_stock">Only out of stock</label>
+                </div>
               </template>
             </Column>
             <Column
@@ -476,6 +496,8 @@ export default {
     selectedParts: null,
     bulkEditStorage: null,
     bulkEditCategory: null,
+    filter_qty_min: false,
+    filter_qty: false,
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -622,6 +644,24 @@ export default {
       delete this.lazyParams.category_id;
 
       // reload
+      this.loadLazyData();
+    },
+    filter_qty: function () {
+      if (this.filter_qty) {
+        this.filters.stock_qty = {
+          value: 0,
+          matchMode: FilterMatchMode.EQUALS,
+        };
+      } else {
+        this.filters.stock_qty.value = null;
+      }
+    },
+    filter_qty_min: function () {
+      if (this.filter_qty_min) {
+        this.lazyParams.qtyType = "qtyMin";
+      } else {
+        delete this.lazyParams.qtyType;
+      }
       this.loadLazyData();
     },
   },
