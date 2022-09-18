@@ -83,12 +83,12 @@ export const useUserStore = defineStore("user", {
           });
       });
     },
-    async checkOauthToken() {
+    checkOauthToken() {
       return new Promise(async (resolve, reject) => {
         const oauthStore = useOauthStore();
         if (oauthStore.getUserToken) {
           try {
-            this.loginUser();
+            await this.loginUser();
           } catch (e) {
             logger.default.error(e);
           }
