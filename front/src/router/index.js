@@ -13,9 +13,6 @@ import PartsEdit from "@/views/parts/Edit.vue";
 import PartUnitsList from "@/views/part_units/List.vue";
 import ParametersUnitsList from "@/views/parameters_units/List.vue";
 import ParametersPresetsList from "@/views/part_parameters_presets/List.vue";
-import ParametersPresetsDetails from "@/views/About.vue";
-import ParametersPresetsEdit from "@/views/About.vue";
-import ParametersPresetsAdd from "@/views/About.vue";
 import Distributors from "@/views/distributors/List.vue";
 import Manufacturers from "@/views/manufacturers/List.vue";
 import ViewInfos from "@/views/About.vue";
@@ -28,7 +25,7 @@ import ProjectsAdd from "@/views/About.vue";
 import ProjectsEdit from "@/views/About.vue";
 import ProjectsDetails from "@/views/About.vue";
 import StoragesList from "@/views/storages/List.vue";
-import LabelTemplatesList from "@/views/About.vue";
+import LabelTemplatesManage from "@/views/label_templates/Manage.vue";
 
 const validateAuthenticatedRoute = (to, from, next) => {
   const oauthStore = useOauthStore();
@@ -120,27 +117,6 @@ const router = createRouter({
       path: "/part/parameters/presets",
       name: "parameters-presets-list",
       component: ParametersPresetsList,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute,
-    },
-    {
-      path: "/part/parameters/presets/:presetId",
-      name: "parameters-presets-details",
-      component: ParametersPresetsDetails,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute,
-    },
-    {
-      path: "/part/parameters/presets/:presetId/edit",
-      name: "parameters-presets-edit",
-      component: ParametersPresetsEdit,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute,
-    },
-    {
-      path: "/part/parameters/presets/new",
-      name: "parameters-presets-add",
-      component: ParametersPresetsAdd,
       props: true,
       beforeEnter: validateAuthenticatedRoute,
     },
@@ -245,7 +221,7 @@ const router = createRouter({
     {
       path: "/labeltemplates",
       name: "label-templates-list",
-      component: LabelTemplatesList,
+      component: LabelTemplatesManage,
       beforeEnter: validateAuthenticatedRoute,
     },
     // Other
