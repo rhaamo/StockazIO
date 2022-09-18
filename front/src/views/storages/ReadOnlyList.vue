@@ -1,0 +1,97 @@
+<template>
+  <div>
+    <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
+    <div>
+      <ul class="list-none">
+        <li>
+          <router-link
+            to="#"
+            title="Bulk-generate labels"
+            @click.prevent="showBulkLabelGenerator()"
+            class="no-underline"
+          >
+            <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
+          </router-link>
+        </li>
+      </ul>
+      <template v-for="item in storages">
+        <ListCategory
+          v-if="item.children && item.storage_locations"
+          :key="item.id"
+          :item="item"
+          :level="1"
+          :readonly="true"
+        />
+        <ListLocation v-else :key="item.uuid" :item="item" :readonly="true" />
+      </template>
+    </div>
+  </div>
+</template>
+
+<script>
+import { usePreloadsStore } from "@/stores/preloads";
+import { mapState } from "pinia";
+import { h } from "vue";
+import ListCategory from "@/components/storages/ListCategory.vue";
+import ListLocation from "@/components/storages/ListLocation.vue";
+import LabelGeneratorModal from "@/components/label/generator.vue";
+
+export default {
+  components: {
+    ListCategory,
+    ListLocation,
+  },
+  data: () => ({
+    breadcrumb: {
+      home: { icon: "pi pi-home", to: "/" },
+      items: [{ label: "Storages management" }],
+    },
+  }),
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+  }),
+  computed: {
+    ...mapState(usePreloadsStore, {
+      storages: (store) => {
+        return store.storages;
+      },
+    }),
+  },
+  methods: {
+    showBulkLabelGenerator() {
+      let slocs = [];
+      const cb = (e) => {
+        if (e.category) {
+          slocs.push(e);
+        } else {
+          e.storage_locations.forEach(cb);
+          e.children.forEach(cb);
+        }
+      };
+      this.storages.forEach(cb);
+
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [
+              h("h3", [
+                h("i", { class: "fa fa-qrcode mr-1" }),
+                h("span", "Label Generator"),
+              ]),
+            ];
+          },
+        },
+        data: {
+          items: slocs,
+        },
+      });
+    },
+  },
+};
+</script>

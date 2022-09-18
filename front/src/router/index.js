@@ -16,7 +16,7 @@ import ParametersPresetsList from "@/views/part_parameters_presets/List.vue";
 import Distributors from "@/views/distributors/List.vue";
 import Manufacturers from "@/views/manufacturers/List.vue";
 import ViewInfos from "@/views/Infos.vue";
-import ViewStorageTree from "@/views/About.vue";
+import ViewStorageTree from "@/views/storages/ReadOnlyList.vue";
 import OrdersCategoryMatchers from "@/views/About.vue";
 import OrdersImporter from "@/views/About.vue";
 import OrdersImporterDetails from "@/views/About.vue";
