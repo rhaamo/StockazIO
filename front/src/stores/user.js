@@ -81,6 +81,7 @@ export const useUserStore = defineStore("user", {
             this.currentUser = {};
             reject(error);
           });
+        resolve();
       });
     },
     checkOauthToken() {

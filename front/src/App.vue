@@ -93,40 +93,42 @@ export default {
         this.oauthStore.getClientId,
         this.oauthStore.getClientSecret
       ),
-    ]).catch(function (error) {
-      logger.default.error("Error while doing initialization", error);
-    });
+    ])
+      .catch(function (error) {
+        logger.default.error("Error while doing initialization", error);
+      })
+      .then(() => {
+        logger.default.info("Initialization done.");
 
-    logger.default.info("Initialization done.");
-
-    if (this.oauthStore.loggedIn) {
-      Promise.allSettled([
-        this.preloadsStore.preloadSidebar(),
-        this.preloadsStore.preloadFootprints(),
-        this.preloadsStore.preloadStorages(),
-        this.preloadsStore.preloadParametersUnits(),
-        this.preloadsStore.preloadPartUnits(),
-        this.preloadsStore.preloadManufacturers(),
-        this.preloadsStore.preloadDistributors(),
-        this.preloadsStore.preloadLabelTemplates(),
-        this.preloadsStore.preloadPartParametersPresets(),
-      ]).then(() => {
-        console.log("authenticated preloading finished");
-        this.isLoaded = true;
-        console.log("Initialization finished.");
+        if (this.oauthStore.loggedIn) {
+          Promise.allSettled([
+            this.preloadsStore.preloadSidebar(),
+            this.preloadsStore.preloadFootprints(),
+            this.preloadsStore.preloadStorages(),
+            this.preloadsStore.preloadParametersUnits(),
+            this.preloadsStore.preloadPartUnits(),
+            this.preloadsStore.preloadManufacturers(),
+            this.preloadsStore.preloadDistributors(),
+            this.preloadsStore.preloadLabelTemplates(),
+            this.preloadsStore.preloadPartParametersPresets(),
+          ]).then(() => {
+            console.log("authenticated preloading finished");
+            this.isLoaded = true;
+            console.log("Initialization finished.");
+          });
+        } else {
+          // Only preload stuff needed for unauthenticated views
+          Promise.allSettled([
+            this.preloadsStore.preloadSidebar(),
+            this.preloadsStore.preloadFootprints(),
+            this.preloadsStore.preloadStorages(),
+          ]).then(() => {
+            console.log("unauthenticated preloading finished");
+            this.isLoaded = true;
+            console.log("Initialization finished.");
+          });
+        }
       });
-    } else {
-      // Only preload stuff needed for unauthenticated views
-      Promise.allSettled([
-        this.preloadsStore.preloadSidebar(),
-        this.preloadsStore.preloadFootprints(),
-        this.preloadsStore.preloadStorages(),
-      ]).then(() => {
-        console.log("unauthenticated preloading finished");
-        this.isLoaded = true;
-        console.log("Initialization finished.");
-      });
-    }
   },
   mounted() {},
   data() {
