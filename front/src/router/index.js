@@ -3,7 +3,7 @@ import { useOauthStore } from "@/stores/oauth";
 
 import LoginForm from "@/components/login_form/login_form.vue";
 import About from "@/views/About.vue";
-import PublicPartsList from "@/views/About.vue";
+import PublicPartsList from "@/views/parts/ListPublic.vue";
 import UrlHandler from "@/views/About.vue";
 import PartsAddFull from "@/views/parts/AddFull.vue";
 import PartsAddQuick from "@/views/parts/AddQuick.vue";
