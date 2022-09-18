@@ -29,6 +29,17 @@
           >
             <template #empty> No parts found. </template>
 
+            <template #header>
+              <div class="field-checkbox">
+                <Checkbox
+                  inputId="only_sellable"
+                  v-model="lazyParams.sellable"
+                  :binary="true"
+                />
+                <label for="only_sellable">Only show sellable parts</label>
+              </div>
+            </template>
+
             <Column :sortable="false">
               <template #body="slotProps">
                 <div @click="showLabelGenerator(slotProps.data)">
@@ -484,6 +495,13 @@ export default {
       // reload
       this.loadLazyData();
     },
+    "lazyParams.sellable": function () {
+      if (!this.lazyParams.sellable) {
+        delete this.lazyParams.sellable;
+      }
+      // reload after toggle
+      this.loadLazyData();
+    },
   },
   setup: () => ({
     preloadsStore: usePreloadsStore(),
@@ -601,7 +619,7 @@ export default {
     viewPartModal(part) {
       // Get full part object infos
       apiService
-        .getPart(part.id)
+        .getPublicPart(part.id)
         .then((val) => {
           const viewPartRef = this.$dialog.open(PartViewModal, {
             props: {
@@ -649,7 +667,7 @@ export default {
         });
     },
     showLabelGenerator(item) {
-      const viewPartRef = this.$dialog.open(LabelGeneratorModal, {
+      this.$dialog.open(LabelGeneratorModal, {
         props: {
           modal: true,
           style: {

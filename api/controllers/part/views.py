@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, get_list_or_404
-from django.db.models import F
 import json
 
 from controllers.categories.models import Category
@@ -11,7 +10,7 @@ from rest_framework import views
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.filters import SearchFilter
 
 from controllers.part.serializers import (
     PartSerializer,
@@ -103,19 +102,15 @@ class PartViewSet(ModelViewSet):
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
+        qty_type = self.request.query_params.get("qtyType", None)
         sellable = self.request.query_params.get("sellable", None)
 
         filters = self.request.query_params.get("filters", None)
-        originalEvent = self.request.query_params.get("originalEvent", None)
-        first = self.request.query_params.get("first", None)
-        page = self.request.query_params.get("page", None)
-        rows = self.request.query_params.get("rows", None)
         sortField = self.request.query_params.get("sortField", None)
         sortOrder = self.request.query_params.get("sortOrder", None)
 
         queryset = Part.objects.all()
 
-        # TODO how to threat all of thoses
         # category is recursive, thaks to .get_descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
@@ -129,21 +124,12 @@ class PartViewSet(ModelViewSet):
 
         if sellable:
             queryset = queryset.filter(can_be_sold=True)
-        # TODO end
 
-        # sortField & sortOrder
+        if qty_type == "qty":
+            queryset = queryset.filter(stock_qty=0)
 
-        # if footprint_id in ["0", 0]:
-        #     queryset = queryset.filter(footprint_id__isnull=True)
-        # elif footprint_id:
-        #     queryset = queryset.filter(footprint_id=footprint_id)
-
-
-        # if qty_type == "qty":
-        #     queryset = queryset.filter(stock_qty=0)
-
-        # if qty_type == "qtyMin":
-        #     queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
+        if qty_type == "qtyMin":
+            queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
         # Filtering
         if (filters):
@@ -250,10 +236,8 @@ class PartsPublic(ModelViewSet):
         "list": None,
     }
 
-    filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
-    ordering = ["name"]
-    pagination_class = PartViewSetPagination
+    filter_backends = [SearchFilter]
+    pagination_class = PrimeVuePagination
     lookup_fields = ("id", "uuid")
     # ^starts-with, =exact, @FTS, $regex
     search_fields = [
@@ -277,17 +261,19 @@ class PartsPublic(ModelViewSet):
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
-        footprint_id = self.request.query_params.get("footprint_id", None)
-        storage_id = self.request.query_params.get("storage_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
         qty_type = self.request.query_params.get("qtyType", None)
         sellable = self.request.query_params.get("sellable", None)
+
+        filters = self.request.query_params.get("filters", None)
+        sortField = self.request.query_params.get("sortField", None)
+        sortOrder = self.request.query_params.get("sortOrder", None)
 
         queryset = Part.objects.all()
         # fixed field for public parts
         queryset = queryset.filter(private=False)
 
-        # category TODO/FIXME: recursivity ?
+        # category is recursive, thaks to .get_descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
         elif category_id:
@@ -295,14 +281,11 @@ class PartsPublic(ModelViewSet):
             if category is not None:
                 queryset = queryset.filter(category__in=category)
 
-        if footprint_id:
-            queryset = queryset.filter(footprint_id=footprint_id)
-
-        if storage_id:
-            queryset = queryset.filter(storage_id=storage_id)
-
         if storage_uuid:
             queryset = queryset.filter(storage__uuid=storage_uuid)
+
+        if sellable:
+            queryset = queryset.filter(can_be_sold=True)
 
         if qty_type == "qty":
             queryset = queryset.filter(stock_qty=0)
@@ -310,8 +293,48 @@ class PartsPublic(ModelViewSet):
         if qty_type == "qtyMin":
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
-        if sellable:
-            queryset = queryset.filter(can_be_sold=True)
+        # Filtering
+        if (filters):
+            filters = json.loads(filters)
+            for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
+                # not implemented: in, between, and dates
+                if filters[field]["value"] is not None:
+                    # if field = (storage_id|footprint_id) and value == 0
+                    if (field == "storage_id" or field == "footprint_id") and int(filters[field]["value"]) == 0:
+                        # They need to have 0 handled properly
+                        if filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{f"{field}__isnull": True})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{f"{field}__isnull": True})
+                    else:
+                        # any other field or value != 0 (for storage and footprint)
+                        if filters[field]["matchMode"] == "startsWith":
+                            queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "contains":
+                            queryset = queryset.filter(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notContains":
+                            queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "endsWith":
+                            queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lt":
+                            queryset = queryset.filter(**{f"{field}__lt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lte":
+                            queryset = queryset.filter(**{f"{field}__lte": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gt":
+                            queryset = queryset.filter(**{f"{field}__gt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gte":
+                            queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
+
+        if (sortField and sortOrder):
+            if sortOrder == 1:
+                queryset = queryset.order_by(sortField)
+            else:
+                # -1
+                queryset = queryset.order_by(f"-{sortField}")
 
         return queryset
 
