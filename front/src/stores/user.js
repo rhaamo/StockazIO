@@ -88,10 +88,12 @@ export const useUserStore = defineStore("user", {
       return new Promise(async (resolve, reject) => {
         const oauthStore = useOauthStore();
         if (oauthStore.getUserToken) {
+          logger.default.info("we have an user token present in cache");
           try {
             await this.loginUser();
           } catch (e) {
             logger.default.error(e);
+            reject(e);
           }
         } else {
           logger.default.info("no user token present in cache");

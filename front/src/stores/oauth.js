@@ -47,7 +47,6 @@ export const useOauthStore = defineStore("oauth", {
     },
     // Get the clientId and clientSecret if any or generate a new one
     getOrCreateApp() {
-      logger.default.debug("getOrCreateApp called");
       if (this.clientId && this.clientSecret) {
         logger.default.info("We are using already known OAuth App infos");
         return Promise.resolve({
@@ -56,6 +55,7 @@ export const useOauthStore = defineStore("oauth", {
         });
       }
 
+      logger.default.info("We need to fetch a new OAuth App");
       // TODO move to api.service.js
       return Axios.post("/oauth/apps/", {
         name: `stockazio_front_${new Date().toISOString()}`,
