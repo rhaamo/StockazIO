@@ -89,7 +89,7 @@ import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
 import { FilterMatchMode } from "primevue/api";
-import ManageParametersUnitModal from "@/components/parameters_units/Form.vue";
+import ManagePartParametersPresets from "@/components/part_parameters_presets/Form.vue";
 import { h } from "vue";
 import apiService from "../../services/api/api.service";
 import { useToast } from "primevue/usetoast";
@@ -127,7 +127,7 @@ export default {
       apiService
         .getPartParameterPresets()
         .then((val) => {
-          this.preloadsStore.setPartParametersPresets(val.data);
+          this.preloadsStore.setPartParametersPresets(val.data.results);
           this.preloadsStore.setLastUpdate("parameters_presets", new Date());
         })
         .catch((err) => {
@@ -141,11 +141,11 @@ export default {
         });
     },
     showAddParametersUnitsModal() {
-      this.$dialog.open(ManageParametersUnitModal, {
+      this.$dialog.open(ManagePartParametersPresets, {
         props: {
           modal: true,
           style: {
-            width: "25vw",
+            width: "35vw",
           },
         },
         templates: {
@@ -165,11 +165,11 @@ export default {
       });
     },
     editItem(event, item) {
-      this.$dialog.open(ManageParametersUnitModal, {
+      this.$dialog.open(ManagePartParametersPresets, {
         props: {
           modal: true,
           style: {
-            width: "25vw",
+            width: "35vw",
           },
         },
         templates: {
