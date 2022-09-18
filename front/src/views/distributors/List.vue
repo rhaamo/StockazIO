@@ -90,7 +90,7 @@
           </template>
         </Column>
 
-        <Column>
+        <Column headerStyle="width: 6em">
           <template #body="slotProps">
             <span class="p-buttonset">
               <Button

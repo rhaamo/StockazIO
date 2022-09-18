@@ -38,7 +38,7 @@
         <Column field="symbol" header="Symbol" :sortable="true"></Column>
         <Column field="description" header="Description"></Column>
 
-        <Column>
+        <Column headerStyle="width: 6em">
           <template #body="slotProps">
             <span class="p-buttonset">
               <Button
