@@ -570,7 +570,6 @@ export default {
       this.lazyParams.category_id = this.categoryId;
     },
     loadLazyData() {
-      logger.default.info("lazy loading", this.lazyParams);
       this.loading = true;
 
       // Do a quick cleanup of datas before sending them

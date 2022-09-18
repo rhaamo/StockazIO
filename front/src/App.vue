@@ -112,6 +112,7 @@ export default {
       ]).then(() => {
         console.log("authenticated preloading finished");
         this.isLoaded = true;
+        console.log("Initialization finished.");
       });
     } else {
       // Only preload stuff needed for unauthenticated views
@@ -122,10 +123,9 @@ export default {
       ]).then(() => {
         console.log("unauthenticated preloading finished");
         this.isLoaded = true;
+        console.log("Initialization finished.");
       });
     }
-
-    console.log("Initialization finished.");
   },
   mounted() {},
   data() {
