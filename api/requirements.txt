@@ -54,3 +54,4 @@ django-silk==5.0.1
 djangorestframework-csv==2.1.1
 drf-excel==2.1.0
 fpdf==1.7.2
+tzdata
