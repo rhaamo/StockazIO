@@ -48,12 +48,15 @@ export const useUserStore = defineStore("user", {
       await apiService
         .verifyCredentials()
         .then((result) => {
-          logger.default.info("credentials validated");
+          logger.default.info("login: credentials validated");
           oauthStore.setLoggedIn(true);
           this.currentUser = result.data.user;
         })
         .catch((error) => {
-          logger.default.error("cannot verify credentials", error.message);
+          logger.default.error(
+            "login: cannot verify credentials",
+            error.message
+          );
           oauthStore.setLoggedIn(false);
           this.currentUser = {};
         });
@@ -61,16 +64,19 @@ export const useUserStore = defineStore("user", {
     loginUser() {
       return new Promise((resolve, reject) => {
         const oauthStore = useOauthStore();
-        logger.default.info("verifying credentials");
+        logger.default.info("loginUser: verifying credentials");
         apiService
           .verifyCredentials()
           .then((result) => {
-            logger.default.info("credentials validated");
+            logger.default.info("loginUser: credentials validated");
             oauthStore.setLoggedIn(true);
             this.currentUser = result.data.user;
           })
           .catch((error) => {
-            logger.default.error("cannot verify credentials", error.message);
+            logger.default.error(
+              "loginUser: cannot verify credentials",
+              error.message
+            );
             oauthStore.setLoggedIn(false);
             this.currentUser = {};
             reject(error);

@@ -96,6 +96,7 @@ export default {
     ]).catch(function (error) {
       logger.default.error("Error while doing initialization", error);
     });
+
     logger.default.info("Initialization done.");
 
     if (this.oauthStore.loggedIn) {
