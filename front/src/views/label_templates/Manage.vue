@@ -250,7 +250,7 @@
 
 <script>
 import { usePreloadsStore } from "@/stores/preloads";
-import apiService from "../../services/api/api.service";
+import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
