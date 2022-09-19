@@ -71,6 +71,7 @@ export const useUserStore = defineStore("user", {
             logger.default.info("loginUser: credentials validated");
             oauthStore.setLoggedIn(true);
             this.currentUser = result.data.user;
+            resolve();
           })
           .catch((error) => {
             logger.default.error(
@@ -81,7 +82,6 @@ export const useUserStore = defineStore("user", {
             this.currentUser = {};
             reject(error);
           });
-        resolve();
       });
     },
     checkOauthToken() {
