@@ -17,7 +17,8 @@
                 block: true,
                 'font-medium': true,
               }"
-              >Username</label>
+              >Username</label
+            >
             <InputText
               id="username"
               v-model="user.username"
@@ -32,7 +33,8 @@
                 v$.user.username.$pending.$response
               "
               class="p-error"
-              ><br />{{ v$.user.username.required.$message }}</small>
+              ><br />{{ v$.user.username.required.$message }}</small
+            >
           </div>
 
           <label
@@ -42,7 +44,8 @@
               block: true,
               'font-medium': true,
             }"
-            >Password</label>
+            >Password</label
+          >
           <Password
             id="password"
             type="password"
@@ -60,12 +63,14 @@
               v$.user.password.$pending.$response
             "
             class="p-error"
-            ><br />{{ v$.user.password.required.$message }}</small>
+            ><br />{{ v$.user.password.required.$message }}</small
+          >
 
           <div class="mb-5 mt-5">
             <a
               class="font-medium no-underline text-blue-500 text-center cursor-pointer"
-              >Forgot password?</a>
+              >Forgot password?</a
+            >
           </div>
 
           <Button

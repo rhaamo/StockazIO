@@ -11,7 +11,9 @@
         }"
         :title="node.name"
       >
-        <b>{{ node.name }} <small>({{ node.parts_count }})</small></b>
+        <b
+          >{{ node.name }} <small>({{ node.parts_count }})</small></b
+        >
       </router-link>
     </template>
     <template v-else>

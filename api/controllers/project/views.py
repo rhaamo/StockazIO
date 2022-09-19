@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters, views
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from datetime import datetime
@@ -8,6 +8,7 @@ from controllers.app.renderers import PlainTextRenderer
 from rest_framework_csv.renderers import CSVRenderer
 from drf_excel.renderers import XLSXRenderer
 import urllib
+import json
 
 from .models import Project, ProjectAttachment, ProjectPart
 from .serializers import (
@@ -24,6 +25,11 @@ class ProjectViewSetPagination(PageNumberPagination):
     page_size_query_param = "size"
 
 
+class PrimeVuePagination(LimitOffsetPagination):
+    limit_query_param = "rows"
+    offset_query_param = "first"
+
+
 class ProjectsViewSet(ModelViewSet):
     anonymous_policy = True
     required_scope = {
@@ -34,10 +40,9 @@ class ProjectsViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    ordering_fields = ["name", "state", "public"]
-    ordering = ["-created_at"]
-    pagination_class = ProjectViewSetPagination
+    filter_backends = [filters.SearchFilter]
+    pagination_class = PrimeVuePagination
+    lookup_fields = ("id",)
     # ^starts-with, =exact, @FTS, $regex
     search_fields = ["name", "description", "notes"]
 
@@ -50,12 +55,46 @@ class ProjectsViewSet(ModelViewSet):
             return ProjectRetrieveSerializer
 
     def get_queryset(self):
-        state = self.request.query_params.get("state", None)
+        filters = self.request.query_params.get("filters", None)
+        sortField = self.request.query_params.get("sortField", None)
+        sortOrder = self.request.query_params.get("sortOrder", None)
 
         queryset = Project.objects.all()
 
-        if state:
-            queryset = queryset.filter(state=state)
+        # Filtering
+        # See in controllers/part/views.py class PartViewSet for documentation on the PrimeVue pagination/sorting
+        if (filters):
+            filters = json.loads(filters)
+            for field in ["name", "state"]:
+                # not implemented: in, between, and dates
+                if filters[field]["value"] is not None:
+                    if filters[field]["matchMode"] == "startsWith":
+                        queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "contains":
+                        queryset = queryset.filter(**{f"{field}__icontains": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "notContains":
+                        queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "endsWith":
+                        queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "equals":
+                        queryset = queryset.filter(**{field: filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "notEquals":
+                        queryset = queryset.exclude(**{field: filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "lt":
+                        queryset = queryset.filter(**{f"{field}__lt": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "lte":
+                        queryset = queryset.filter(**{f"{field}__lte": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "gt":
+                        queryset = queryset.filter(**{f"{field}__gt": filters[field]["value"]})
+                    elif filters[field]["matchMode"] == "gte":
+                        queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
+
+        if (sortField and sortOrder):
+            if sortOrder == 1:
+                queryset = queryset.order_by(sortField)
+            else:
+                # -1
+                queryset = queryset.order_by(f"-{sortField}")
 
         return queryset
 

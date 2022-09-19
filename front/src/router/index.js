@@ -20,9 +20,7 @@ import ViewStorageTree from "@/views/storages/ReadOnlyList.vue";
 import OrdersCategoryMatchers from "@/views/About.vue";
 import OrdersImporter from "@/views/About.vue";
 import OrdersImporterDetails from "@/views/About.vue";
-import ProjectsList from "@/views/About.vue";
-import ProjectsAdd from "@/views/About.vue";
-import ProjectsEdit from "@/views/About.vue";
+import ProjectsList from "@/views/projects/List.vue";
 import ProjectsDetails from "@/views/About.vue";
 import StoragesList from "@/views/storages/List.vue";
 import LabelTemplatesManage from "@/views/label_templates/Manage.vue";
@@ -188,19 +186,6 @@ const router = createRouter({
       path: "/projects",
       name: "projects-list",
       component: ProjectsList,
-      beforeEnter: validateAuthenticatedRoute,
-    },
-    {
-      path: "/projects/new",
-      name: "projects-new",
-      component: ProjectsAdd,
-      beforeEnter: validateAuthenticatedRoute,
-    },
-    {
-      path: "/projects/:projectId/edit",
-      name: "projects-edit",
-      component: ProjectsEdit,
-      props: true,
       beforeEnter: validateAuthenticatedRoute,
     },
     {
