@@ -90,15 +90,17 @@ export const useUserStore = defineStore("user", {
         if (oauthStore.getUserToken) {
           logger.default.info("we have an user token present in cache");
           try {
-            await this.loginUser();
+            await this.loginUser().then(() => {
+              resolve();
+            });
           } catch (e) {
             logger.default.error(e);
             reject(e);
           }
         } else {
           logger.default.info("no user token present in cache");
+          resolve();
         }
-        resolve();
       });
     },
   },
