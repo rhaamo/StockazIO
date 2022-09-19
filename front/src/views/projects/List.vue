@@ -104,11 +104,13 @@
             </div>
           </template>
           <template #filter="{ filterModel }">
-            <InputText
-              type="text"
+            <Dropdown
               v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search by state"
+              class="w-full"
+              :options="projectStates"
+              optionLabel="text"
+              optionValue="value"
+              :filter="false"
             />
           </template>
         </Column>
