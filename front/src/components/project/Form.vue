@@ -270,9 +270,7 @@ export default {
         notes: this.dialogRef.data.item.notes,
         description: this.dialogRef.data.item.description,
         ibomUrl: this.dialogRef.data.item.ibomUrl,
-        state: this.dialogRef.data.item.state
-          ? this.dialogRef.data.item.state.id
-          : null,
+        state: this.dialogRef.data.item.state,
         state_notes: this.dialogRef.data.item.state_notes,
         public: this.dialogRef.data.item.public,
       };

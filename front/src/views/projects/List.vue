@@ -182,7 +182,7 @@ export default {
       { value: 1, text: "Planned" },
       { value: 2, text: "Ongoing" },
       { value: 3, text: "Finished" },
-      { value: 4, text: "Waiting" },
+      { value: 4, text: "On-Hold" },
       { value: 5, text: "Abandonned" },
       { value: 99, text: "Unknown" },
       { value: null, text: "Filter by state" },
