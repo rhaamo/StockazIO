@@ -21,7 +21,7 @@ import OrdersCategoryMatchers from "@/views/About.vue";
 import OrdersImporter from "@/views/About.vue";
 import OrdersImporterDetails from "@/views/About.vue";
 import ProjectsList from "@/views/projects/List.vue";
-import ProjectsDetails from "@/views/About.vue";
+import ProjectsDetails from "@/views/projects/Details.vue";
 import StoragesList from "@/views/storages/List.vue";
 import LabelTemplatesManage from "@/views/label_templates/Manage.vue";
 
