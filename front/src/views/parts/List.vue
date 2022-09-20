@@ -582,7 +582,9 @@ export default {
               label: this.actualCurrentCategory.name,
               to: {
                 name: "parts-category-list",
-                params: { categoryId: this.actualCurrentCategory.id },
+                params: {
+                  categoryId: this.actualCurrentCategory.id || this.categoryId,
+                },
               },
             },
           ],
@@ -593,7 +595,9 @@ export default {
             icon: "fa fa-folder-o mr-1",
             to: {
               name: "parts-category-list",
-              params: { categoryId: this.actualCurrentCategory.id },
+              params: {
+                categoryId: this.actualCurrentCategory.id || this.categoryId,
+              },
             },
             label: "Uncategorized parts",
           },
