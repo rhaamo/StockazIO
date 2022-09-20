@@ -261,7 +261,7 @@
                         icon="fa fa-edit"
                         class="p-button-primary"
                         v-tooltip="'edit'"
-                        @click.prevent="editPart($event, slotProps.data)"
+                        @click.prevent="showEditPart($event, slotProps.data)"
                       ></Button>
                       <Button
                         type="button"
@@ -715,6 +715,39 @@ export default {
         },
       });
     },
+    showEditPart(event, item) {
+      if (item.part) {
+        this.showEditInternalPart(event, item);
+      } else {
+        this.showEditExternalPart(event, item);
+      }
+    },
+    showEditExternalPart(event, item) {
+      this.$dialog.open(ExternalPart, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Describe the part")])];
+          },
+        },
+        data: {
+          mode: "edit",
+          item: item,
+          project: this.project,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload project
+            this.fetchProject();
+          }
+        },
+      });
+    },
     showAddInternalPart(event) {
       this.$dialog.open(InternalPart, {
         props: {
@@ -730,6 +763,32 @@ export default {
         },
         data: {
           mode: "add",
+          project: this.project,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload project
+            this.fetchProject();
+          }
+        },
+      });
+    },
+    showEditInternalPart(event, item) {
+      this.$dialog.open(InternalPart, {
+        props: {
+          modal: true,
+          style: {
+            width: "60vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Select part from inventory")])];
+          },
+        },
+        data: {
+          mode: "edit",
+          item: item,
           project: this.project,
         },
         onClose: (options) => {

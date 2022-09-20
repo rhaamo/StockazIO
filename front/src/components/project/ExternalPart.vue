@@ -176,17 +176,18 @@ export default {
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit
+    this.project = this.dialogRef.data.project;
+
     if (this.dialogRef.data.item) {
       this.item = {
         id: this.dialogRef.data.item.id,
-        part_name: this.item.part_name,
-        qty: this.item.qty,
-        sourced: this.item.sourced,
-        notes: this.item.notes,
+        part_name: this.dialogRef.data.item.part_name,
+        qty: this.dialogRef.data.item.qty,
+        sourced: this.dialogRef.data.item.sourced,
+        notes: this.dialogRef.data.item.notes,
         project: this.project.id,
       };
     }
-    this.project = this.dialogRef.data.project;
   },
   validations: {
     item: {

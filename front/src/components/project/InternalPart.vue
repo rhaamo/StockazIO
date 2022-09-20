@@ -99,6 +99,13 @@
     <div class="flex justify-content-center">
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field w-10">
+          <template v-if="mode === 'edit'">
+            <div class="mb-3">
+              When editing, the selected part might be in another page of the
+              table.
+            </div>
+          </template>
+
           <DataTable
             :value="parts"
             :lazy="true"
@@ -363,15 +370,20 @@ export default {
   }),
   mounted() {
     this.mode = this.dialogRef.data.mode; // add / edit
+    this.project = this.dialogRef.data.project;
+
     if (this.dialogRef.data.item) {
       this.item = {
         id: this.dialogRef.data.item.id,
-        qty: this.item.qty,
-        sourced: this.item.sourced,
-        part: { id: this.item.part_id },
+        qty: this.dialogRef.data.item.qty,
+        sourced: this.dialogRef.data.item.sourced,
+        part: {
+          id: this.dialogRef.data.item.part
+            ? this.dialogRef.data.item.part.id
+            : null,
+        },
       };
     }
-    this.project = this.dialogRef.data.project;
 
     this.lazyParams = {
       first: 0,
@@ -396,7 +408,7 @@ export default {
   },
   computed: {
     ...mapState(useServerStore, {
-      perPage: (store) => store.settings.pagination.PARTS || 10,
+      perPage: (store) => 5, // store.settings.pagination.PARTS || 10,
     }),
   },
   methods: {
