@@ -40,25 +40,6 @@
               </div>
             </template>
 
-            <Column :sortable="false">
-              <template #body="slotProps">
-                <div @click="showLabelGenerator(slotProps.data)">
-                  <vue-qrcode
-                    :id="qrcodeId(slotProps.data.id)"
-                    :value="qrCodePart(slotProps.data.uuid)"
-                    :options="{
-                      scale: 1,
-                      color: { dark: '#000000', light: '#0000' },
-                    }"
-                    v-tooltip="'show label generator'"
-                    :data-uuid="slotProps.data.uuid"
-                    :data-name="slotProps.data.name"
-                    data-toggle="modal"
-                    data-target="#modalQrCode"
-                  />
-                </div>
-              </template>
-            </Column>
             <Column
               header="Name"
               :sortable="true"
@@ -299,7 +280,6 @@ import { cloneDeep, chunk } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import PartViewModal from "@/components/parts/view.vue";
-import LabelGeneratorModal from "@/components/label/generator.vue";
 import { h } from "vue";
 import Button from "primevue/button";
 
@@ -664,29 +644,6 @@ export default {
           });
           logger.default.error("Error with getting part details", err);
         });
-    },
-    showLabelGenerator(item) {
-      this.$dialog.open(LabelGeneratorModal, {
-        props: {
-          modal: true,
-          style: {
-            width: "70vw",
-          },
-        },
-        templates: {
-          header: () => {
-            return [
-              h("h3", [
-                h("i", { class: "fa fa-qrcode mr-1" }),
-                h("span", "Label Generator"),
-              ]),
-            ];
-          },
-        },
-        data: {
-          items: [item],
-        },
-      });
     },
     toggleOverlayPanel(event, ref) {
       this.$refs[ref].toggle(event);

@@ -169,13 +169,13 @@
                     "
                   >
                     <i class="fa fa-picture-o"></i>
-                    <a :href="slotProps.data.picture">{{
+                    <a class="no-underline" :href="slotProps.data.picture">{{
                       stripPathFromFileUrl(slotProps.data.picture)
                     }}</a>
                   </template>
                   <template v-else>
                     <i class="fa fa-code-o"></i>
-                    <a :href="slotProps.data.file">{{
+                    <a class="no-underline" :href="slotProps.data.file">{{
                       stripPathFromFileUrl(slotProps.data.file)
                     }}</a>
                   </template>
