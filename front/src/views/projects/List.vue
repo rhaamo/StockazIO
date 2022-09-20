@@ -270,7 +270,7 @@ export default {
         },
         onClose: (options) => {
           if (options.data && options.data.finished) {
-            // reload Part unit
+            // reload projects
             this.loadLazyData();
           }
         },

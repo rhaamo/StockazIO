@@ -103,7 +103,7 @@
             for="bom_url"
             :class="{
               block: true,
-              'p-error': v$.item.ibomUrl.$invalid && submitted,
+              'p-error': v$.item.ibom_url.$invalid && submitted,
               'w-full': true,
             }"
             >BOM Url</label
@@ -112,20 +112,20 @@
             ref="bom_url"
             inputId="bom_url"
             type="text"
-            v-model="item.ibomUrl"
+            v-model="item.ibom_url"
             :class="{
-              'p-invalid': v$.item.ibomUrl.$invalid && submitted,
+              'p-invalid': v$.item.ibom_url.$invalid && submitted,
               'w-full': true,
             }"
           />
           <small
             v-if="
-              (v$.item.ibomUrl.$invalid && submitted) ||
-              v$.item.ibomUrl.$pending.$response
+              (v$.item.ibom_url.$invalid && submitted) ||
+              v$.item.ibom_url.$pending.$response
             "
             class="p-error"
           >
-            {{ v$.item.ibomUrl.maxLength.$message }}
+            {{ v$.item.ibom_url.maxLength.$message }}
           </small>
         </div>
       </div>
@@ -242,7 +242,7 @@ export default {
       name: "",
       description: "",
       notes: "",
-      ibomUrl: "",
+      ibom_url: "",
       state: 99,
       state_notes: "",
       public: false,
@@ -269,7 +269,7 @@ export default {
         name: this.dialogRef.data.item.name,
         notes: this.dialogRef.data.item.notes,
         description: this.dialogRef.data.item.description,
-        ibomUrl: this.dialogRef.data.item.ibomUrl,
+        ibom_url: this.dialogRef.data.item.ibom_url,
         state: this.dialogRef.data.item.state,
         state_notes: this.dialogRef.data.item.state_notes,
         public: this.dialogRef.data.item.public,
@@ -284,7 +284,7 @@ export default {
       },
       description: {},
       notes: {},
-      ibomUrl: { maxLength: maxLength(255) },
+      ibom_url: { maxLength: maxLength(255) },
       state: {
         required,
         integer,
@@ -315,7 +315,7 @@ export default {
         name: this.item.name,
         description: this.item.description,
         notes: this.item.notes,
-        ibom_url: this.item.ibomUrl,
+        ibom_url: this.item.ibom_url,
         state: this.item.state,
         public: this.item.public,
         state_notes: this.item.state_notes,
@@ -348,7 +348,7 @@ export default {
         name: this.item.name,
         description: this.item.description,
         notes: this.item.notes,
-        ibom_url: this.item.ibomUrl,
+        ibom_url: this.item.ibom_url,
         state: this.item.state,
         public: this.item.public,
         state_notes: this.item.state_notes,

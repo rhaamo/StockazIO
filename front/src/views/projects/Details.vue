@@ -95,6 +95,8 @@ import logger from "@/logging";
 import apiService from "@/services/api/api.service";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import ManageProjectModal from "@/components/project/Form.vue";
+import { h } from "vue";
 
 export default {
   data: () => ({
@@ -166,7 +168,29 @@ export default {
         });
     },
     showEditModal(event) {
-      //
+      this.$dialog.open(ManageProjectModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Edit project")])];
+          },
+        },
+        data: {
+          mode: "edit",
+          item: this.project,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload project
+            this.fetchProject();
+          }
+        },
+      });
     },
     deleteItem(event) {
       this.confirm.require({
