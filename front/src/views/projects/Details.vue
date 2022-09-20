@@ -81,7 +81,30 @@
 
         <div class="col-8">
           <TabView>
-            <TabPanel header="Parts"> xxx </TabPanel>
+            <TabPanel header="Parts">
+              <div>
+                <Button label="Add part from inventory" />
+                <Button
+                  class="p-button-info ml-2"
+                  label="Add external part"
+                  @click.prevent="showAddExternalPart($event)"
+                />
+              </div>
+
+              <div class="mt-1">
+                <label for="boards_count" class="block">Boards:</label>
+                <InputNumber
+                  inputId="boards_count"
+                  v-model="boards_count"
+                  showButtons
+                  buttonLayout="horizontal"
+                  :step="1"
+                  :min="1"
+                  class="w-4"
+                ></InputNumber>
+              </div>
+            </TabPanel>
+
             <TabPanel header="Files attachments">
               <form
                 enctype="multipart/form-data"
@@ -196,6 +219,7 @@ import apiService from "@/services/api/api.service";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import ManageProjectModal from "@/components/project/Form.vue";
+import ExternalPart from "@/components/project/ExternalPart.vue";
 import { h } from "vue";
 import utils from "@/utils.js";
 import { useVuelidate } from "@vuelidate/core";
@@ -220,6 +244,7 @@ export default {
       description: null,
       file: null,
     },
+    boards_count: 1,
   }),
   setup: () => ({
     confirm: useConfirm(),
@@ -453,6 +478,31 @@ export default {
         },
         reject: () => {
           return;
+        },
+      });
+    },
+    showAddExternalPart(event) {
+      this.$dialog.open(ExternalPart, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Describe the part")])];
+          },
+        },
+        data: {
+          mode: "add",
+          project: this.project,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload project
+            this.fetchProject();
+          }
         },
       });
     },
