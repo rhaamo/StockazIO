@@ -485,6 +485,17 @@ export default {
           this.part = res.data;
         })
         .catch((err) => {
+          if (err.request.status === 404) {
+            this.$router.push({ name: "parts-list" });
+            this.toast.add({
+              severity: "error",
+              summary: "Fetching part details",
+              detail: "Part not found",
+              life: 5000,
+            });
+            return;
+          }
+
           this.toast.add({
             severity: "error",
             summary: "Fetching part details",
@@ -544,8 +555,8 @@ export default {
                 detail: "Success",
                 life: 5000,
               });
-              this.loadLazyData();
               this.preloadsStore.decrementCategoryPartsCount(this.categoryId);
+              this.$router.push({ name: "parts-list" });
             })
             .catch((err) => {
               this.toast.add({
@@ -555,7 +566,7 @@ export default {
                 life: 5000,
               });
               logger.default.error("Error with part deletion", err);
-              this.loadLazyData();
+              this.$router.push({ name: "parts-list" });
             });
         },
         reject: () => {

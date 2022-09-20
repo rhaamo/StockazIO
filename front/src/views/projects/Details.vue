@@ -93,6 +93,8 @@
 <script>
 import logger from "@/logging";
 import apiService from "@/services/api/api.service";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 export default {
   data: () => ({
@@ -106,6 +108,10 @@ export default {
       { value: 99, text: "Unknown" },
       { value: null, text: "Filter by state" },
     ],
+  }),
+  setup: () => ({
+    confirm: useConfirm(),
+    toast: useToast(),
   }),
   computed: {
     projectId() {
@@ -139,6 +145,17 @@ export default {
           this.project = res.data;
         })
         .catch((err) => {
+          if (err.request.status === 404) {
+            this.$router.push({ name: "projects-list" });
+            this.toast.add({
+              severity: "error",
+              summary: "Fetching project details",
+              detail: "Project not found",
+              life: 5000,
+            });
+            return;
+          }
+
           this.toast.add({
             severity: "error",
             summary: "Fetching project details",
@@ -152,7 +169,37 @@ export default {
       //
     },
     deleteItem(event) {
-      //
+      this.confirm.require({
+        message: `Are you sure you want to delete the project '${this.project.name}' ?`,
+        header: `Deleting '${this.project.name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .deleteProject(this.project.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Project",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.$router.push({ name: "projects-list" });
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Project",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with project deletion", err);
+              this.$router.push({ name: "projects-list" });
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
     projectStateText(value) {
       let a = this.projectStates.filter(function (e) {
