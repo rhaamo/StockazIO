@@ -138,6 +138,99 @@
                   </template>
                 </Column>
 
+                <Column header="Notes" field="notes" :sortable="false">
+                </Column>
+
+                <Column
+                  header="Stock"
+                  :sortable="false"
+                  headerStyle="width: 6em"
+                >
+                  <template #body="slotProps">
+                    <template v-if="slotProps.data.part">
+                      <span
+                        v-if="
+                          slotProps.data.part.stock_qty < slotProps.data.qty
+                        "
+                        class="qtyMinWarning"
+                        >{{ slotProps.data.part.stock_qty }}
+                        <i
+                          class="fa fa-circle"
+                          aria-hidden="true"
+                          v-tooltip="{
+                            value: currentStockQuantityWarning(
+                              slotProps.data.qty
+                            ),
+                          }"
+                        />
+                      </span>
+                      <span v-else>{{ slotProps.data.part.stock_qty }}</span>
+                    </template>
+                    <span v-else>-</span>
+                  </template>
+                </Column>
+
+                <Column
+                  header="Quantity x1"
+                  :sortable="false"
+                  headerStyle="width: 6em"
+                >
+                  <template #body="slotProps">
+                    <template v-if="slotProps.data.part">
+                      <span
+                        v-if="
+                          slotProps.data.part.stock_qty < slotProps.data.qty
+                        "
+                        class="qtyMinWarning"
+                        >{{ slotProps.data.qty }}
+                        <i
+                          class="fa fa-circle"
+                          aria-hidden="true"
+                          v-tooltip="{
+                            value: currentStockQuantityWarning(
+                              slotProps.data.part.stock_qty
+                            ),
+                          }"
+                        />
+                      </span>
+                      <span v-else>{{ slotProps.data.qty }}</span>
+                    </template>
+                    <span v-else>{{ slotProps.data.qty }}</span>
+                  </template>
+                </Column>
+
+                <Column
+                  header="Quantity total"
+                  :sortable="false"
+                  headerStyle="width: 6em"
+                >
+                  <template #body="slotProps">
+                    <template v-if="slotProps.data.part">
+                      <span
+                        v-if="
+                          slotProps.data.part.stock_qty <
+                          slotProps.data.qty * boards_count
+                        "
+                        class="qtyMinWarning"
+                        >{{ slotProps.data.qty * boards_count }}
+                        <i
+                          class="fa fa-circle"
+                          aria-hidden="true"
+                          v-tooltip="{
+                            value: currentStockQuantityWarning(
+                              slotProps.data.part.stock_qty
+                            ),
+                          }"
+                        />
+                      </span>
+                      <span v-else>{{
+                        slotProps.data.qty * boards_count
+                      }}</span>
+                    </template>
+                    <span v-else>{{ slotProps.data.qty * boards_count }}</span>
+                  </template>
+                </Column>
+
                 <Column
                   header="Sourced"
                   field="sourced"
@@ -686,14 +779,6 @@ export default {
                     class: "p-button-outlined",
                   }),
                   h(Button, {
-                    label: "Delete",
-                    onClick: () => {
-                      this.deletePart(null, part);
-                      viewPartRef.close();
-                    },
-                    class: "p-button-danger",
-                  }),
-                  h(Button, {
                     label: "Close",
                     onClick: () => viewPartRef.close(),
                     class: "p-button-success",
@@ -715,6 +800,9 @@ export default {
           });
           logger.default.error("Error with getting part details", err);
         });
+    },
+    currentStockQuantityWarning(qty) {
+      return `Current stock is below needed project quantity (${qty})`;
     },
   },
 };
