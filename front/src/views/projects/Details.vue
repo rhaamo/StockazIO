@@ -103,6 +103,66 @@
                   class="w-4"
                 ></InputNumber>
               </div>
+
+              <Divider />
+
+              <DataTable
+                :value="project.project_parts"
+                class="p-datatable-sm"
+                stripedRows
+                responsiveLayout="scroll"
+                :paginator="false"
+                removableSort
+              >
+                <Column
+                  field="part_name"
+                  header="Name"
+                  :sortable="true"
+                ></Column>
+
+                <Column
+                  header="Sourced"
+                  field="sourced"
+                  :sortable="true"
+                  headerStyle="width: 6em"
+                >
+                  <template #body="slotProps">
+                    <i
+                      v-if="slotProps.data.sourced"
+                      style="color: green"
+                      class="fa fa-check"
+                      aria-hidden="true"
+                    />
+                    <i
+                      v-else
+                      class="fa fa-close"
+                      style="color: red"
+                      aria-hidden="true"
+                    />
+                  </template>
+                </Column>
+
+                <Column headerStyle="width: 6em">
+                  <template #body="slotProps">
+                    <span class="p-buttonset">
+                      <Button
+                        type="button"
+                        icon="fa fa-edit"
+                        class="p-button-primary"
+                        v-tooltip="'edit'"
+                        @click.prevent="editPart($event, slotProps.data)"
+                      ></Button>
+                      <Button
+                        type="button"
+                        icon="fa fa-trash-o"
+                        class="p-button-danger"
+                        v-tooltip="'delete'"
+                        @click="deletePart($event, slotProps.data)"
+                      ></Button>
+                    </span>
+                  </template>
+                </Column>
+              </DataTable>
             </TabPanel>
 
             <TabPanel header="Files attachments">
