@@ -82,7 +82,107 @@
         <div class="col-8">
           <TabView>
             <TabPanel header="Parts"> xxx </TabPanel>
-            <TabPanel header="Files attachments"> xxx </TabPanel>
+            <TabPanel header="Files attachments">
+              <form
+                enctype="multipart/form-data"
+                @submit.prevent="addAttachment(!v$.$invalid)"
+              >
+                <div class="grid">
+                  <div class="col-5">
+                    <InputText
+                      ref="description"
+                      inputId="description"
+                      type="text"
+                      v-model="formAddAttachment.description"
+                      placeholder="File description"
+                      :class="{
+                        'p-invalid':
+                          v$.formAddAttachment.description.$invalid &&
+                          formAddAttachmentSubmitted,
+                        'w-12': true,
+                      }"
+                    />
+                    <small
+                      v-if="
+                        (v$.formAddAttachment.description.$invalid &&
+                          formAddAttachmentSubmitted) ||
+                        v$.formAddAttachment.description.$pending.$response
+                      "
+                      class="p-error"
+                    >
+                      {{ v$.formAddAttachment.description.required.$message }}
+                      <template
+                        v-if="
+                          v$.formAddAttachment.description.required &&
+                          v$.formAddAttachment.description.maxLength
+                        "
+                        ><br
+                      /></template>
+                      {{ v$.formAddAttachment.description.maxLength.$message }}
+                    </small>
+                  </div>
+
+                  <div class="col-6">
+                    <InputText
+                      ref="file"
+                      inputId="file"
+                      type="file"
+                      v-model="formAddAttachment.file"
+                      @change="attachmentFileChanged($event.target.files)"
+                      :class="{
+                        'p-invalid':
+                          v$.formAddAttachment.file.$invalid &&
+                          formAddAttachmentSubmitted,
+                        'w-12': true,
+                      }"
+                      :accept="allowedUploadTypes"
+                    />
+                    <small
+                      v-if="
+                        (v$.formAddAttachment.file.$invalid &&
+                          formAddAttachmentSubmitted) ||
+                        v$.formAddAttachment.file.$pending.$response
+                      "
+                      class="p-error"
+                    >
+                      {{ v$.formAddAttachment.file.required.$message }}
+                    </small>
+                  </div>
+
+                  <div class="col-1">
+                    <Button label="add" type="submit" />
+                  </div>
+                </div>
+              </form>
+
+              <Divider />
+              <DataTable
+                :value="project.project_attachments"
+                class="p-datatable-sm"
+                stripedRows
+                responsiveLayout="scroll"
+              >
+                <Column header="Link"
+                  ><template #body="slotProps">
+                    <i class="fa fa-code-o"></i>
+                    <a class="no-underline" :href="slotProps.data.file">{{
+                      stripPathFromFileUrl(slotProps.data.file)
+                    }}</a>
+                  </template>
+                </Column>
+                <Column field="description" header="Description"> </Column>
+                <Column>
+                  <template #body="slotProps">
+                    <router-link
+                      to="#"
+                      @click.prevent="deleteAttachment(slotProps.data)"
+                    >
+                      <i class="fa fa-trash-o" aria-hidden="true" />
+                    </router-link>
+                  </template>
+                </Column>
+              </DataTable>
+            </TabPanel>
           </TabView>
         </div>
       </div>
@@ -97,6 +197,11 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import ManageProjectModal from "@/components/project/Form.vue";
 import { h } from "vue";
+import utils from "@/utils.js";
+import { useVuelidate } from "@vuelidate/core";
+import { required, maxLength } from "@vuelidate/validators";
+import { mapState } from "pinia";
+import { useServerStore } from "@/stores/server";
 
 export default {
   data: () => ({
@@ -110,12 +215,39 @@ export default {
       { value: 99, text: "Unknown" },
       { value: null, text: "Filter by state" },
     ],
+    formAddAttachmentSubmitted: false,
+    formAddAttachment: {
+      description: null,
+      file: null,
+    },
   }),
   setup: () => ({
     confirm: useConfirm(),
     toast: useToast(),
+    serverStore: useServerStore(),
+    v$: useVuelidate(),
   }),
+  validations: {
+    formAddAttachment: {
+      description: {
+        required,
+        maxLength: maxLength(255),
+      },
+      file: {
+        required,
+      },
+    },
+  },
   computed: {
+    ...mapState(useServerStore, {
+      allowedUploadTypes: (store) => {
+        let types = store.settings.partAttachmentAllowedTypes || [
+          "application/pdf",
+          "image/jpeg",
+        ];
+        return types.join(", ");
+      },
+    }),
     projectId() {
       return this.$route.params.projectId;
     },
@@ -248,6 +380,81 @@ export default {
           `${this.project.name}__bom.xlsx`
         );
       }
+    },
+    stripPathFromFileUrl(url) {
+      return utils.baseName(url);
+    },
+    attachmentFileChanged(files) {
+      this.formAddAttachment.realFile = files[0];
+    },
+    addAttachment(isFormValid) {
+      this.formAddAttachmentSubmitted = true;
+      if (!isFormValid) {
+        return;
+      }
+
+      apiService
+        .projectAttachmentCreate(this.project.id, {
+          description: this.formAddAttachment.description,
+          file: this.formAddAttachment.realFile,
+        })
+        .then((val) => {
+          this.toast.add({
+            severity: "success",
+            summary: "Project attachment",
+            detail: "Upload successfull",
+            life: 5000,
+          });
+          this.fetchProject();
+          this.formAddAttachment = { description: null, file: null };
+          this.formAddAttachmentSubmitted = false;
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Project attachment",
+            detail: "Error occured or file type not allowed.",
+            life: 5000,
+          });
+          this.fetchProject();
+          logger.default.error("Error with project attachment deletion", err);
+        });
+    },
+    deleteAttachment(attachment) {
+      this.confirm.require({
+        message: `Are you sure you want to delete the attachment '${attachment.description}' ?`,
+        header: `Deleting '${attachment.description}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .projectAttachmentDelete(this.project.id, attachment.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Project attachment",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.fetchProject();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Project attachment",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error(
+                "Error with project attachment deletion",
+                err
+              );
+              this.fetchProject();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
   },
 };
