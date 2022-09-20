@@ -83,7 +83,10 @@
           <TabView>
             <TabPanel header="Parts">
               <div>
-                <Button label="Add part from inventory" />
+                <Button
+                  label="Add part from inventory"
+                  @click.prevent="showAddInternalPart($event)"
+                />
                 <Button
                   class="p-button-info ml-2"
                   label="Add external part"
@@ -114,11 +117,26 @@
                 :paginator="false"
                 removableSort
               >
-                <Column
-                  field="part_name"
-                  header="Name"
-                  :sortable="true"
-                ></Column>
+                <Column header="Name" :sortable="false">
+                  <template #body="slotProps">
+                    <a
+                      v-if="slotProps.data.part"
+                      href="#"
+                      class="no-underline"
+                      @click.prevent="viewPartModal(slotProps.data.part)"
+                      >{{ slotProps.data.part.name }}</a
+                    >
+                    <span v-else>{{ slotProps.data.part_name }}</span>
+                    <template
+                      v-if="
+                        slotProps.data.part && slotProps.data.part.description
+                      "
+                    >
+                      <br />
+                      {{ slotProps.data.part.description }}
+                    </template>
+                  </template>
+                </Column>
 
                 <Column
                   header="Sourced"
@@ -280,12 +298,15 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import ManageProjectModal from "@/components/project/Form.vue";
 import ExternalPart from "@/components/project/ExternalPart.vue";
+import InternalPart from "@/components/project/InternalPart.vue";
 import { h } from "vue";
 import utils from "@/utils.js";
 import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
 import { mapState } from "pinia";
 import { useServerStore } from "@/stores/server";
+import Button from "primevue/button";
+import PartViewModal from "@/components/parts/view.vue";
 
 export default {
   data: () => ({
@@ -442,6 +463,41 @@ export default {
         },
       });
     },
+    deletePart(event, part) {
+      let part_name = part.part ? part.part.name : part.part_name;
+
+      this.confirm.require({
+        message: `Are you sure you want to delete the part '${part_name}' ?`,
+        header: `Deleting '${part_name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .projectDeletePart(this.project.id, part.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Part",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.fetchProject();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Part",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with part deletion", err);
+              this.fetchProject();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
+    },
     projectStateText(value) {
       let a = this.projectStates.filter(function (e) {
         return e.value === value;
@@ -565,6 +621,100 @@ export default {
           }
         },
       });
+    },
+    showAddInternalPart(event) {
+      this.$dialog.open(InternalPart, {
+        props: {
+          modal: true,
+          style: {
+            width: "60vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Select part from inventory")])];
+          },
+        },
+        data: {
+          mode: "add",
+          project: this.project,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload project
+            this.fetchProject();
+          }
+        },
+      });
+    },
+    viewPartModal(part) {
+      // Get full part object infos
+      apiService
+        .getPart(part.id)
+        .then((val) => {
+          const viewPartRef = this.$dialog.open(PartViewModal, {
+            props: {
+              modal: true,
+              style: {
+                width: "70vw",
+              },
+            },
+            templates: {
+              header: () => {
+                if (part.private) {
+                  return [
+                    h("h3", [
+                      h("i", { class: "fa fa-lock mr-1" }),
+                      h("span", part.name),
+                    ]),
+                  ];
+                } else {
+                  return [h("h3", part.name)];
+                }
+              },
+              footer: () => {
+                return [
+                  h(Button, {
+                    label: "Show full details",
+                    onClick: () => {
+                      viewPartRef.close();
+                      this.$router.replace({
+                        name: "parts-details",
+                        params: { partId: part.id },
+                      });
+                    },
+                    class: "p-button-outlined",
+                  }),
+                  h(Button, {
+                    label: "Delete",
+                    onClick: () => {
+                      this.deletePart(null, part);
+                      viewPartRef.close();
+                    },
+                    class: "p-button-danger",
+                  }),
+                  h(Button, {
+                    label: "Close",
+                    onClick: () => viewPartRef.close(),
+                    class: "p-button-success",
+                  }),
+                ];
+              },
+            },
+            data: {
+              part: val.data,
+            },
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with getting part details", err);
+        });
     },
   },
 };
