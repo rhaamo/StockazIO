@@ -578,8 +578,14 @@ export default {
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
   }),
+  mounted() {
+    if (this.currentCategory) {
+      this.form.category = { [this.currentCategory.id]: true };
+    }
+  },
   computed: {
     ...mapState(usePreloadsStore, {
+      currentCategory: (store) => store.currentCategory,
       choicesPartUnit: (store) =>
         store.part_units.map((x) => {
           return { value: x.id, text: `${x.name} (${x.short_name})` };
