@@ -39,10 +39,8 @@
         </div>
       </div>
       <div v-else class="grid">
-        <div class="row">
-          <div role="main" class="col-10">
-            <router-view />
-          </div>
+        <div role="main" class="col-12">
+          <router-view />
         </div>
       </div>
     </template>

@@ -1,86 +1,88 @@
 <template>
-  <div
-    class="px-4 py-8 md:px-6 lg:px-8 grid align-items-center justify-content-center"
-  >
-    <div class="surface-card p-4 shadow-2 border-round col-2">
-      <div class="text-center mb-5">
-        <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-      </div>
+  <div>
+    <div
+      class="px-4 py-8 md:px-6 lg:px-8 grid align-items-center justify-content-center"
+    >
+      <div class="surface-card p-4 shadow-2 border-round col-2">
+        <div class="text-center mb-5">
+          <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
+        </div>
 
-      <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
-        <div>
-          <div class="field">
+        <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+          <div>
+            <div class="field">
+              <label
+                for="username"
+                :class="{
+                  'p-error': v$.user.username.$invalid && submitted,
+                  block: true,
+                  'font-medium': true,
+                }"
+                >Username</label
+              >
+              <InputText
+                id="username"
+                v-model="user.username"
+                :class="{
+                  'p-invalid': v$.user.username.$invalid && submitted,
+                  'w-7': true,
+                }"
+              />
+              <small
+                v-if="
+                  (v$.user.username.$invalid && submitted) ||
+                  v$.user.username.$pending.$response
+                "
+                class="p-error"
+                ><br />{{ v$.user.username.required.$message }}</small
+              >
+            </div>
+
             <label
-              for="username"
+              for="password"
               :class="{
                 'p-error': v$.user.username.$invalid && submitted,
                 block: true,
                 'font-medium': true,
               }"
-              >Username</label
+              >Password</label
             >
-            <InputText
-              id="username"
-              v-model="user.username"
+            <Password
+              id="password"
+              type="password"
+              v-model="user.password"
               :class="{
-                'p-invalid': v$.user.username.$invalid && submitted,
+                'p-invalid': v$.user.password.$invalid && submitted,
                 'w-7': true,
               }"
+              toggleMask
+              :feedback="false"
             />
             <small
               v-if="
-                (v$.user.username.$invalid && submitted) ||
-                v$.user.username.$pending.$response
+                (v$.user.password.$invalid && submitted) ||
+                v$.user.password.$pending.$response
               "
               class="p-error"
-              ><br />{{ v$.user.username.required.$message }}</small
+              ><br />{{ v$.user.password.required.$message }}</small
             >
+
+            <div class="mb-5 mt-5">
+              <a
+                class="font-medium no-underline text-blue-500 text-center cursor-pointer"
+                >Forgot password?</a
+              >
+            </div>
+
+            <Button
+              label="Login"
+              icon="pi pi-user"
+              class="w-4"
+              type="submit"
+            ></Button>
           </div>
-
-          <label
-            for="password"
-            :class="{
-              'p-error': v$.user.username.$invalid && submitted,
-              block: true,
-              'font-medium': true,
-            }"
-            >Password</label
-          >
-          <Password
-            id="password"
-            type="password"
-            v-model="user.password"
-            :inputClass="{
-              'p-invalid': v$.user.password.$invalid && submitted,
-              'w-full': true,
-            }"
-            toggleMask
-            :feedback="false"
-          />
-          <small
-            v-if="
-              (v$.user.password.$invalid && submitted) ||
-              v$.user.password.$pending.$response
-            "
-            class="p-error"
-            ><br />{{ v$.user.password.required.$message }}</small
-          >
-
-          <div class="mb-5 mt-5">
-            <a
-              class="font-medium no-underline text-blue-500 text-center cursor-pointer"
-              >Forgot password?</a
-            >
-          </div>
-
-          <Button
-            label="Login"
-            icon="pi pi-user"
-            class="w-4"
-            type="submit"
-          ></Button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -96,7 +98,10 @@ import { useToast } from "primevue/usetoast";
 
 export default {
   data: () => ({
-    user: {},
+    user: {
+      username: "",
+      password: "",
+    },
     submitted: false,
   }),
   setup: () => ({
