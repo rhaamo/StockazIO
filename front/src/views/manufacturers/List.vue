@@ -170,7 +170,7 @@ export default {
         });
     },
     showAddManufacturerModal() {
-      const addManufacturerRef = this.$dialog.open(ManageManufacturerModal, {
+      this.$dialog.open(ManageManufacturerModal, {
         props: {
           modal: true,
           style: {
@@ -194,7 +194,7 @@ export default {
       });
     },
     editItem(event, item) {
-      const editManufacturerRef = this.$dialog.open(ManageManufacturerModal, {
+      this.$dialog.open(ManageManufacturerModal, {
         props: {
           modal: true,
           style: {

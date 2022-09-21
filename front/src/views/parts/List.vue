@@ -866,7 +866,7 @@ export default {
         });
     },
     showLabelGenerator(item) {
-      const viewPartRef = this.$dialog.open(LabelGeneratorModal, {
+      this.$dialog.open(LabelGeneratorModal, {
         props: {
           modal: true,
           style: {

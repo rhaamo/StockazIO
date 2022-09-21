@@ -171,7 +171,7 @@ export default {
         });
     },
     showAddDistributorModal() {
-      const addDistributorRef = this.$dialog.open(ManageDistributorModal, {
+      this.$dialog.open(ManageDistributorModal, {
         props: {
           modal: true,
           style: {
@@ -195,7 +195,7 @@ export default {
       });
     },
     editItem(event, item) {
-      const editDistributorRef = this.$dialog.open(ManageDistributorModal, {
+      this.$dialog.open(ManageDistributorModal, {
         props: {
           modal: true,
           style: {

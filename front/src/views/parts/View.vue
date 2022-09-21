@@ -518,7 +518,7 @@ export default {
       return `web+stockazio:part,${uuid}`;
     },
     showLabelGenerator(item) {
-      const viewPartRef = this.$dialog.open(LabelGeneratorModal, {
+      this.$dialog.open(LabelGeneratorModal, {
         props: {
           modal: true,
           style: {
