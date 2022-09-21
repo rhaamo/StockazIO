@@ -133,7 +133,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Categories do not need reload");
+        logger.default.info("Categories do not need reload");
         return;
       }
       return apiService
@@ -155,7 +155,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Footprints do not need reload");
+        logger.default.info("Footprints do not need reload");
         return;
       }
       return apiService
@@ -177,7 +177,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Storages do not need reload");
+        logger.default.info("Storages do not need reload");
         return;
       }
       return apiService
@@ -199,7 +199,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Parameters Units do not need reload");
+        logger.default.info("Parameters Units do not need reload");
         return;
       }
       return apiService
@@ -224,7 +224,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Part Units do not need reload");
+        logger.default.info("Part Units do not need reload");
         return;
       }
       return apiService
@@ -246,7 +246,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Manufacturers do not need reload");
+        logger.default.info("Manufacturers do not need reload");
         return;
       }
       return apiService
@@ -268,7 +268,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Distributors do not need reload");
+        logger.default.info("Distributors do not need reload");
         return;
       }
       return apiService
@@ -290,7 +290,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Label Templates do not need reload");
+        logger.default.info("Label Templates do not need reload");
         return;
       }
       return apiService
@@ -312,7 +312,7 @@ export const usePreloadsStore = defineStore("preloads", {
         differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
       ) {
         // No refresh for now
-        console.log("Part parameters do not need reload");
+        logger.default.info("Part parameters do not need reload");
         return;
       }
       return apiService

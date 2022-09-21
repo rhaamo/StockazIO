@@ -962,7 +962,7 @@ export default {
         accept: () => {
           const _bulkDelete = async (parts) => {
             for (let part of parts) {
-              console.log("delete part", part.name);
+              logger.default.info("delete part", part.name);
               await apiService
                 .deletePart(part.id)
                 .then((val) => {
@@ -989,7 +989,7 @@ export default {
           };
 
           _bulkDelete(this.selectedParts).then(() => {
-            console.log("reload");
+            logger.default.info("reload");
             this.selectedParts = [];
             this.loadLazyData();
           });

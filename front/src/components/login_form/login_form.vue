@@ -159,7 +159,7 @@ export default {
                 this.preloadsStore.preloadLabelTemplates(),
                 this.preloadsStore.preloadPartParametersPresets(),
               ]).then(() => {
-                console.log("post-login preloading finished");
+                logger.default.info("post-login preloading finished");
                 this.$router.push({ name: "home" });
               });
             });

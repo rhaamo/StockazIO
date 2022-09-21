@@ -335,7 +335,6 @@ export default {
         return;
       }
 
-      console.log("templateChanged", event.value);
       if ("id" in event.value && event.value.id === 0) {
         this.resetForm();
       } else {
