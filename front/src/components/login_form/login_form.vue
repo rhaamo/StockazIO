@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div
-      class="px-4 py-8 md:px-6 lg:px-8 grid align-items-center justify-content-center"
-    >
-      <div class="surface-card p-4 shadow-2 border-round col-2">
+    <div class="mt-4 grid align-items-center justify-content-center">
+      <div class="surface-card p-4 shadow-2 border-round col-3">
         <div class="text-center mb-5">
           <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
         </div>
@@ -38,34 +36,36 @@
               >
             </div>
 
-            <label
-              for="password"
-              :class="{
-                'p-error': v$.user.username.$invalid && submitted,
-                block: true,
-                'font-medium': true,
-              }"
-              >Password</label
-            >
-            <Password
-              id="password"
-              type="password"
-              v-model="user.password"
-              :class="{
-                'p-invalid': v$.user.password.$invalid && submitted,
-                'w-7': true,
-              }"
-              toggleMask
-              :feedback="false"
-            />
-            <small
-              v-if="
-                (v$.user.password.$invalid && submitted) ||
-                v$.user.password.$pending.$response
-              "
-              class="p-error"
-              ><br />{{ v$.user.password.required.$message }}</small
-            >
+            <div class="field">
+              <label
+                for="password"
+                :class="{
+                  'p-error': v$.user.username.$invalid && submitted,
+                  block: true,
+                  'font-medium': true,
+                }"
+                >Password</label
+              >
+              <Password
+                id="password"
+                type="password"
+                v-model="user.password"
+                :class="{
+                  'p-invalid': v$.user.password.$invalid && submitted,
+                  'w-7': true,
+                }"
+                toggleMask
+                :feedback="false"
+              />
+              <small
+                v-if="
+                  (v$.user.password.$invalid && submitted) ||
+                  v$.user.password.$pending.$response
+                "
+                class="p-error"
+                ><br />{{ v$.user.password.required.$message }}</small
+              >
+            </div>
 
             <div class="mb-5 mt-5">
               <a
