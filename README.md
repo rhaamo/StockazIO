@@ -77,6 +77,11 @@ CXXFLAGS="--std=c++14" yarn install
 NODE_OPTIONS=--openssl-legacy-provider yarn build
 ```
 
+The build might also fails related to memory (https://github.com/vitejs/vite/issues/2433) so the workaround is:
+```
+node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build
+```
+
 ## Frontend
 ```shell
 sudo su - stockazio
