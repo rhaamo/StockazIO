@@ -44,7 +44,9 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Storages management" }],
+      items: [
+        { label: "Storages management", to: { name: "view-storage-tree" } },
+      ],
     },
   }),
   setup: () => ({

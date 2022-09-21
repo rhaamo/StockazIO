@@ -262,7 +262,9 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Label Templates" }],
+      items: [
+        { label: "Label Templates", to: { name: "label-templates-list" } },
+      ],
     },
     submitted: false,
     selectedTemplate: null,

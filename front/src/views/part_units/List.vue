@@ -83,7 +83,10 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Part Units" }],
+      items: [
+        { label: "Parts", to: { name: "parts-list" } },
+        { label: "Units", to: { name: "part-units-list" } },
+      ],
     },
     filters: {
       global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

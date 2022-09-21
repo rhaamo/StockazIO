@@ -100,7 +100,13 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Part Parameters Presets" }],
+      items: [
+        { label: "Parts", to: { name: "parts-list" } },
+        {
+          label: "Parameters Presets",
+          to: { name: "parameters-presets-list" },
+        },
+      ],
     },
     filters: {
       global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

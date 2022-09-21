@@ -28,7 +28,7 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Informations" }],
+      items: [{ label: "Informations", to: { name: "view-infos" } }],
     },
     parts_count: 0,
     categories_count: 0,

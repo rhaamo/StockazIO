@@ -156,7 +156,7 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Projects" }],
+      items: [{ label: "Projects", to: { name: "projects-list" } }],
     },
     matchModes: {
       name: [

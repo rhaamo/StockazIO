@@ -131,7 +131,7 @@ export default {
   data: () => ({
     breadcrumb: {
       home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Distributors" }],
+      items: [{ label: "Distributors", to: { name: "distributors-list" } }],
     },
     filters: {
       global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

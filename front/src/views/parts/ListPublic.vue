@@ -404,13 +404,13 @@ export default {
           home: {
             icon: "fa fa-folder-o mr-1",
             to: "/",
-            label: "Parts by category",
+            label: "Public parts by category",
           },
           items: [
             {
               label: this.actualCurrentCategory.name,
               to: {
-                name: "parts-category-list",
+                name: "public-parts-category-list",
                 params: { categoryId: this.actualCurrentCategory.id },
               },
             },
@@ -421,18 +421,18 @@ export default {
           home: {
             icon: "fa fa-folder-o mr-1",
             to: {
-              name: "parts-category-list",
+              name: "public-parts-category-list",
               params: { categoryId: this.actualCurrentCategory.id },
             },
-            label: "Uncategorized parts",
+            label: "Uncategorized public parts",
           },
         };
       } else {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: { name: "parts-list" },
-            label: "All parts",
+            to: { name: "public-parts" },
+            label: "All public parts",
           },
         };
       }
