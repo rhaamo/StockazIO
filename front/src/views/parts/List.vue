@@ -397,21 +397,36 @@
                   <div class="mb-1 text-sm">
                     {{ part.description || "No description." }}
                   </div>
-                  <Image
-                    v-if="partGetDefaultAttachment(part.part_attachments)"
-                    preview
-                    width="150"
-                    :src="
-                      partGetDefaultAttachment(part.part_attachments)
-                        .picture_medium
-                    "
-                  ></Image>
-                  <template v-else>
-                    <span class="fa-stack fa-5x">
-                      <i class="fa fa-file-picture-o fa-stack-2x" />
-                      <i class="fa fa-question fa-stack-1x text-orange-400" />
-                    </span>
-                  </template>
+
+                  <div class="flex justify-content-center">
+                    <div
+                      class="flex flex-grow-1 align-items-center justify-content-center"
+                    >
+                      <div class="field w-6">
+                        <template
+                          v-if="partGetDefaultAttachment(part.part_attachments)"
+                        >
+                          <Image
+                            preview
+                            width="150"
+                            :src="
+                              partGetDefaultAttachment(part.part_attachments)
+                                .picture_medium
+                            "
+                          ></Image>
+                        </template>
+
+                        <template v-else>
+                          <span class="fa-stack fa-5x">
+                            <i class="fa fa-file-picture-o fa-stack-2x" />
+                            <i
+                              class="fa fa-question fa-stack-1x text-orange-400"
+                            />
+                          </span>
+                        </template>
+                      </div>
+                    </div>
+                  </div>
                 </template>
                 <template #footer>
                   <div class="text-center">
