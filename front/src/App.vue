@@ -4,7 +4,7 @@
     <Toast />
     <DynamicDialog />
 
-    <template v-if="isLoaded">
+    <template v-if="isLoaded && !cannotLoad">
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
         <template #start
           ><router-link :to="{ name: 'home' }" class="no-underline"
@@ -44,10 +44,18 @@
         </div>
       </div>
     </template>
-    <template v-else
-      ><div id="preloadScreen">
-        Preloading in progress.<br /><ProgressSpinner /></div
-    ></template>
+
+    <template v-if="!isLoaded && !cannotLoad">
+      <div id="preloadScreen">
+        Preloading in progress.<br /><ProgressSpinner />
+      </div>
+    </template>
+
+    <template v-if="!isLoaded && cannotLoad">
+      <div id="preloadScreen">
+        An error occured and the application cannot load.
+      </div>
+    </template>
   </div>
 </template>
 
@@ -81,57 +89,70 @@ export default {
     logger.default.info("Detected server url:", defaultServerUrl);
     this.serverStore.setServerUrl(defaultServerUrl);
 
-    this.serverStore.fetchSettings();
-
-    Promise.allSettled([
-      // Check token and try to log user if found
-      this.userStore.checkOauthToken(),
-      // Try to get or create oauth2 app and token thingy
-      this.oauthStore.getOrCreateApp(
-        this.oauthStore.getClientId,
-        this.oauthStore.getClientSecret
-      ),
-    ])
-      .catch(function (error) {
-        logger.default.error("Error while doing initialization", error);
-      })
+    this.serverStore
+      .fetchSettings()
       .then(() => {
-        logger.default.info("Initialization done.");
+        Promise.allSettled([
+          // Check token and try to log user if found
+          this.userStore.checkOauthToken(),
+          // Try to get or create oauth2 app and token thingy
+          this.oauthStore.getOrCreateApp(
+            this.oauthStore.getClientId,
+            this.oauthStore.getClientSecret
+          ),
+        ])
+          .then(() => {
+            logger.default.info("Initialization done.");
 
-        if (this.oauthStore.loggedIn) {
-          Promise.allSettled([
-            this.preloadsStore.preloadSidebar(),
-            this.preloadsStore.preloadFootprints(),
-            this.preloadsStore.preloadStorages(),
-            this.preloadsStore.preloadParametersUnits(),
-            this.preloadsStore.preloadPartUnits(),
-            this.preloadsStore.preloadManufacturers(),
-            this.preloadsStore.preloadDistributors(),
-            this.preloadsStore.preloadLabelTemplates(),
-            this.preloadsStore.preloadPartParametersPresets(),
-          ]).then(() => {
-            console.log("authenticated preloading finished");
-            this.isLoaded = true;
-            console.log("Initialization finished.");
+            if (this.oauthStore.loggedIn) {
+              Promise.allSettled([
+                this.preloadsStore.preloadSidebar(),
+                this.preloadsStore.preloadFootprints(),
+                this.preloadsStore.preloadStorages(),
+                this.preloadsStore.preloadParametersUnits(),
+                this.preloadsStore.preloadPartUnits(),
+                this.preloadsStore.preloadManufacturers(),
+                this.preloadsStore.preloadDistributors(),
+                this.preloadsStore.preloadLabelTemplates(),
+                this.preloadsStore.preloadPartParametersPresets(),
+              ])
+                .then(() => {
+                  logger.default.info("authenticated preloading finished");
+                  this.isLoaded = true;
+                  logger.default.info("Initialization finished.");
+                })
+                .catch(() => {
+                  logger.default.error("Cannot preload stuff");
+                });
+            } else {
+              // Only preload stuff needed for unauthenticated views
+              Promise.allSettled([
+                this.preloadsStore.preloadSidebar(),
+                this.preloadsStore.preloadFootprints(),
+                this.preloadsStore.preloadStorages(),
+              ]).then(() => {
+                logger.default.info("unauthenticated preloading finished");
+                this.isLoaded = true;
+                logger.default.info("Initialization finished.");
+              });
+            }
+          })
+          .catch(function (error) {
+            logger.default.error("Error while doing initialization", error);
           });
-        } else {
-          // Only preload stuff needed for unauthenticated views
-          Promise.allSettled([
-            this.preloadsStore.preloadSidebar(),
-            this.preloadsStore.preloadFootprints(),
-            this.preloadsStore.preloadStorages(),
-          ]).then(() => {
-            console.log("unauthenticated preloading finished");
-            this.isLoaded = true;
-            console.log("Initialization finished.");
-          });
-        }
+      })
+      .catch((err) => {
+        logger.default.error("Cannot load settings.");
+        this.isLoaded = false;
+        this.cannotLoad = true;
+        return;
       });
   },
   mounted() {},
   data() {
     return {
       isLoaded: false,
+      cannotLoad: false,
       searchTerm: "",
       menuItemsLoggedIn: [
         { separator: true },

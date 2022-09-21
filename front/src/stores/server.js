@@ -71,6 +71,7 @@ export const useServerStore = defineStore("server", {
         },
         (response) => {
           logger.default.error("Error while fetching settings", response.data);
+          return Promise.reject();
         }
       );
     },
