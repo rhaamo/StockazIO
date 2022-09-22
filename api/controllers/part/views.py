@@ -67,6 +67,7 @@ class PrimeVuePagination(LimitOffsetPagination):
 # qty: equals, lt, lte, gt, gte
 # Ordering adds a "sortField" with a sortOrder (1 or -1)
 
+
 class PartViewSet(ModelViewSet):
     anonymous_policy = True
     required_scope = {
@@ -133,7 +134,7 @@ class PartViewSet(ModelViewSet):
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
         # Filtering
-        if (filters):
+        if filters:
             filters = json.loads(filters)
             for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
                 # not implemented: in, between, and dates
@@ -168,7 +169,7 @@ class PartViewSet(ModelViewSet):
                         elif filters[field]["matchMode"] == "gte":
                             queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
 
-        if (sortField and sortOrder):
+        if sortField and sortOrder:
             if sortOrder == 1:
                 queryset = queryset.order_by(sortField)
             else:
@@ -295,7 +296,7 @@ class PartsPublic(ModelViewSet):
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
         # Filtering
-        if (filters):
+        if filters:
             filters = json.loads(filters)
             for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
                 # not implemented: in, between, and dates
@@ -330,7 +331,7 @@ class PartsPublic(ModelViewSet):
                         elif filters[field]["matchMode"] == "gte":
                             queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
 
-        if (sortField and sortOrder):
+        if sortField and sortOrder:
             if sortOrder == 1:
                 queryset = queryset.order_by(sortField)
             else:

@@ -63,7 +63,7 @@ class ProjectsViewSet(ModelViewSet):
 
         # Filtering
         # See in controllers/part/views.py class PartViewSet for documentation on the PrimeVue pagination/sorting
-        if (filters):
+        if filters:
             filters = json.loads(filters)
             for field in ["name", "state"]:
                 # not implemented: in, between, and dates
@@ -89,7 +89,7 @@ class ProjectsViewSet(ModelViewSet):
                     elif filters[field]["matchMode"] == "gte":
                         queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
 
-        if (sortField and sortOrder):
+        if sortField and sortOrder:
             if sortOrder == 1:
                 queryset = queryset.order_by(sortField)
             else:

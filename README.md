@@ -30,6 +30,11 @@ The following is not implemented and needs to be accessed through django admin `
 - Nginx
 - PostgreSQL
 
+# API Documentation
+
+After installing the backend, Swagger documentation will be accessible at:
+- http://backend_url/api/swagger/
+
 # Install - manual
 
 We assume in here you are installing under the `stockazio` user with default home directory `/home/stockazio`, like by doing:
