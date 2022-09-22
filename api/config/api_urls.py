@@ -5,15 +5,17 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+openapi_info = openapi.Info(
+    title="StockazIO API",
+    default_version="v1",
+    description="StockazIO API",
+    terms_of_service="https://github.com/rhaamo/stockazio",
+    contact=openapi.Contact(email="stockazio@sigpipe.me"),
+    license=openapi.License(name="Same as project"),
+)
+
 schema_view = get_schema_view(
-    openapi.Info(
-        title="StockazIO API",
-        default_version="v1",
-        description="StockazIO API",
-        terms_of_service="https://github.com/rhaamo/stockazio",
-        contact=openapi.Contact(email="stockazio@sigpipe.me"),
-        license=openapi.License(name="Same as project"),
-    ),
+    openapi_info,
     public=True,
     permission_classes=(permissions.AllowAny,),
 )

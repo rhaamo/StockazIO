@@ -84,3 +84,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 IMAGEKIT_CACHE_BACKEND = "default"
 IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = "imagekit.cachefiles.strategies.Optimistic"
 IMAGEKIT_DEFAULT_CACHEFILE_BACKEND = "imagekit.cachefiles.backends.Simple"
+
+SWAGGER_SETTINGS = {
+    "DEFAULT_INFO": "config.api_urls.openapi_info"
+}
