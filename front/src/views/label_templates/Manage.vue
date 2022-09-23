@@ -446,6 +446,7 @@ export default {
               });
               this.fetchLabelTemplates();
               this.selectedTemplate = this.choicesTemplates[0];
+              this.resetForm();
             })
             .catch((err) => {
               this.toast.add({
@@ -457,6 +458,7 @@ export default {
               logger.default.error("Error with label template deletion", err);
               this.fetchLabelTemplates();
               this.selectedTemplate = this.choicesTemplates[0];
+              this.resetForm();
             });
         },
         reject: () => {
