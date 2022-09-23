@@ -383,62 +383,70 @@
             </Column>
           </DataTable>
         </TabPanel>
+
         <TabPanel>
           <template #header>
             <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
           </template>
+
           <div class="grid">
-            <div class="col-2" v-for="part in parts" :key="part.id">
-              <Card :title="part.name">
-                <template #title>
-                  {{ part.name }}
-                </template>
-                <template #content>
-                  <div class="mb-1 text-sm">
-                    {{ part.description || "No description." }}
+            <div class="col-4" v-for="part in parts" :key="part.id">
+              <div class="product-grid-item card">
+                <div class="product-grid-item-top">
+                  <div>
+                    <span class="product-category">{{
+                      part.category ? part.category.name : "Uncategorized"
+                    }}</span>
                   </div>
-
-                  <div class="flex justify-content-center">
-                    <div
-                      class="flex flex-grow-1 align-items-center justify-content-center"
+                  <span
+                    >qty:
+                    <template v-if="part.stock_qty >= part.stock_qty_min"
+                      ><span>{{ part.stock_qty }}</span></template
                     >
-                      <div class="field w-6">
-                        <template
-                          v-if="partGetDefaultAttachment(part.part_attachments)"
-                        >
-                          <Image
-                            preview
-                            width="150"
-                            :src="
-                              partGetDefaultAttachment(part.part_attachments)
-                                .picture_medium
-                            "
-                          ></Image>
-                        </template>
+                    <template v-else>
+                      <span
+                        class="text-red-500"
+                        v-tooltip="
+                          'Current stock is below minimum stock quantity or exhausted'
+                        "
+                        >{{ part.stock_qty }} <i class="fa fa-circle"></i
+                      ></span>
+                    </template>
+                  </span>
+                </div>
+                <div class="product-grid-item-content mt-3">
+                  <template
+                    v-if="partGetDefaultAttachment(part.part_attachments)"
+                  >
+                    <Image
+                      preview
+                      :src="
+                        partGetDefaultAttachment(part.part_attachments)
+                          .picture_medium
+                      "
+                      :alt="part.name"
+                      width="250"
+                    />
+                  </template>
+                  <template v-else>
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-file-picture-o fa-stack-2x" />
+                      <i class="fa fa-question fa-stack-1x text-orange-400" />
+                    </span>
+                  </template>
 
-                        <template v-else>
-                          <span class="fa-stack fa-5x">
-                            <i class="fa fa-file-picture-o fa-stack-2x" />
-                            <i
-                              class="fa fa-question fa-stack-1x text-orange-400"
-                            />
-                          </span>
-                        </template>
-                      </div>
-                    </div>
+                  <div class="product-name">{{ part.name }}</div>
+                  <div class="product-description">
+                    {{ part.description }}
                   </div>
-                </template>
-                <template #footer>
-                  <div class="text-center">
-                    <div class="text-sm">qty: {{ part.stock_qty }}</div>
+                  <div class="product-button">
                     <Button
-                      class="p-button-outlined mt-1"
+                      @click.prevent="viewPartModal(part)"
                       label="View details"
-                      @click.prevent="viewPartModal(slotProps.data)"
                     ></Button>
                   </div>
-                </template>
-              </Card>
+                </div>
+              </div>
             </div>
           </div>
         </TabPanel>
@@ -455,7 +463,7 @@ import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { FilterMatchMode } from "primevue/api";
 import utils from "@/utils.js";
-import { cloneDeep, chunk } from "lodash";
+import { cloneDeep } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import PartViewModal from "@/components/parts/view.vue";
@@ -639,9 +647,6 @@ export default {
     storageUuid() {
       return this.$route.query.storage_uuid;
     },
-    thumbnailsChunked() {
-      return chunk(this.parts, 6);
-    },
   },
   watch: {
     categoryId: function () {
@@ -754,7 +759,7 @@ export default {
       this.loading = true;
 
       // Do a quick cleanup of datas before sending them
-      const params = cloneDeep(this.lazyParams);
+      let params = cloneDeep(this.lazyParams);
       if (params.filters["storage_id"].value) {
         params.filters["storage_id"].value = Object.keys(
           params.filters["storage_id"].value
@@ -893,6 +898,11 @@ export default {
     },
     onPage(event) {
       this.lazyParams = event;
+      this.loadLazyData();
+    },
+    onPageDV(event) {
+      this.lazyParams.first = event.first;
+      this.lazyParams.rows = event.rows;
       this.loadLazyData();
     },
     onSort(event) {
@@ -1128,3 +1138,44 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.card {
+  background: #ffffff;
+  padding: 2rem;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.product-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.product-description {
+  margin: 0 0 1rem 0;
+}
+
+.product-category {
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+::v-deep(.product-grid-item) {
+  margin: 0.5rem;
+  border: 1px solid var(--surface-border);
+
+  .product-grid-item-top,
+  .product-grid-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-grid-item-content {
+    text-align: center;
+  }
+}
+</style>
