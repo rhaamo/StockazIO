@@ -1,6 +1,7 @@
 from rest_framework import authentication
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
 
+
 # Used for Swagger/Redoc
 class BearerAuthentication(authentication.TokenAuthentication):
     """
@@ -10,17 +11,17 @@ class BearerAuthentication(authentication.TokenAuthentication):
     Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a
     """
 
-    keyword = 'Bearer'
+    keyword = "Bearer"
 
 
 class BearerSchema(OpenApiAuthenticationExtension):
-    target_class = 'controller.users.authentication.BearerAuthentication'
-    name = 'BearerAuth'
+    target_class = "controller.users.authentication.BearerAuthentication"
+    name = "BearerAuth"
 
     def get_security_definition(self, auto_schema):
         return {
-            'type': 'apiKey',
-            'in': 'header',
-            'name': 'Bearer',
-            'description': 'Bearer token after Oauth2 Auth flow'
+            "type": "apiKey",
+            "in": "header",
+            "name": "Bearer",
+            "description": "Bearer token after Oauth2 Auth flow",
         }

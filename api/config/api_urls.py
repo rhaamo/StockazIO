@@ -25,9 +25,9 @@ v1_patterns += [
 ]
 
 swagger = [
-    re_path(r'^doc/schema$', SpectacularAPIView.as_view(), name='schema'),
-    re_path(r'^doc/schema/swagger/', SpectacularSwaggerView.as_view(url_name='api:schema'), name='swagger'),
-    re_path(r'^doc/schema/redoc/', SpectacularRedocView.as_view(url_name='api:schema'), name='redoc'),
+    re_path(r"^doc/schema$", SpectacularAPIView.as_view(), name="schema"),
+    re_path(r"^doc/schema/swagger/", SpectacularSwaggerView.as_view(url_name="api:schema"), name="swagger"),
+    re_path(r"^doc/schema/redoc/", SpectacularRedocView.as_view(url_name="api:schema"), name="redoc"),
 ]
 
 urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))] + swagger

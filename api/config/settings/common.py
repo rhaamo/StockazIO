@@ -98,8 +98,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "django_extensions",
     "silk",
-    'drf_spectacular',
-    'drf_spectacular_sidecar',  # required for Django collectstatic discovery
+    "drf_spectacular",
+    "drf_spectacular_sidecar",  # required for Django collectstatic discovery
 ]
 
 LOCAL_APPS = [
@@ -351,7 +351,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("controllers.oauth.permissions.ScopePermission",),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
@@ -402,14 +402,14 @@ CACHES = {
 # Swagger / Redoc auto schema etc. doc generator
 
 SPECTACULAR_SETTINGS = {
-    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR',
-    'TITLE': "StockazIO API",
-    'DESCRIPTION': 'StockazIO API',
-    'VERSION': 'v1',
-    'CONTACT': {"email": "stockazio@sigpipe.me"},
-    'LICENSE': {"name": "Same as project"},
+    "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
+    "TITLE": "StockazIO API",
+    "DESCRIPTION": "StockazIO API",
+    "VERSION": "v1",
+    "CONTACT": {"email": "stockazio@sigpipe.me"},
+    "LICENSE": {"name": "Same as project"},
     "TOS": "https://github.com/rhaamo/stockazio",
     # idk how to have our custom flow working
     # 'OAUTH2_FLOWS': ['password'],
@@ -418,8 +418,8 @@ SPECTACULAR_SETTINGS = {
     # 'OAUTH2_REFRESH_URL': None,
     # 'OAUTH2_SCOPES': None,
     # 'OAUTH2_SCOPES': "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
-    'SERVE_PUBLIC': True,
-    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
-    'SERVE_AUTHENTICATION': ['controllers.users.authentication.BearerAuthentication'],
-    'AUTHENTICATION_WHITELIST': ['controllers.users.authentication.BearerAuthentication']
+    "SERVE_PUBLIC": True,
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
+    "SERVE_AUTHENTICATION": ["controllers.users.authentication.BearerAuthentication"],
+    "AUTHENTICATION_WHITELIST": ["controllers.users.authentication.BearerAuthentication"],
 }

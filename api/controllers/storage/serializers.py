@@ -34,4 +34,3 @@ StorageSerializer._declared_fields["children"] = StorageSerializer(
     many=True,
     source="get_children",
 )
-
