@@ -410,5 +410,16 @@ SPECTACULAR_SETTINGS = {
     'VERSION': 'v1',
     'CONTACT': {"email": "stockazio@sigpipe.me"},
     'LICENSE': {"name": "Same as project"},
-    "TOS": "https://github.com/rhaamo/stockazio"
+    "TOS": "https://github.com/rhaamo/stockazio",
+    # idk how to have our custom flow working
+    # 'OAUTH2_FLOWS': ['password'],
+    # 'OAUTH2_AUTHORIZATION_URL': "/oauth/authorize/",
+    # 'OAUTH2_TOKEN_URL': "/oauth/token/",
+    # 'OAUTH2_REFRESH_URL': None,
+    # 'OAUTH2_SCOPES': None,
+    # 'OAUTH2_SCOPES': "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
+    'SERVE_PUBLIC': True,
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'SERVE_AUTHENTICATION': ['controllers.users.authentication.BearerAuthentication'],
+    'AUTHENTICATION_WHITELIST': ['controllers.users.authentication.BearerAuthentication']
 }
