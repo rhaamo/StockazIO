@@ -79,7 +79,9 @@ export default {
   }),
   created() {
     this.items = this.dialogRef.data.items;
-    this.template = this.choicesTemplates[0].tpl;
+    if (this.choicesTemplates && this.choicesTemplates.length) {
+      this.template = this.choicesTemplates[0].tpl;
+    }
   },
   watch: {
     template: function () {
