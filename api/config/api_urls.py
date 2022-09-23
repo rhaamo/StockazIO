@@ -30,4 +30,8 @@ swagger = [
     re_path(r"^doc/schema/redoc/", SpectacularRedocView.as_view(url_name="api:schema"), name="redoc"),
 ]
 
-urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))] + swagger
+other = [
+    re_path(r"^password_reset/", include("django_rest_passwordreset.urls", namespace="password_reset")),
+]
+
+urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))] + swagger + other

@@ -96,10 +96,11 @@ THIRD_PARTY_APPS = [
     "oauth2_provider",
     "corsheaders",
     "rest_framework",
+    "django_rest_passwordreset",
     "django_extensions",
     "silk",
     "drf_spectacular",
-    "drf_spectacular_sidecar",  # required for Django collectstatic discovery
+    "drf_spectacular_sidecar",
 ]
 
 LOCAL_APPS = [
@@ -423,3 +424,7 @@ SPECTACULAR_SETTINGS = {
     "SERVE_AUTHENTICATION": ["controllers.users.authentication.BearerAuthentication"],
     "AUTHENTICATION_WHITELIST": ["controllers.users.authentication.BearerAuthentication"],
 }
+
+# Password reset settings
+DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME = 24  # hours
+DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE = True  # always return a 200 to avoid leaks

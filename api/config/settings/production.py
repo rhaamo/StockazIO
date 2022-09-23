@@ -72,3 +72,6 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = [
 ]
 
 # Your production stuff: Below this line define 3rd party library settings
+
+# If you have a reverse-proxy in front (you should.)
+DJANGO_REST_PASSWORDRESET_IP_ADDRESS_HEADER = "HTTP_X_FORWARDED_FOR"
