@@ -108,6 +108,10 @@ const LABELTEMPLATE_CREATE = "/api/v1/labeltemplates/";
 const LABELTEMPLATE_UPDATE = (id) => `/api/v1/labeltemplates/${id}/`;
 const LABELTEMPLATE_DELETE = (id) => `/api/v1/labeltemplates/${id}/`;
 
+const USER_PASSWORD_RESET_REQUEST = "/api/password_reset/";
+const USER_PASSWORD_RESET_CONFIRM = "/api/password_reset/confirm/";
+const USER_PASSWORD_RESET_VALIDATE = "/api/password_reset/validate_token/";
+
 // Auth
 const verifyCredentials = () => {
   return Axios.get(CHECK_TOKEN_URL);
@@ -543,6 +547,23 @@ const deleteLabelTemplate = (id) => {
   return Axios.delete(LABELTEMPLATE_DELETE(id));
 };
 
+// User password reset
+
+// {'email': 'foo@bar.baz'}
+const userPasswordResetRequest = (data) => {
+  return Axios.post(USER_PASSWORD_RESET_REQUEST, data);
+};
+
+// {'token': 'xxx', 'password': 'yyyy'}
+const userPasswordResetConfirm = (data) => {
+  return Axios.post(USER_PASSWORD_RESET_CONFIRM, data);
+};
+
+// {'token': 'xxx'}
+const userPasswordResetValidate = (data) => {
+  return Axios.post(USER_PASSWORD_RESET_VALIDATE, data);
+};
+
 const apiService = {
   verifyCredentials,
   oauthRevoke,
@@ -618,6 +639,9 @@ const apiService = {
   createLabelTemplate,
   updateLabelTemplate,
   deleteLabelTemplate,
+  userPasswordResetRequest,
+  userPasswordResetConfirm,
+  userPasswordResetValidate,
 };
 
 export default apiService;
