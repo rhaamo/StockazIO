@@ -97,8 +97,9 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "django_extensions",
-    "drf_yasg",
     "silk",
+    'drf_spectacular',
+    'drf_spectacular_sidecar',  # required for Django collectstatic discovery
 ]
 
 LOCAL_APPS = [
@@ -350,6 +351,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("controllers.oauth.permissions.ScopePermission",),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -395,4 +397,18 @@ STOCKAZIO_SPA_HTML_CACHE_DURATION = env.int("STOCKAZIO_SPA_HTML_CACHE_DURATION",
 CACHES = {
     "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "default-cache"},
     "local": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "local-cache"},
+}
+
+# Swagger / Redoc auto schema etc. doc generator
+
+SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    'TITLE': "StockazIO API",
+    'DESCRIPTION': 'StockazIO API',
+    'VERSION': 'v1',
+    'CONTACT': {"email": "stockazio@sigpipe.me"},
+    'LICENSE': {"name": "Same as project"},
+    "TOS": "https://github.com/rhaamo/stockazio"
 }
