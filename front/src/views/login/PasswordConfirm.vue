@@ -1,13 +1,23 @@
 <template>
   <div>
     <div class="mt-4 grid align-items-center justify-content-center">
-      <div class="surface-card p-4 shadow-2 border-round col-3">
+      <div class="surface-card p-4 shadow-2 border-round col-4">
         <div class="text-center mb-5">
           <div class="text-900 text-3xl font-medium mb-3">Password Reset</div>
         </div>
 
         <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
           <div>
+            <div class="field">
+              <small
+                v-if="
+                  v$.form.token.$invalid || v$.form.token.$pending.$response
+                "
+                class="p-error"
+                >Token invalid or expired.</small
+              >
+            </div>
+
             <div class="field">
               <Password
                 id="password"
@@ -117,9 +127,26 @@ export default {
     },
   },
   mounted() {
-    this.form.token = this.token;
+    this.checkToken();
   },
   methods: {
+    checkToken() {
+      apiService
+        .userPasswordResetValidate({ token: this.token })
+        .then((res) => {
+          this.form.token = this.token;
+        })
+        .catch((error) => {
+          this.form.token = null;
+          logger.default.error("invalid token:", error);
+          this.toast.add({
+            severity: "error",
+            summary: "Password Reset",
+            detail: "Invalid token or expired",
+            life: 5000,
+          });
+        });
+    },
     submit(isFormValid) {
       this.submitted = true;
 
