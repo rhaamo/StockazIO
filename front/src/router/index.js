@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useOauthStore } from "@/stores/oauth";
 
-import LoginForm from "@/components/login_form/login_form.vue";
+import LoginForm from "@/views/login/Form.vue";
+import PasswordRequest from "@/views/login/PasswordRequest.vue";
+import PasswordConfirm from "@/views/login/PasswordConfirm.vue";
 import About from "@/views/About.vue";
 import PublicPartsList from "@/views/parts/ListPublic.vue";
 import UrlHandler from "@/views/About.vue";
@@ -217,7 +219,17 @@ const router = createRouter({
     },
     // Auth
     { path: "/login", name: "login_form", component: LoginForm },
-    { name: "password-reset", path: "/password-reset" },
+    {
+      path: "/password_reset/request",
+      name: "password-reset-request",
+      component: PasswordRequest,
+    },
+    {
+      path: "/password_reset/confirm/:token",
+      name: "password-reset-confirm",
+      component: PasswordConfirm,
+      props: true,
+    },
     // Parts
     { path: "/parts", name: "parts", beforeEnter: validateAuthenticatedRoute },
   ],

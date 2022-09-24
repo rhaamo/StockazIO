@@ -68,9 +68,10 @@
             </div>
 
             <div class="mb-5 mt-5">
-              <a
+              <router-link
                 class="font-medium no-underline text-blue-500 text-center cursor-pointer"
-                >Forgot password?</a
+                :to="{ name: 'password-reset-request' }"
+                >Forgot password ?</router-link
               >
             </div>
 

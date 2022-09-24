@@ -252,7 +252,11 @@ export default {
           label: this.currentUsername,
           icon: "fa fa-user fa-fw",
           items: [
-            { label: "Change password", icon: "fa fa-key fa-fw" },
+            {
+              label: "Change password",
+              icon: "fa fa-key fa-fw",
+              to: { name: "password-reset-request" },
+            },
             {
               label: "Force reload datas",
               icon: "fa fa-refresh",
