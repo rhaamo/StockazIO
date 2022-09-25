@@ -9,6 +9,7 @@ from rest_framework_csv.renderers import CSVRenderer
 from drf_excel.renderers import XLSXRenderer
 import urllib
 import json
+from drf_spectacular.utils import extend_schema
 
 from .models import Project, ProjectAttachment, ProjectPart
 from .serializers import (
@@ -144,6 +145,7 @@ class ExportTextInfos(views.APIView):
 
     renderer_classes = [PlainTextRenderer]
 
+    @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
         project = get_object_or_404(Project, id=project_id)
         txt = f"""File generated on {datetime.now()}
@@ -173,6 +175,7 @@ class ExportBomCSV(views.APIView):
     #     context['header'] = ('id', 'part.id', 'part_name',)
     #     return context
 
+    @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
         project = get_object_or_404(Project, id=project_id)
         serializer = ProjectPartSerializer(project.project_parts, many=True)
@@ -185,6 +188,7 @@ class ExportBomXLSX(views.APIView):
 
     renderer_classes = [XLSXRenderer]
 
+    @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
         project = get_object_or_404(Project, id=project_id)
         serializer = ProjectPartSerializer(project.project_parts, many=True)

@@ -5,6 +5,8 @@ from django import http
 from django.utils import timezone
 from django.db.models import Q
 from rest_framework import mixins, permissions, views, viewsets
+from drf_spectacular.utils import inline_serializer, extend_schema, OpenApiResponse
+from rest_framework import serializers as drf_serializers
 
 from oauth2_provider import exceptions as oauth2_exceptions
 from oauth2_provider import views as oauth_views
@@ -182,6 +184,21 @@ class RevokeTokenView(oauth_views.RevokeTokenView):
         return super().post(request, *args, **kwargs)
 
 
+@extend_schema(
+    responses={
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="AppSettings",
+                fields={
+                    "token": drf_serializers.CharField(),
+                    "expiry": drf_serializers.CharField(),
+                    "valid": drf_serializers.BooleanField(default=True),
+                    "user": {"username": drf_serializers.CharField()}
+                },
+            ),
+        )
+    }
+)
 class CheckTokenview(views.APIView):
     required_scope = "check_oauth_token"
 
