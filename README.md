@@ -36,6 +36,8 @@ After installing the backend, Swagger documentation will be accessible at:
 - http://backend_url/api/doc/swagger/
 - http://backend_url/api/doc/redoc/
 
+A better guide for the Oauth2 Auth flow is [available here](./oauth2_flow.md).
+
 # Install - manual
 
 We assume in here you are installing under the `stockazio` user with default home directory `/home/stockazio`, like by doing:
