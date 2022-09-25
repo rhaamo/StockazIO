@@ -1,4 +1,3 @@
-
 from rest_framework import views
 from rest_framework.response import Response
 from django.conf import settings
@@ -24,9 +23,11 @@ class AppSettings(views.APIView):
                     name="AppSettings",
                     fields={
                         "version": serializers.CharField(default=__version__),
-                        "part_attachment_allowed_types": serializers.ListField(default=settings.PART_ATTACHMENT_ALLOWED_FILES + settings.PART_ATTACHMENT_ALLOWED_IMAGES),
+                        "part_attachment_allowed_types": serializers.ListField(
+                            default=settings.PART_ATTACHMENT_ALLOWED_FILES + settings.PART_ATTACHMENT_ALLOWED_IMAGES
+                        ),
                         "pagination": serializers.DictField(default=settings.PAGINATION),
-                        "parts_uncategorized_count": serializers.IntegerField(default=1)
+                        "parts_uncategorized_count": serializers.IntegerField(default=1),
                     },
                 ),
             )

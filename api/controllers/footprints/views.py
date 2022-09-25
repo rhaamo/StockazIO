@@ -9,6 +9,7 @@ class FootprintViewSet(ModelViewSet):
     """
     Footprints types
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",

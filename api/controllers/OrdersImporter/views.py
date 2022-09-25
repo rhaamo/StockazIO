@@ -19,6 +19,7 @@ class OrderViewSet(ModelViewSet):
     """
     Orders importer
     """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -49,6 +50,7 @@ class CategoryMatcherViewSet(ModelViewSet):
     """
     Categories Matcher
     """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -69,16 +71,22 @@ class CategoryMatcherBatchUpdater(views.APIView):
     """
     Categories Matcher: Batch updater
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
     @extend_schema(
-        request=drf_serializers.ListSerializer(child=inline_serializer(name="CategoryMatcherBatchUpdater", fields={
-            'id': drf_serializers.IntegerField(),
-            'regexp': drf_serializers.CharField(),
-            'category': drf_serializers.IntegerField()
-        })),
-        responses={200: CategoryMatcherSerializer}
+        request=drf_serializers.ListSerializer(
+            child=inline_serializer(
+                name="CategoryMatcherBatchUpdater",
+                fields={
+                    "id": drf_serializers.IntegerField(),
+                    "regexp": drf_serializers.CharField(),
+                    "category": drf_serializers.IntegerField(),
+                },
+            )
+        ),
+        responses={200: CategoryMatcherSerializer},
     )
     def patch(self, req):
         # update or create
@@ -114,19 +122,29 @@ class CategoryMatcherBatchUpdater(views.APIView):
 
 
 @extend_schema(
-    request=drf_serializers.ListSerializer(child=inline_serializer(name="CategoryMatcherBatchRematcher", fields={
-        'id': drf_serializers.IntegerField(),
-        'regexp': drf_serializers.CharField(),
-        'category': drf_serializers.IntegerField()
-    })),
+    request=drf_serializers.ListSerializer(
+        child=inline_serializer(
+            name="CategoryMatcherBatchRematcher",
+            fields={
+                "id": drf_serializers.IntegerField(),
+                "regexp": drf_serializers.CharField(),
+                "category": drf_serializers.IntegerField(),
+            },
+        )
+    ),
     responses={
-        200: OpenApiResponse(response=inline_serializer(name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}))
-    }
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}
+            )
+        )
+    },
 )
 class CategoryMatcherBatchRematcher(views.APIView):
     """
     Categories Matcher: Batch rematcher
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -146,6 +164,7 @@ class OrderImporterToInventory(views.APIView):
     """
     Orders importer to inventory
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -154,18 +173,25 @@ class OrderImporterToInventory(views.APIView):
             name="OrderImporterToInventory",
             fields={
                 "id": drf_serializers.IntegerField(),
-            }
+            },
         ),
         responses={
-            200: OpenApiResponse(response=inline_serializer(name="OrderImporterToInventory",fields={
-                "detail": drf_serializers.CharField(default="done"),
-                "stats": inline_serializer(name="OrderImporterToInventoryStats", fields={
-                    "created": drf_serializers.IntegerField(),
-                    "updated": drf_serializers.IntegerField(),
-
-                })
-                }))
-        }
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="OrderImporterToInventory",
+                    fields={
+                        "detail": drf_serializers.CharField(default="done"),
+                        "stats": inline_serializer(
+                            name="OrderImporterToInventoryStats",
+                            fields={
+                                "created": drf_serializers.IntegerField(),
+                                "updated": drf_serializers.IntegerField(),
+                            },
+                        ),
+                    },
+                )
+            )
+        },
     )
     def post(self, req):
         if "id" not in req.data:

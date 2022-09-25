@@ -8,6 +8,7 @@ class StorageViewSet(ModelViewSet):
     """
     Storage tree
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -19,7 +20,7 @@ class StorageViewSet(ModelViewSet):
     }
     serializer_class = StorageSerializer
     # we want only get and list
-    http_method_names = ['get']
+    http_method_names = ["get"]
 
     def get_queryset(self):
         queryset = StorageCategory.objects.all()
@@ -31,6 +32,7 @@ class StorageCategoryViewSet(ModelViewSet):
     """
     Storage categories
     """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -50,6 +52,7 @@ class StorageLocationViewSet(ModelViewSet):
     """
     Storage locations
     """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",

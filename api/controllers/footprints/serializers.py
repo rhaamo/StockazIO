@@ -24,6 +24,7 @@ class FootprintCategorySerializer(serializers.ModelSerializer):
     """
     Footprints with categories
     """
+
     footprint_set = FootprintSerializer(many=True, read_only=True)
 
     class Meta:

@@ -12,6 +12,7 @@ class CategoryViewSet(ReadOnlyModelViewSet):
     """
     Retrieve Categories Tree
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -22,7 +23,7 @@ class CategoryViewSet(ReadOnlyModelViewSet):
         "list": None,
     }
     serializer_class = CategorySerializer
-    http_method_names = ['get']
+    http_method_names = ["get"]
 
     def get_queryset(self):
         if self.request.auth:

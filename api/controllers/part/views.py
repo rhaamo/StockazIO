@@ -74,6 +74,7 @@ class PartViewSet(ModelViewSet):
     """
     Parts
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -200,14 +201,11 @@ class PartQuickAutocompletion(views.APIView):
     """
     Parts name autocompleter
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
-    @extend_schema(
-        responses={
-            200: PartRetrieveSerializer
-        }
-    )
+    @extend_schema(responses={200: PartRetrieveSerializer})
     def get(self, request, *args, **kwargs):
         obj = get_list_or_404(Part, name__iexact=kwargs["name"])
         serializer = PartRetrieveSerializer(obj, many=True)
@@ -218,6 +216,7 @@ class PartAttachmentsStandalone(views.APIView):
     """
     Part attachment (standalone)
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -247,6 +246,7 @@ class PartsPublic(ModelViewSet):
     """
     Public Parts
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": None,
@@ -379,6 +379,7 @@ class PartsUnitViewSet(ModelViewSet):
     """
     Part units
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -399,6 +400,7 @@ class PartsParametersUnitViewSet(ModelViewSet):
     """
     Part parameters units
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -419,6 +421,7 @@ class PartsParametersPresetViewSet(ModelViewSet):
     """
     Part parameters presets
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -449,6 +452,7 @@ class PartAttachmentsSetDefault(views.APIView):
     """
     Set part attachment as default
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -473,23 +477,26 @@ class PartAttachmentsSetDefault(views.APIView):
         name="BulkEditChangeCategory",
         fields={
             "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-            "category": serializers.IntegerField()
-        }
+            "category": serializers.IntegerField(),
+        },
     ),
-    responses={200: OpenApiResponse(
-        response=inline_serializer(
-            name="BulkEditChangeCategory",
-            fields={
-                "message": serializers.CharField(default="ok"),
-                "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-            },
-        ),
-    )}
+    responses={
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="BulkEditChangeCategory",
+                fields={
+                    "message": serializers.CharField(default="ok"),
+                    "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                },
+            ),
+        )
+    },
 )
 class BulkEditChangeCategory(views.APIView):
     """
     Bulk edit: change category
     """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -508,23 +515,26 @@ class BulkEditChangeCategory(views.APIView):
         name="BulkEditChangeStorageLocation",
         fields={
             "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-            "storage_location": serializers.IntegerField()
-        }
+            "storage_location": serializers.IntegerField(),
+        },
     ),
-    responses={200: OpenApiResponse(
-        response=inline_serializer(
-            name="BulkEditChangeStorageLocation",
-            fields={
-                "message": serializers.CharField(default="ok"),
-                "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-            },
-        ),
-    )}
+    responses={
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="BulkEditChangeStorageLocation",
+                fields={
+                    "message": serializers.CharField(default="ok"),
+                    "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                },
+            ),
+        )
+    },
 )
 class BulkEditChangeStorageLocation(views.APIView):
     """
     Bulk edit: change storage location
     """
+
     required_scope = "parts"
     anonymous_policy = False
 

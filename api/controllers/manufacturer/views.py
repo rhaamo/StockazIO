@@ -9,6 +9,7 @@ class ManufacturersViewSet(ModelViewSet):
     """
     Manufacturer addresses
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",

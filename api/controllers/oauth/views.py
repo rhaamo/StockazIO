@@ -24,8 +24,10 @@ from .permissions import ScopePermission
         fields={
             "name": drf_serializers.CharField(default="stockazio_front_CURRENT_DATE"),
             "redirect_uris": drf_serializers.CharField(default="https://xxx/oauth-callback"),
-            "scopes": drf_serializers.CharField(default="read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects")
-        }
+            "scopes": drf_serializers.CharField(
+                default="read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects"
+            ),
+        },
     )
 )
 class ApplicationViewSet(
@@ -39,6 +41,7 @@ class ApplicationViewSet(
     """
     OAuth2 App registration
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": None,
@@ -51,7 +54,7 @@ class ApplicationViewSet(
     lookup_field = "client_id"
     queryset = models.Application.objects.all().order_by("-created")
     serializer_class = serializers.ApplicationSerializer
-    http_method_names = ['post']
+    http_method_names = ["post"]
 
     def get_serializer_class(self):
         if self.request.method.lower() == "post":
@@ -201,10 +204,12 @@ class TokenView(oauth_views.TokenView, GenericAPIView):
                 "client_id": drf_serializers.CharField(),
                 "client_secret": drf_serializers.CharField(),
                 "grant_type": drf_serializers.CharField(default="password"),
-                "scope": drf_serializers.CharField(default="read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects"),
+                "scope": drf_serializers.CharField(
+                    default="read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects"
+                ),
                 "username": drf_serializers.CharField(),
                 "password": drf_serializers.CharField(),
-            }
+            },
         ),
         responses={
             200: OpenApiResponse(
@@ -219,7 +224,7 @@ class TokenView(oauth_views.TokenView, GenericAPIView):
                     },
                 ),
             )
-        }
+        },
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
@@ -236,10 +241,10 @@ class RevokeTokenView(oauth_views.RevokeTokenView, GenericAPIView):
             fields={
                 "client_id": drf_serializers.CharField(),
                 "client_secret": drf_serializers.CharField(),
-                "token": drf_serializers.CharField()
-            }
+                "token": drf_serializers.CharField(),
+            },
         ),
-        responses={200: OpenApiResponse()}
+        responses={200: OpenApiResponse()},
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
@@ -249,6 +254,7 @@ class CheckTokenview(views.APIView):
     """
     Check token validity
     """
+
     required_scope = "check_oauth_token"
 
     @extend_schema(
@@ -260,7 +266,7 @@ class CheckTokenview(views.APIView):
                         "token": drf_serializers.CharField(),
                         "expiry": drf_serializers.CharField(),
                         "valid": drf_serializers.BooleanField(default=True),
-                        "user": inline_serializer("user", fields={"username": drf_serializers.CharField()})
+                        "user": inline_serializer("user", fields={"username": drf_serializers.CharField()}),
                     },
                 ),
             )

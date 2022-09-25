@@ -35,6 +35,7 @@ class ProjectsViewSet(ModelViewSet):
     """
     Projects
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -107,6 +108,7 @@ class ProjectAttachmentsStandalone(views.APIView):
     """
     Project attachments (standalone)
     """
+
     required_scope = "projects"
     anonymous_policy = False
 
@@ -127,6 +129,7 @@ class ProjectPartsStandalone(views.APIView):
     """
     Project parts (standalone)
     """
+
     required_scope = "projects"
     anonymous_policy = False
 
@@ -152,6 +155,7 @@ class ExportTextInfos(views.APIView):
     """
     Export project infos (text)
     """
+
     required_scope = "projects"
     anonymous_policy = False
 
@@ -180,6 +184,7 @@ class ExportBomCSV(views.APIView):
     """
     Export project BOM (csv)
     """
+
     required_scope = "projects"
     anonymous_policy = False
 
@@ -201,6 +206,7 @@ class ExportBomXLSX(views.APIView):
     """
     Export project BOM (Excel)
     """
+
     required_scope = "projects"
     anonymous_policy = False
 
