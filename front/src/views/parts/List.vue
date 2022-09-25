@@ -890,6 +890,7 @@ export default {
         },
         data: {
           items: [item],
+          kind: "part",
         },
       });
     },

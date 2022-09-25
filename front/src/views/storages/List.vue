@@ -103,6 +103,7 @@ export default {
         },
         data: {
           items: slocs,
+          kind: "storage",
         },
       });
     },

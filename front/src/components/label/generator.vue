@@ -4,7 +4,7 @@
       <div class="col-4">
         <div>
           <template v-if="items && items.length === 1">
-            <template v-if="items[0].category"
+            <template v-if="kind === 'storage'"
               >Storage location infos:<br
             /></template>
             <template v-else>Item infos:<br /></template>
@@ -73,11 +73,13 @@ export default {
     items: [],
     template: null,
     pdf: null,
+    kind: "part",
   }),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
   }),
   created() {
+    this.kind = this.dialogRef.data.kind || "part";
     this.items = this.dialogRef.data.items;
     if (this.choicesTemplates && this.choicesTemplates.length) {
       this.template = this.choicesTemplates[0].tpl;
@@ -117,7 +119,7 @@ export default {
       return text;
     },
     qrCodeUri(item) {
-      if (item.picture) {
+      if (this.kind === "storage") {
         // location
         return `web+stockazio:storageLocation,${item.uuid}`;
       } else {
