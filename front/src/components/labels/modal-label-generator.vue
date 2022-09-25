@@ -88,6 +88,10 @@ export default {
   props: {
     items: {
       type: Array
+    },
+    kind: {
+      type: String,
+      default: "part"
     }
   },
   data: () => ({
@@ -155,7 +159,7 @@ export default {
       return text
     },
     qrCodeUri (item) {
-      if (item.picture) {
+      if (this.kind === 'storage') {
         // location
         return `web+stockazio:storageLocation,${item.uuid}`
       } else {
