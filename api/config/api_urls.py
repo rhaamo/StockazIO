@@ -24,14 +24,16 @@ v1_patterns += [
     ),
 ]
 
-swagger = [
-    re_path(r"^doc/schema$", SpectacularAPIView.as_view(), name="schema"),
-    re_path(r"^doc/schema/swagger/", SpectacularSwaggerView.as_view(url_name="api:schema"), name="swagger"),
-    re_path(r"^doc/schema/redoc/", SpectacularRedocView.as_view(url_name="api:schema"), name="redoc"),
+# Swagger / Redoc
+v1_patterns += [
+    re_path(r"^doc$", SpectacularAPIView.as_view(), name="schema"),
+    re_path(r"^doc/swagger/", SpectacularSwaggerView.as_view(url_name="api:v1:schema"), name="swagger"),
+    re_path(r"^doc/redoc/", SpectacularRedocView.as_view(url_name="api:v1:schema"), name="redoc"),
 ]
 
-other = [
+# Password reset
+v1_patterns += [
     re_path(r"^password_reset/", include("django_rest_passwordreset.urls", namespace="password_reset")),
 ]
 
-urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))] + swagger + other
+urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))]

@@ -23,7 +23,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         "current_user": reset_password_token.user,
         "username": reset_password_token.user.username,
         "email": reset_password_token.user.email,
-        "reset_password_url": f"https://{settings.STOCKAZIO_HOSTNAME}/password_reset/confirm/{reset_password_token.key}"
+        "reset_password_url": f"https://{settings.STOCKAZIO_HOSTNAME}/password_reset/confirm/{reset_password_token.key}",
     }
 
     # render email text

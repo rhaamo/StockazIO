@@ -33,8 +33,8 @@ The following is not implemented and needs to be accessed through django admin `
 # API Documentation
 
 After installing the backend, Swagger documentation will be accessible at:
-- http://backend_url/api/doc/schema/swagger/
-- http://backend_url/api/doc/schema/redoc/
+- http://backend_url/api/doc/swagger/
+- http://backend_url/api/doc/redoc/
 
 # Install - manual
 

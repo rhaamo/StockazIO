@@ -108,9 +108,9 @@ const LABELTEMPLATE_CREATE = "/api/v1/labeltemplates/";
 const LABELTEMPLATE_UPDATE = (id) => `/api/v1/labeltemplates/${id}/`;
 const LABELTEMPLATE_DELETE = (id) => `/api/v1/labeltemplates/${id}/`;
 
-const USER_PASSWORD_RESET_REQUEST = "/api/password_reset/";
-const USER_PASSWORD_RESET_CONFIRM = "/api/password_reset/confirm/";
-const USER_PASSWORD_RESET_VALIDATE = "/api/password_reset/validate_token/";
+const USER_PASSWORD_RESET_REQUEST = "/api/v1/password_reset/";
+const USER_PASSWORD_RESET_CONFIRM = "/api/v1/password_reset/confirm/";
+const USER_PASSWORD_RESET_VALIDATE = "/api/v1/password_reset/validate_token/";
 
 // Auth
 const verifyCredentials = () => {
