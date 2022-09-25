@@ -154,6 +154,9 @@ class PartParameterPreset(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta(object):
+        ordering = ("name",)
 
 
 class PartParameterPresetItem(models.Model):
