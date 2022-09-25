@@ -5,6 +5,9 @@ from .serializers import DistributorsSerializer
 
 
 class DistributorsViewSet(ModelViewSet):
+    """
+    Distributor addresses
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",

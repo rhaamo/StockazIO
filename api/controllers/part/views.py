@@ -12,6 +12,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers
 
 from controllers.part.serializers import (
     PartSerializer,
@@ -69,6 +71,9 @@ class PrimeVuePagination(LimitOffsetPagination):
 
 
 class PartViewSet(ModelViewSet):
+    """
+    Parts
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -192,6 +197,9 @@ class PartViewSet(ModelViewSet):
 
 
 class PartQuickAutocompletion(views.APIView):
+    """
+    Parts name autocompleter
+    """
     required_scope = "parts"
     anonymous_policy = False
 
@@ -202,6 +210,9 @@ class PartQuickAutocompletion(views.APIView):
 
 
 class PartAttachmentsStandalone(views.APIView):
+    """
+    Part attachment (standalone)
+    """
     required_scope = "parts"
     anonymous_policy = False
 
@@ -228,6 +239,9 @@ class PartAttachmentsStandalone(views.APIView):
 
 
 class PartsPublic(ModelViewSet):
+    """
+    Public Parts
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": None,
@@ -357,6 +371,9 @@ class PartsPublic(ModelViewSet):
 
 
 class PartsUnitViewSet(ModelViewSet):
+    """
+    Part units
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -374,6 +391,9 @@ class PartsUnitViewSet(ModelViewSet):
 
 
 class PartsParametersUnitViewSet(ModelViewSet):
+    """
+    Part parameters units
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -391,6 +411,9 @@ class PartsParametersUnitViewSet(ModelViewSet):
 
 
 class PartsParametersPresetViewSet(ModelViewSet):
+    """
+    Part parameters presets
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -418,6 +441,9 @@ class PartsParametersPresetViewSet(ModelViewSet):
 
 
 class PartAttachmentsSetDefault(views.APIView):
+    """
+    Set part attachment as default
+    """
     required_scope = "parts"
     anonymous_policy = False
 
@@ -437,7 +463,19 @@ class PartAttachmentsSetDefault(views.APIView):
         return Response("ok", status=200)
 
 
+@extend_schema(
+    request=inline_serializer(
+        name="BulkEditChangeCategory",
+        fields={
+            "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+            "category": serializers.IntegerField()
+        }
+    )
+)
 class BulkEditChangeCategory(views.APIView):
+    """
+    Bulk edit: change category
+    """
     required_scope = "parts"
     anonymous_policy = False
 
@@ -451,7 +489,19 @@ class BulkEditChangeCategory(views.APIView):
         return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
 
 
+@extend_schema(
+    request=inline_serializer(
+        name="BulkEditChangeStorageLocation",
+        fields={
+            "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+            "storage_location": serializers.IntegerField()
+        }
+    )
+)
 class BulkEditChangeStorageLocation(views.APIView):
+    """
+    Bulk edit: change storage location
+    """
     required_scope = "parts"
     anonymous_policy = False
 

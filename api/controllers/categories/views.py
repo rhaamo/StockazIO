@@ -1,5 +1,5 @@
 from .serializers import CategorySerializer
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from .models import Category
 from django.db.models import Count, Sum, Case, When, IntegerField
 
@@ -8,7 +8,10 @@ from django.db.models import Count, Sum, Case, When, IntegerField
 # and display the category in a sidebar, and do a group_by(category_id) ?
 
 
-class CategoryViewSet(ModelViewSet):
+class CategoryViewSet(ReadOnlyModelViewSet):
+    """
+    Retrieve Categories Tree
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",

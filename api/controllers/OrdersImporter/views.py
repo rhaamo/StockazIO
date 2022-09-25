@@ -14,6 +14,9 @@ from .utils import rematch_orders
 
 
 class OrderViewSet(ModelViewSet):
+    """
+    Orders importer
+    """
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -41,6 +44,9 @@ class OrderViewSet(ModelViewSet):
 
 
 class CategoryMatcherViewSet(ModelViewSet):
+    """
+    Categories Matcher
+    """
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -58,6 +64,9 @@ class CategoryMatcherViewSet(ModelViewSet):
 
 
 class CategoryMatcherBatchUpdater(views.APIView):
+    """
+    Categories Matcher: Batch updater
+    """
     required_scope = "parts"
     anonymous_policy = False
 
@@ -95,6 +104,9 @@ class CategoryMatcherBatchUpdater(views.APIView):
 
 
 class CategoryMatcherBatchRematcher(views.APIView):
+    """
+    Categories Matcher: Batch rematcher
+    """
     required_scope = "parts"
     anonymous_policy = False
 
@@ -111,6 +123,9 @@ class CategoryMatcherBatchRematcher(views.APIView):
 
 
 class OrderImporterToInventory(views.APIView):
+    """
+    Orders importer to inventory
+    """
     required_scope = "parts"
     anonymous_policy = False
 
