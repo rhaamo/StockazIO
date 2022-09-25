@@ -7,6 +7,7 @@ from django.db.models import Q
 from rest_framework import mixins, permissions, views, viewsets
 from drf_spectacular.utils import inline_serializer, extend_schema, OpenApiResponse
 from rest_framework import serializers as drf_serializers
+from rest_framework.generics import GenericAPIView
 
 from oauth2_provider import exceptions as oauth2_exceptions
 from oauth2_provider import views as oauth_views
@@ -17,6 +18,16 @@ from . import serializers
 from .permissions import ScopePermission
 
 
+@extend_schema(
+    request=inline_serializer(
+        name="ApplicationViewSet",
+        fields={
+            "name": drf_serializers.CharField(default="stockazio_front_CURRENT_DATE"),
+            "redirect_uris": drf_serializers.CharField(default="https://xxx/oauth-callback"),
+            "scopes": drf_serializers.CharField(default="read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects")
+        }
+    )
+)
 class ApplicationViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
@@ -25,6 +36,9 @@ class ApplicationViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
+    """
+    OAuth2 App registration
+    """
     anonymous_policy = True
     required_scope = {
         "retrieve": None,
@@ -37,6 +51,7 @@ class ApplicationViewSet(
     lookup_field = "client_id"
     queryset = models.Application.objects.all().order_by("-created")
     serializer_class = serializers.ApplicationSerializer
+    http_method_names = ['post']
 
     def get_serializer_class(self):
         if self.request.method.lower() == "post":
@@ -174,34 +189,82 @@ class AuthorizeView(views.APIView, oauth_views.AuthorizationView):
         return self.json_payload({"detail": "Authentication credentials were not provided."}, 401)
 
 
-class TokenView(oauth_views.TokenView):
+class TokenView(oauth_views.TokenView, GenericAPIView):
+    """
+    Provide an access tokens
+    """
+
+    @extend_schema(
+        request=inline_serializer(
+            name="TokenView",
+            fields={
+                "client_id": drf_serializers.CharField(),
+                "client_secret": drf_serializers.CharField(),
+                "grant_type": drf_serializers.CharField(default="password"),
+                "scope": drf_serializers.CharField(default="read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects"),
+                "username": drf_serializers.CharField(),
+                "password": drf_serializers.CharField(),
+            }
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="TokenView",
+                    fields={
+                        "access_token": drf_serializers.CharField(),
+                        "expires_in": drf_serializers.IntegerField(),
+                        "token_type": drf_serializers.CharField(default="Bearer"),
+                        "scope": drf_serializers.CharField(),
+                        "refresh_token": drf_serializers.CharField(),
+                    },
+                ),
+            )
+        }
+    )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
 
-class RevokeTokenView(oauth_views.RevokeTokenView):
+class RevokeTokenView(oauth_views.RevokeTokenView, GenericAPIView):
+    """
+    Revoke a token
+    """
+
+    @extend_schema(
+        request=inline_serializer(
+            name="CheckTokenview",
+            fields={
+                "client_id": drf_serializers.CharField(),
+                "client_secret": drf_serializers.CharField(),
+                "token": drf_serializers.CharField()
+            }
+        ),
+    )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
 
-@extend_schema(
-    responses={
-        200: OpenApiResponse(
-            response=inline_serializer(
-                name="AppSettings",
-                fields={
-                    "token": drf_serializers.CharField(),
-                    "expiry": drf_serializers.CharField(),
-                    "valid": drf_serializers.BooleanField(default=True),
-                    "user": {"username": drf_serializers.CharField()}
-                },
-            ),
-        )
-    }
-)
 class CheckTokenview(views.APIView):
+    """
+    Check token validity
+    """
     required_scope = "check_oauth_token"
 
+    @extend_schema(
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="CheckTokenview",
+                    fields={
+                        "token": drf_serializers.CharField(),
+                        "expiry": drf_serializers.CharField(),
+                        "valid": drf_serializers.BooleanField(default=True),
+                        "user": inline_serializer("user", fields={"username": drf_serializers.CharField()})
+                    },
+                ),
+            )
+        }
+    )
     def get(self, request, *args, **kwargs):
         # TODO returns: token, expiry, is valid, user
         user = self.request.user
