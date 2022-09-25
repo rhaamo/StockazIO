@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from .models import Category
+from drf_spectacular.utils import extend_schema_field
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    @extend_schema_field(serializers.IntegerField())
     def get_parts_count(self, obj):
         return obj.parts_count
 

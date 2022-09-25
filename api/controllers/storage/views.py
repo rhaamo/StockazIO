@@ -1,9 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 from .models import StorageCategory, StorageLocation
 from .serializers import StorageSerializer, StorageCategorySerializer, StorageLocationSerializer
 
 
+@extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])
 class StorageViewSet(ModelViewSet):
     """
     Storage tree

@@ -5,6 +5,7 @@ from controllers.distributor.serializers import DistributorsSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
+from drf_spectacular.utils import extend_schema_field
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -57,6 +58,7 @@ class OrderListSerializer(WritableNestedModelSerializer):
     vendor_db = DistributorsSerializer(many=False, read_only=True)
     items_count = serializers.SerializerMethodField()
 
+    @extend_schema_field(serializers.IntegerField())
     def get_items_count(self, obj):
         return obj.items_count
 

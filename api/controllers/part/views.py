@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
 from rest_framework import serializers
+from rest_framework import generics
 
 from controllers.part.serializers import (
     PartSerializer,
@@ -220,6 +221,13 @@ class PartAttachmentsStandalone(views.APIView):
     required_scope = "parts"
     anonymous_policy = False
 
+    http_method_names = ["post", "delete"]
+
+    @extend_schema(
+        request={
+            "multipart/form-data": PartAttachmentCreateSerializer,
+        },
+    )
     def post(self, request, part_id, format=None):
         serializer = PartAttachmentCreateSerializer(data=request.data)
         # We need at least a file or picture to be uploaded
@@ -236,6 +244,11 @@ class PartAttachmentsStandalone(views.APIView):
 
         return Response(serializer.errors, status=400)
 
+    @extend_schema(
+        request={
+            "pk": PartAttachment,
+        },
+    )
     def delete(self, request, part_id, pk, format=None):
         attachment = get_object_or_404(PartAttachment, id=pk)
         attachment.delete()
@@ -448,13 +461,15 @@ class PartsParametersPresetViewSet(ModelViewSet):
         return queryset
 
 
-class PartAttachmentsSetDefault(views.APIView):
+class PartAttachmentsSetDefault(generics.CreateAPIView):
     """
     Set part attachment as default
     """
 
     required_scope = "parts"
     anonymous_policy = False
+
+    http_method_names = ["post"]
 
     def post(self, request, part_id, pk, format=None):
         attachment = get_object_or_404(PartAttachment, id=pk)

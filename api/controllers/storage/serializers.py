@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import StorageCategory, StorageLocation
+from drf_spectacular.utils import extend_schema_field
 
 
 class StorageCategorySerializer(serializers.ModelSerializer):
@@ -11,6 +12,7 @@ class StorageCategorySerializer(serializers.ModelSerializer):
 class StorageLocationSerializer(serializers.ModelSerializer):
     picture_medium = serializers.ImageField(read_only=True)
 
+    @extend_schema_field(serializers.CharField())
     def get_category_name(self, obj):
         return obj.category.name
 

@@ -2,12 +2,15 @@ from .serializers import CategorySerializer
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from .models import Category
 from django.db.models import Count, Sum, Case, When, IntegerField
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+
 
 # not sure about anonymous access for categories list
 # maybe set the to-sell and public parts without categories sidebar
 # and display the category in a sidebar, and do a group_by(category_id) ?
 
 
+@extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])
 class CategoryViewSet(ReadOnlyModelViewSet):
     """
     Retrieve Categories Tree
