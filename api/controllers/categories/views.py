@@ -22,6 +22,7 @@ class CategoryViewSet(ReadOnlyModelViewSet):
         "list": None,
     }
     serializer_class = CategorySerializer
+    http_method_names = ['get']
 
     def get_queryset(self):
         if self.request.auth:

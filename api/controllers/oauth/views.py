@@ -239,6 +239,7 @@ class RevokeTokenView(oauth_views.RevokeTokenView, GenericAPIView):
                 "token": drf_serializers.CharField()
             }
         ),
+        responses={200: OpenApiResponse()}
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)

@@ -12,7 +12,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
-from drf_spectacular.utils import extend_schema, inline_serializer
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
 from rest_framework import serializers
 
 from controllers.part.serializers import (
@@ -203,6 +203,11 @@ class PartQuickAutocompletion(views.APIView):
     required_scope = "parts"
     anonymous_policy = False
 
+    @extend_schema(
+        responses={
+            200: PartRetrieveSerializer
+        }
+    )
     def get(self, request, *args, **kwargs):
         obj = get_list_or_404(Part, name__iexact=kwargs["name"])
         serializer = PartRetrieveSerializer(obj, many=True)
@@ -470,7 +475,16 @@ class PartAttachmentsSetDefault(views.APIView):
             "parts": serializers.ListSerializer(child=serializers.IntegerField()),
             "category": serializers.IntegerField()
         }
-    )
+    ),
+    responses={200: OpenApiResponse(
+        response=inline_serializer(
+            name="BulkEditChangeCategory",
+            fields={
+                "message": serializers.CharField(default="ok"),
+                "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+            },
+        ),
+    )}
 )
 class BulkEditChangeCategory(views.APIView):
     """
@@ -496,7 +510,16 @@ class BulkEditChangeCategory(views.APIView):
             "parts": serializers.ListSerializer(child=serializers.IntegerField()),
             "storage_location": serializers.IntegerField()
         }
-    )
+    ),
+    responses={200: OpenApiResponse(
+        response=inline_serializer(
+            name="BulkEditChangeStorageLocation",
+            fields={
+                "message": serializers.CharField(default="ok"),
+                "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+            },
+        ),
+    )}
 )
 class BulkEditChangeStorageLocation(views.APIView):
     """

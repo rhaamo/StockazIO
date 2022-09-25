@@ -11,6 +11,8 @@ from controllers.part.models import Part
 from controllers.manufacturer.models import PartManufacturer
 from controllers.distributor.models import DistributorSku
 from .utils import rematch_orders
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+from rest_framework import serializers as drf_serializers
 
 
 class OrderViewSet(ModelViewSet):
@@ -70,6 +72,14 @@ class CategoryMatcherBatchUpdater(views.APIView):
     required_scope = "parts"
     anonymous_policy = False
 
+    @extend_schema(
+        request=drf_serializers.ListSerializer(child=inline_serializer(name="CategoryMatcherBatchUpdater", fields={
+            'id': drf_serializers.IntegerField(),
+            'regexp': drf_serializers.CharField(),
+            'category': drf_serializers.IntegerField()
+        })),
+        responses={200: CategoryMatcherSerializer}
+    )
     def patch(self, req):
         # update or create
         # Missing elements will be created
@@ -103,6 +113,16 @@ class CategoryMatcherBatchUpdater(views.APIView):
         return Response(serializer.data, status=200)
 
 
+@extend_schema(
+    request=drf_serializers.ListSerializer(child=inline_serializer(name="CategoryMatcherBatchRematcher", fields={
+        'id': drf_serializers.IntegerField(),
+        'regexp': drf_serializers.CharField(),
+        'category': drf_serializers.IntegerField()
+    })),
+    responses={
+        200: OpenApiResponse(response=inline_serializer(name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}))
+    }
+)
 class CategoryMatcherBatchRematcher(views.APIView):
     """
     Categories Matcher: Batch rematcher
@@ -129,6 +149,24 @@ class OrderImporterToInventory(views.APIView):
     required_scope = "parts"
     anonymous_policy = False
 
+    @extend_schema(
+        request=inline_serializer(
+            name="OrderImporterToInventory",
+            fields={
+                "id": drf_serializers.IntegerField(),
+            }
+        ),
+        responses={
+            200: OpenApiResponse(response=inline_serializer(name="OrderImporterToInventory",fields={
+                "detail": drf_serializers.CharField(default="done"),
+                "stats": inline_serializer(name="OrderImporterToInventoryStats", fields={
+                    "created": drf_serializers.IntegerField(),
+                    "updated": drf_serializers.IntegerField(),
+
+                })
+                }))
+        }
+    )
     def post(self, req):
         if "id" not in req.data:
             return Response({"detail": "id is missing"}, 503)
