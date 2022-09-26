@@ -160,7 +160,11 @@ export default {
           label: "Edit",
           icon: "fa fa-cogs fa-fw",
           items: [
-            { label: "Footprints", icon: "fa fa-paw fa-fw", to: {} },
+            {
+              label: "Footprints",
+              icon: "fa fa-paw fa-fw",
+              to: { name: "footprints-list" },
+            },
             {
               label: "Manufacturers",
               icon: "fa fa-home fa-fw",

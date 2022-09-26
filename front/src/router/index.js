@@ -26,6 +26,7 @@ import ProjectsList from "@/views/projects/List.vue";
 import ProjectsDetails from "@/views/projects/Details.vue";
 import StoragesList from "@/views/storages/List.vue";
 import LabelTemplatesManage from "@/views/label_templates/Manage.vue";
+import FootprintsManage from "@/views/footprints/Manage.vue";
 
 const validateAuthenticatedRoute = (to, from, next) => {
   const oauthStore = useOauthStore();
@@ -209,6 +210,13 @@ const router = createRouter({
       path: "/labeltemplates",
       name: "label-templates-list",
       component: LabelTemplatesManage,
+      beforeEnter: validateAuthenticatedRoute,
+    },
+    // Footprints
+    {
+      path: "/footprints",
+      name: "footprints-list",
+      component: FootprintsManage,
       beforeEnter: validateAuthenticatedRoute,
     },
     // Other

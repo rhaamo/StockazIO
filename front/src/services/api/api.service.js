@@ -9,7 +9,17 @@ const CATEGORIES_URL = "/api/v1/categories/";
 const APP_INFORMATIONS_URL = "/api/v1/app/informations";
 const APP_SETTINGS_URL = "/api/v1/app/settings";
 
-const FOOTPRINTS_URL = "/api/v1/footprints/tree/";
+const FOOTPRINTS_TREE_URL = "/api/v1/footprints/tree/";
+const FOOTPRINTS_URL = "/api/v1/footprints/";
+const FOOTPRINTS_CREATE = "/api/v1/footprints/";
+const FOOTPRINTS_UPDATE = (id) => `/api/v1/footprints/${id}/`;
+const FOOTPRINTS_DELETE = (id) => `/api/v1/footprints/${id}/`;
+const FOOTPRINTS_CATEGORIES_URL = "/api/v1/footprints/categories/";
+const FOOTPRINTS_CATEGORY_CREATE = "/api/v1/footprints/categories/";
+const FOOTPRINTS_CATEGORY_UPDATE = (id) =>
+  `/api/v1/footprints/categories/${id}/`;
+const FOOTPRINTS_CATEGORY_DELETE = (id) =>
+  `/api/v1/footprints/categories/${id}/`;
 
 const STORAGES_URL = "/api/v1/storages/";
 const STORAGES_CATEGORY_CREATE = "/api/v1/storages/category/";
@@ -146,7 +156,66 @@ const getSettings = () => {
 // Footprints
 
 const getFootprints = () => {
-  return Axios.get(FOOTPRINTS_URL);
+  return Axios.get(FOOTPRINTS_TREE_URL);
+};
+
+const getFootprintsCategories = () => {
+  return Axios.get(FOOTPRINTS_CATEGORIES_URL);
+};
+
+const getFootprintsList = (params) => {
+  return Axios.get(FOOTPRINTS_URL, { params: params });
+};
+
+const createFootprint = (data) => {
+  let formData = new FormData();
+  if (data.name) {
+    formData.append("name", data.name);
+  }
+  if (data.description) {
+    formData.append("description", data.description);
+  }
+  if (data.category) {
+    formData.append("category", data.category);
+  }
+  if (data.picture && data.picture instanceof File) {
+    formData.append("picture", data.picture);
+  }
+  return Axios.post(FOOTPRINTS_CREATE, formData);
+};
+
+const updateFootprint = (id, data) => {
+  let formData = new FormData();
+  if (data.name) {
+    formData.append("name", data.name);
+  }
+  if (data.description) {
+    formData.append("description", data.description);
+  }
+  if (data.category) {
+    formData.append("category", data.category);
+  }
+  if (data.picture && data.picture instanceof File) {
+    formData.append("picture", data.picture);
+  }
+
+  return Axios.put(FOOTPRINTS_UPDATE(id), formData);
+};
+
+const deleteFootprint = (id) => {
+  return Axios.delete(FOOTPRINTS_DELETE(id));
+};
+
+const createFootprintCategory = (data) => {
+  return Axios.post(FOOTPRINTS_CATEGORY_CREATE, data);
+};
+
+const updateFootprintCategory = (id, data) => {
+  return Axios.put(FOOTPRINTS_CATEGORY_UPDATE(id), data);
+};
+
+const deleteFootprintCategory = (id) => {
+  return Axios.delete(FOOTPRINTS_CATEGORY_DELETE(id));
 };
 
 // Storages
@@ -571,6 +640,14 @@ const apiService = {
   getInformations,
   getSettings,
   getFootprints,
+  getFootprintsCategories,
+  createFootprintCategory,
+  updateFootprintCategory,
+  deleteFootprintCategory,
+  getFootprintsList,
+  createFootprint,
+  updateFootprint,
+  deleteFootprint,
   getStorages,
   createStorageCategory,
   deleteStorageCategory,
