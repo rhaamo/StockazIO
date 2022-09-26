@@ -13,7 +13,7 @@ default_permissions = ["categories", "parts"]
 
 
 class User(AbstractUser):
-    email = models.EmailField(_('email address'), blank=False)
+    email = models.EmailField(_("email address"), blank=False)
 
     class Meta:
         db_table = "auth_user"
