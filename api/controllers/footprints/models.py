@@ -37,11 +37,11 @@ class Footprint(models.Model):
         source="picture", processors=[ResizeToFill(400, 400, upscale=False)], format="JPEG", options={"quality": 80}
     )
 
-    footprint = models.ForeignKey(
+    category = models.ForeignKey(
         FootprintCategory,
         on_delete=models.CASCADE,
-        verbose_name=_("Footprint"),
-        help_text=_("Main category of the footprint"),
+        verbose_name=_("Category"),
+        help_text=_("Category of the footprint"),
     )
 
     class Meta(object):
