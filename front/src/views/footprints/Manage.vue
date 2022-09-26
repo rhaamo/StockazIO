@@ -104,10 +104,6 @@ import { h } from "vue";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Footprints", to: { name: "footprints-list" } }],
-    },
     footprintsCategories: [],
     footprints: [],
     selectedCategory: null,
@@ -120,7 +116,29 @@ export default {
   created() {
     this.fetchFootprintsCategories();
   },
-  computed: {},
+  computed: {
+    breadcrumb() {
+      let footprint = {};
+      if (this.selectedCategory) {
+        if (this.selectedCategory.description) {
+          footprint = {
+            label: `${this.selectedCategory.name} (${this.selectedCategory.description})`,
+          };
+        } else {
+          footprint = { label: `${this.selectedCategory.name}` };
+        }
+      } else {
+        footprint = { label: "No category selected" };
+      }
+      return {
+        home: { icon: "pi pi-home", to: "/" },
+        items: [
+          { label: "Footprints", to: { name: "footprints-list" } },
+          footprint,
+        ],
+      };
+    },
+  },
   methods: {
     fetchFootprintsCategories() {
       apiService
