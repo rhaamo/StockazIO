@@ -9,7 +9,7 @@ const CATEGORIES_URL = "/api/v1/categories/";
 const APP_INFORMATIONS_URL = "/api/v1/app/informations";
 const APP_SETTINGS_URL = "/api/v1/app/settings";
 
-const FOOTPRINTS_URL = "/api/v1/footprints/";
+const FOOTPRINTS_URL = "/api/v1/footprints/tree/";
 
 const STORAGES_URL = "/api/v1/storages/";
 const STORAGES_CATEGORY_CREATE = "/api/v1/storages/category/";
