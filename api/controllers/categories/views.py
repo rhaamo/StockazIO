@@ -3,10 +3,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from .models import Category
 from django.db.models import Count, Sum, Case, When, IntegerField
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 
-@extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])
 class CategoryViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
