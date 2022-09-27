@@ -17,12 +17,6 @@ Manage your inventory of electronic stuff
 - Project management with BOM with parts from inventory or free-form (with export of BOM to CSV or XLSX)
 - PDF Generator for labels printing of Storage Locations (plus bulk-generation) or Parts
 
-# V2 Caveats
-
-The following is not implemented and needs to be accessed through django admin `/admin`:
-- Edition of:
-  - Categories
-
 # Requirements
 - Python 3.8 (minimum !)
 - A pretty decent NodeJS + Yarn

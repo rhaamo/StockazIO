@@ -1,4 +1,4 @@
-from .serializers import CategorySerializer
+from .serializers import CreateCategorySerializer, CategorySerializer
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from .models import Category
@@ -25,14 +25,25 @@ class CategoryViewSet(
         "partial_update": "write",
         "list": None,
     }
-    serializer_class = CategorySerializer
+    lookup_fields = ("id",)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return CategorySerializer
+        else:
+            return CreateCategorySerializer
 
     def get_queryset(self):
-        if self.request.auth:
-            queryset = Category.objects.all().annotate(parts_count=Count("part"))
-        else:
-            queryset = Category.objects.all().annotate(
-                parts_count=Sum(Case(When(part__private=False, then=1), default=0, output_field=IntegerField()))
-            )
-        queryset = queryset.get_cached_trees()
+        queryset = Category.objects.all()
+
+        # Do weird magic only for list (parts count, etc.)
+        if self.action == "list":
+            if self.request.auth:
+                queryset = queryset.annotate(parts_count=Count("part"))
+            else:
+                queryset = queryset.annotate(
+                    parts_count=Sum(Case(When(part__private=False, then=1), default=0, output_field=IntegerField()))
+                )
+            queryset = queryset.get_cached_trees()
+
         return queryset

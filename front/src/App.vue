@@ -200,6 +200,11 @@ export default {
               icon: "fa fa-file-text fa-fw",
               to: { name: "label-templates-list" },
             },
+            {
+              label: "Categories",
+              icon: "fa fa-tree fa-fw",
+              to: { name: "categories-list" },
+            },
           ],
         },
         {

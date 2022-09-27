@@ -5,6 +5,9 @@ const OAUTH_REVOKE = "/oauth/revoke/";
 const CHECK_TOKEN_URL = "/oauth/check_token/";
 
 const CATEGORIES_URL = "/api/v1/categories/";
+const CATEGORIES_CREATE = "/api/v1/categories/";
+const CATEGORIES_UPDATE = (id) => `/api/v1/categories/${id}/`;
+const CATEGORIES_DELETE = (id) => `/api/v1/categories/${id}/`;
 
 const APP_INFORMATIONS_URL = "/api/v1/app/informations";
 const APP_SETTINGS_URL = "/api/v1/app/settings";
@@ -139,6 +142,18 @@ const oauthRevoke = (access_token, client_id, client_secret) => {
 
 const getCategories = () => {
   return Axios.get(CATEGORIES_URL);
+};
+
+const createCategory = (data) => {
+  return Axios.post(CATEGORIES_CREATE, data);
+};
+
+const deleteCategory = (id) => {
+  return Axios.delete(CATEGORIES_DELETE(id));
+};
+
+const updateCategory = (id, data) => {
+  return Axios.put(CATEGORIES_UPDATE(id), data);
 };
 
 // Informations
@@ -637,6 +652,9 @@ const apiService = {
   verifyCredentials,
   oauthRevoke,
   getCategories,
+  createCategory,
+  deleteCategory,
+  updateCategory,
   getInformations,
   getSettings,
   getFootprints,
