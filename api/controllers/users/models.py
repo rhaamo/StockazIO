@@ -21,9 +21,6 @@ class User(AbstractUser):
     def get_permissions(self, defaults=[]):
         perms = {}
         for p in PERMISSIONS:
-            v = (
-                self.is_superuser
-                or p in defaults
-            )
+            v = self.is_superuser or p in defaults
             perms[p] = v
         return perms
