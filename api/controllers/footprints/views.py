@@ -7,16 +7,13 @@ from .serializers import FootprintCategorySerializer, FootprintCategoryTreeSeria
 
 
 @extend_schema(
-    responses={
-        200: OpenApiResponse(
-            response=FootprintCategoryTreeSerializer
-        )
-    },
+    responses={200: OpenApiResponse(response=FootprintCategoryTreeSerializer)},
 )
 class TreeViewSet(mixins.ListModelMixin, GenericViewSet):
     """
     Return a tree of footprints bundled into categories
     """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -27,7 +24,7 @@ class TreeViewSet(mixins.ListModelMixin, GenericViewSet):
         "list": "read",
     }
     serializer_class = FootprintCategoryTreeSerializer
-    http_method_names = ['get']
+    http_method_names = ["get"]
 
     def get_queryset(self):
         queryset = FootprintCategory.objects.all()
@@ -40,7 +37,6 @@ class FootprintCategoryViewSet(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     GenericViewSet,
-
 ):
     """
     Footprints categories
@@ -89,7 +85,7 @@ class FootprintViewSet(
         category_id = self.request.query_params.get("category_id", None)
 
         queryset = Footprint.objects.all()
-        
+
         if category_id:
             category = FootprintCategory.objects.get(id=category_id)
 

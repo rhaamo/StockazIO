@@ -9,16 +9,7 @@ class FootprintSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Footprint
-        fields = (
-            "id",
-            "name",
-            "picture",
-            "picture_mini",
-            "picture_small",
-            "picture_medium",
-            "description",
-            "category"
-        )
+        fields = ("id", "name", "picture", "picture_mini", "picture_small", "picture_medium", "description", "category")
 
 
 class FootprintCategoryTreeSerializer(serializers.ModelSerializer):
