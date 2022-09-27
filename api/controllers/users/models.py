@@ -17,3 +17,13 @@ class User(AbstractUser):
 
     class Meta:
         db_table = "auth_user"
+
+    def get_permissions(self, defaults=[]):
+        perms = {}
+        for p in PERMISSIONS:
+            v = (
+                self.is_superuser
+                or p in defaults
+            )
+            perms[p] = v
+        return perms

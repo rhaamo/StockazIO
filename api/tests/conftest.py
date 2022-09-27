@@ -42,7 +42,7 @@ def nodb_factories():
     Returns a dictionnary containing all registered factories with a build strategy
     that does not require access to the database
     """
-    from funkwhale_api import factories
+    from controllers import factories
 
     for v in factories.registry.values():
         try:
