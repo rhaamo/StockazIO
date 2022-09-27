@@ -54,7 +54,7 @@ class ApplicationViewSet(
     lookup_field = "client_id"
     queryset = models.Application.objects.all().order_by("-created")
     serializer_class = serializers.ApplicationSerializer
-    http_method_names = ["post"]
+    http_method_names = ["post", "get"]
 
     def get_serializer_class(self):
         if self.request.method.lower() == "post":
