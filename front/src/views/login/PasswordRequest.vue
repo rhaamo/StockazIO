@@ -54,7 +54,7 @@ import { useUserStore } from "@/stores/user";
 import logger from "@/logging";
 import { usePreloadsStore } from "@/stores/preloads";
 import { useToast } from "primevue/usetoast";
-import apiService from "../../services/api/api.service";
+import apiService from "@/services/api/api.service";
 
 export default {
   data: () => ({

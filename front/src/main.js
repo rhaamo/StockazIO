@@ -5,7 +5,7 @@ import axios from "axios";
 import { useOauthStore } from "@/stores/oauth";
 
 // Always needs to be before primevue/ imports for correct (s)css loading
-import App from "./App.vue";
+import App from "@/App.vue";
 
 import PrimeVue from "primevue/config";
 import ProgressSpinner from "primevue/progressspinner";
@@ -44,7 +44,7 @@ import Textarea from "primevue/textarea";
 import Listbox from "primevue/listbox";
 import DataView from "primevue/dataview";
 
-import router from "./router";
+import router from "@/router";
 
 const app = createApp(App);
 

@@ -42,7 +42,7 @@
 <script>
 import { usePreloadsStore } from "@/stores/preloads";
 import { mapState } from "pinia";
-import apiService from "../../services/api/api.service";
+import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { h } from "vue";
 import ListCategory from "@/components/storages/ListCategory.vue";

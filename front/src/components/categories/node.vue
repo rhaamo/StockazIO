@@ -43,7 +43,7 @@
 
 <script>
 import { mapState } from "pinia";
-import { usePreloadsStore } from "../../stores/preloads";
+import { usePreloadsStore } from "@/stores/preloads";
 import { useUserStore } from "@/stores/user";
 import { useOauthStore } from "@/stores/oauth";
 

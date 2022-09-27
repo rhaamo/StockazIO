@@ -72,7 +72,7 @@ import ListLocation from "@/components/storages/ListLocation.vue";
 import { h } from "vue";
 import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
 import ManageLocationDialog from "@/components/storages/ManageLocation.vue";
-import apiService from "../../services/api/api.service";
+import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { useToast } from "primevue/usetoast";
 import { usePreloadsStore } from "@/stores/preloads";

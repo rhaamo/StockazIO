@@ -70,7 +70,7 @@ import { mapState } from "pinia";
 import { FilterMatchMode } from "primevue/api";
 import ManageParametersUnitModal from "@/components/parameters_units/Form.vue";
 import { h } from "vue";
-import apiService from "../../services/api/api.service";
+import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";

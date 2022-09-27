@@ -304,7 +304,7 @@ import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { FilterMatchMode } from "primevue/api";
 import { cloneDeep } from "lodash";
-import { useServerStore } from "../../stores/server";
+import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
 
 export default {

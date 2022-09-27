@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import CategoriesNode from "./node.vue";
+import CategoriesNode from "@/components/categories/node.vue";
 import { mapState } from "pinia";
 import { useServerStore } from "@/stores/server";
 import { useUserStore } from "@/stores/user";

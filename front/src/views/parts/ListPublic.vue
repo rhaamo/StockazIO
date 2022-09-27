@@ -292,7 +292,7 @@
 
 <script>
 import { usePreloadsStore } from "@/stores/preloads";
-import { useServerStore } from "../../stores/server";
+import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
