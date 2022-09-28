@@ -21,7 +21,11 @@
         </template>
       </Menubar>
       <Menubar :model="menuItemsLoggedOut" v-else>
-        <template #start>StockazIO - {{ backendVersion }}</template>
+        <template #start
+          ><router-link :to="{ name: 'home' }" class="no-underline"
+            >StockazIO - {{ backendVersion }}</router-link
+          ></template
+        >
         <template #end> </template>
       </Menubar>
 
