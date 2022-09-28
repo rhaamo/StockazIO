@@ -59,7 +59,7 @@ const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}/`;
 const PARTS_ATTACHMENTS_CREATE = (partId) =>
   `/api/v1/parts/${partId}/attachments/`;
 const PARTS_ATTACHMENTS_DELETE = (partId, pk) =>
-  `/api/v1/parts/${partId}/attachments/${pk}`; // no final /
+  `/api/v1/parts/${partId}/attachments/${pk}/`;
 const PARTS_ATTACHMENTS_DEFAULT = (partId, attachmentId) =>
   `/api/v1/parts/${partId}/attachments/${attachmentId}/set_default`;
 const PART_CHANGE_CATEGORY = "/api/v1/parts/bulk/change_category";

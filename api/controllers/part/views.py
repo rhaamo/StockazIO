@@ -7,8 +7,8 @@ from controllers.categories.models import Category
 from controllers.storage.models import StorageLocation
 from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 
-from rest_framework import views
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import views, mixins
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
@@ -213,15 +213,18 @@ class PartQuickAutocompletion(views.APIView):
         return Response(serializer.data, status=200)
 
 
-class PartAttachmentsStandalone(views.APIView):
+class PartAttachmentsStandalone(
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
     """
     Part attachment (standalone)
     """
 
     required_scope = "parts"
     anonymous_policy = False
-
-    http_method_names = ["post", "delete"]
 
     @extend_schema(
         request={

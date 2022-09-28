@@ -7,6 +7,7 @@ router.register(r"parameters/units", views.PartsParametersUnitViewSet, basename=
 router.register(r"parameters/presets", views.PartsParametersPresetViewSet, basename="PartsParametersPreset")
 router.register(r"units", views.PartsUnitViewSet, basename="PartsParametersUnit")
 router.register(r"", views.PartViewSet, basename="Part")
+router.register(r"<int:part_id>/attachments", views.PartAttachmentsStandalone, basename="PartsAttachment")
 
 urlpatterns = [
     path(
@@ -22,8 +23,6 @@ urlpatterns = [
     ),
     path(r"public/", views.PartsPublic.as_view({"get": "list"}), name="parts_public"),
     path(r"public/<str:pk>/", views.PartsPublic.as_view({"get": "retrieve"}), name="parts_public_pk"),
-    path(r"<int:part_id>/attachments/", views.PartAttachmentsStandalone.as_view(), name="parts_attachments"),
-    path(r"<int:part_id>/attachments/<int:pk>", views.PartAttachmentsStandalone.as_view(), name="parts_attachments_pk"),
     path(
         r"<int:part_id>/attachments/<int:pk>/set_default",
         views.PartAttachmentsSetDefault.as_view(),
