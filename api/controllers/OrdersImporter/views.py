@@ -4,7 +4,13 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 
-from .serializers import OrderSerializer, CategoryMatcherSerializer, OrderCreateSerializer, OrderListSerializer
+from .serializers import (
+    OrderSerializer,
+    CategoryMatcherSerializer,
+    OrderCreateSerializer,
+    OrderListSerializer,
+    CategoryMatcherCreateSerializer,
+)
 from .models import CategoryMatcher, Order
 from controllers.categories.models import Category
 from controllers.part.models import Part
@@ -61,6 +67,12 @@ class CategoryMatcherViewSet(ModelViewSet):
         "list": "read",
     }
     serializer_class = CategoryMatcherSerializer
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return CategoryMatcherCreateSerializer
+        else:
+            return CategoryMatcherSerializer
 
     def get_queryset(self):
         queryset = CategoryMatcher.objects.all()

@@ -76,6 +76,14 @@ class OrderCreateSerializer(WritableNestedModelSerializer):
         fields = ("id", "date", "order_number", "status", "vendor", "import_state", "vendor_db")
 
 
+class CategoryMatcherCreateSerializer(serializers.ModelSerializer):
+    category = SingleCategorySerializer(many=False, read_only=True)
+
+    class Meta:
+        model = CategoryMatcher
+        fields = ("id", "regexp", "category")
+
+
 class CategoryMatcherSerializer(serializers.ModelSerializer):
     category = SingleCategorySerializer(many=False, read_only=False)
 

@@ -12,7 +12,8 @@ class ManufacturerFactory(factory.django.DjangoModelFactory):
     phone = factory.Faker("phone_number")
     fax = factory.Faker("phone_number")
     datasheet_url = factory.Faker("url")
+    logo = factory.django.ImageField(format="PNG", width=256, height=256)
 
     class Meta:
-        model = "distributor.Distributor"
+        model = "manufacturer.Manufacturer"
         django_get_or_create = ("name",)
