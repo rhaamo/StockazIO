@@ -102,19 +102,6 @@ def test_logged_in_can_delete_footprint(logged_in_api_client, factories):
     assert len(response.data) == 0
 
 
-# test get footprint categories [empty] anon api:v1:footprints:FootprintCategories-list
-# test get footprint categories [empty] logged in api:v1:footprints:FootprintCategories-list
-
-# test get footprint categories [factory] anon api:v1:footprints:FootprintCategories-detail
-# test get footprint categories [factory] logged in api:v1:footprints:FootprintCategories-detail
-
-# test rename footprint categories [factory] anon api:v1:footprints:FootprintCategories-detail
-# test rename footprint categories [factory] logged in api:v1:footprints:FootprintCategories-detail
-
-# test delete footprint categories [factory] anon api:v1:footprints:FootprintCategories-detail
-# test delete footprint categories [factory] logged in api:v1:footprints:FootprintCategories-detail
-
-
 def test_anonymous_cannot_get_categories(api_client, db):
     url = reverse("api:v1:footprints:FootprintCategories-list")
     response = api_client.get(url)
