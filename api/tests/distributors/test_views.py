@@ -16,6 +16,25 @@ def test_logged_in_can_get_distributors(logged_in_api_client, db):
     assert len(response.data) == 0
 
 
+def test_anonymous_cannot_get_distributor(api_client, db, factories):
+    distributor1 = factories["distributor.Distributor"]()
+
+    url = reverse("api:v1:distributors:Distributors-detail", kwargs={"pk": distributor1.id})
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_manufacturer(logged_in_api_client, db, factories):
+    distributor1 = factories["distributor.Distributor"]()
+
+    url = reverse("api:v1:distributors:Distributors-detail", kwargs={"pk": distributor1.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == distributor1.name
+
+
 def test_anonymous_cannot_create_distributors(api_client, db):
     url = reverse("api:v1:distributors:Distributors-list")
     response = api_client.post(url, {"name": "test distributor"})
