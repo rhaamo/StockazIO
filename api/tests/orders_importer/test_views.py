@@ -71,9 +71,75 @@ def test_logged_in_can_create_orders(logged_in_api_client, db, factories):
     assert response.data["items"][0]["vendor_part_number"] == item1.vendor_part_number
 
 
-# Rename order
-# Update order (patch)
-# Delete order
+def test_anonymous_cannot_edit_order(api_client, db, factories):
+    order1 = factories["OrdersImporter.Order"]()
+
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
+    response = api_client.put(url, {"order_number": 42})
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_edit_order(logged_in_api_client, db, factories):
+    order1 = factories["OrdersImporter.Order"]()
+
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
+    response = logged_in_api_client.put(url, {"order_number": 42, "date": order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")})
+
+    assert response.status_code == 200
+    assert response.data["order_number"] == "42"
+    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data["status"] == order1.status
+    assert response.data["import_state"] == order1.import_state
+
+
+def test_anonymous_cannot_patch_edit_order(api_client, db, factories):
+    order1 = factories["OrdersImporter.Order"]()
+
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
+    response = api_client.patch(url, {"order_number": 69})
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_patch_edit_order(logged_in_api_client, db, factories):
+    order1 = factories["OrdersImporter.Order"]()
+
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
+    response = logged_in_api_client.patch(url, {"order_number": 69})
+
+    assert response.status_code == 200
+    assert response.data["order_number"] == "69"
+    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data["status"] == order1.status
+    assert response.data["import_state"] == order1.import_state
+
+
+def test_logged_in_can_delete_order(logged_in_api_client, factories):
+    order1 = factories["OrdersImporter.Order"]()
+
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
+
+    response = logged_in_api_client.delete(url)
+
+    assert response.status_code == 204
+
+    # check again (empty)
+    url = reverse("api:v1:orders_importer:OrdersImporter-list")
+    response = logged_in_api_client.get(url)
+    assert response.status_code == 200
+    assert len(response.data) == 0
+
+
+def test_anonymous_cannot_delete_order(api_client, factories):
+    order1 = factories["OrdersImporter.Order"]()
+
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
+
+    response = api_client.delete(url)
+
+    assert response.status_code == 401
+
 
 # Get matchers api:v1:orders_importer:CategoryMatcher-list
 # Get matcher api:v1:orders_importer:CategoryMatcher-detail
