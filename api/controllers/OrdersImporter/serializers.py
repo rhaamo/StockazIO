@@ -68,11 +68,12 @@ class OrderListSerializer(WritableNestedModelSerializer):
 
 
 class OrderCreateSerializer(WritableNestedModelSerializer):
-    items = ItemCreateSerializer(many=True, read_only=False)
+    # items = ItemCreateSerializer(many=True, read_only=False)
 
     class Meta:
         model = Order
-        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items", "vendor_db")
+        # fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items", "vendor_db")
+        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "vendor_db")
 
 
 class CategoryMatcherSerializer(serializers.ModelSerializer):
