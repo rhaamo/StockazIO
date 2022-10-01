@@ -296,8 +296,94 @@ def test_logged_in_can_autocomplete_part(logged_in_api_client, db, factories):
 
 # ##########
 
-# part bulk change category api:v1:parts:bulk_edit_change_category
-# part bulk change storage api:v1:parts:bulk_edit_change_storage_location
+
+def test_anonymous_cannot_bulk_change_category(api_client, db, factories):
+    category = factories["categories.Category"]()
+    category1 = factories["categories.Category"](parent=category)
+    category2 = factories["categories.Category"](parent=category)
+    part = factories["part.Part"](category=category1)
+
+    # change category
+    url = reverse("api:v1:parts:bulk_edit_change_category")
+    response = api_client.post(url, {"category": category2.id, "parts": [part.id]}, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_bulk_change_category(logged_in_api_client, db, factories):
+    category = factories["categories.Category"]()
+    category1 = factories["categories.Category"](parent=category)
+    category2 = factories["categories.Category"](parent=category)
+    part = factories["part.Part"](category=category1)
+
+    # fetch part initial
+    url = reverse("api:v1:parts:Part-detail", kwargs={"pk": part.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == part.name
+    assert response.data["category"]["id"] == category1.id
+
+    # change category
+    url = reverse("api:v1:parts:bulk_edit_change_category")
+    response = logged_in_api_client.post(url, {"category": category2.id, "parts": [part.id]}, format="json")
+
+    assert response.status_code == 200
+    assert response.data["message"] == "ok"
+    assert response.data["parts"] == [part.id]
+
+    # fetch part
+    url = reverse("api:v1:parts:Part-detail", kwargs={"pk": part.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == part.name
+    assert response.data["category"]["id"] == category2.id
+
+
+def test_anonymous_cannot_bulk_change_storage(api_client, db, factories):
+    category = factories["storage.StorageCategory"]()
+    storage1 = factories["storage.StorageLocation"](category=category)
+    storage2 = factories["storage.StorageLocation"](category=category)
+    part = factories["part.Part"](storage=storage1)
+
+    # change storage
+    url = reverse("api:v1:parts:bulk_edit_change_storage_location")
+    response = api_client.post(url, {"storage_location": storage2.id, "parts": [part.id]}, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_bulk_change_storage(logged_in_api_client, db, factories):
+    category = factories["storage.StorageCategory"]()
+    storage1 = factories["storage.StorageLocation"](category=category)
+    storage2 = factories["storage.StorageLocation"](category=category)
+    part = factories["part.Part"](storage=storage1)
+
+    # fetch part initial
+    url = reverse("api:v1:parts:Part-detail", kwargs={"pk": part.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == part.name
+    assert response.data["storage"]["id"] == storage1.id
+
+    # change storage
+    url = reverse("api:v1:parts:bulk_edit_change_storage_location")
+    response = logged_in_api_client.post(url, {"storage_location": storage2.id, "parts": [part.id]}, format="json")
+
+    assert response.status_code == 200
+    assert response.data["message"] == "ok"
+    assert response.data["parts"] == [part.id]
+
+    # fetch part
+    url = reverse("api:v1:parts:Part-detail", kwargs={"pk": part.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == part.name
+    assert response.data["storage"]["id"] == storage2.id
+
 
 # ##########
 
