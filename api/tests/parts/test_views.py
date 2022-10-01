@@ -567,22 +567,172 @@ def test_logged_in_can_delete_part_parameter_preset(logged_in_api_client, db, fa
 
 # ##########
 
-# part parameters units gets api:v1:parts:PartsParametersUnit-list
-# part parameters units create
-# part parameters units get api:v1:parts:PartsParametersUnit-detail pk
-# part parameters units rename
-# part parameters units patch
-# part parameters units delete
+
+def test_anonymous_cannot_get_part_parameter_units(api_client, db, factories):
+    factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-list")
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_part_parameter_units(logged_in_api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-list")
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert len(response.data) == 1
+    assert response.data[0]["id"] == ppu.id
+    assert response.data[0]["name"] == ppu.name
+
+
+def test_anonymous_cannot_create_part_parameter_unit(api_client, db, factories):
+    ppu = {"name": "foobar", "symbol": "xxx", "description": "yyy"}
+    url = reverse("api:v1:parts:PartsParametersUnit-list")
+    response = api_client.post(url, ppu, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_create_part_parameter_unit(logged_in_api_client, db, factories):
+    ppu = {"name": "foobar", "symbol": "xxx", "description": "yyy"}
+    url = reverse("api:v1:parts:PartsParametersUnit-list")
+    response = logged_in_api_client.post(url, ppu, format="json")
+
+    assert response.status_code == 201
+    assert response.data["id"]
+    assert response.data["name"] == ppu["name"]
+    assert response.data["symbol"] == ppu["symbol"]
+
+
+def test_anonymous_cannot_get_part_parameter_unit(api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_part_parameter_unit(logged_in_api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["id"] == ppu.id
+    assert response.data["name"] == ppu.name
+
+
+def test_anonymous_cannot_rename_part_parameter_unit(api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    ppu_updated = {
+        "name": "foobar",
+    }
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = api_client.put(url, ppu_updated, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_rename_part_parameter_unit(logged_in_api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    ppu_updated = {
+        "name": "foobar",
+    }
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = logged_in_api_client.put(url, ppu_updated, format="json")
+
+    assert response.status_code == 200
+    assert response.data["id"] == ppu.id
+    assert response.data["name"] == "foobar"
+
+
+def test_anonymous_cannot_patch_part_parameter_unit(api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = api_client.patch(url, {"name": "foobar"})
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_patch_part_parameter_unit(logged_in_api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = logged_in_api_client.patch(url, {"name": "foobar"})
+
+    assert response.status_code == 200
+    assert response.data["id"] == ppu.id
+    assert response.data["name"] == "foobar"
+
+
+def test_anonymous_cannot_delete_part_parameter_unit(api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = api_client.delete(url, {"name": "foobar"})
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_delete_part_parameter_unit(logged_in_api_client, db, factories):
+    ppu = factories["part.ParametersUnit"]()
+
+    url = reverse("api:v1:parts:PartsParametersUnit-detail", kwargs={"pk": ppu.id})
+    response = logged_in_api_client.delete(url, {"name": "foobar"})
+
+    assert response.status_code == 204
+
+    # fetch again
+    url = reverse("api:v1:parts:PartsParametersUnit-list")
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert len(response.data) == 0
+
 
 # ##########
 
-# part public gets api:v1:parts:parts_public
-# part public get api:v1:parts:parts_public_pk pk
+
+def test_anonymous_can_get_public_parts(api_client, db, factories):
+    part = factories["part.Part"](private=False)
+
+    url = reverse("api:v1:parts:parts_public")
+    response = api_client.get(url)
+
+    assert response.status_code == 200
+    assert len(response.data) == 1
+    assert response.data[0]["name"] == part.name
+    assert response.data[0]["stock_qty"] == part.stock_qty
+    assert response.data[0]["category"]["id"] == part.category.id
+
+
+def test_anonymous_can_get_public_part(api_client, db, factories):
+    part = factories["part.Part"](private=False)
+
+    url = reverse("api:v1:parts:parts_public_pk", kwargs={"pk": part.id})
+    response = api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == part.name
+    assert response.data["stock_qty"] == part.stock_qty
+    assert response.data["category"]["id"] == part.category.id
+
 
 # ##########
 
-# part unit gets api:v1:parts:PartsParametersUnit-list
-# part unit get api:v1:parts:PartsParametersUnit-detail pk
+# part unit gets api:v1:parts:PartsUnit-list
+# part unit get api:v1:parts:PartsUnit-detail pk
 # part unit create
 # part unit patch
 # part unit rename

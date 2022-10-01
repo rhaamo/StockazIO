@@ -5,7 +5,7 @@ from django.urls import path
 router = routers.DefaultRouter()
 router.register(r"parameters/units", views.PartsParametersUnitViewSet, basename="PartsParametersUnit")
 router.register(r"parameters/presets", views.PartsParametersPresetViewSet, basename="PartsParametersPreset")
-router.register(r"units", views.PartsUnitViewSet, basename="PartsParametersUnit")
+router.register(r"units", views.PartsUnitViewSet, basename="PartsUnit")
 router.register(r"", views.PartViewSet, basename="Part")
 router.register(r"(?P<part_id>[^/.]+)/attachments", views.PartAttachmentsStandalone, basename="PartsAttachment")
 
