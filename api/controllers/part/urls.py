@@ -22,9 +22,9 @@ urlpatterns = [
         name="bulk_edit_change_storage_location",
     ),
     path(r"public/", views.PartsPublic.as_view({"get": "list"}), name="parts_public"),
-    path(r"public/(?P<pk>[^/.]+)/", views.PartsPublic.as_view({"get": "retrieve"}), name="parts_public_pk"),
+    path(r"public/<pk>/", views.PartsPublic.as_view({"get": "retrieve"}), name="parts_public_pk"),
     path(
-        r"(?P<part_id>[^/.]+)/attachments/<int:pk>/set_default",
+        r"<part_id>/attachments/<int:pk>/set_default",
         views.PartAttachmentsSetDefault.as_view(),
         name="parts_attachments_set_default",
     ),
