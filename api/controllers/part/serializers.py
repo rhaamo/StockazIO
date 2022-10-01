@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import (
+from controllers.part.models import (
     ParametersUnit,
     PartUnit,
     Part,

@@ -387,12 +387,183 @@ def test_logged_in_can_bulk_change_storage(logged_in_api_client, db, factories):
 
 # ##########
 
-# part parameter preset gets api:v1:parts:PartsParametersPreset-list
-# part parameter preset create
-# part parameter preset get api:v1:parts:PartsParametersPreset-detail pk
-# part parameter preset rename
-# part parameter preset patch
-# part parameter preset delete
+
+def test_anonymous_cannot_get_part_parameter_presets(api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-list")
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_part_parameter_presets(logged_in_api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-list")
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    # response is paginated
+    assert response.data["count"] == 1
+    assert not response.data["next"]
+    assert not response.data["previous"]
+    assert len(response.data["results"]) == 1
+    assert response.data["results"][0]["id"] == ppp.id
+    assert response.data["results"][0]["name"] == ppp.name
+    assert len(response.data["results"][0]["part_parameters_presets"]) == 2
+
+
+def test_anonymous_cannot_create_part_parameter_preset(api_client, db, factories):
+    unit = factories["part.ParametersUnit"]()
+    ppp = {"name": "foobar", "part_parameters_presets": [{"name": "xxx1", "description": "yyy1", "unit": unit.id}]}
+    url = reverse("api:v1:parts:PartsParametersPreset-list")
+    response = api_client.post(url, ppp, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_create_part_parameter_preset(logged_in_api_client, db, factories):
+    unit = factories["part.ParametersUnit"]()
+    ppp = {"name": "foobar", "part_parameters_presets": [{"name": "xxx1", "description": "yyy1", "unit": unit.id}]}
+    url = reverse("api:v1:parts:PartsParametersPreset-list")
+    response = logged_in_api_client.post(url, ppp, format="json")
+
+    assert response.status_code == 201
+    assert response.data["id"]
+    assert response.data["name"] == ppp["name"]
+    assert response.data["part_parameters_presets"][0]["id"]
+    assert response.data["part_parameters_presets"][0]["name"] == ppp["part_parameters_presets"][0]["name"]
+
+
+def test_anonymous_cannot_get_part_parameter_preset(api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_part_parameter_preset(logged_in_api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["id"] == ppp.id
+    assert response.data["name"] == ppp.name
+    assert len(response.data["part_parameters_presets"]) == 3
+
+
+def test_anonymous_cannot_rename_part_parameter_preset(api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    pppi = factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    ppp_updated = {
+        "name": "foobar",
+        "part_parameters_presets": [
+            {"id": pppi.id, "name": pppi.name, "description": pppi.description, "unit": pppi.unit.id}
+        ],
+    }
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = api_client.put(url, ppp_updated, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_rename_part_parameter_preset(logged_in_api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    pppi = factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    ppp_updated = {
+        "name": "foobar",
+        "part_parameters_presets": [
+            {"id": pppi.id, "name": pppi.name, "description": pppi.description, "unit": pppi.unit.id}
+        ],
+    }
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = logged_in_api_client.put(url, ppp_updated, format="json")
+
+    assert response.status_code == 200
+    assert response.data["id"] == ppp.id
+    assert response.data["name"] == "foobar"
+    assert len(response.data["part_parameters_presets"]) == 1
+
+
+def test_anonymous_cannot_patch_part_parameter_preset(api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = api_client.patch(url, {"name": "foobar"})
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_patch_part_parameter_preset(logged_in_api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = logged_in_api_client.patch(url, {"name": "foobar"})
+
+    assert response.status_code == 200
+    assert response.data["id"] == ppp.id
+    assert response.data["name"] == "foobar"
+    assert len(response.data["part_parameters_presets"]) == 3
+
+
+def test_anonymous_cannot_delete_part_parameter_preset(api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = api_client.delete(url, {"name": "foobar"})
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_delete_part_parameter_preset(logged_in_api_client, db, factories):
+    ppp = factories["part.PartParameterPreset"]()
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+    factories["part.PartParameterPresetItem"](part_parameter_preset=ppp)
+
+    url = reverse("api:v1:parts:PartsParametersPreset-detail", kwargs={"pk": ppp.id})
+    response = logged_in_api_client.delete(url, {"name": "foobar"})
+
+    assert response.status_code == 204
+
+    # fetch again
+    url = reverse("api:v1:parts:PartsParametersPreset-list")
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    # response is paginated
+    assert response.data["count"] == 0
+    assert not response.data["next"]
+    assert not response.data["previous"]
+    assert len(response.data["results"]) == 0
+
 
 # ##########
 

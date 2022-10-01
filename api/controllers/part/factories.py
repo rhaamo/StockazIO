@@ -64,6 +64,17 @@ class PartAttachmentTypePictureFactory(factory.django.DjangoModelFactory):
 
 
 @registry.register
+class ParametersUnitsFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
+    symbol = factory.Faker("name")
+    description = factory.Faker("text")
+
+    class Meta:
+        model = "part.ParametersUnit"
+        django_get_or_create = ("name",)
+
+
+@registry.register
 class PartParameterPresetFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")
 
@@ -76,22 +87,11 @@ class PartParameterPresetFactory(factory.django.DjangoModelFactory):
 class PartParameterPresetItemFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")
     description = factory.Faker("text")
-    unit = factory.Faker("name")
+    unit = factory.SubFactory(ParametersUnitsFactory)
     part_parameter_preset = factory.SubFactory(PartParameterPresetFactory)
 
     class Meta:
         model = "part.PartParameterPresetItem"
-        django_get_or_create = ("name",)
-
-
-@registry.register
-class ParametersUnitsFactory(factory.django.DjangoModelFactory):
-    name = factory.Faker("name")
-    symbol = factory.Faker("name")
-    description = factory.Faker("text")
-
-    class Meta:
-        model = "part.ParametersUnit"
         django_get_or_create = ("name",)
 
 
