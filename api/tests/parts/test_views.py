@@ -731,6 +731,7 @@ def test_anonymous_can_get_public_part(api_client, db, factories):
 
 # ##########
 
+
 def test_anonymous_cannot_get_part_units(api_client, db, factories):
     factories["part.PartUnit"]()
 
@@ -803,7 +804,9 @@ def test_logged_in_can_rename_part_unit(logged_in_api_client, db, factories):
     part_unit = factories["part.PartUnit"]()
 
     url = reverse("api:v1:parts:PartsUnit-detail", kwargs={"pk": part_unit.id})
-    response = logged_in_api_client.put(url, {"name": "foobar", "short_name": part_unit.short_name, "description": part_unit.description}, format="json")
+    response = logged_in_api_client.put(
+        url, {"name": "foobar", "short_name": part_unit.short_name, "description": part_unit.description}, format="json"
+    )
 
     assert response.status_code == 200
     assert response.data["name"] == "foobar"
@@ -850,4 +853,3 @@ def test_logged_in_can_delete_part_unit(logged_in_api_client, db, factories):
     response = logged_in_api_client.get(url)
     assert response.status_code == 200
     assert len(response.data) == 0
-

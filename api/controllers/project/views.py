@@ -1,4 +1,3 @@
-from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters, views
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from django.shortcuts import get_object_or_404
@@ -10,9 +9,10 @@ from drf_excel.renderers import XLSXRenderer
 import urllib
 import json
 from drf_spectacular.utils import extend_schema
+from rest_framework.viewsets import ModelViewSet
 
-from .models import Project, ProjectAttachment, ProjectPart
-from .serializers import (
+from controllers.project.models import Project, ProjectAttachment, ProjectPart
+from controllers.project.serializers import (
     ProjectPartSerializer,
     ProjectPartStandaloneSerializer,
     ProjectRetrieveSerializer,
@@ -112,6 +112,8 @@ class ProjectAttachmentsStandalone(views.APIView):
     required_scope = "projects"
     anonymous_policy = False
 
+    http_method_names = ["post", "delete"]
+
     def post(self, request, project_id, format=None):
         serializer = ProjectAttachmentsSerializer(data=request.data)
         if serializer.is_valid():
@@ -132,6 +134,8 @@ class ProjectPartsStandalone(views.APIView):
 
     required_scope = "projects"
     anonymous_policy = False
+
+    http_method_names = ["post", "delete"]
 
     def post(self, request, project_id, pk=None, format=None):
         if pk:
@@ -158,6 +162,8 @@ class ExportTextInfos(views.APIView):
 
     required_scope = "projects"
     anonymous_policy = False
+
+    http_method_names = ["get"]
 
     renderer_classes = [PlainTextRenderer]
 
@@ -188,6 +194,8 @@ class ExportBomCSV(views.APIView):
     required_scope = "projects"
     anonymous_policy = False
 
+    http_method_names = ["get"]
+
     renderer_classes = [CSVRenderer]
 
     # def get_renderer_context(self):
@@ -209,6 +217,8 @@ class ExportBomXLSX(views.APIView):
 
     required_scope = "projects"
     anonymous_policy = False
+
+    http_method_names = ["get"]
 
     renderer_classes = [XLSXRenderer]
 

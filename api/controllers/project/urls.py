@@ -1,4 +1,4 @@
-from . import views
+from controllers.project import views
 from rest_framework import routers
 from django.urls import path
 
@@ -8,15 +8,15 @@ router.register(r"", views.ProjectsViewSet, basename="Projects")
 urlpatterns = [
     path(r"<int:project_id>/attachments/", views.ProjectAttachmentsStandalone.as_view(), name="projects_attachments"),
     path(
-        r"<int:project_id>/attachments/<int:pk>",
+        r"<int:project_id>/attachments/<int:pk>/",
         views.ProjectAttachmentsStandalone.as_view(),
         name="projects_attachments",
     ),
     path(r"<int:project_id>/parts/", views.ProjectPartsStandalone.as_view(), name="projects_parts"),
     path(
-        r"<int:project_id>/parts/<int:pk>",
+        r"<int:project_id>/parts/<int:pk>/",
         views.ProjectPartsStandalone.as_view(),
-        name="projects_parts",
+        name="project_part",
     ),
     path(r"<int:project_id>/exports/infos.txt", views.ExportTextInfos.as_view(), name="projects_export_infos"),
     path(r"<int:project_id>/exports/bom.csv", views.ExportBomCSV.as_view(), name="projects_export_bom_csv"),
