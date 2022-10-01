@@ -124,16 +124,124 @@ def test_logged_in_can_delete_part(logged_in_api_client, db, factories):
     assert len(response.data) == 0
 
 
+# ##########
+
+
+def test_anonymous_cannot_create_part_attachment(api_client, db, factories, image_file):
+    part = factories["part.Part"]()
+
+    part_attachment = {"description": "foobar", "part": part.id, "picture": image_file}
+
+    url = reverse("api:v1:parts:PartsAttachment-list", kwargs={"part_id": part.id})
+    response = api_client.post(url, part_attachment)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_create_part_attachment(logged_in_api_client, db, factories, image_file):
+    part = factories["part.Part"]()
+
+    part_attachment = {"description": "foobar", "part": part.id, "picture": image_file}
+
+    url = reverse("api:v1:parts:PartsAttachment-list", kwargs={"part_id": part.id})
+    response = logged_in_api_client.post(url, part_attachment)
+
+    assert response.status_code == 201
+    assert response.data["description"] == "foobar"
+    assert response.data["part"] == part.id
+    assert "png" in response.data["picture"]
+    assert not response.data["file"]
+
+
+def test_anonymous_cannot_rename_part_attachment(api_client, db, factories):
+    part_attachment = factories["part.PartAttachment"]()
+
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"pk": part_attachment.id, "part_id": part_attachment.part.id}
+    )
+    response = api_client.put(url, {"description": "foobar"}, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_rename_part_attachment(logged_in_api_client, db, factories):
+    part_attachment = factories["part.PartAttachment"]()
+
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"pk": part_attachment.id, "part_id": part_attachment.part.id}
+    )
+    response = logged_in_api_client.put(url, {"description": "foobar", "part": part_attachment.part.id}, format="json")
+
+    assert response.status_code == 200
+    assert response.data["description"] == "foobar"
+
+
+def test_anonymous_cannot_update_part_attachment(api_client, db, factories):
+    part_attachment = factories["part.PartAttachment"]()
+
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"part_id": part_attachment.part.id, "pk": part_attachment.id}
+    )
+    response = api_client.patch(url, {"description": "foobar"}, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_update_part_attachment(logged_in_api_client, db, factories):
+    part_attachment = factories["part.PartAttachment"]()
+
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"pk": part_attachment.id, "part_id": part_attachment.part.id}
+    )
+    response = logged_in_api_client.patch(url, {"description": "foobar"}, format="json")
+
+    assert response.status_code == 200
+    assert response.data["description"] == "foobar"
+
+
+def test_anonymous_cannot_delete_part_attachment(api_client, db, factories):
+    part_attachment = factories["part.PartAttachment"]()
+
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"pk": part_attachment.id, "part_id": part_attachment.part.id}
+    )
+    response = api_client.delete(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_delete_part_attachment(logged_in_api_client, db, factories):
+    part_attachment = factories["part.PartAttachment"]()
+
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"pk": part_attachment.id, "part_id": part_attachment.part.id}
+    )
+    response = logged_in_api_client.delete(url)
+
+    assert response.status_code == 204
+    url = reverse(
+        "api:v1:parts:PartsAttachment-detail", kwargs={"pk": part_attachment.id, "part_id": part_attachment.part.id}
+    )
+    response = logged_in_api_client.delete(url)
+    assert response.status_code == 404
+
+
 # part attachment create api:v1:parts:PartsAttachment-list part_id
 # part attachment rename api:v1:parts:PartsAttachment-detail part_id pk
 # part attachment patch
 # part attachment delete
 # part attachment set default api:v1:parts:parts_attachments_set_default part_id pk
 
+# ##########
+
 # part autocomplete quick by name api:v1:parts:parts_autocompletion name
+
+# ##########
 
 # part bulk change category api:v1:parts:bulk_edit_change_category
 # part bulk change storage api:v1:parts:bulk_edit_change_storage_location
+
+# ##########
 
 # part parameter preset gets api:v1:parts:PartsParametersPreset-list
 # part parameter preset create
@@ -142,6 +250,8 @@ def test_logged_in_can_delete_part(logged_in_api_client, db, factories):
 # part parameter preset patch
 # part parameter preset delete
 
+# ##########
+
 # part parameters units gets api:v1:parts:PartsParametersUnit-list
 # part parameters units create
 # part parameters units get api:v1:parts:PartsParametersUnit-detail pk
@@ -149,8 +259,12 @@ def test_logged_in_can_delete_part(logged_in_api_client, db, factories):
 # part parameters units patch
 # part parameters units delete
 
+# ##########
+
 # part public gets api:v1:parts:parts_public
 # part public get api:v1:parts:parts_public_pk pk
+
+# ##########
 
 # part unit gets api:v1:parts:PartsParametersUnit-list
 # part unit get api:v1:parts:PartsParametersUnit-detail pk

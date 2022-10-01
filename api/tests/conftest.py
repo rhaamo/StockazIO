@@ -1,6 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 import factory
+import os
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -76,3 +77,12 @@ def logged_in_api_client(db, factories, api_client):
     setattr(api_client, "user", user)
     yield api_client
     delattr(api_client, "user")
+
+
+@pytest.fixture
+def image_file():
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../setup-data/manufacturers/images/")
+    path = os.path.join(data_dir, "st.png")
+    assert os.path.exists(path)
+    with open(path, "rb") as f:
+        yield f

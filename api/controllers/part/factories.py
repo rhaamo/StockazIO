@@ -40,27 +40,27 @@ class PartFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ("name",)
 
 
-@registry.register
-class PartAttachmentTypeFileFactory(factory.django.DjangoModelFactory):
-    description = factory.Faker("text")
-    file = factory.django.FileField(type="text")
-    part = factory.SubFactory(PartFactory)
+# @registry.register
+# class PartAttachmentTypeFileFactory(factory.django.DjangoModelFactory):
+#     description = factory.Faker("text")
+#     file = factory.django.FileField(type="text")
+#     part = factory.SubFactory(PartFactory)
 
-    class Meta:
-        model = "part.PartAttachment"
-        django_get_or_create = ("name",)
+#     class Meta:
+#         model = "part.PartAttachment"
+#         django_get_or_create = ("description",)
 
 
 @registry.register
 class PartAttachmentTypePictureFactory(factory.django.DjangoModelFactory):
-    description = factory.Faker("text")
-    picture = factory.django.ImageField(format="PNG", width=256, height=256)
+    description = factory.Faker("text", max_nb_chars=99)
+    picture = factory.django.ImageField(from_path="../setup-data/manufacturers/images/st.png")
     picture_default = factory.Faker("boolean")
     part = factory.SubFactory(PartFactory)
 
     class Meta:
         model = "part.PartAttachment"
-        django_get_or_create = ("name",)
+        django_get_or_create = ("description",)
 
 
 @registry.register

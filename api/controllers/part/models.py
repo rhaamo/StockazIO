@@ -10,6 +10,7 @@ from django.dispatch import receiver
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.core.exceptions import ValidationError
+import magic
 
 
 class PartUnit(models.Model):
@@ -225,10 +226,17 @@ def set_file_infos(sender, instance, **kwargs):
         return
     if instance.file:
         instance.file_size = instance.file.file.size  # bytes
-        instance.file_type = instance.file.file.content_type
+
+        ip = instance.file.file.tell()
+        instance.file.file.seek(0)
+        instance.file_type = magic.from_buffer(instance.file.file.read(2048), mime=True)
+        instance.file.file.seek(ip)
     elif instance.picture:
         instance.file_size = instance.picture.file.size  # bytes
-        instance.file_type = instance.picture.file.content_type
+        ip = instance.picture.file.tell()
+        instance.picture.file.seek(0)
+        instance.file_type = magic.from_buffer(instance.picture.file.read(2048), mime=True)
+        instance.picture.file.seek(ip)
 
 
 class PartStockHistory(models.Model):

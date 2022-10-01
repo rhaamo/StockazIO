@@ -226,6 +226,8 @@ class PartAttachmentsStandalone(
     required_scope = "parts"
     anonymous_policy = False
 
+    serializer_class = PartAttachmentCreateSerializer
+
     @extend_schema(
         request={
             "multipart/form-data": PartAttachmentCreateSerializer,
@@ -256,6 +258,10 @@ class PartAttachmentsStandalone(
         attachment = get_object_or_404(PartAttachment, id=pk)
         attachment.delete()
         return Response(status=204)
+
+    def get_queryset(self):
+        queryset = PartAttachment.objects.all()
+        return queryset
 
 
 class PartsPublic(ModelViewSet):
