@@ -226,15 +226,73 @@ def test_logged_in_can_delete_part_attachment(logged_in_api_client, db, factorie
     assert response.status_code == 404
 
 
-# part attachment create api:v1:parts:PartsAttachment-list part_id
-# part attachment rename api:v1:parts:PartsAttachment-detail part_id pk
-# part attachment patch
-# part attachment delete
-# part attachment set default api:v1:parts:parts_attachments_set_default part_id pk
+def test_anonymous_cannot_set_default_part_attachment(api_client, db, factories):
+    part = factories["part.Part"]()
+    factories["part.PartAttachment"](part=part, picture_default=False)
+    part_attachment2 = factories["part.PartAttachment"](part=part, picture_default=False)
+
+    url = reverse("api:v1:parts:parts_attachments_set_default", kwargs={"pk": part_attachment2.id, "part_id": part.id})
+    response = api_client.post(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_set_default_part_attachment(logged_in_api_client, db, factories):
+    part = factories["part.Part"]()
+    factories["part.PartAttachment"](part=part, picture_default=False)
+    part_attachment2 = factories["part.PartAttachment"](part=part, picture_default=False)
+
+    url = reverse("api:v1:parts:parts_attachments_set_default", kwargs={"pk": part_attachment2.id, "part_id": part.id})
+    response = logged_in_api_client.post(url)
+
+    assert response.status_code == 200
+
+    # get part
+    url = reverse("api:v1:parts:Part-detail", kwargs={"pk": part.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == part.name
+    assert response.data["stock_qty"] == part.stock_qty
+    assert response.data["category"]["id"] == part.category.id
+
+    # Get all attachments
+    has_default_part_attachment = None
+    for pa in response.data["part_attachments"]:
+        if pa["picture_default"]:
+            has_default_part_attachment = pa
+    # and validate there is one, and it is the one we wanted
+    assert has_default_part_attachment
+    assert has_default_part_attachment["id"] == part_attachment2.id
+
 
 # ##########
 
-# part autocomplete quick by name api:v1:parts:parts_autocompletion name
+
+def test_anonymous_cannot_autocomplete_part(api_client, db, factories):
+    factories["part.Part"](name="cap-1")
+    factories["part.Part"](name="cap-2")
+    factories["part.Part"](name="res-1")
+
+    url = reverse("api:v1:parts:parts_autocompletion", kwargs={"name": "cap-2"})
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_autocomplete_part(logged_in_api_client, db, factories):
+    factories["part.Part"](name="cap-1")
+    part = factories["part.Part"](name="cap-2")
+    factories["part.Part"](name="res-1")
+
+    url = reverse("api:v1:parts:parts_autocompletion", kwargs={"name": "cap-2"})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+
+    assert response.data[0]["id"] == part.id
+    assert response.data[0]["name"] == part.name
+
 
 # ##########
 
