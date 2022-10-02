@@ -112,7 +112,7 @@ def test_logged_in_can_update_project(logged_in_api_client, db, factories):
     url = reverse("api:v1:projects:Projects-detail", kwargs={"pk": project.id})
     response = logged_in_api_client.patch(url, {"name": "foobar"})
 
-    assert response.status_code == 201
+    assert response.status_code == 200
     assert response.data["id"] == project.id
     assert response.data["name"] == "foobar"
 
@@ -209,15 +209,226 @@ def test_logged_in_can_export_project_infos_txt(logged_in_api_client, db, factor
 
 # ######
 
-# project part add internal api:v1:projects:projects_parts
-# project part add external api:v1:projects:projects_parts
-# project part delete internal api:v1:projects:projects_parts
-# project part delete external api:v1:projects:projects_parts
+
+def test_anonymous_cannot_add_internal_part(api_client, db, factories):
+    project = factories["project.Project"](public=False)
+    part = factories["part.Part"]()
+
+    project_part = {"project": project.id, "part": part.id, "qty": 42}
+
+    url = reverse("api:v1:projects:projects_parts", kwargs={"project_id": project.id})
+    response = api_client.post(url, project_part)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_add_internal_part(logged_in_api_client, db, factories):
+    project = factories["project.Project"](public=False)
+    part = factories["part.Part"]()
+
+    project_part = {"project": project.id, "part": part.id, "qty": 42}
+
+    url = reverse("api:v1:projects:projects_parts", kwargs={"project_id": project.id})
+    response = logged_in_api_client.post(url, project_part)
+
+    assert response.status_code == 201
+    assert response.data["id"]
+    assert response.data["qty"] == 42
+    assert response.data["project"] == project.id
+
+
+def test_anonymous_cannot_add_external_part(api_client, db, factories):
+    project = factories["project.Project"](public=False)
+
+    project_part = {"project": project.id, "part_name": "foobar", "qty": 42}
+
+    url = reverse("api:v1:projects:projects_parts", kwargs={"project_id": project.id})
+    response = api_client.post(url, project_part)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_add_external_part(logged_in_api_client, db, factories):
+    project = factories["project.Project"](public=False)
+
+    project_part = {"project": project.id, "part_name": "foobar", "qty": 42}
+
+    url = reverse("api:v1:projects:projects_parts", kwargs={"project_id": project.id})
+    response = logged_in_api_client.post(url, project_part)
+
+    assert response.status_code == 201
+    assert response.data["id"]
+    assert response.data["qty"] == 42
+    assert response.data["part_name"] == "foobar"
+    assert response.data["project"] == project.id
+
+
+def test_anonymous_cannot_delete_internal_part(api_client, db, factories):
+    project = factories["project.Project"](public=False)
+    part = factories["part.Part"]()
+    project_part = factories["project.ProjectPart"](part=part, project=project)
+
+    url = reverse("api:v1:projects:project_part", kwargs={"project_id": project.id, "pk": project_part.id})
+    response = api_client.delete(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_delete_internal_part(logged_in_api_client, db, factories):
+    project = factories["project.Project"](public=False)
+    part = factories["part.Part"]()
+    project_part = factories["project.ProjectPart"](part=part, project=project)
+
+    url = reverse("api:v1:projects:project_part", kwargs={"project_id": project.id, "pk": project_part.id})
+
+    response = logged_in_api_client.delete(url)
+
+    assert response.status_code == 204
+
+    # fetch again
+    url = reverse("api:v1:projects:Projects-detail", kwargs={"pk": project.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == project.name
+    assert len(response.data["project_parts"]) == 0
+
+
+def test_anonymous_cannot_delete_external_part(api_client, db, factories):
+    project = factories["project.Project"](public=False)
+    project_part = factories["project.ProjectPart"](part_name="foobar", project=project)
+
+    url = reverse("api:v1:projects:project_part", kwargs={"project_id": project.id, "pk": project_part.id})
+
+    response = api_client.delete(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_delete_external_part(logged_in_api_client, db, factories):
+    project = factories["project.Project"](public=False)
+    project_part = factories["project.ProjectPart"](part_name="foobar", project=project)
+
+    url = reverse("api:v1:projects:project_part", kwargs={"project_id": project.id, "pk": project_part.id})
+
+    response = logged_in_api_client.delete(url)
+
+    assert response.status_code == 204
+
+    # fetch again
+    url = reverse("api:v1:projects:Projects-detail", kwargs={"pk": project.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["name"] == project.name
+    assert len(response.data["project_parts"]) == 0
+
 
 # ######
 
-# project attachment gets api:v1:projects:projects_attachments
-# project attachment create api:v1:projects:projects_attachments
-# project attachment rename api:v1:projects:project_part
-# project attachment update api:v1:projects:project_part
-# project attachment delete api:v1:projects:project_part
+
+def test_anonymous_cannot_create_project_attachment(api_client, db, factories, image_file):
+    project = factories["project.Project"]()
+
+    project_attachment = {"description": "foobar", "project": project.id, "file": image_file}
+
+    url = reverse("api:v1:projects:projects_attachments-list", kwargs={"project_id": project.id})
+    response = api_client.post(url, project_attachment)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_create_project_attachment(logged_in_api_client, db, factories, image_file):
+    project = factories["project.Project"]()
+
+    project_attachment = {"description": "foobar", "project": project.id, "file": image_file}
+
+    url = reverse("api:v1:projects:projects_attachments-list", kwargs={"project_id": project.id})
+    response = logged_in_api_client.post(url, project_attachment)
+
+    assert response.status_code == 201
+    assert response.data["description"] == "foobar"
+    assert response.data["project"] == project.id
+    assert "png" in response.data["file"]
+
+
+def test_anonymous_cannot_rename_project_attachment(api_client, db, factories):
+    project_attachment = factories["project.ProjectAttachment"]()
+
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"pk": project_attachment.id, "project_id": project_attachment.project.id},
+    )
+    response = api_client.put(url, {"description": "foobar"}, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_rename_project_attachment(logged_in_api_client, db, factories):
+    project_attachment = factories["project.ProjectAttachment"]()
+
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"pk": project_attachment.id, "project_id": project_attachment.project.id},
+    )
+    response = logged_in_api_client.put(
+        url, {"description": "foobar", "project": project_attachment.project.id}, format="json"
+    )
+
+    assert response.status_code == 200
+    assert response.data["description"] == "foobar"
+
+
+def test_anonymous_cannot_update_project_attachment(api_client, db, factories):
+    project_attachment = factories["project.ProjectAttachment"]()
+
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"project_id": project_attachment.project.id, "pk": project_attachment.id},
+    )
+    response = api_client.patch(url, {"description": "foobar"}, format="json")
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_update_project_attachment(logged_in_api_client, db, factories):
+    project_attachment = factories["project.ProjectAttachment"]()
+
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"pk": project_attachment.id, "project_id": project_attachment.project.id},
+    )
+    response = logged_in_api_client.patch(url, {"description": "foobar"}, format="json")
+
+    assert response.status_code == 200
+    assert response.data["description"] == "foobar"
+
+
+def test_anonymous_cannot_delete_project_attachment(api_client, db, factories):
+    project_attachment = factories["project.ProjectAttachment"]()
+
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"pk": project_attachment.id, "project_id": project_attachment.project.id},
+    )
+    response = api_client.delete(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_delete_project_attachment(logged_in_api_client, db, factories):
+    project_attachment = factories["project.ProjectAttachment"]()
+
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"pk": project_attachment.id, "project_id": project_attachment.project.id},
+    )
+    response = logged_in_api_client.delete(url)
+
+    assert response.status_code == 204
+    url = reverse(
+        "api:v1:projects:projects_attachments-detail",
+        kwargs={"pk": project_attachment.id, "project_id": project_attachment.project.id},
+    )
+    response = logged_in_api_client.delete(url)
+    assert response.status_code == 404

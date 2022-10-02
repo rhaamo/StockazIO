@@ -31,7 +31,7 @@ class ProjectPartFactory(factory.django.DjangoModelFactory):
 
 @registry.register
 class ProjectAttachmentFactory(factory.django.DjangoModelFactory):
-    description = factory.Faker("text")
+    description = factory.Faker("text", max_nb_chars=99)
     file = factory.django.ImageField()
     project = factory.SubFactory(ProjectFactory)
 

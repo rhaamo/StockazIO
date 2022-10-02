@@ -1,4 +1,4 @@
-from rest_framework import filters, views
+from rest_framework import filters, views, mixins
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -9,7 +9,7 @@ from drf_excel.renderers import XLSXRenderer
 import urllib
 import json
 from drf_spectacular.utils import extend_schema
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from controllers.project.models import Project, ProjectAttachment, ProjectPart
 from controllers.project.serializers import (
@@ -17,7 +17,7 @@ from controllers.project.serializers import (
     ProjectPartStandaloneSerializer,
     ProjectRetrieveSerializer,
     ProjectSerializer,
-    ProjectAttachmentsSerializer,
+    ProjectAttachmentsCreateSerializer,
 )
 
 
@@ -104,7 +104,12 @@ class ProjectsViewSet(ModelViewSet):
         return queryset
 
 
-class ProjectAttachmentsStandalone(views.APIView):
+class ProjectAttachmentsStandalone(
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
     """
     Project attachments (standalone)
     """
@@ -112,10 +117,10 @@ class ProjectAttachmentsStandalone(views.APIView):
     required_scope = "projects"
     anonymous_policy = False
 
-    http_method_names = ["post", "delete"]
+    serializer_class = ProjectAttachmentsCreateSerializer
 
     def post(self, request, project_id, format=None):
-        serializer = ProjectAttachmentsSerializer(data=request.data)
+        serializer = ProjectAttachmentsCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
@@ -125,6 +130,10 @@ class ProjectAttachmentsStandalone(views.APIView):
         attachment = get_object_or_404(ProjectAttachment, id=pk)
         attachment.delete()
         return Response(status=204)
+
+    def get_queryset(self):
+        queryset = ProjectAttachment.objects.all()
+        return queryset
 
 
 class ProjectPartsStandalone(views.APIView):

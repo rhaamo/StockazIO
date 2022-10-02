@@ -102,13 +102,13 @@ const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`;
 const PROJECT_ATTACHMENTS_CREATE = (projectId) =>
   `/api/v1/projects/${projectId}/attachments/`;
 const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) =>
-  `/api/v1/projects/${projectId}/attachments/${pk}`; // no final /
+  `/api/v1/projects/${projectId}/attachments/${pk}/`;
 const PROJECT_PARTS_CREATE = (projectId) =>
   `/api/v1/projects/${projectId}/parts/`;
 const PROJECT_PARTS_UPDATE = (projectId, pk) =>
-  `/api/v1/projects/${projectId}/parts/${pk}`; // no final /
+  `/api/v1/projects/${projectId}/parts/${pk}/`;
 const PROJECT_PARTS_DELETE = (projectId, pk) =>
-  `/api/v1/projects/${projectId}/parts/${pk}`; // no final /
+  `/api/v1/projects/${projectId}/parts/${pk}/`;
 const PROJECT_EXPORT_INFOS_TXT = (projectId) =>
   `/api/v1/projects/${projectId}/exports/infos.txt`;
 const PROJECT_EXPORT_BOM_CSV = (projectId) =>
