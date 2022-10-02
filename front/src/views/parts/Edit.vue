@@ -542,10 +542,6 @@ export default {
   data: () => ({
     submitted: false,
     part: null,
-    breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Edit part" }],
-    },
     form: {
       name: "",
       description: "",
@@ -636,6 +632,24 @@ export default {
     }),
     partId() {
       return this.$route.params.partId;
+    },
+    breadcrumb() {
+      let bc = {
+        home: { icon: "pi pi-home", to: "/" },
+        items: [
+          {
+            label: "Edit part",
+            to: { name: "parts-edit", params: { partId: this.partId } },
+          },
+        ],
+      };
+      if (this.part) {
+        bc.items.push({
+          label: this.part.name,
+          to: { name: "parts-details", params: { partId: this.partId } },
+        });
+      }
+      return bc;
     },
   },
   validations: {

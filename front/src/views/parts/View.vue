@@ -289,7 +289,7 @@
                       slotProps.data.picture && slotProps.data.picture_medium
                     "
                   >
-                    <i class="fa fa-picture-o"></i>
+                    <i class="fa fa-picture-o mr-1"></i>
                     <a :href="slotProps.data.picture">{{
                       stripPathFromFileUrl(slotProps.data.picture)
                     }}</a>
