@@ -24,14 +24,7 @@
         <template #empty> No projects found. </template>
 
         <template #header>
-          <div class="grid">
-            <div class="col-2">
-              <Button
-                label="Add a project"
-                @click.prevent="showAddProjectModal"
-              />
-            </div>
-          </div>
+          <Button label="Add a project" @click.prevent="showAddProjectModal" />
         </template>
 
         <Column

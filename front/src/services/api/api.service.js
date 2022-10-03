@@ -519,8 +519,8 @@ const updatePartialOrderImporter = (id, data) => {
   return Axios.patch(ORDERS_IMPORTER_UPDATE(id), data);
 };
 
-const getOrdersImporter = () => {
-  return Axios.get(ORDERS_IMPORTER_LIST);
+const getOrdersImporter = (params) => {
+  return Axios.get(ORDERS_IMPORTER_LIST, { params: params });
 };
 
 const importOrderToInventory = (id) => {
