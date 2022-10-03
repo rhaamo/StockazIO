@@ -107,8 +107,6 @@
 import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
-import ManageProjectModal from "@/components/project/Form.vue";
-import { h } from "vue";
 import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
@@ -134,7 +132,7 @@ export default {
   }),
   computed: {
     ...mapState(useServerStore, {
-      perPage: (store) => store.settings.pagination.PROJECTS || 20,
+      perPage: (store) => store.settings.pagination.ORDERS_IMPORTER || 20,
     }),
   },
   mounted() {
@@ -177,30 +175,6 @@ export default {
     onSort(event) {
       this.lazyParams = event;
       this.loadLazyData();
-    },
-    showAddProjectModal() {
-      this.$dialog.open(ManageProjectModal, {
-        props: {
-          modal: true,
-          style: {
-            width: "25vw",
-          },
-        },
-        templates: {
-          header: () => {
-            return [h("h3", [h("span", "Add a project")])];
-          },
-        },
-        data: {
-          mode: "add",
-        },
-        onClose: (options) => {
-          if (options.data && options.data.finished) {
-            // reload projects
-            this.loadLazyData();
-          }
-        },
-      });
     },
     formatDate(date) {
       return date ? dateFnsFormat(dateFnsParseISO(date), "E d MMM yyyy") : "";
