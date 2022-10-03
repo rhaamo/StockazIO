@@ -19,7 +19,7 @@ import Distributors from "@/views/distributors/List.vue";
 import Manufacturers from "@/views/manufacturers/List.vue";
 import ViewInfos from "@/views/Infos.vue";
 import ViewStorageTree from "@/views/storages/ReadOnlyList.vue";
-import OrdersCategoryMatchers from "@/views/About.vue";
+import OrdersCategoryMatchers from "@/views/orders_importer/CategoryMatchers.vue";
 import OrdersImporter from "@/views/orders_importer/List.vue";
 import OrdersImporterDetails from "@/views/About.vue";
 import ProjectsList from "@/views/projects/List.vue";

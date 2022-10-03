@@ -21,10 +21,9 @@
         <template #empty> No orders found. </template>
 
         <template #header>
-          <Button
-            label="Manage category matchers"
-            @click.prevent="showAddProjectModal"
-          />
+          <router-link :to="{ name: 'orders-importer-category-matcher' }">
+            <Button label="Manage category matchers"
+          /></router-link>
         </template>
 
         <Column
