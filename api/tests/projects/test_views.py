@@ -1,14 +1,16 @@
 from django.urls import reverse
 
 
-def test_anonymous_cannot_get_projects(api_client, db, factories):
-    factories["project.Project"](public=True)
+def test_anonymous_can_get_public_projects(api_client, db, factories):
+    pp = factories["project.Project"](public=True)
     factories["project.Project"](public=False)
 
     url = reverse("api:v1:projects:Projects-list")
     response = api_client.get(url)
 
-    assert response.status_code == 401
+    assert response.status_code == 200
+    assert len(response.data) == 1
+    assert response.data[0]["name"] == pp.name
 
 
 def test_logged_in_can_get_projects(logged_in_api_client, db, factories):
@@ -28,7 +30,18 @@ def test_anonymous_cannot_get_private_project(api_client, db, factories):
     url = reverse("api:v1:projects:Projects-detail", kwargs={"pk": project.id})
     response = api_client.get(url)
 
-    assert response.status_code == 401
+    assert response.status_code == 404
+
+
+def test_anonymous_can_get_public_project(api_client, db, factories):
+    project = factories["project.Project"](public=True)
+
+    url = reverse("api:v1:projects:Projects-detail", kwargs={"pk": project.id})
+    response = api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data["id"] == project.id
+    assert response.data["name"] == project.name
 
 
 def test_logged_in_can_get_private_project(logged_in_api_client, db, factories):

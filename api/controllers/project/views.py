@@ -38,12 +38,12 @@ class ProjectsViewSet(ModelViewSet):
 
     anonymous_policy = True
     required_scope = {
-        "retrieve": "read",
+        "retrieve": None,
         "create": "write",
         "destroy": "write",
         "update": "write",
         "partial_update": "write",
-        "list": "read",
+        "list": None,
     }
     filter_backends = [filters.SearchFilter]
     pagination_class = PrimeVuePagination
@@ -100,6 +100,10 @@ class ProjectsViewSet(ModelViewSet):
             else:
                 # -1
                 queryset = queryset.order_by(f"-{sortField}")
+
+        # And finally, auth
+        if self.request.user.is_anonymous:
+            queryset = queryset.filter(public=True)
 
         return queryset
 
