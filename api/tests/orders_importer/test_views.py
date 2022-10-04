@@ -54,9 +54,10 @@ def test_anonymous_cannot_create_orders(api_client, db):
     assert response.status_code == 401
 
 
-def test_logged_in_can_create_orders(logged_in_api_client, db, factories):
+def test_logged_in_can_create_order_no_item(logged_in_api_client, db, factories):
     url = reverse("api:v1:orders_importer:OrdersImporter-list")
-    response = logged_in_api_client.post(url, {"date": "2022-09-11T01:33:03Z", "order_number": "foo-bar-4242"})
+    order = {"date": "2022-09-11T01:33:03Z", "order_number": "foo-bar-4242", "items": []}
+    response = logged_in_api_client.post(url, order, format="json")
 
     assert response.status_code == 201
 
@@ -74,6 +75,38 @@ def test_logged_in_can_create_orders(logged_in_api_client, db, factories):
     assert response.data["items"][0]["vendor_part_number"] == item1.vendor_part_number
 
 
+def test_logged_in_can_create_order_with_item(logged_in_api_client, db, factories):
+    url = reverse("api:v1:orders_importer:OrdersImporter-list")
+    order = {
+        "date": "2022-09-11T01:33:03Z",
+        "order_number": "foo-bar-4242",
+        "items": [
+            {
+                "vendor_part_number": "aaa",
+                "mfr_part_number": "bbb",
+                "description": "foo bar",
+                "manufacturer": "baz",
+            }
+        ],
+    }
+    response = logged_in_api_client.post(url, order, format="json")
+
+    assert response.status_code == 201
+
+    # check again (exists)
+    url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": response.data["id"]})
+    response = logged_in_api_client.get(url)
+    assert response.status_code == 200
+    assert response.data["date"] == "2022-09-11T01:33:03Z"
+    assert response.data["order_number"] == "foo-bar-4242"
+    assert response.data["status"] in ["UNKNOWN", "Unknown", "Fetched", "Imported", "Error"]
+    assert response.data["import_state"] in [0, 1, 2, 99]
+    assert len(response.data["items"]) == 1
+    assert response.data["items"][0]["vendor_part_number"] == "aaa"
+    assert response.data["items"][0]["mfr_part_number"] == "bbb"
+    assert response.data["items"][0]["manufacturer"] == "baz"
+
+
 def test_anonymous_cannot_edit_order(api_client, db, factories):
     distributor = factories["distributor.Distributor"]()
     order1 = factories["OrdersImporter.Order"](vendor_db=distributor)
@@ -87,15 +120,28 @@ def test_anonymous_cannot_edit_order(api_client, db, factories):
 def test_logged_in_can_edit_order(logged_in_api_client, db, factories):
     distributor = factories["distributor.Distributor"]()
     order1 = factories["OrdersImporter.Order"](vendor_db=distributor)
+    order = {
+        "order_number": 42,
+        "date": order1.date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "items": [
+            {
+                "vendor_part_number": "aaa",
+                "mfr_part_number": "bbb",
+                "description": "foo bar",
+                "manufacturer": "baz",
+            }
+        ],
+    }
 
     url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
-    response = logged_in_api_client.put(url, {"order_number": 42, "date": order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")})
+    response = logged_in_api_client.put(url, order, format="json")
 
     assert response.status_code == 200
     assert response.data["order_number"] == "42"
     assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
     assert response.data["status"] == order1.status
     assert response.data["import_state"] == order1.import_state
+    assert len(response.data["items"]) == 1
 
 
 def test_anonymous_cannot_patch_edit_order(api_client, db, factories):
@@ -111,6 +157,8 @@ def test_anonymous_cannot_patch_edit_order(api_client, db, factories):
 def test_logged_in_can_patch_edit_order(logged_in_api_client, db, factories):
     distributor = factories["distributor.Distributor"]()
     order1 = factories["OrdersImporter.Order"](vendor_db=distributor)
+    factories["OrdersImporter.Item"](order_id=order1.id)
+    factories["OrdersImporter.Item"](order_id=order1.id)
 
     url = reverse("api:v1:orders_importer:OrdersImporter-detail", kwargs={"pk": order1.id})
     response = logged_in_api_client.patch(url, {"order_number": 69})
@@ -120,6 +168,7 @@ def test_logged_in_can_patch_edit_order(logged_in_api_client, db, factories):
     assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
     assert response.data["status"] == order1.status
     assert response.data["import_state"] == order1.import_state
+    assert len(response.data["items"]) == 2
 
 
 def test_logged_in_can_delete_order(logged_in_api_client, factories):

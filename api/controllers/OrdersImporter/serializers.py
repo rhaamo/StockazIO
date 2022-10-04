@@ -38,7 +38,6 @@ class ItemCreateSerializer(serializers.ModelSerializer):
             "manufacturer",
             "description",
             "quantity",
-            "order",
             "category",
             "ignore",
             "manufacturer_db",

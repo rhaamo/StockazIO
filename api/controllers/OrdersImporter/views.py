@@ -26,6 +26,7 @@ class PrimeVuePagination(LimitOffsetPagination):
     limit_query_param = "rows"
     offset_query_param = "first"
 
+
 class OrderViewSet(ModelViewSet):
     """
     Orders importer
