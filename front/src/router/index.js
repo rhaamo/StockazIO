@@ -21,7 +21,7 @@ import ViewInfos from "@/views/Infos.vue";
 import ViewStorageTree from "@/views/storages/ReadOnlyList.vue";
 import OrdersCategoryMatchers from "@/views/orders_importer/CategoryMatchers.vue";
 import OrdersImporter from "@/views/orders_importer/List.vue";
-import OrdersImporterDetails from "@/views/About.vue";
+import OrdersImporterDetails from "@/views/orders_importer/Details.vue";
 import ProjectsList from "@/views/projects/List.vue";
 import ProjectsDetails from "@/views/projects/Details.vue";
 import StoragesList from "@/views/storages/List.vue";
