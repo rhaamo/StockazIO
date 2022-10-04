@@ -73,7 +73,11 @@
         >
         </Column>
 
-        <Column header="Vendor" :sortable="true" field="vendor_db"> </Column>
+        <Column header="Vendor" :sortable="true" field="vendor_db">
+          <template #body="slotProps">
+            {{ slotProps.data.vendor_db ? slotProps.data.vendor_db.name : "" }}
+          </template>
+        </Column>
 
         <Column
           header="Import state"
@@ -93,7 +97,11 @@
               class="p-button-primary"
               v-tooltip="'import'"
               label="import"
-              @click.prevent="editItem($event, slotProps.data)"
+              @click.prevent="importOrder($event, slotProps.data)"
+              :disabled="
+                slotProps.data.import_state === 2 ||
+                slotProps.data.import_state === 99
+              "
             ></Button>
           </template>
         </Column>
@@ -186,6 +194,60 @@ export default {
         99: "Error",
       };
       return states[state];
+    },
+    reloadCategories() {
+      apiService
+        .getCategories()
+        .then((val) => {
+          this.preloadsStore.setCategories(val.data[0]);
+          this.preloadsStore.setLastUpdate("categories", new Date());
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Categories",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error fetching categories", err);
+        });
+    },
+    importOrder(event, order) {
+      this.confirm.require({
+        message: `Don't forget to edit it for categories and other fields.`,
+        header: `Importing order '${order.order_number}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .importOrderToInventory(order.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Importing order",
+                detail: "Success",
+                life: 5000,
+              });
+              this.loading = true;
+              this.loadLazyData();
+              // reload for categories count after import
+              this.reloadCategories();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Importing order",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with order import", err);
+              this.loading = true;
+              this.loadLazyData();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
   },
 };

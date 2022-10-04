@@ -47,6 +47,8 @@ class OrderViewSet(ModelViewSet):
             return OrderListSerializer
         elif self.action in ["retrieve"]:
             return OrderSerializer
+        elif self.action in ["update", "partial_update"]:
+            return OrderCreateSerializer
         else:
             return OrderCreateSerializer
 

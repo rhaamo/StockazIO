@@ -43,6 +43,7 @@ import FileUpload from "primevue/fileupload";
 import Textarea from "primevue/textarea";
 import Listbox from "primevue/listbox";
 import DataView from "primevue/dataview";
+import Message from "primevue/message";
 
 import router from "@/router";
 
@@ -113,6 +114,7 @@ app.component("FileUpload", FileUpload);
 app.component("Textarea", Textarea);
 app.component("Listbox", Listbox);
 app.component("DataView", DataView);
+app.component("Message", Message);
 
 app.directive("tooltip", Tooltip);
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, Item, CategoryMatcher
+from controllers.OrdersImporter.models import Order, Item, CategoryMatcher
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.distributor.serializers import DistributorsSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
@@ -68,12 +68,11 @@ class OrderListSerializer(WritableNestedModelSerializer):
 
 
 class OrderCreateSerializer(WritableNestedModelSerializer):
-    # items = ItemCreateSerializer(many=True, read_only=False)
+    items = ItemCreateSerializer(many=True, read_only=False)
 
     class Meta:
         model = Order
-        # fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items", "vendor_db")
-        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "vendor_db")
+        fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items", "vendor_db")
 
 
 class CategoryMatcherCreateSerializer(serializers.ModelSerializer):
