@@ -2,8 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import parsers
 
 from controllers.manufacturer.models import Manufacturer
-from controllers.manufacturer.serializers import ManufacturersSerializer, ManufacturersCreateSerializer
-
+from controllers.manufacturer.serializers import ManufacturersSerializer
 
 class ManufacturersViewSet(ModelViewSet):
     """
@@ -21,12 +20,9 @@ class ManufacturersViewSet(ModelViewSet):
     }
 
     def get_serializer_class(self):
-        if self.action in ["create"]:
-            return ManufacturersCreateSerializer
-        else:
-            return ManufacturersSerializer
+        return ManufacturersSerializer
 
-    parse_classes = [parsers.MultiPartParser]
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser)
 
     def get_queryset(self):
         queryset = Manufacturer.objects.all()

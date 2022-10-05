@@ -37,21 +37,9 @@
         <Column field="name" header="Name" :sortable="true">
           <template #body="slotProps">
             {{ slotProps.data.name }}
-            <template
-              v-if="
-                slotProps.data.parts_manufacturers_alias &&
-                slotProps.data.parts_manufacturers_alias.length
-              "
-            >
+            <template v-if="slotProps.data.aliases">
               <br />
-              <small
-                >aliases:
-                {{
-                  slotProps.data.parts_manufacturers_alias
-                    .map((x) => x.alias)
-                    .join(", ")
-                }}</small
-              >
+              <small>aliases: {{ slotProps.data.aliases }}</small>
             </template>
           </template>
         </Column>

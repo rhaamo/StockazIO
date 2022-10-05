@@ -194,7 +194,7 @@ export default {
             value: x.id,
             text: x.name,
             datasheet_url: x.datasheet_url,
-            aliases: x.parts_manufacturers_alias.map((y) => y.alias),
+            aliases: x.aliases.split(",").map((x) => x.trim()),
           };
         }),
       choicesCategory: (store) => {
@@ -257,6 +257,9 @@ export default {
                 text: this.order.items[i].manufacturer_db.name,
                 datasheet_url:
                   this.order.items[i].manufacturer_db.datasheet_url,
+                aliases: this.order.items[i].manufacturer_db.aliases
+                  .split(",")
+                  .map((x) => x.trim()),
               };
             }
           }

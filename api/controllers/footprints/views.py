@@ -2,8 +2,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import parsers, mixins
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
-from .models import FootprintCategory, Footprint
-from .serializers import FootprintCategorySerializer, FootprintCategoryTreeSerializer, FootprintSerializer
+from controllers.footprints.models import FootprintCategory, Footprint
+from controllers.footprints.serializers import FootprintCategorySerializer, FootprintCategoryTreeSerializer, FootprintSerializer
 
 
 @extend_schema(
@@ -79,7 +79,7 @@ class FootprintViewSet(
         "list": "read",
     }
     serializer_class = FootprintSerializer
-    parse_classes = [parsers.MultiPartParser]
+    parser_classes = [parsers.FormParser, parsers.MultiPartParser]
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)

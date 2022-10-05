@@ -33,6 +33,7 @@ class Manufacturer(models.Model):
     logo_medium = ImageSpecField(
         source="logo", processors=[ResizeToFill(400, 400, upscale=False)], format="JPEG", options={"quality": 80}
     )
+    aliases = models.CharField(_("aliases"), max_length=255, blank=True, unique=False, help_text=_("Aliases"))
 
     class Meta(object):
         ordering = ("name",)
@@ -41,19 +42,6 @@ class Manufacturer(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ManufacturerAlias(models.Model):
-    alias = models.CharField(_("alias"), max_length=255, blank=False, null=False)
-
-    manufacturer = models.ForeignKey(
-        Manufacturer, related_name="parts_manufacturers_alias", blank=False, null=False, on_delete=models.CASCADE
-    )
-
-    class Meta(object):
-        ordering = ("alias",)
-        verbose_name = _("Manufacturer alias")
-        verbose_name_plural = _("Manufacturers aliases")
 
 
 class PartManufacturer(models.Model):

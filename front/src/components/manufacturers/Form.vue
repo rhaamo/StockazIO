@@ -288,6 +288,9 @@
                   'w-10': true,
                 }"
               />
+              <br />
+              You can uses the following template in the datasheet url:<br />
+              {sku}, {sku_lower}, {sku_upper}
               <small
                 v-if="
                   (v$.item.datasheet_url.$invalid && submitted) ||
@@ -295,6 +298,7 @@
                 "
                 class="p-error"
               >
+                <br />
                 {{ v$.item.datasheet_url.url.$message }}
                 <template
                   v-if="
@@ -306,9 +310,37 @@
               </small>
             </div>
 
-            <div class="col-6 pt-5">
-              You can uses the following template in the datasheet url:<br />
-              {sku}, {sku_lower}, {sku_upper}
+            <div class="col-6">
+              <label
+                for="aliases"
+                :class="{
+                  block: true,
+                  'p-error': v$.item.aliases.$invalid && submitted,
+                  'w-10': true,
+                  'mt-3': true,
+                }"
+                >Aliases (comma separated values)</label
+              >
+              <InputText
+                ref="aliases"
+                inputId="aliases"
+                type="text"
+                v-model="item.aliases"
+                placeholder="aliases"
+                :class="{
+                  'p-invalid': v$.item.aliases.$invalid && submitted,
+                  'w-full': true,
+                }"
+              />
+              <small
+                v-if="
+                  (v$.item.aliases.$invalid && submitted) ||
+                  v$.item.aliases.$pending.$response
+                "
+                class="p-error"
+                ><br />
+                {{ v$.item.aliases.maxLength.$message }}
+              </small>
             </div>
 
             <div class="col-6">
@@ -344,6 +376,7 @@ export default {
       fax: "",
       logo: null,
       datasheet_url: "",
+      aliases: "",
     },
     submitted: false,
   }),
@@ -365,6 +398,7 @@ export default {
         fax: this.dialogRef.data.item.fax,
         hasLogo: this.dialogRef.data.item.logo,
         datasheet_url: this.dialogRef.data.item.datasheet_url,
+        aliases: this.dialogRef.data.item.aliases,
       };
     }
   },
@@ -379,6 +413,7 @@ export default {
       phone: { maxLength: maxLength(255) },
       fax: { maxLength: maxLength(255) },
       logo: {},
+      aliases: { maxLength: maxLength(255) },
     },
   },
   computed: {
@@ -416,6 +451,7 @@ export default {
         fax: this.item.fax,
         logo: this.item.realLogo,
         datasheet_url: this.item.datasheet_url,
+        aliases: this.item.aliases,
       };
 
       apiService
@@ -450,6 +486,7 @@ export default {
         phone: this.item.phone,
         fax: this.item.fax,
         datasheet_url: this.item.datasheet_url,
+        aliases: this.item.aliases,
       };
 
       if (this.item.realLogo) {
@@ -480,6 +517,14 @@ export default {
     },
     logoFileChanged(files) {
       this.item.realLogo = files[0];
+    },
+    addAlias(event) {
+      this.item.parts_manufacturers_alias.push({
+        alias: "",
+      });
+    },
+    deleteAlias(event, idx) {
+      this.item.parts_manufacturers_alias.splice(idx, 1);
     },
   },
 };

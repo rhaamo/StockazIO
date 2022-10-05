@@ -354,61 +354,15 @@ const getManufacturers = () => {
 };
 
 const createManufacturer = (data) => {
-  let formData = new FormData();
-  if (data.name) {
-    formData.append("name", data.name);
-  }
-  if (data.address) {
-    formData.append("address", data.address);
-  }
-  if (data.url) {
-    formData.append("url", data.url);
-  }
-  if (data.email) {
-    formData.append("email", data.email);
-  }
-  if (data.comment) {
-    formData.append("comment", data.comment);
-  }
-  if (data.phone) {
-    formData.append("phone", data.phone);
-  }
-  if (data.fax) {
-    formData.append("fax", data.fax);
-  }
-  if (data.logo && data.logo instanceof File) {
-    formData.append("logo", data.logo);
-  }
-  return Axios.post(MANUFACTURERS_CREATE, formData);
+  return Axios.post(MANUFACTURERS_CREATE, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 const updateManufacturer = (id, data) => {
-  let formData = new FormData();
-  if (data.name) {
-    formData.append("name", data.name);
-  }
-  if (data.address) {
-    formData.append("address", data.address);
-  }
-  if (data.url) {
-    formData.append("url", data.url);
-  }
-  if (data.email) {
-    formData.append("email", data.email);
-  }
-  if (data.comment) {
-    formData.append("comment", data.comment);
-  }
-  if (data.phone) {
-    formData.append("phone", data.phone);
-  }
-  if (data.fax) {
-    formData.append("fax", data.fax);
-  }
-  if (data.logo && data.logo instanceof File) {
-    formData.append("logo", data.logo);
-  }
-  return Axios.put(MANUFACTURERS_UPDATE(id), formData);
+  return Axios.put(MANUFACTURERS_UPDATE(id), data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 const deleteManufacturer = (id) => {
