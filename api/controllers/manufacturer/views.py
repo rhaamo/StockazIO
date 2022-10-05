@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import parsers
 
-from .models import Manufacturer
-from .serializers import ManufacturersSerializer
+from controllers.manufacturer.models import Manufacturer
+from controllers.manufacturer.serializers import ManufacturersSerializer, ManufacturersCreateSerializer
 
 
 class ManufacturersViewSet(ModelViewSet):
@@ -19,7 +19,13 @@ class ManufacturersViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    serializer_class = ManufacturersSerializer
+
+    def get_serializer_class(self):
+        if self.action in ["create"]:
+            return ManufacturersCreateSerializer
+        else:
+            return ManufacturersSerializer
+
     parse_classes = [parsers.MultiPartParser]
 
     def get_queryset(self):

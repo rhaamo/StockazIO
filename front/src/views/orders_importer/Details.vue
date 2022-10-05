@@ -170,7 +170,7 @@ export default {
     loading: true,
     fuse_options: {
       includeScore: true,
-      keys: ["text"],
+      keys: ["text", "aliases"],
     },
     manufacturers_matched: false,
   }),
@@ -190,7 +190,12 @@ export default {
         }),
       choicesManufacturers: (store) =>
         store.manufacturers.map((x) => {
-          return { value: x.id, text: x.name, datasheet_url: x.datasheet_url };
+          return {
+            value: x.id,
+            text: x.name,
+            datasheet_url: x.datasheet_url,
+            aliases: x.parts_manufacturers_alias.map((y) => y.alias),
+          };
         }),
       choicesCategory: (store) => {
         const cb = (e) => {

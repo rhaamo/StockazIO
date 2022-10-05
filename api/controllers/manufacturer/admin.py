@@ -1,9 +1,14 @@
 from django.contrib import admin
-from .models import Manufacturer
+from controllers.manufacturer.models import Manufacturer, ManufacturerAlias
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 from config.admin import CommonAdmin
 
+
+class AliasesInLine(admin.TabularInline):
+    model = ManufacturerAlias
+    extra = 1
+    autocomplete_fields = ["manufacturer"]
 
 class ManufacturerAdmin(CommonAdmin):
     list_display = (
@@ -19,6 +24,7 @@ class ManufacturerAdmin(CommonAdmin):
         "fax",
     )
     search_fields = ("name",)
+    inlines = [AliasesInLine]
 
     def get_logo(self, obj):
         if obj.logo:

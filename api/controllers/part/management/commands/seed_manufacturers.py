@@ -1,7 +1,7 @@
 import yaml
 from os import path
 from django.core.management.base import BaseCommand
-from controllers.manufacturer.models import Manufacturer
+from controllers.manufacturer.models import Manufacturer, ManufacturerAlias
 from django.conf import settings
 
 
@@ -21,6 +21,14 @@ class Command(BaseCommand):
         for name in manufacturers:
             try:
                 man = Manufacturer.objects.get(name=name)
+                # also check for aliases
+                if manufacturers[name]:
+                    if "aliases" in manufacturers[name]:
+                        aliases = [x.alias for x in man.parts_manufacturers_alias.all()]
+                        for alias in manufacturers[name]["aliases"]:
+                            if alias not in aliases:
+                                x = ManufacturerAlias(alias=alias, manufacturer=man)
+                                x.save()
             except Manufacturer.DoesNotExist:
                 man = Manufacturer(name=name)
 

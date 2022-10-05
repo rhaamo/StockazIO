@@ -17,3 +17,13 @@ class ManufacturerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "manufacturer.Manufacturer"
         django_get_or_create = ("name",)
+
+
+@registry.register
+class ManufacturerAliasFactory(factory.django.DjangoModelFactory):
+    alias = factory.Faker("name")
+    manufacturer = factory.SubFactory(ManufacturerFactory)
+
+    class Meta:
+        model = "manufacturer.ManufacturerAlias"
+        django_get_or_create = ("alias",)

@@ -43,6 +43,19 @@ class Manufacturer(models.Model):
         return self.name
 
 
+class ManufacturerAlias(models.Model):
+    alias = models.CharField(_("alias"), max_length=255, blank=False, null=False)
+
+    manufacturer = models.ForeignKey(
+        Manufacturer, related_name="parts_manufacturers_alias", blank=False, null=False, on_delete=models.CASCADE
+    )
+
+    class Meta(object):
+        ordering = ("alias",)
+        verbose_name = _("Manufacturer alias")
+        verbose_name_plural = _("Manufacturers aliases")
+
+
 class PartManufacturer(models.Model):
     sku = models.CharField(_("sku id"), max_length=255, blank=False, null=False)
 

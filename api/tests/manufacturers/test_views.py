@@ -44,7 +44,7 @@ def test_anonymous_cannot_create_manufacturers(api_client, db):
 
 def test_logged_in_can_create_manufacturers(logged_in_api_client, db):
     url = reverse("api:v1:manufacturers:Manufacturers-list")
-    response = logged_in_api_client.post(url, {"name": "test manufacturer"})
+    response = logged_in_api_client.post(url, {"name": "test manufacturer", "parts_manufacturers_alias": [{"alias": "foo"}]}, format="json")
 
     assert response.status_code == 201
 
@@ -53,6 +53,8 @@ def test_logged_in_can_create_manufacturers(logged_in_api_client, db):
     assert response.status_code == 200
     assert len(response.data) == 1
     assert response.data[0]["name"] == "test manufacturer"
+    assert response.data[0]["parts_manufacturers_alias"][0]["id"]
+    assert response.data[0]["parts_manufacturers_alias"][0]["alias"] == "foo"
 
 
 def test_logged_in_can_rename_manufacturer(logged_in_api_client, factories):
