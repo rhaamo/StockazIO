@@ -183,18 +183,28 @@ def test_logged_in_can_export_project_bom_csv(logged_in_api_client, db, factorie
     assert part2.part_name in response.content.decode()
 
 
-# TODO add anonymous cannot
-# TODO FIXME
-# def test_logged_in_can_export_project_bom_xlsx(logged_in_api_client, db, factories):
-#     project = factories["project.Project"]()
-#     part1 = factories["project.ProjectPart"](project=project, part_name="foobar")
-#     part2 = factories["project.ProjectPart"](project=project, part_name="bazqux")
+def test_anonymous_cannot_export_project_bom_xlsx(api_client, db, factories):
+    project = factories["project.Project"]()
+    part1 = factories["project.ProjectPart"](project=project, part_name="foobar")
+    part2 = factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-#     url = reverse("api:v1:projects:projects_export_bom_xlsx", kwargs={"project_id": project.id})
-#     response = logged_in_api_client.get(url)
+    url = reverse("api:v1:projects:projects_export_bom_xlsx", kwargs={"project_id": project.id})
+    response = api_client.get(url)
 
-#     assert response.status_code == 200
-#     assert "id,notes,part" in response.content.decode()
+    assert response.status_code == 401
+
+
+def test_logged_in_can_export_project_bom_xlsx(logged_in_api_client, db, factories):
+    project = factories["project.Project"]()
+    part1 = factories["project.ProjectPart"](project=project, part_name="foobar")
+    part2 = factories["project.ProjectPart"](project=project, part_name="bazqux")
+
+    url = reverse("api:v1:projects:projects_export_bom_xlsx", kwargs={"project_id": project.id})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.headers['content-type'].startswith("application/xlsx")
+    assert response.headers['content-disposition'].startswith("attachment; filename=")
 
 
 def test_anonymous_cannot_export_project_infos_txt(api_client, db, factories):

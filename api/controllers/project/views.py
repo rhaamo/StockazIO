@@ -10,6 +10,7 @@ import urllib
 import json
 from drf_spectacular.utils import extend_schema
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.generics import GenericAPIView
 
 from controllers.project.models import Project, ProjectAttachment, ProjectPart
 from controllers.project.serializers import (
@@ -223,7 +224,7 @@ class ExportBomCSV(views.APIView):
         return Response(serializer.data)
 
 
-class ExportBomXLSX(views.APIView):
+class ExportBomXLSX(GenericAPIView):
     """
     Export project BOM (Excel)
     """
@@ -234,6 +235,8 @@ class ExportBomXLSX(views.APIView):
     http_method_names = ["get"]
 
     renderer_classes = [XLSXRenderer]
+
+    serializer_class = ProjectPartSerializer
 
     @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
