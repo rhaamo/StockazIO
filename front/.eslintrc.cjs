@@ -16,7 +16,7 @@ module.exports = {
   },
   rules: {
     "no-unused-vars": ["error", { args: "none" }],
-    "vue/multi-word-component-names": 0,
+    "vue/multi-word-component-names": 1,
     // bleh: https://github.com/vuejs/eslint-plugin-vue/issues/1371
     "vue/no-mutating-props": 0,
   },

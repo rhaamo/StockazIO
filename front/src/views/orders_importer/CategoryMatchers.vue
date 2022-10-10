@@ -18,7 +18,10 @@
 
       <Divider />
 
-      <PvButton label="add matcher" @click.prevent="addCategoryMatcher"></PvButton>
+      <PvButton
+        label="add matcher"
+        @click.prevent="addCategoryMatcher"
+      ></PvButton>
       <PvButton
         label="save matchers"
         class="p-button-success ml-2"

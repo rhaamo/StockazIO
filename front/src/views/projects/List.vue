@@ -24,7 +24,10 @@
         <template #empty> No projects found. </template>
 
         <template #header>
-          <PvButton label="Add a project" @click.prevent="showAddProjectModal" />
+          <PvButton
+            label="Add a project"
+            @click.prevent="showAddProjectModal"
+          />
         </template>
 
         <Column
