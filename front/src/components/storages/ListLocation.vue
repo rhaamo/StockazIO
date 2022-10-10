@@ -18,7 +18,7 @@
           :showCloseIcon="true"
           id="storage_picture"
         >
-          <Image preview width="250" :src="item.picture_medium"></Image>
+          <PvImage preview width="250" :src="item.picture_medium"></PvImage>
         </OverlayPanel>
       </template>
 

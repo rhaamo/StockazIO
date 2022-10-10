@@ -53,7 +53,7 @@
           >
             <Column header="Picture">
               <template #body="slotProps">
-                <Image
+                <PvImage
                   preview
                   :src="slotProps.data.picture_mini"
                   :alt="slotProps.data.picture"

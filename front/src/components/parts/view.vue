@@ -49,7 +49,7 @@
             containerStyle="max-width: 640px"
           >
             <template #item="slotProps">
-              <Image
+              <PvImage
                 preview
                 height="100"
                 :src="slotProps.item.picture"

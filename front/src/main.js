@@ -101,7 +101,7 @@ app.component("Column", Column);
 app.component("TabView", TabView);
 app.component("TabPanel", TabPanel);
 app.component("OverlayPanel", OverlayPanel);
-app.component("Image", Image);
+app.component("PvImage", Image);
 app.component("Inplace", Inplace);
 app.component("Card", Card);
 app.component("DynamicDialog", DynamicDialog);

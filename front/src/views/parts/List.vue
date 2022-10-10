@@ -143,7 +143,7 @@
                       :showCloseIcon="true"
                       :id="`p_a_${slotProps.data.id}`"
                     >
-                      <Image
+                      <PvImage
                         preview
                         width="250"
                         :src="
@@ -420,7 +420,7 @@
                   <template
                     v-if="partGetDefaultAttachment(part.part_attachments)"
                   >
-                    <Image
+                    <PvImage
                       preview
                       :src="
                         partGetDefaultAttachment(part.part_attachments)
