@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import logger from "@/logging";
 import Axios from "axios";
-import { useUserStore } from "@/stores/user";
 
 const REDIRECT_URI = `${window.location.origin}/oauth-callback`;
 

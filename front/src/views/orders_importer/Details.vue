@@ -244,7 +244,7 @@ export default {
           this.order = res.data;
 
           // fix category & manufacturer objects for the dropdown thingy
-          for (const [i, value] of this.order.items.entries()) {
+          for (const [i] of this.order.items.entries()) {
             if (this.order.items[i].category) {
               this.order.items[i].category = {
                 [this.order.items[i].category.id]: true,
@@ -301,7 +301,7 @@ export default {
     fuseMatchManufacturers() {
       let fuse = new Fuse(this.choicesManufacturers, this.fuse_options);
 
-      for (const [i, value] of this.order.items.entries()) {
+      for (const [i] of this.order.items.entries()) {
         if (!this.order.items[i].manufacturer_db) {
           let results = fuse.search(this.order.items[i].manufacturer);
 

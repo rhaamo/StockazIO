@@ -332,7 +332,7 @@
                   </template>
                   <router-link
                     to="#"
-                    @click.native.prevent="deleteAttachment(slotProps.data)"
+                    @click.prevent="deleteAttachment(slotProps.data)"
                   >
                     <i class="fa fa-trash-o" aria-hidden="true" />
                   </router-link>

@@ -35,62 +35,64 @@
             <template #empty> No parts found. </template>
 
             <template #header>
-              <div class="field-checkbox">
-                <Checkbox
-                  inputId="only_qty_less_min"
-                  v-model="filter_qty_min"
-                  :binary="true"
-                />
-                <label for="only_qty_less_min">Only qty &lt; min</label>
-              </div>
-            </template>
-
-            <template #header v-if="selectedParts && selectedParts.length">
-              <Button
-                label="Change category"
-                class="p-button-info"
-                @click="toggleOverlayPanel($event, 'btnChangeCat')"
-              />
-              <OverlayPanel ref="btnChangeCat">
-                <TreeSelect
-                  inputId="category"
-                  placeholder="Film resistors ? MCUs ?"
-                  v-model="bulkEditCategory"
-                  :options="choicesCategory"
-                  selectionMode="single"
-                />
+              <template v-if="selectedParts && selectedParts.length">
                 <Button
-                  label="Save"
-                  class="ml-1"
-                  @click="bulkChangeCategory($event)"
-                ></Button>
-              </OverlayPanel>
-
-              <Button
-                label="Change location"
-                class="p-button-help ml-2"
-                @click="toggleOverlayPanel($event, 'btnChangeLoc')"
-              />
-              <OverlayPanel ref="btnChangeLoc">
-                <TreeSelect
-                  class="p-column-filter"
-                  placeholder="Select storage"
-                  :options="choicesStorageLocation"
-                  selectionMode="single"
-                  v-model="bulkEditStorage"
+                  label="Change category"
+                  class="p-button-info"
+                  @click="toggleOverlayPanel($event, 'btnChangeCat')"
                 />
-                <Button
-                  label="Save"
-                  class="ml-1"
-                  @click="bulkChangeStorageLocation($event)"
-                ></Button>
-              </OverlayPanel>
+                <OverlayPanel ref="btnChangeCat">
+                  <TreeSelect
+                    inputId="category"
+                    placeholder="Film resistors ? MCUs ?"
+                    v-model="bulkEditCategory"
+                    :options="choicesCategory"
+                    selectionMode="single"
+                  />
+                  <Button
+                    label="Save"
+                    class="ml-1"
+                    @click="bulkChangeCategory($event)"
+                  ></Button>
+                </OverlayPanel>
 
-              <Button
-                label="Delete"
-                class="p-button-danger ml-2"
-                @click="deletePartMultiple($event)"
-              />
+                <Button
+                  label="Change location"
+                  class="p-button-help ml-2"
+                  @click="toggleOverlayPanel($event, 'btnChangeLoc')"
+                />
+                <OverlayPanel ref="btnChangeLoc">
+                  <TreeSelect
+                    class="p-column-filter"
+                    placeholder="Select storage"
+                    :options="choicesStorageLocation"
+                    selectionMode="single"
+                    v-model="bulkEditStorage"
+                  />
+                  <Button
+                    label="Save"
+                    class="ml-1"
+                    @click="bulkChangeStorageLocation($event)"
+                  ></Button>
+                </OverlayPanel>
+
+                <Button
+                  label="Delete"
+                  class="p-button-danger ml-2"
+                  @click="deletePartMultiple($event)"
+                />
+              </template>
+
+              <template v-else>
+                <div class="field-checkbox">
+                  <Checkbox
+                    inputId="only_qty_less_min"
+                    v-model="filter_qty_min"
+                    :binary="true"
+                  />
+                  <label for="only_qty_less_min">Only qty &lt; min</label>
+                </div>
+              </template>
             </template>
 
             <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
