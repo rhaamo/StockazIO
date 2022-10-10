@@ -53,8 +53,9 @@
 
       <div class="col-8">
         <div v-if="template && pdf">
-          <PvButton @click.prevent="printPdf" label="Print Labels PDF"></Button
-          ><br />
+          <PvButton @click.prevent="printPdf" label="Print Labels PDF">
+          </PvButton>
+          <br />
           <VuePdfEmbed ref="pdfViewer" :source="pdf" />
         </div>
       </div>

@@ -76,7 +76,7 @@
                             slotProps.data.part_attachments
                           ).picture_medium
                         "
-                      ></Image>
+                      ></PvImage>
                     </OverlayPanel>
                   </template>
                   <a
