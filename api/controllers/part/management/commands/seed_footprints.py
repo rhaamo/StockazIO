@@ -8,9 +8,9 @@ from controllers.footprints.models import Footprint, FootprintCategory
 def save_footprint(fp_realname, db_fp_category, fp_description, picture):
     print(f"Saving {fp_realname!r} in category {db_fp_category.name!r} with description {fp_description!r}")
     try:
-        f = Footprint.objects.get(name=fp_realname, footprint=db_fp_category, description=fp_description)
+        f = Footprint.objects.get(name=fp_realname, category=db_fp_category, description=fp_description)
     except Footprint.DoesNotExist:
-        f = Footprint(name=fp_realname, footprint=db_fp_category, description=fp_description)
+        f = Footprint(name=fp_realname, category=db_fp_category, description=fp_description)
     except Footprint.MultipleObjectsReturned:
         print(f"WARNING: Multiple entries returned for footprint: {fp_realname!r}, skipping")
         return
