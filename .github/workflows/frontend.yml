@@ -30,6 +30,7 @@ jobs:
       run: |
         cd front
         yarn lint --no-fix
+      continue-on-error: true
     - name: Test build
       env:
         NJS: ${{ matrix.node-version }}
