@@ -4,6 +4,7 @@ from rest_framework import parsers
 from controllers.manufacturer.models import Manufacturer
 from controllers.manufacturer.serializers import ManufacturersSerializer
 
+
 class ManufacturersViewSet(ModelViewSet):
     """
     Manufacturer addresses

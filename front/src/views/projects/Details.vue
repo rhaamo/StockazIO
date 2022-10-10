@@ -6,6 +6,15 @@
         <div class="col-6">
           <h3>
             <i v-if="!project.public" class="fa icon-private fa-lock mr-2" />
+            <router-link
+              v-if="project.public"
+              :to="{ name: 'public-projects-details' }"
+            >
+              <i
+                class="fa icon-public fa-globe mr-2"
+                v-tooltip="'public link'"
+              />
+            </router-link>
             {{ project.name }}
           </h3>
         </div>

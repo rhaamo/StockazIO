@@ -24,6 +24,7 @@ import OrdersImporter from "@/views/orders_importer/List.vue";
 import OrdersImporterDetails from "@/views/orders_importer/Details.vue";
 import ProjectsList from "@/views/projects/List.vue";
 import ProjectsDetails from "@/views/projects/Details.vue";
+import PublicProjectsDetails from "@/views/projects/PublicDetails.vue";
 import StoragesList from "@/views/storages/List.vue";
 import LabelTemplatesManage from "@/views/label_templates/Manage.vue";
 import FootprintsManage from "@/views/footprints/Manage.vue";
@@ -183,6 +184,12 @@ const router = createRouter({
       path: "/public/parts/category/:categoryId",
       name: "public-parts-category-list",
       component: PublicPartsList,
+      props: true,
+    },
+    {
+      path: "/public/projects/:projectId",
+      name: "public-projects-details",
+      component: PublicProjectsDetails,
       props: true,
     },
     // Projects

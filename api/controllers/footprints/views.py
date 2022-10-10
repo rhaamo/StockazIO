@@ -3,7 +3,11 @@ from rest_framework import parsers, mixins
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from controllers.footprints.models import FootprintCategory, Footprint
-from controllers.footprints.serializers import FootprintCategorySerializer, FootprintCategoryTreeSerializer, FootprintSerializer
+from controllers.footprints.serializers import (
+    FootprintCategorySerializer,
+    FootprintCategoryTreeSerializer,
+    FootprintSerializer,
+)
 
 
 @extend_schema(

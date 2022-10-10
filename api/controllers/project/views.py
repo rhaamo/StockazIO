@@ -11,6 +11,7 @@ import json
 from drf_spectacular.utils import extend_schema
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny
 
 from controllers.project.models import Project, ProjectAttachment, ProjectPart
 from controllers.project.serializers import (
@@ -174,8 +175,8 @@ class ExportTextInfos(views.APIView):
     Export project infos (text)
     """
 
-    required_scope = "projects"
-    anonymous_policy = False
+    # Auth is handled in get()
+    permission_classes = (AllowAny,)
 
     http_method_names = ["get"]
 
@@ -183,7 +184,10 @@ class ExportTextInfos(views.APIView):
 
     @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
-        project = get_object_or_404(Project, id=project_id)
+        if self.request.user.is_anonymous:
+            project = get_object_or_404(Project, id=project_id, public=True)
+        else:
+            project = get_object_or_404(Project, id=project_id)
         txt = f"""File generated on {datetime.now()}
 
 Name: {project.name}
@@ -205,8 +209,8 @@ class ExportBomCSV(views.APIView):
     Export project BOM (csv)
     """
 
-    required_scope = "projects"
-    anonymous_policy = False
+    # Auth is handled in get()
+    permission_classes = (AllowAny,)
 
     http_method_names = ["get"]
 
@@ -219,7 +223,10 @@ class ExportBomCSV(views.APIView):
 
     @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
-        project = get_object_or_404(Project, id=project_id)
+        if self.request.user.is_anonymous:
+            project = get_object_or_404(Project, id=project_id, public=True)
+        else:
+            project = get_object_or_404(Project, id=project_id)
         serializer = ProjectPartSerializer(project.project_parts, many=True)
         return Response(serializer.data)
 
@@ -229,8 +236,8 @@ class ExportBomXLSX(GenericAPIView):
     Export project BOM (Excel)
     """
 
-    required_scope = "projects"
-    anonymous_policy = False
+    # Auth is handled in get()
+    permission_classes = (AllowAny,)
 
     http_method_names = ["get"]
 
@@ -240,7 +247,10 @@ class ExportBomXLSX(GenericAPIView):
 
     @extend_schema(responses=bytes)
     def get(self, request, project_id, format=None):
-        project = get_object_or_404(Project, id=project_id)
+        if self.request.user.is_anonymous:
+            project = get_object_or_404(Project, id=project_id, public=True)
+        else:
+            project = get_object_or_404(Project, id=project_id)
         serializer = ProjectPartSerializer(project.project_parts, many=True)
         filename = f"{urllib.parse.quote(project.name)}.xlsx"
         r = Response(serializer.data)

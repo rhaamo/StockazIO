@@ -203,8 +203,8 @@ def test_logged_in_can_export_project_bom_xlsx(logged_in_api_client, db, factori
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
-    assert response.headers['content-type'].startswith("application/xlsx")
-    assert response.headers['content-disposition'].startswith("attachment; filename=")
+    assert response.headers["content-type"].startswith("application/xlsx")
+    assert response.headers["content-disposition"].startswith("attachment; filename=")
 
 
 def test_anonymous_cannot_export_project_infos_txt(api_client, db, factories):
