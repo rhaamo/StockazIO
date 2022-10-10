@@ -85,6 +85,7 @@ export const useUserStore = defineStore("user", {
       });
     },
     checkOauthToken() {
+      // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve, reject) => {
         const oauthStore = useOauthStore();
         if (oauthStore.getUserToken) {

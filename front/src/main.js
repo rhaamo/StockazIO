@@ -111,7 +111,7 @@ app.component("Dropdown", Dropdown);
 app.component("Divider", Divider);
 app.component("ButtonDeleteInline", ButtonDeleteInline);
 app.component("FileUpload", FileUpload);
-app.component("Textarea", Textarea);
+app.component("PvTextarea", Textarea);
 app.component("Listbox", Listbox);
 app.component("DataView", DataView);
 app.component("Message", Message);

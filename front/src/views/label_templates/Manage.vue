@@ -139,7 +139,7 @@
             }"
             >Template</label
           >
-          <Textarea
+          <PvTextarea
             ref="template"
             inputId="template"
             type="text"
@@ -171,7 +171,7 @@
             }"
             >Text Template</label
           >
-          <Textarea
+          <PvTextarea
             ref="text_template"
             inputId="text_template"
             type="text"

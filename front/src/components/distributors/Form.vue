@@ -92,7 +92,7 @@
                 }"
                 >Address</label
               >
-              <Textarea
+              <PvTextarea
                 v-focus
                 ref="address"
                 inputId="address"
@@ -116,7 +116,7 @@
                 }"
                 >Comment</label
               >
-              <Textarea
+              <PvTextarea
                 v-focus
                 ref="comment"
                 inputId="comment"
