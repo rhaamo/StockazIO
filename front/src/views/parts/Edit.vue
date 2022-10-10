@@ -419,7 +419,7 @@
             </div>
 
             <div class="mb-3">
-              <Button
+              <PvButton
                 label="Update"
                 class="p-button-primary"
                 @click.prevent="submit(!v$.$invalid)"
@@ -440,7 +440,7 @@
                 <Divider />
                 <div class="grid">
                   <div class="col-3">
-                    <Button
+                    <PvButton
                       @click.prevent="addPartParameter($event)"
                       class="p-button-help"
                       label="add item"
@@ -457,7 +457,7 @@
                       :filter="true"
                       placeholder="Preset to apply"
                     />
-                    <ButtonDeleteInline
+                    <PvButtonDeleteInline
                       size="p-button-sm"
                       btn-variant-main="p-button-info"
                       btn-variant-ok="p-button-success"
@@ -482,7 +482,7 @@
 
                 <Divider />
                 <div>
-                  <Button
+                  <PvButton
                     @click.prevent="addManufacturer($event)"
                     class="p-button-help"
                     label="add item"
@@ -500,7 +500,7 @@
                 </div>
 
                 <Divider />
-                <Button
+                <PvButton
                   @click.prevent="addDistributor($event)"
                   class="p-button-help"
                   label="add item"

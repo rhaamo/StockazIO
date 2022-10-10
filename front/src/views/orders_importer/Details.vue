@@ -29,10 +29,10 @@
         <template #header>
           <div class="grid">
             <div class="col-1">
-              <Button label="save" @click.prevent="submit" />
+              <PvButton label="save" @click.prevent="submit" />
             </div>
             <div class="col-2">
-              <Button
+              <PvButton
                 label="rematch categories"
                 @click.prevent="rematchCategories"
               />

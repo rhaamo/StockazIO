@@ -33,12 +33,12 @@
               </small>
             </div>
 
-            <Button
+            <PvButton
               label="Request reset link"
               icon="pi pi-user"
               class="w-7"
               type="submit"
-            ></Button>
+            ></PvButton>
           </div>
         </form>
       </div>

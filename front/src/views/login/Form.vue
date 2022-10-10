@@ -75,12 +75,12 @@
               >
             </div>
 
-            <Button
+            <PvButton
               label="Login"
               icon="pi pi-user"
               class="w-4"
               type="submit"
-            ></Button>
+            ></PvButton>
           </div>
         </form>
       </div>

@@ -88,7 +88,7 @@ app.component("ProgressSpinner", ProgressSpinner);
 app.component("Menubar", Menubar);
 app.component("InputText", InputText);
 app.component("InputNumber", InputNumber);
-app.component("Button", Button);
+app.component("PvButton", Button);
 app.component("Password", Password);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Tree", Tree);

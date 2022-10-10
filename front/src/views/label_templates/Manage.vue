@@ -194,7 +194,7 @@
         </div>
 
         <div class="mt-2">
-          <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+          <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
           <template
             v-if="
               this.selectedTemplate &&
@@ -202,7 +202,7 @@
               this.selectedTemplate.id != 0
             "
           >
-            <Button
+            <PvButton
               label="Delete"
               class="p-button-danger ml-2"
               @click.prevent="deleteItem"

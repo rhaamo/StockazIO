@@ -19,23 +19,23 @@
           </h3>
         </div>
         <div class="col-1 col-offset-5">
-          <Button
+          <PvButton
             type="button"
             icon="fa fa-edit"
             class="p-button-primary"
             v-tooltip="'edit'"
             @click.prevent="showEditModal($event)"
           >
-          </Button>
+          </PvButton>
 
-          <Button
+          <PvButton
             type="button"
             icon="fa fa-trash-o"
             class="p-button-danger ml-2"
             v-tooltip="'delete'"
             @click="deleteItem($event)"
           >
-          </Button>
+          </PvButton>
         </div>
       </div>
 
@@ -71,17 +71,17 @@
           <Divider />
 
           <h4>Exports:</h4>
-          <Button
+          <PvButton
             label="Project infos (text)"
             class="p-button-info"
             @click.prevent="exportProject('infos_txt')"
           />
-          <Button
+          <PvButton
             label="BOM (CSV)"
             class="p-button-info ml-2"
             @click.prevent="exportProject('bom_csv')"
           />
-          <Button
+          <PvButton
             label="BOM (Excel)"
             class="p-button-info ml-2"
             @click.prevent="exportProject('bom_xlsx')"
@@ -92,11 +92,11 @@
           <TabView>
             <TabPanel header="Parts">
               <div>
-                <Button
+                <PvButton
                   label="Add part from inventory"
                   @click.prevent="showAddInternalPart($event)"
                 />
-                <Button
+                <PvButton
                   class="p-button-info ml-2"
                   label="Add external part"
                   @click.prevent="showAddExternalPart($event)"
@@ -265,20 +265,20 @@
                 <Column headerStyle="width: 6em">
                   <template #body="slotProps">
                     <span class="p-buttonset">
-                      <Button
+                      <PvButton
                         type="button"
                         icon="fa fa-edit"
                         class="p-button-primary"
                         v-tooltip="'edit'"
                         @click.prevent="showEditPart($event, slotProps.data)"
-                      ></Button>
-                      <Button
+                      ></PvButton>
+                      <PvButton
                         type="button"
                         icon="fa fa-trash-o"
                         class="p-button-danger"
                         v-tooltip="'delete'"
                         @click="deletePart($event, slotProps.data)"
-                      ></Button>
+                      ></PvButton>
                     </span>
                   </template>
                 </Column>
@@ -353,7 +353,7 @@
                   </div>
 
                   <div class="col-1">
-                    <Button label="add" type="submit" />
+                    <PvButton label="add" type="submit" />
                   </div>
                 </div>
               </form>

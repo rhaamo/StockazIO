@@ -420,12 +420,12 @@
 
             <div class="mb-3">
               <!-- save and save add another-->
-              <Button
+              <PvButton
                 label="Save and view"
                 class="p-button-primary"
                 @click.prevent="submit(!v$.$invalid, 'continue')"
               />
-              <Button
+              <PvButton
                 label="Save and add another"
                 class="ml-2 p-button-secondary"
                 @click.prevent="submit(!v$.$invalid, 'add_new')"
@@ -446,7 +446,7 @@
                 <Divider />
                 <div class="grid">
                   <div class="col-3">
-                    <Button
+                    <PvButton
                       @click.prevent="addPartParameter($event)"
                       class="p-button-help"
                       label="add item"
@@ -463,7 +463,7 @@
                       :filter="true"
                       placeholder="Preset to apply"
                     />
-                    <ButtonDeleteInline
+                    <PvButtonDeleteInline
                       size="p-button-sm"
                       btn-variant-main="p-button-info"
                       btn-variant-ok="p-button-success"
@@ -488,7 +488,7 @@
 
                 <Divider />
                 <div>
-                  <Button
+                  <PvButton
                     @click.prevent="addManufacturer($event)"
                     class="p-button-help"
                     label="add item"
@@ -506,7 +506,7 @@
                 </div>
 
                 <Divider />
-                <Button
+                <PvButton
                   @click.prevent="addDistributor($event)"
                   class="p-button-help"
                   label="add item"

@@ -69,7 +69,7 @@
           </small>
 
           <div class="mt-4">
-            <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+            <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
           </div>
         </div>
       </div>

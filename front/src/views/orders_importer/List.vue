@@ -22,7 +22,7 @@
 
         <template #header>
           <router-link :to="{ name: 'orders-importer-category-matcher' }">
-            <Button label="Manage category matchers"
+            <PvButton label="Manage category matchers"
           /></router-link>
         </template>
 
@@ -92,7 +92,7 @@
 
         <Column headerStyle="width: 6em">
           <template #body="slotProps">
-            <Button
+            <PvButton
               type="button"
               class="p-button-primary"
               v-tooltip="'import'"
@@ -102,7 +102,7 @@
                 slotProps.data.import_state === 2 ||
                 slotProps.data.import_state === 99
               "
-            ></Button>
+            ></PvButton>
           </template>
         </Column>
       </DataTable>

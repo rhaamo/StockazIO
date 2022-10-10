@@ -16,7 +16,7 @@
         <template #header>
           <div class="grid">
             <div class="col-2">
-              <Button
+              <PvButton
                 label="Add a parameter unit"
                 @click.prevent="showAddParametersUnitsModal"
               />
@@ -62,20 +62,20 @@
         <Column headerStyle="width: 6em">
           <template #body="slotProps">
             <span class="p-buttonset">
-              <Button
+              <PvButton
                 type="button"
                 icon="fa fa-edit"
                 class="p-button-primary"
                 v-tooltip="'edit'"
                 @click.prevent="editItem($event, slotProps.data)"
-              ></Button>
-              <Button
+              ></PvButton>
+              <PvButton
                 type="button"
                 icon="fa fa-trash-o"
                 class="p-button-danger"
                 v-tooltip="'delete'"
                 @click="deleteItem($event, slotProps.data)"
-              ></Button>
+              ></PvButton>
             </span>
           </template>
         </Column>

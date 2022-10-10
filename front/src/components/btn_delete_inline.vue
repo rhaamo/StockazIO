@@ -1,25 +1,25 @@
 <template>
   <span class="p-buttonset">
-    <Button
+    <PvButton
       :class="(clicked ? 'p-button-secondary' : btnVariantMain) + ' ' + size"
       :disabled="clicked"
       @click.prevent="btnClicked"
       :label="clicked ? btnMainTextDisabled : btnMainText"
     >
-    </Button>
+    </PvButton>
     <template v-if="clicked">
-      <Button
+      <PvButton
         :class="btnVariantOk + ' ' + size"
         @click.prevent="actionConfirmed"
         :label="btnOkText"
       >
-      </Button>
-      <Button
+      </PvButton>
+      <PvButton
         :class="btnVariantCancel + ' ' + size"
         @click.prevent="actionCancelled"
         :label="btnCancelText"
       >
-      </Button>
+      </PvButton>
     </template>
   </span>
 </template>

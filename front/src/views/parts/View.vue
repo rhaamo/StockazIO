@@ -29,21 +29,21 @@
             params: { partId: part.id },
           }"
         >
-          <Button
+          <PvButton
             type="button"
             icon="fa fa-edit"
             class="p-button-primary"
             v-tooltip="'edit'"
-          ></Button>
+          ></PvButton>
         </router-link>
 
-        <Button
+        <PvButton
           type="button"
           icon="fa fa-trash-o"
           class="p-button-danger ml-2"
           v-tooltip="'delete'"
           @click="deletePart($event, part)"
-        ></Button>
+        ></PvButton>
       </div>
     </div>
 
@@ -273,7 +273,7 @@
                 </div>
 
                 <div class="col-1">
-                  <Button label="add" type="submit" />
+                  <PvButton label="add" type="submit" />
                 </div>
               </div>
             </form>

@@ -44,17 +44,17 @@
           <Divider />
 
           <h4>Exports:</h4>
-          <Button
+          <PvButton
             label="Project infos (text)"
             class="p-button-info"
             @click.prevent="exportProject('infos_txt')"
           />
-          <Button
+          <PvButton
             label="BOM (CSV)"
             class="p-button-info ml-2"
             @click.prevent="exportProject('bom_csv')"
           />
-          <Button
+          <PvButton
             label="BOM (Excel)"
             class="p-button-info ml-2"
             @click.prevent="exportProject('bom_xlsx')"

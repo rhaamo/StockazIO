@@ -36,7 +36,7 @@
 
             <template #header>
               <template v-if="selectedParts && selectedParts.length">
-                <Button
+                <PvButton
                   label="Change category"
                   class="p-button-info"
                   @click="toggleOverlayPanel($event, 'btnChangeCat')"
@@ -49,14 +49,14 @@
                     :options="choicesCategory"
                     selectionMode="single"
                   />
-                  <Button
+                  <PvButton
                     label="Save"
                     class="ml-1"
                     @click="bulkChangeCategory($event)"
-                  ></Button>
+                  ></PvButton>
                 </OverlayPanel>
 
-                <Button
+                <PvButton
                   label="Change location"
                   class="p-button-help ml-2"
                   @click="toggleOverlayPanel($event, 'btnChangeLoc')"
@@ -69,14 +69,14 @@
                     selectionMode="single"
                     v-model="bulkEditStorage"
                   />
-                  <Button
+                  <PvButton
                     label="Save"
                     class="ml-1"
                     @click="bulkChangeStorageLocation($event)"
-                  ></Button>
+                  ></PvButton>
                 </OverlayPanel>
 
-                <Button
+                <PvButton
                   label="Delete"
                   class="p-button-danger ml-2"
                   @click="deletePartMultiple($event)"
@@ -246,7 +246,7 @@
                       class="w-3"
                     />
                     <br />
-                    <Button
+                    <PvButton
                       class="mt-1 mr-1"
                       label="update"
                       @click.prevent="
@@ -256,7 +256,7 @@
                           slotProps.data.stock_qty
                         )
                       "
-                    ></Button>
+                    ></PvButton>
                   </template>
                 </Inplace>
               </template>
@@ -300,7 +300,7 @@
                       class="w-3"
                     />
                     <br />
-                    <Button
+                    <PvButton
                       class="mt-1 mr-1"
                       label="update"
                       @click.prevent="
@@ -310,7 +310,7 @@
                           slotProps.data.stock_qty_min
                         )
                       "
-                    ></Button>
+                    ></PvButton>
                   </template>
                 </Inplace> </template
             ></Column>
@@ -366,20 +366,20 @@
                       params: { partId: slotProps.data.id },
                     }"
                   >
-                    <Button
+                    <PvButton
                       type="button"
                       icon="fa fa-edit"
                       class="p-button-primary"
                       v-tooltip="'edit'"
-                    ></Button>
+                    ></PvButton>
                   </router-link>
-                  <Button
+                  <PvButton
                     type="button"
                     icon="fa fa-trash-o"
                     class="p-button-danger"
                     v-tooltip="'delete'"
                     @click="deletePart($event, slotProps.data)"
-                  ></Button>
+                  ></PvButton>
                 </span>
               </template>
             </Column>
@@ -442,10 +442,10 @@
                     {{ part.description }}
                   </div>
                   <div class="product-button">
-                    <Button
+                    <PvButton
                       @click.prevent="viewPartModal(part)"
                       label="View details"
-                    ></Button>
+                    ></PvButton>
                   </div>
                 </div>
               </div>

@@ -116,7 +116,7 @@
     <div class="flex justify-content-center">
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field w-10">
-          <Button label="Save" @click.prevent="submit(!v$.$invalid)" />
+          <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
         </div>
       </div>
     </div>

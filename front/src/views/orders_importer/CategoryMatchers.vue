@@ -18,12 +18,12 @@
 
       <Divider />
 
-      <Button label="add matcher" @click.prevent="addCategoryMatcher"></Button>
-      <Button
+      <PvButton label="add matcher" @click.prevent="addCategoryMatcher"></PvButton>
+      <PvButton
         label="save matchers"
         class="p-button-success ml-2"
         @click.prevent="submit(!v$.$invalid)"
-      ></Button>
+      ></PvButton>
     </div>
   </div>
 </template>

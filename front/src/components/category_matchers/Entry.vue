@@ -53,7 +53,7 @@
       </div>
 
       <div class="col-2">
-        <ButtonDeleteInline
+        <PvButtonDeleteInline
           size="p-button-sm"
           btn-variant-main="p-button-danger"
           btn-variant-ok="p-button-success"

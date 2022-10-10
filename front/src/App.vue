@@ -15,7 +15,7 @@
           <form role="search" @submit.prevent="doSearch">
             <div class="p-inputgroup">
               <InputText v-model="searchTerm" placeholder="Keyword" />
-              <Button type="submit" label="Search" />
+              <PvButton type="submit" label="Search" />
             </div>
           </form>
         </template>

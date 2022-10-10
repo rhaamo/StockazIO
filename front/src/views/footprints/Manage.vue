@@ -15,22 +15,22 @@
 
       <div class="col-6 col-offset-1">
         <div class="mb-4">
-          <Button label="Add category" @click="showAddCategory($event)" />
+          <PvButton label="Add category" @click="showAddCategory($event)" />
 
           <template v-if="selectedCategory">
-            <Button
+            <PvButton
               label="Edit category"
               class="p-button-secondary ml-2"
               @click="showEditCategory($event, selectedCategory)"
             />
 
-            <Button
+            <PvButton
               label="Delete category"
               class="p-button-danger ml-2"
               @click="deleteCategory($event, selectedCategory)"
             />
 
-            <Button
+            <PvButton
               label="Add footprint"
               class="ml-4"
               @click.prevent="showAddFootprint($event)"
@@ -68,20 +68,20 @@
             <Column headerStyle="width: 6em">
               <template #body="slotProps">
                 <span class="p-buttonset">
-                  <Button
+                  <PvButton
                     type="button"
                     icon="fa fa-edit"
                     class="p-button-primary"
                     v-tooltip="'edit'"
                     @click.prevent="showEditFootprint($event, slotProps.data)"
-                  ></Button>
-                  <Button
+                  ></PvButton>
+                  <PvButton
                     type="button"
                     icon="fa fa-trash-o"
                     class="p-button-danger"
                     v-tooltip="'delete'"
                     @click="deleteItem($event, slotProps.data)"
-                  ></Button>
+                  ></PvButton>
                 </span>
               </template>
             </Column>

@@ -73,12 +73,12 @@
               </small>
             </div>
 
-            <Button
+            <PvButton
               label="Change password"
               icon="pi pi-user"
               class="w-7"
               type="submit"
-            ></Button>
+            ></PvButton>
           </div>
         </form>
       </div>

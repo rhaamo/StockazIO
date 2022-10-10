@@ -275,10 +275,10 @@
                     {{ part.description }}
                   </div>
                   <div class="product-button">
-                    <Button
+                    <PvButton
                       @click.prevent="viewPartModal(part)"
                       label="View details"
-                    ></Button>
+                    ></PvButton>
                   </div>
                 </div>
               </div>
