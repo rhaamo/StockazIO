@@ -16,7 +16,7 @@
       </ul>
       <template v-for="item in storages">
         <ListCategory
-          v-if="item.children && item.storage_locations"
+          v-if="item.children"
           :key="item.id"
           :item="item"
           :level="1"
@@ -66,7 +66,6 @@ export default {
         if (e.category) {
           slocs.push(e);
         } else {
-          e.storage_locations.forEach(cb);
           e.children.forEach(cb);
         }
       };
