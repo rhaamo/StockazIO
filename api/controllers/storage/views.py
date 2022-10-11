@@ -41,8 +41,8 @@ class StorageViewSet(ModelViewSet):
                 "children": [serialize(child) for child in children[parent]],
             }
             if parent.picture:
-                d["picture"] = parent.picture.url
-                d["picture_medium"] = parent.picture_medium.url
+                d["picture"] = request.build_absolute_uri(parent.picture.url)
+                d["picture_medium"] = request.build_absolute_uri(parent.picture_medium.url)
             return d
 
         roots = [serialize(root) for root in children[None]]
