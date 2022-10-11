@@ -32,20 +32,21 @@ class StorageViewSet(ModelViewSet):
         for node in Storage.objects.with_tree_fields(False).select_related("parent"):
             children[node.parent].append(node)
 
-        def serialize(parent):
+        def serialize(item, parent_id):
             d = {
-                "id": parent.id,
-                "name": parent.name,
-                "uuid": parent.uuid,
-                "description": parent.description,
-                "children": [serialize(child) for child in children[parent]],
+                "id": item.id,
+                "name": item.name,
+                "uuid": item.uuid,
+                "description": item.description,
+                "parent": parent_id,
+                "children": [serialize(child, item.id) for child in children[item]],
             }
-            if parent.picture:
-                d["picture"] = request.build_absolute_uri(parent.picture.url)
-                d["picture_medium"] = request.build_absolute_uri(parent.picture_medium.url)
+            if item.picture:
+                d["picture"] = request.build_absolute_uri(item.picture.url)
+                d["picture_medium"] = request.build_absolute_uri(item.picture_medium.url)
             return d
 
-        roots = [serialize(root) for root in children[None]]
+        roots = [serialize(root, None) for root in children[None]]
 
         return Response(roots, status=200)
 

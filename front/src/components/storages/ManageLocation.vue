@@ -186,7 +186,7 @@ export default {
   validations: {
     item: {
       name: { required, maxLength: maxLength(200) },
-      parent_id: { required },
+      parent_id: {},
       description: { maxLength: maxLength(255) },
       picture: {},
     },
@@ -199,7 +199,7 @@ export default {
           let obj = {
             key: e.id,
             label: e.name,
-            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+            icon: "fa fa-ellipsis-h",
             children: e.children && e.children.length ? e.children.map(cb) : [],
           };
           // return obj
@@ -242,7 +242,7 @@ export default {
       };
 
       if (this.item.parent_id && !this.item.parent_id.null) {
-        storageLocation.category = Object.keys(this.item.parent_id)[0];
+        storageLocation.parent = Object.keys(this.item.parent_id)[0];
       }
 
       apiService
@@ -273,8 +273,8 @@ export default {
         description: this.item.description,
       };
 
-      if (this.item.parent_id && !this.item.parent_id.null) {
-        storageLocation.category = Object.keys(this.item.parent_id)[0];
+      if (this.item.parent_id && !this.item.parent_id == null) {
+        storageLocation.parent = Object.keys(this.item.parent_id)[0];
       }
 
       if (this.item.realPicture) {

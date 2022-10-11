@@ -66,6 +66,10 @@
             [add sub element]
           </router-link>
         </template>
+        <br />
+        <template v-if="item.description">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }}
+        </template>
       </li>
       <ListItem
         v-for="category in item.children"
@@ -105,7 +109,7 @@ export default {
   }),
   methods: {
     addElementTitle(name) {
-      return `Add sub element under '${name}'`;
+      return `Add element under '${name}'`;
     },
     fetchStorages() {
       logger.default.info("reloading storages");
@@ -166,6 +170,7 @@ export default {
           id: item.id,
           name: item.name,
           parent_id: { [item.parent]: true },
+          picture: item.picture,
           mode: "edit",
         },
         onClose: (options) => {
@@ -183,11 +188,11 @@ export default {
         icon: "fa fa-exclamation-triangle",
         accept: () => {
           apiService
-            .deleteStorageCategory(item.id)
+            .deleteStorageLocation(item.id)
             .then((val) => {
               this.toast.add({
                 severity: "success",
-                summary: "Storage category",
+                summary: "Storage location",
                 detail: "Deleted",
                 life: 5000,
               });
@@ -196,7 +201,7 @@ export default {
             .catch((err) => {
               this.toast.add({
                 severity: "error",
-                summary: "Storage category",
+                summary: "Storage location",
                 detail: "An error occured, please try again later",
                 life: 5000,
               });
