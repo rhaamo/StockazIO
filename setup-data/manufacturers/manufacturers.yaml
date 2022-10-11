@@ -923,6 +923,7 @@ Zoran:
 'Wurth Elektronik':
 'Diodes Incorporated':
 'ON Semiconductor':
+  aliases: ['onsemi']
 'Yageo':
 'Lorlin':
 'KEMET':
@@ -938,6 +939,7 @@ Zoran:
 'Harwin':
 'ABRACON':
 'Osram Opto Semiconductor':
+  aliases: ['ams OSRAM']
 'Taiyo Yuden':
 'Bourns':
 'Xicon':
@@ -962,3 +964,16 @@ Zoran:
 'DB Unlimited':
 'Adesto Technologies':
 'Schaffner':
+'Kyocera AVX':
+'ECS':
+'Linx Technologies':
+'Rubycon':
+'Mill-Max':
+'Neutrik':
+'Adafruit':
+'United Chemi-Con (UCC)':
+'Aavid':
+'Lumex':
+'Omron':
+'Tamura':
+'Apem':

@@ -1,15 +1,20 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import F
+import json
 
 from controllers.categories.models import Category
-from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 from controllers.storage.models import StorageLocation
+from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.pagination import PageNumberPagination
-from rest_framework import filters, views
+from rest_framework import views, mixins
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+from rest_framework import serializers
+from rest_framework import generics
 
 from controllers.part.serializers import (
     PartSerializer,
@@ -33,7 +38,44 @@ class PartParametersPresetsViewSetPagination(PageNumberPagination):
     page_size_query_param = "size"
 
 
+class PrimeVuePagination(LimitOffsetPagination):
+    limit_query_param = "rows"
+    offset_query_param = "first"
+
+
+# Query content:
+# originalEvent {isTrusted: true}
+#               it will also contains {page: 1, first: 20, rows: 20, pageCount: 2} when using the paginator
+#
+# page 0 will have first 0, page 1 first 20 etc. assumming we have a perPage of 20 (we have)
+# first: number  # start at row X
+# rows: number  # of rows to return
+# pageCount: number
+# page: number
+#
+# LimitOffsetPagination will uses rows (limit) and first (offset)
+#
+# filters:
+#  filters={
+#           "name":{"constraints":[{"value":"das","matchMode":"startsWith"}]},
+#           "storage.name":{"constraints":[{"value":null,"matchMode":"equals"}]},
+#           "stock_qty":{"constraints":[{"value":null,"matchMode":"equals"}]},
+#           "footprint.name":{"constraints":[{"value":null,"matchMode":"equals"}]}}
+# due to some weirdness of the "menu" type of datatables, and that we have only *one* constraint, the match and value are in constraints[0]
+# Filtering will change the value to a value and matchMode to wanted one
+# matchMode: startsWith, contains, notContains, endsWith, equals, notEquals, in, between, lt, lte, gt, gte, dateIs, dateIsNot, dateBefore, dateAfter
+# Front can request for fields:
+# name: startsWith, contains, notContains, endsWith, equals, notEquals
+# storage and footprint: equals, notEquals
+# qty: equals, lt, lte, gt, gte
+# Ordering adds a "sortField" with a sortOrder (1 or -1)
+
+
 class PartViewSet(ModelViewSet):
+    """
+    Parts
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -43,10 +85,8 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
-    ordering = ["name"]
-    pagination_class = PartViewSetPagination
+    filter_backends = [SearchFilter]
+    pagination_class = PrimeVuePagination
     lookup_fields = ("id", "uuid")
     # ^starts-with, =exact, @FTS, $regex
     search_fields = [
@@ -70,11 +110,13 @@ class PartViewSet(ModelViewSet):
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
-        footprint_id = self.request.query_params.get("footprint_id", None)
-        storage_id = self.request.query_params.get("storage_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
         qty_type = self.request.query_params.get("qtyType", None)
         sellable = self.request.query_params.get("sellable", None)
+
+        filters = self.request.query_params.get("filters", None)
+        sortField = self.request.query_params.get("sortField", None)
+        sortOrder = self.request.query_params.get("sortOrder", None)
 
         queryset = Part.objects.all()
 
@@ -86,18 +128,11 @@ class PartViewSet(ModelViewSet):
             if category is not None:
                 queryset = queryset.filter(category__in=category)
 
-        if footprint_id in ["0", 0]:
-            queryset = queryset.filter(footprint_id__isnull=True)
-        elif footprint_id:
-            queryset = queryset.filter(footprint_id=footprint_id)
-
-        if storage_id in ["0", 0]:
-            queryset = queryset.filter(storage_id__isnull=True)
-        elif storage_id:
-            queryset = queryset.filter(storage_id=storage_id)
-
         if storage_uuid:
             queryset = queryset.filter(storage__uuid=storage_uuid)
+
+        if sellable:
+            queryset = queryset.filter(can_be_sold=True)
 
         if qty_type == "qty":
             queryset = queryset.filter(stock_qty=0)
@@ -105,8 +140,48 @@ class PartViewSet(ModelViewSet):
         if qty_type == "qtyMin":
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
-        if sellable:
-            queryset = queryset.filter(can_be_sold=True)
+        # Filtering
+        if filters:
+            filters = json.loads(filters)
+            for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
+                # not implemented: in, between, and dates
+                if filters[field]["value"] is not None:
+                    # if field = (storage_id|footprint_id) and value == 0
+                    if (field == "storage_id" or field == "footprint_id") and int(filters[field]["value"]) == 0:
+                        # They need to have 0 handled properly
+                        if filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{f"{field}__isnull": True})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{f"{field}__isnull": True})
+                    else:
+                        # any other field or value != 0 (for storage and footprint)
+                        if filters[field]["matchMode"] == "startsWith":
+                            queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "contains":
+                            queryset = queryset.filter(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notContains":
+                            queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "endsWith":
+                            queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lt":
+                            queryset = queryset.filter(**{f"{field}__lt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lte":
+                            queryset = queryset.filter(**{f"{field}__lte": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gt":
+                            queryset = queryset.filter(**{f"{field}__gt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gte":
+                            queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
+
+        if sortField and sortOrder:
+            if sortOrder == 1:
+                queryset = queryset.order_by(sortField)
+            else:
+                # -1
+                queryset = queryset.order_by(f"-{sortField}")
 
         return queryset
 
@@ -124,19 +199,40 @@ class PartViewSet(ModelViewSet):
 
 
 class PartQuickAutocompletion(views.APIView):
+    """
+    Parts name autocompleter
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 
+    @extend_schema(responses={200: PartRetrieveSerializer})
     def get(self, request, *args, **kwargs):
         obj = get_list_or_404(Part, name__iexact=kwargs["name"])
         serializer = PartRetrieveSerializer(obj, many=True)
         return Response(serializer.data, status=200)
 
 
-class PartAttachmentsStandalone(views.APIView):
+class PartAttachmentsStandalone(
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericViewSet,
+):
+    """
+    Part attachment (standalone)
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 
+    serializer_class = PartAttachmentCreateSerializer
+
+    @extend_schema(
+        request={
+            "multipart/form-data": PartAttachmentCreateSerializer,
+        },
+    )
     def post(self, request, part_id, format=None):
         serializer = PartAttachmentCreateSerializer(data=request.data)
         # We need at least a file or picture to be uploaded
@@ -153,13 +249,26 @@ class PartAttachmentsStandalone(views.APIView):
 
         return Response(serializer.errors, status=400)
 
+    @extend_schema(
+        request={
+            "pk": PartAttachment,
+        },
+    )
     def delete(self, request, part_id, pk, format=None):
         attachment = get_object_or_404(PartAttachment, id=pk)
         attachment.delete()
         return Response(status=204)
 
+    def get_queryset(self):
+        queryset = PartAttachment.objects.all()
+        return queryset
+
 
 class PartsPublic(ModelViewSet):
+    """
+    Public Parts
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": None,
@@ -170,10 +279,8 @@ class PartsPublic(ModelViewSet):
         "list": None,
     }
 
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    ordering_fields = ["name", "stock_qty", "stock_qty_min", "footprint", "part_unit", "storage"]
-    ordering = ["name"]
-    pagination_class = PartViewSetPagination
+    filter_backends = [SearchFilter]
+    pagination_class = PrimeVuePagination
     lookup_fields = ("id", "uuid")
     # ^starts-with, =exact, @FTS, $regex
     search_fields = [
@@ -197,17 +304,19 @@ class PartsPublic(ModelViewSet):
 
     def get_queryset(self):
         category_id = self.request.query_params.get("category_id", None)
-        footprint_id = self.request.query_params.get("footprint_id", None)
-        storage_id = self.request.query_params.get("storage_id", None)
         storage_uuid = self.request.query_params.get("storage_uuid", None)
         qty_type = self.request.query_params.get("qtyType", None)
         sellable = self.request.query_params.get("sellable", None)
+
+        filters = self.request.query_params.get("filters", None)
+        sortField = self.request.query_params.get("sortField", None)
+        sortOrder = self.request.query_params.get("sortOrder", None)
 
         queryset = Part.objects.all()
         # fixed field for public parts
         queryset = queryset.filter(private=False)
 
-        # category TODO/FIXME: recursivity ?
+        # category is recursive, thaks to .get_descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
         elif category_id:
@@ -215,14 +324,11 @@ class PartsPublic(ModelViewSet):
             if category is not None:
                 queryset = queryset.filter(category__in=category)
 
-        if footprint_id:
-            queryset = queryset.filter(footprint_id=footprint_id)
-
-        if storage_id:
-            queryset = queryset.filter(storage_id=storage_id)
-
         if storage_uuid:
             queryset = queryset.filter(storage__uuid=storage_uuid)
+
+        if sellable:
+            queryset = queryset.filter(can_be_sold=True)
 
         if qty_type == "qty":
             queryset = queryset.filter(stock_qty=0)
@@ -230,8 +336,48 @@ class PartsPublic(ModelViewSet):
         if qty_type == "qtyMin":
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
-        if sellable:
-            queryset = queryset.filter(can_be_sold=True)
+        # Filtering
+        if filters:
+            filters = json.loads(filters)
+            for field in ["name", "storage_id", "stock_qty", "footprint_id"]:
+                # not implemented: in, between, and dates
+                if filters[field]["value"] is not None:
+                    # if field = (storage_id|footprint_id) and value == 0
+                    if (field == "storage_id" or field == "footprint_id") and int(filters[field]["value"]) == 0:
+                        # They need to have 0 handled properly
+                        if filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{f"{field}__isnull": True})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{f"{field}__isnull": True})
+                    else:
+                        # any other field or value != 0 (for storage and footprint)
+                        if filters[field]["matchMode"] == "startsWith":
+                            queryset = queryset.filter(**{f"{field}__istartswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "contains":
+                            queryset = queryset.filter(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notContains":
+                            queryset = queryset.exclude(**{f"{field}__icontains": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "endsWith":
+                            queryset = queryset.filter(**{f"{field}__iendswith": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "equals":
+                            queryset = queryset.filter(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "notEquals":
+                            queryset = queryset.exclude(**{field: filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lt":
+                            queryset = queryset.filter(**{f"{field}__lt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "lte":
+                            queryset = queryset.filter(**{f"{field}__lte": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gt":
+                            queryset = queryset.filter(**{f"{field}__gt": filters[field]["value"]})
+                        elif filters[field]["matchMode"] == "gte":
+                            queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
+
+        if sortField and sortOrder:
+            if sortOrder == 1:
+                queryset = queryset.order_by(sortField)
+            else:
+                # -1
+                queryset = queryset.order_by(f"-{sortField}")
 
         return queryset
 
@@ -252,6 +398,10 @@ class PartsPublic(ModelViewSet):
 
 
 class PartsUnitViewSet(ModelViewSet):
+    """
+    Part units
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -269,6 +419,10 @@ class PartsUnitViewSet(ModelViewSet):
 
 
 class PartsParametersUnitViewSet(ModelViewSet):
+    """
+    Part parameters units
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -286,6 +440,10 @@ class PartsParametersUnitViewSet(ModelViewSet):
 
 
 class PartsParametersPresetViewSet(ModelViewSet):
+    """
+    Part parameters presets
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -312,9 +470,15 @@ class PartsParametersPresetViewSet(ModelViewSet):
         return queryset
 
 
-class PartAttachmentsSetDefault(views.APIView):
+class PartAttachmentsSetDefault(generics.CreateAPIView):
+    """
+    Set part attachment as default
+    """
+
     required_scope = "parts"
     anonymous_policy = False
+
+    http_method_names = ["post"]
 
     def post(self, request, part_id, pk, format=None):
         attachment = get_object_or_404(PartAttachment, id=pk)
@@ -332,7 +496,31 @@ class PartAttachmentsSetDefault(views.APIView):
         return Response("ok", status=200)
 
 
+@extend_schema(
+    request=inline_serializer(
+        name="BulkEditChangeCategory",
+        fields={
+            "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+            "category": serializers.IntegerField(),
+        },
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="BulkEditChangeCategory",
+                fields={
+                    "message": serializers.CharField(default="ok"),
+                    "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                },
+            ),
+        )
+    },
+)
 class BulkEditChangeCategory(views.APIView):
+    """
+    Bulk edit: change category
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -346,7 +534,31 @@ class BulkEditChangeCategory(views.APIView):
         return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
 
 
+@extend_schema(
+    request=inline_serializer(
+        name="BulkEditChangeStorageLocation",
+        fields={
+            "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+            "storage_location": serializers.IntegerField(),
+        },
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="BulkEditChangeStorageLocation",
+                fields={
+                    "message": serializers.CharField(default="ok"),
+                    "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                },
+            ),
+        )
+    },
+)
 class BulkEditChangeStorageLocation(views.APIView):
+    """
+    Bulk edit: change storage location
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 

@@ -3,6 +3,10 @@ from . import models
 
 
 class ApplicationSerializer(serializers.ModelSerializer):
+    """
+    Coin coin
+    """
+
     scopes = serializers.CharField(source="scope")
 
     class Meta:

@@ -1,917 +1,1184 @@
 <template>
-  <div class="add_part">
-    <ViewModal
-      :part="partDetails" :can-delete="true" @delete-part="deletePart"
-      @view-part-modal-closed="onPartModalClosed"
-    />
-    <modalLabelGenerator
-      :items="modalLabelGeneratorItems" @modal-label-generator-closed="labelGeneratorClosed"
-    />
+  <div>
+    <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-    <div class="row">
-      <div class="col-12">
-        <ol class="breadcrumb">
-          <template v-if="actualCurrentCategory && categoryId && categoryId !== '0'">
-            <li class="breadcrumb-item">
-              Parts by category
-            </li>
-            <li class="breadcrumb-item active">
-              <router-link :to="{ name: 'parts-category-list', params: { categoryId: actualCurrentCategory.id, category: actualCurrentCategory } }">
-                {{ actualCurrentCategory.name }}
-              </router-link>
-            </li>
+    <div class="card ml-5 mt-4">
+      <TabView>
+        <TabPanel>
+          <template #header>
+            <i class="fa fa-table mr-2"></i><span>Table</span>
           </template>
-          <template v-else>
-            <li class="breadcrumb-item active">
-              <router-link :to="{ name: 'parts-list' }">
-                All parts
-              </router-link>
-            </li>
-          </template>
-        </ol>
-      </div>
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-2">
-        <vue-multiselect
-          v-model="filter.footprint" :options="choicesFootprint"
-          group-values="footprints" group-label="category" placeholder="Filter footprint"
-          label="name" track-by="id" @input="filterFootprintChanged"
-        />
-        <b-form-checkbox
-          v-model="filter.footprint"
-          :value="{id: 0}"
-          :unchecked-value="null"
-          inline
-          @input="filterFootprintChanged"
-        >
-          No footprint
-        </b-form-checkbox>
-      </div>
-
-      <div class="col-2">
-        <vue-treeselect
-          v-model="filter.storage" :multiple="false"
-          :options="choicesStorageLocation" search-nested :default-expand-level="Infinity"
-          clearable :normalizer="storagesNormalizer" no-children-text
-          placeholder="Filter storage" :disable-branch-nodes="true"
-          @input="filterStorageChanged"
-        />
-        <b-form-checkbox
-          v-model="filter.storage"
-          :value="0"
-          :unchecked-value="null"
-          inline
-          @input="filterStorageChanged"
-        >
-          No storage
-        </b-form-checkbox>
-      </div>
-
-      <div class="col-2">
-        <b-form-checkbox
-          v-model="filter.qty"
-          value="qty"
-          :unchecked-value="null"
-          inline
-        >
-          Only out of stock
-        </b-form-checkbox>
-      </div>
-
-      <div class="col-2">
-        <b-form-checkbox
-          v-model="filter.qty"
-          value="qtyMin"
-          :unchecked-value="null"
-          inline
-        >
-          Only qty &lt; min
-        </b-form-checkbox>
-      </div>
-
-      <div class="col-2">
-        <b-form-checkbox v-model="bulkEditMode" name="check-button" switch>
-          Bulk-edit
-        </b-form-checkbox>
-      </div>
-    </div>
-
-    <div v-if="bulkEditMode" class="row mb-3">
-      <div class="col-3">
-        Bulk edit options:<br>
-        <b-button id="popoverChangeCategory" size="sm" variant="info">
-          Change category
-        </b-button>&nbsp;
-        <b-popover
-          target="popoverChangeCategory" :show.sync="bulkEditNewCategoryPopover"
-        >
-          <template #title>
-            For selected parts
-          </template>
-          <div>
-            <vue-treeselect
-              v-model="bulkEditNewCategory" :multiple="false" :options="choicesCategory"
-              search-nested :default-expand-level="Infinity" clearable
-              :normalizer="categoriesNormalizer" no-children-text placeholder="Film resistors ? MCUS ?"
-            />
-            <br>
-            <b-button size="sm" variant="danger" @click="onBulkEditNewCategoryPopoverClose">
-              Cancel
-            </b-button>
-            &nbsp;
-            <b-button
-              size="sm" variant="primary" :disabled="!bulkEditNewCategory"
-              @click="onBulkEditNewCategoryPopoverOk"
-            >
-              Ok
-            </b-button>
-          </div>
-        </b-popover>
-
-        <b-button id="popoverChangeStorageLocation" size="sm" variant="info">
-          Change location
-        </b-button>&nbsp;
-        <b-popover
-          target="popoverChangeStorageLocation" :show.sync="bulkEditNewStorageLocationPopover"
-        >
-          <template #title>
-            For selected parts
-          </template>
-          <div>
-            <vue-treeselect
-              v-model="bulkEditNewStorageLocation" :multiple="false" :options="choicesStorageLocation"
-              search-nested :default-expand-level="Infinity" clearable
-              :normalizer="storagesNormalizer" no-children-text placeholder="A box under the bench or some drawer ?"
-              :disable-branch-nodes="true"
-            />
-            <br>
-            <b-button size="sm" variant="danger" @click="onBulkEditNewStorageLocationPopoverClose">
-              Cancel
-            </b-button>
-            &nbsp;
-            <b-button
-              size="sm" variant="primary"
-              @click="onBulkEditNewStorageLocationPopoverOk"
-            >
-              Ok
-            </b-button>
-          </div>
-        </b-popover>
-
-        <b-button size="sm" variant="danger" @click.prevent="deleteAllSelected">
-          Delete
-        </b-button>
-      </div>
-    </div>
-
-    <b-card no-body class="mb-4">
-      <b-tabs card>
-        <b-tab no-body title="Table" active>
-          <b-table
-            id="tablePartsList" ref="tablePartsList" :items="parts"
-            :fields="bulkEditMode ? fieldsBulkEdit : fields"
-            :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" per-page="0"
-            :current-page="currentPage" :busy.sync="busy"
-            condensed striped
-            sort-icon-left
-            show-empty
-            primary-key="uuid"
-            :no-local-sorting="true"
-            small
-            @sort-changed="sortTableChanged"
+          <DataTable
+            :value="parts"
+            :lazy="true"
+            :paginator="true"
+            :rows="perPage"
+            v-model:filters="filters"
+            ref="dt"
+            dataKey="id"
+            :totalRecords="totalRecords"
+            :loading="loading"
+            @page="onPage($event)"
+            @sort="onSort($event)"
+            @filter="onFilter($event)"
+            filterDisplay="menu"
+            responsiveLayout="scroll"
+            v-model:selection="selectedParts"
+            :selectAll="selectAll"
+            @select-all-change="onSelectAllChange"
+            @row-select="onRowSelect"
+            @row-unselect="onRowUnselect"
+            stripedRows
+            class="p-datatable-sm"
+            removableSort
           >
-            <template #cell(select)="data">
-              <b-form-checkbox v-model="data.item.selected" />
+            <template #empty> No parts found. </template>
+
+            <template #header>
+              <template v-if="selectedParts && selectedParts.length">
+                <PvButton
+                  label="Change category"
+                  class="p-button-info"
+                  @click="toggleOverlayPanel($event, 'btnChangeCat')"
+                />
+                <OverlayPanel ref="btnChangeCat">
+                  <TreeSelect
+                    inputId="category"
+                    placeholder="Film resistors ? MCUs ?"
+                    v-model="bulkEditCategory"
+                    :options="choicesCategory"
+                    selectionMode="single"
+                  />
+                  <PvButton
+                    label="Save"
+                    class="ml-1"
+                    @click="bulkChangeCategory($event)"
+                  ></PvButton>
+                </OverlayPanel>
+
+                <PvButton
+                  label="Change location"
+                  class="p-button-help ml-2"
+                  @click="toggleOverlayPanel($event, 'btnChangeLoc')"
+                />
+                <OverlayPanel ref="btnChangeLoc">
+                  <TreeSelect
+                    class="p-column-filter"
+                    placeholder="Select storage"
+                    :options="choicesStorageLocation"
+                    selectionMode="single"
+                    v-model="bulkEditStorage"
+                  />
+                  <PvButton
+                    label="Save"
+                    class="ml-1"
+                    @click="bulkChangeStorageLocation($event)"
+                  ></PvButton>
+                </OverlayPanel>
+
+                <PvButton
+                  label="Delete"
+                  class="p-button-danger ml-2"
+                  @click="deletePartMultiple($event)"
+                />
+              </template>
+
+              <template v-else>
+                <div class="field-checkbox">
+                  <Checkbox
+                    inputId="only_qty_less_min"
+                    v-model="filter_qty_min"
+                    :binary="true"
+                  />
+                  <label for="only_qty_less_min">Only qty &lt; min</label>
+                </div>
+              </template>
             </template>
 
-            <template #cell(qrcode)="data">
-              <div @click="showLabelGenerator(data.item)">
-                <qrcode
-                  :id="qrcodeId(data.item.id)"
-                  v-b-tooltip.hover
-                  :value="qrCodePart(data.item.uuid)"
-                  :options="{ scale: 1, color: {dark: '#000000', light:'#0000'} }"
-                  title="show label generator"
-                  :data-uuid="data.item.uuid"
-                  :data-name="data.item.name"
-                  data-toggle="modal"
-                  data-target="#modalQrCode"
+            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
+            <Column :sortable="false">
+              <template #body="slotProps">
+                <div @click="showLabelGenerator(slotProps.data)">
+                  <vue-qrcode
+                    :id="qrcodeId(slotProps.data.id)"
+                    :value="qrCodePart(slotProps.data.uuid)"
+                    :options="{
+                      scale: 1,
+                      color: { dark: '#000000', light: '#0000' },
+                    }"
+                    v-tooltip="'show label generator'"
+                    :data-uuid="slotProps.data.uuid"
+                    :data-name="slotProps.data.name"
+                    data-toggle="modal"
+                    data-target="#modalQrCode"
+                  />
+                </div>
+              </template>
+            </Column>
+            <Column
+              header="Name"
+              :sortable="true"
+              field="name"
+              :filterMatchModeOptions="matchModes.name"
+            >
+              <template #body="slotProps">
+                <div>
+                  <template
+                    v-if="
+                      partGetDefaultAttachment(slotProps.data.part_attachments)
+                    "
+                  >
+                    <i
+                      :id="`p_a_${slotProps.data.id}`"
+                      v-tooltip="'Click to show picture'"
+                      class="fa fa-picture-o mr-1"
+                      aria-hidden="true"
+                      @click="
+                        toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)
+                      "
+                    />
+                    <OverlayPanel
+                      :ref="`p_a_${slotProps.data.id}`"
+                      appendTo="body"
+                      :showCloseIcon="true"
+                      :id="`p_a_${slotProps.data.id}`"
+                    >
+                      <PvImage
+                        preview
+                        width="250"
+                        :src="
+                          partGetDefaultAttachment(
+                            slotProps.data.part_attachments
+                          ).picture_medium
+                        "
+                      ></PvImage>
+                    </OverlayPanel>
+                  </template>
+                  <a
+                    href="#"
+                    class="no-underline"
+                    @click.prevent="viewPartModal(slotProps.data)"
+                    >{{ slotProps.data.name }}</a
+                  >
+                  <br />
+                  <template v-if="slotProps.data.description">
+                    {{
+                      slotProps.data.category
+                        ? slotProps.data.category.name
+                        : "No category"
+                    }}: {{ slotProps.data.description }}
+                  </template>
+                  <template v-else>
+                    {{
+                      slotProps.data.category
+                        ? slotProps.data.category.name
+                        : "No category"
+                    }}
+                  </template>
+                </div>
+              </template>
+              <template #filter="{ filterModel }">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search by name"
                 />
-              </div>
-            </template>
-
-            <template #cell(name)="data">
-              <template v-if="partGetDefaultAttachment(data.item.part_attachments)">
-                <i
-                  :id="`p_a_${data.item.id}`" title="Hover to show picture"
-                  class="fa fa-picture-o"
-                  aria-hidden="true"
+              </template>
+            </Column>
+            <Column
+              header="Storage"
+              :sortable="true"
+              field="storage_id"
+              :filterMatchModeOptions="matchModes.storage"
+            >
+              <template #body="slotProps">{{
+                slotProps.data.storage && slotProps.data.storage.name
+                  ? slotProps.data.storage.name
+                  : "-"
+              }}</template>
+              <template #filter="{ filterModel }">
+                <TreeSelect
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search by storage"
+                  :options="choicesStorageLocationWithNo"
+                  selectionMode="single"
                 />
-                <b-popover
-                  :target="`p_a_${data.item.id}`"
-                  placement="left"
-                  triggers="hover focus"
+              </template>
+            </Column>
+            <Column
+              header="Stock"
+              :sortable="true"
+              field="stock_qty"
+              dataType="numeric"
+              :filterMatchModeOptions="matchModes.qty"
+            >
+              <template #body="slotProps">
+                <Inplace
+                  :ref="`inplace_qty_${slotProps.data.id}`"
+                  :closable="true"
                 >
-                  <b-img-lazy :src="partGetDefaultAttachment(data.item.part_attachments).picture_medium" width="250px" />
-                </b-popover>
-              &nbsp;&nbsp;
-              </template>
-              <a href="#" @click.prevent="viewPartModal(data.item)">{{ data.item.name }}</a>
-              <br>
-              <template v-if="data.item.description">
-                {{ data.item.category ? data.item.category.name : 'No category' }}: {{ data.item.description }}
-              </template>
-              <template v-else>
-                {{ data.item.category ? data.item.category.name : 'No category' }}
-              </template>
-            </template>
-
-            <template #cell(storage)="data">
-              {{ data.item.storage && data.item.storage.name ? data.item.storage.name : '-' }}
-            </template>
-
-            <template #cell(part_unit)="data">
-              {{ data.item.part_unit && data.item.part_unit.name ? data.item.part_unit.name : '-' }}
-            </template>
-
-            <template #cell(stock_qty)="data">
-              <span
-                v-if="(data.item.stock_qty < data.item.stock_qty_min) || data.item.stock_qty == 0" :id="popoverStockQtyClass(data.item.id)"
-                class="qtyMinWarning"
-              >{{ data.item.stock_qty }}
-                <i
-                  v-b-tooltip.hover class="fa fa-circle"
-                  aria-hidden="true"
-                  title="Current stock is below minimum stock quantity or exhausted"
-                />
-              </span>
-              <span
-                v-else :id="popoverStockQtyClass(data.item.id)" v-b-tooltip.hover
-                title="click to change qty"
-              >{{ data.item.stock_qty }}</span>
-
-              <b-popover
-                :target="popoverStockQtyClass(data.item.id)"
-                triggers="click"
-                placement="auto"
-                container="tablePartsList"
-                @show="closeBulkEditPopovers()"
-              >
-                <template #title>
-                  Change stock qty
-                </template>
-
-                <div align="center">
-                  <b-form-spinbutton v-model="data.item.stock_qty" min="0" />
-                  <br>
-                  <b-button
-                    size="sm" type="submit" variant="primary"
-                    @click.prevent="popoverQtyUpdatePart(data.item.id, data.item.stock_qty)"
+                  <template
+                    #display
+                    v-if="
+                      slotProps.data.stock_qty >= slotProps.data.stock_qty_min
+                    "
+                    ><span>{{ slotProps.data.stock_qty }}</span></template
                   >
-                    update
-                  </b-button>
+                  <template #display v-else>
+                    <span
+                      class="text-red-500"
+                      v-tooltip="
+                        'Current stock is below minimum stock quantity or exhausted'
+                      "
+                      >{{ slotProps.data.stock_qty }}
+                      <i class="fa fa-circle"></i
+                    ></span>
+                  </template>
+                  <template #content>
+                    <InputNumber
+                      :inputId="`qty_${slotProps.data.id}`"
+                      mode="decimal"
+                      showButtons
+                      :min="0"
+                      v-model="slotProps.data.stock_qty"
+                      class="w-3"
+                    />
+                    <br />
+                    <PvButton
+                      class="mt-1 mr-1"
+                      label="update"
+                      @click.prevent="
+                        updateInplaceQty(
+                          $event,
+                          slotProps.data,
+                          slotProps.data.stock_qty
+                        )
+                      "
+                    ></PvButton>
+                  </template>
+                </Inplace>
+              </template>
+              <template #filter="{ filterModel }">
+                <InputNumber
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="qty"
+                />
+
+                <div class="field-checkbox mt-2">
+                  <Checkbox
+                    inputId="only_out_of_stock"
+                    v-model="filter_qty"
+                    :binary="true"
+                  />
+                  <label for="only_out_of_stock">Only out of stock</label>
                 </div>
-              </b-popover>
-            </template>
-
-            <template #cell(stock_qty_min)="data">
-              <span :id="popoverStockQtyMinClass(data.item.id)">{{ data.item.stock_qty_min }}</span>
-
-              <b-popover
-                :target="popoverStockQtyMinClass(data.item.id)"
-                triggers="click"
-                placement="auto"
-                container="tablePartsList"
-              >
-                <template #title>
-                  Change stock min qty
-                </template>
-
-                <div align="center">
-                  <b-form-spinbutton v-model="data.item.stock_qty_min" min="0" />
-                  <br>
-                  <b-button
-                    size="sm" type="submit" variant="primary"
-                    @click.prevent="popoverQtyMinUpdatePart(data.item.id, data.item.stock_qty_min)"
+              </template>
+            </Column>
+            <Column
+              header="Min"
+              :sortable="true"
+              field="stock_qty_min"
+              dataType="numeric"
+              ><template #body="slotProps">
+                <Inplace
+                  :ref="`inplace_qty_min_${slotProps.data.id}`"
+                  :closable="true"
+                >
+                  <template #display
+                    ><span>{{ slotProps.data.stock_qty_min }}</span></template
                   >
-                    update
-                  </b-button>
-                </div>
-              </b-popover>
-            </template>
-
-            <template #cell(footprint)="data">
-              <span
-                v-b-tooltip.hover
-                :title="data.item.footprint ? data.item.footprint.description : ''"
-              >
-                {{ data.item.footprint ? data.item.footprint.name : '-' }}
-              </span>
-            </template>
-
-            <template #cell(actions)="data">
-              <b-button variant="link" :to="{ name: 'parts-edit', params: { partId: data.item.id } }">
-                <i
-                  class="fa fa-pencil-square-o"
-                  aria-hidden="true"
-                />
-              </b-button>
-                &nbsp;
-              <b-button variant="link" @click.prevent="deletePart(data.item)">
-                <i
-                  class="fa fa-trash-o"
-                  aria-hidden="true"
-                />
-              </b-button>
-            </template>
-          </b-table>
-        </b-tab>
-        <b-tab title="Thumbnails">
-          <b-card-group
-            v-for="(row, idx) in thumbnailsChunked" :key="idx" deck
-            class="mb-4"
-          >
-            <b-card
-              v-for="part in row" :key="part.id"
-              :title="part.name"
-              img-top
+                  <template #content>
+                    <InputNumber
+                      :inputId="`qty_${slotProps.data.id}`"
+                      mode="decimal"
+                      showButtons
+                      :min="0"
+                      v-model="slotProps.data.stock_qty_min"
+                      class="w-3"
+                    />
+                    <br />
+                    <PvButton
+                      class="mt-1 mr-1"
+                      label="update"
+                      @click.prevent="
+                        updateInplaceQtyMin(
+                          $event,
+                          slotProps.data,
+                          slotProps.data.stock_qty_min
+                        )
+                      "
+                    ></PvButton>
+                  </template>
+                </Inplace> </template
+            ></Column>
+            <Column header="Unit" :sortable="true" field="part_unit.name">
+              <template #body="slotProps">{{
+                slotProps.data.part_unit && slotProps.data.part_unit.name
+                  ? slotProps.data.part_unit.name
+                  : "-"
+              }}</template>
+            </Column>
+            <Column
+              header="Footprint"
+              :sortable="true"
+              field="footprint_id"
+              :filterMatchModeOptions="matchModes.footprint"
             >
-              <b-card-text>{{ part.description || 'No description.' }}</b-card-text>
-              <b-card-img-lazy
-                v-if="partGetDefaultAttachment(part.part_attachments)" :src="partGetDefaultAttachment(part.part_attachments).picture_medium"
-                top
-              />
-              <template v-else>
-                <span class="fa-stack fa-5x">
-                  <i class="fa fa-file-picture-o fa-stack-2x" />
-                  <i class="fa fa-question fa-stack-1x text-warning" />
+              <template #body="slotProps">
+                <span
+                  v-tooltip="{
+                    value: slotProps.data.footprint
+                      ? slotProps.data.footprint.description
+                      : '',
+                    disabled: false,
+                  }"
+                >
+                  {{
+                    slotProps.data.footprint
+                      ? slotProps.data.footprint.name
+                      : "-"
+                  }}
                 </span>
               </template>
-              <template #footer>
-                <small class="text-muted">Qty: {{ part.stock_qty }}</small>
-                <b-button
-                  size="sm" variant="outline-primary" class="pull-right"
-                  @click.prevent="viewPartModal(part)"
-                >
-                  View details
-                </b-button>
+              <template #filter="{ filterModel }">
+                <Dropdown
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search by footprint"
+                  :options="choicesFootprintWithNo"
+                  optionLabel="name"
+                  optionValue="id"
+                  optionGroupLabel="category"
+                  optionGroupChildren="footprints"
+                  :filter="true"
+                />
               </template>
-            </b-card>
-          </b-card-group>
-        </b-tab>
-      </b-tabs>
-    </b-card>
+            </Column>
+            <Column :sortable="false" headerStyle="width: 6em"
+              ><template #body="slotProps">
+                <span class="p-buttonset">
+                  <router-link
+                    :to="{
+                      name: 'parts-edit',
+                      params: { partId: slotProps.data.id },
+                    }"
+                  >
+                    <PvButton
+                      type="button"
+                      icon="fa fa-edit"
+                      class="p-button-primary"
+                      v-tooltip="'edit'"
+                    ></PvButton>
+                  </router-link>
+                  <PvButton
+                    type="button"
+                    icon="fa fa-trash-o"
+                    class="p-button-danger"
+                    v-tooltip="'delete'"
+                    @click="deletePart($event, slotProps.data)"
+                  ></PvButton>
+                </span>
+              </template>
+            </Column>
+          </DataTable>
+        </TabPanel>
 
-    <b-row>
-      <b-col md="6" offset-md="1">
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="partsCount"
-          :per-page="perPage"
-          aria-controls="tablePartsList"
-          @change="pageChanged"
-        />
-      </b-col>
-    </b-row>
+        <TabPanel>
+          <template #header>
+            <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
+          </template>
+
+          <div class="grid">
+            <div class="col-4" v-for="part in parts" :key="part.id">
+              <div class="product-grid-item card">
+                <div class="product-grid-item-top">
+                  <div>
+                    <span class="product-category">{{
+                      part.category ? part.category.name : "Uncategorized"
+                    }}</span>
+                  </div>
+                  <span
+                    >qty:
+                    <template v-if="part.stock_qty >= part.stock_qty_min"
+                      ><span>{{ part.stock_qty }}</span></template
+                    >
+                    <template v-else>
+                      <span
+                        class="text-red-500"
+                        v-tooltip="
+                          'Current stock is below minimum stock quantity or exhausted'
+                        "
+                        >{{ part.stock_qty }} <i class="fa fa-circle"></i
+                      ></span>
+                    </template>
+                  </span>
+                </div>
+                <div class="product-grid-item-content mt-3">
+                  <template
+                    v-if="partGetDefaultAttachment(part.part_attachments)"
+                  >
+                    <PvImage
+                      preview
+                      :src="
+                        partGetDefaultAttachment(part.part_attachments)
+                          .picture_medium
+                      "
+                      :alt="part.name"
+                      width="250"
+                    />
+                  </template>
+                  <template v-else>
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-file-picture-o fa-stack-2x" />
+                      <i class="fa fa-question fa-stack-1x text-orange-400" />
+                    </span>
+                  </template>
+
+                  <div class="product-name">{{ part.name }}</div>
+                  <div class="product-description">
+                    {{ part.description }}
+                  </div>
+                  <div class="product-button">
+                    <PvButton
+                      @click.prevent="viewPartModal(part)"
+                      label="View details"
+                    ></PvButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </TabPanel>
+      </TabView>
+    </div>
   </div>
 </template>
 
 <script>
-import apiService from '../../services/api/api.service'
-import logger from '@/logging'
-import { mapState } from 'vuex'
-import ViewModal from '@/components/parts/view_modal'
-import modalLabelGenerator from '@/components/labels/modal-label-generator.vue'
-import _ from '@/lodash'
-import utils from '@/utils'
+import { usePreloadsStore } from "@/stores/preloads";
+import { useServerStore } from "@/stores/server";
+import { mapState } from "pinia";
+import apiService from "@/services/api/api.service";
+import logger from "@/logging";
+import { FilterMatchMode } from "primevue/api";
+import utils from "@/utils.js";
+import { cloneDeep } from "lodash";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import PartViewModal from "@/components/parts/view.vue";
+import LabelGeneratorModal from "@/components/label/generator.vue";
+import { h } from "vue";
+import Button from "primevue/button";
 
 export default {
-  name: 'PartsList',
-  components: {
-    ViewModal,
-    modalLabelGenerator
-  },
-  props: {
-    category: {
-      type: Object
-    }
-  },
   data: () => ({
+    loading: true,
+    lazyParams: {},
     parts: [],
-    currentPage: 1,
-    partDetails: null,
-    partsCount: 0,
-    fields: [
-      { key: 'qrcode', label: 'QrCode', tdClass: 'qrCode' },
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'storage', label: 'Storage', sortable: true },
-      { key: 'stock_qty', label: 'Stock', sortable: true },
-      { key: 'stock_qty_min', label: 'Min', sortable: true },
-      { key: 'part_unit', label: 'Unit', sortable: true },
-      { key: 'footprint', label: 'Footprint', sortable: true },
-      { key: 'actions', label: 'Actions' }
-    ],
-    fieldsBulkEdit: [
-      { key: 'select', label: '', tdClass: 'select' },
-      { key: 'qrcode', label: 'QrCode', tdClass: 'qrCode' },
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'storage', label: 'Storage', sortable: true },
-      { key: 'stock_qty', label: 'Stock', sortable: true },
-      { key: 'stock_qty_min', label: 'Min', sortable: true },
-      { key: 'part_unit', label: 'Unit', sortable: true },
-      { key: 'footprint', label: 'Footprint', sortable: true },
-      { key: 'actions', label: 'Actions' }
-    ],
-    sortBy: 'name',
-    sortDesc: false,
-    busy: false,
-    popoverStockQtyShow: false,
-    filter: {
-      footprint: null,
-      storage: null,
-      qty: null
+    totalRecords: 0,
+    matchModes: {
+      name: [
+        { label: "Starts with", value: FilterMatchMode.STARTS_WITH },
+        { label: "Contains", value: FilterMatchMode.CONTAINS },
+        { label: "Not contains", value: FilterMatchMode.NOT_CONTAINS },
+        { label: "Ends with", value: FilterMatchMode.ENDS_WITH },
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
+      ],
+      storage: [
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
+      ],
+      qty: [
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Less than", value: FilterMatchMode.LESS_THAN },
+        {
+          label: "Less than or equal to",
+          value: FilterMatchMode.LESS_THAN_OR_EQUAL_TO,
+        },
+        { label: "Greater than", value: FilterMatchMode.GREATER_THAN },
+        {
+          label: "Greater than or equal to",
+          value: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO,
+        },
+      ],
+      footprint: [
+        { label: "Equals", value: FilterMatchMode.EQUALS },
+        { label: "Not equals", value: FilterMatchMode.NOT_EQUALS },
+      ],
     },
-    modalLabelGeneratorItems: [],
-    bulkEditMode: false,
-    bulkEditNewCategoryPopover: false,
-    bulkEditNewCategory: null,
-    bulkEditNewStorageLocationPopover: false,
-    bulkEditNewStorageLocation: null
+    // Note: this is duplicated in watch: categoryId()
+    filters: {
+      name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+      storage_id: { value: null, matchMode: FilterMatchMode.EQUALS },
+      stock_qty: { value: null, matchMode: FilterMatchMode.EQUALS },
+      footprint_id: { value: null, matchMode: FilterMatchMode.EQUALS },
+    },
+    selectAll: false,
+    selectedParts: null,
+    bulkEditStorage: null,
+    bulkEditCategory: null,
+    filter_qty_min: false,
+    filter_qty: false,
   }),
   computed: {
-    ...mapState({
-      currentCategory: state => { return state.preloads.currentCategory },
-      serverSettings: state => state.server.settings,
-      choicesCategory: state => { return [state.preloads.categories] },
-      choicesStorageLocation: (state) => {
-        return state.preloads.storages.filter(utils.removeStorageCatWithoutLocs)
+    ...mapState(usePreloadsStore, {
+      categories: (store) => [store.categories],
+      currentCategory: (store) => store.currentCategory,
+      choicesStorageLocation: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.uuid ? e.id : `cat-${e.id}`,
+            label: e.name,
+            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+          };
+          // Selectable only if no locations
+          obj["selectable"] = e.storage_locations ? false : true;
+          // Merge children with storage_locations
+          if (e.storage_locations && e.children) {
+            obj["children"] = e.children.concat(e.storage_locations).map(cb);
+          }
+          // return obj
+          return obj;
+        };
+        return store.storages.filter(utils.removeStorageCatWithoutLocs).map(cb);
       },
-      choicesFootprint: (state) => {
-        return state.preloads.footprints.map(x => { return { category: x.name, footprints: x.footprint_set.map(y => { return { id: y.id, name: y.name } }) } })
+      choicesFootprint: (store) =>
+        store.footprints.map((x) => {
+          return {
+            category: x.name,
+            footprints: x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            }),
+          };
+        }),
+      choicesCategory: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.id,
+            label: e.name,
+            icon: `fa fa-folder-o`,
+          };
+          obj["selectable"] = true;
+          obj["children"] = e.children.map(cb);
+          return obj;
+        };
+        return [store.categories].map(cb);
       },
-      categories: state => { return [state.preloads.categories] }
     }),
-    perPage () {
-      return this.serverSettings.pagination.PARTS || 10
+    ...mapState(useServerStore, {
+      perPage: (store) => store.settings.pagination.PARTS || 10,
+    }),
+    choicesFootprintWithNo() {
+      return [
+        {
+          category: "No footprint",
+          footprints: [{ id: 0, name: "No footprint" }],
+        },
+      ].concat(this.choicesFootprint);
     },
-    categoryId () {
-      return this.$route.params.categoryId
+    choicesStorageLocationWithNo() {
+      return [
+        { key: "0", label: "No Storage Location", icon: "fa fa-close" },
+      ].concat(this.choicesStorageLocation);
     },
-    storageId () {
-      return this.$route.query.storage
+    searchQuery() {
+      return this.$route.query.q;
     },
-    storageUuid () {
-      return this.$route.query.storage_uuid
+    breadcrumb() {
+      if (
+        this.actualCurrentCategory &&
+        this.categoryId &&
+        this.categoryId !== "0"
+      ) {
+        return {
+          home: {
+            icon: "fa fa-folder-o mr-1",
+            to: "/",
+            label: "Parts by category",
+          },
+          items: [
+            {
+              label: this.actualCurrentCategory.name,
+              to: {
+                name: "parts-category-list",
+                params: {
+                  categoryId: this.actualCurrentCategory.id || this.categoryId,
+                },
+              },
+            },
+          ],
+        };
+      } else if (this.categoryId && this.categoryId == 0) {
+        return {
+          home: {
+            icon: "fa fa-folder-o mr-1",
+            to: {
+              name: "parts-category-list",
+              params: {
+                categoryId: this.actualCurrentCategory.id || this.categoryId,
+              },
+            },
+            label: "Uncategorized parts",
+          },
+        };
+      } else {
+        return {
+          home: {
+            icon: "fa fa-folder-o mr-1",
+            to: { name: "parts-list" },
+            label: "All parts",
+          },
+        };
+      }
     },
-    searchQuery () {
-      return this.$route.query.q
+    categoryId() {
+      return this.$route.params.categoryId;
     },
-    actualCurrentCategory () {
-      return this.category || this.currentCategory
+    actualCurrentCategory() {
+      return this.currentCategory;
     },
-    selectedParts () {
-      return this.parts.filter(x => {
-        if (x.selected) {
-          return x
-        }
-      })
+    storageId() {
+      return this.$route.query.storage;
     },
-    thumbnailsChunked () {
-      return _.chunk(this.parts, 6)
-    }
+    storageUuid() {
+      return this.$route.query.storage_uuid;
+    },
   },
   watch: {
-    'categoryId': function () {
-      this.fetchParts(1, null)
-      this.categoryChanged()
+    categoryId: function () {
+      // Reset filters
+      this.filters.name.value = null;
+      this.filters.storage_id.value = null;
+      this.filters.stock_qty.value = null;
+      this.filters.footprint_id.value = null;
+      // Also delete search term from lazyParams object
+      delete this.lazyParams.search;
+
+      this.categoryChanged();
+      this.loadLazyData();
     },
-    'searchQuery': function () {
-      this.fetchParts(1, { search: this.searchQuery })
+    searchQuery: function () {
+      // define search param
+      this.lazyParams.search = this.searchQuery;
+      // delete category_id
+      delete this.lazyParams.category_id;
+
+      // reload
+      this.loadLazyData();
     },
-    'filter.qty': function () {
-      if (this.filter.qty === 'qty') {
-        this.fetchParts(1, { qtyType: 'qty' })
-      } else if (this.filter.qty === 'qtyMin') {
-        this.fetchParts(1, { qtyType: 'qtyMin' })
+    filter_qty: function () {
+      if (this.filter_qty) {
+        this.filters.stock_qty = {
+          value: 0,
+          matchMode: FilterMatchMode.EQUALS,
+        };
       } else {
-        this.fetchParts(1, null)
+        this.filters.stock_qty.value = null;
       }
     },
-    'storageUuid': function () {
-      this.fetchParts(1, { storage_uuid: this.storageUuid })
-    }
+    filter_qty_min: function () {
+      if (this.filter_qty_min) {
+        this.lazyParams.qtyType = "qtyMin";
+      } else {
+        delete this.lazyParams.qtyType;
+      }
+      this.loadLazyData();
+    },
   },
-  created () {
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+    serverStore: useServerStore(),
+    confirm: useConfirm(),
+    toast: useToast(),
+  }),
+  created() {},
+  mounted() {
+    this.lazyParams = {
+      first: 0,
+      rows: this.$refs.dt.rows,
+      sortField: null,
+      sortOrder: null,
+      filters: this.filters,
+    };
+
     this.$nextTick(() => {
       if (this.searchQuery) {
-        this.fetchParts(1, { search: this.searchQuery })
+        logger.default.info("mounted(): search query");
+        this.lazyParams.search = this.searchQuery;
+        this.loadLazyData();
       } else if (this.storageUuid) {
-        this.fetchParts(1, { storage_uuid: this.storageUuid })
+        logger.default.info("mounted(): storage UUID");
+        this.lazyParams.storageUuid = this.storageUuid;
+        this.loadLazyData();
       } else {
-        this.fetchParts(1, null)
-        this.categoryChanged()
+        logger.default.info("mounted(): default");
+        this.categoryChanged();
+        this.loadLazyData();
       }
-    })
+    });
   },
   methods: {
-    categoryChanged () {
+    categoryChanged() {
+      // on mount() we set the current category in the store
+      // instead of setting from the tree/node, so that way we get the
+      // category name even on direct access (otherwise we would only have the ID)
+      // if we have a 0 category (uncategorized)
       if (!this.categoryId || Number(this.categoryId) === 0) {
-        this.$store.commit('setCurrentCategory', { id: this.categoryId, name: 'none' })
-        return
+        this.preloadsStore.setCurrentCategory({
+          id: this.categoryId,
+          name: "none",
+        });
+        // set the lazy params field
+        this.lazyParams.category_id = this.categoryId;
+        return;
       }
-      let curCat = null
+
+      // Else it is an existing category
+      let curCat = null;
       const cb = (e) => {
         if (e.id === Number(this.categoryId)) {
-          curCat = e
+          curCat = e;
         }
-        e.children.forEach(cb)
-      }
-      this.categories.forEach(cb)
-      this.$store.commit('setCurrentCategory', { id: this.categoryId, name: curCat.name })
-    },
-    popoverQtyUpdatePart (id, qty) {
-      apiService.updatePartialPart(id, { stock_qty: qty })
-        .then(() => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
-          })
-          // eslint-disable-next-line vue/custom-event-name-casing
-          this.$root.$emit('bv::hide::popover', this.popoverStockQtyClass(id))
-        })
-        .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
-          })
-          logger.default.error('Cannot update part qty', error.message)
-        })
-    },
-    popoverStockQtyClass (id) {
-      return `popover-stock-qty-${id}`
-    },
-    popoverQtyMinUpdatePart (id, qty) {
-      apiService.updatePartialPart(id, { stock_qty_min: qty })
-        .then(() => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating min part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
-          })
-          // eslint-disable-next-line vue/custom-event-name-casing
-          this.$root.$emit('bv::hide::popover', this.popoverStockQtyMinClass(id))
-        })
-        .catch((error) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating min part qty'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
-          })
-          logger.default.error('Cannot update min part qty', error.message)
-        })
-    },
-    popoverStockQtyMinClass (id) {
-      return `popover-stock-qty-min-${id}`
-    },
-    pageChanged (page) {
-      this.fetchParts(page, null)
-    },
-    sortTableChanged (ctx) {
-      // When changing the sorting order, reset the pagination to page 1
-      let opts = { ordering: ctx.sortDesc ? `-${ctx.sortBy}` : ctx.sortBy }
-      this.fetchParts(1, opts)
-    },
-    qrcodeId (id, size) {
-      return size ? `qrcode-${id}-${size}` : `qrcode-${id}`
-    },
-    qrCodePart (uuid) {
-      return `web+stockazio:part,${uuid}`
-    },
-    showLabelGenerator (part) {
-      this.closeBulkEditPopovers()
+        e.children.forEach(cb);
+      };
+      // we cycle over all categories to find the name too
+      this.categories.forEach(cb);
+      this.preloadsStore.setCurrentCategory({
+        id: this.categoryId,
+        name: curCat.name,
+      });
 
-      this.modalLabelGeneratorItems = [part]
-      // We need to wait a tick or the previous set will not be finalized before the modal is shown
-      this.$nextTick(() => {
-        this.$bvModal.show('modalLabelGenerator')
-      })
+      // set the lazy params field
+      this.lazyParams.category_id = this.categoryId;
     },
-    labelGeneratorClosed () {
-      this.modalLabelGeneratorItems = []
-    },
-    fetchParts (page, opts) {
-      // Set current page to what has been asked to fetch
-      this.currentPage = page
+    loadLazyData() {
+      this.loading = true;
 
-      console.log('we have', this.perPage, 'per page')
-      let params = {
-        page: page,
-        size: this.perPage,
-        ...opts
-      }
-      if (this.categoryId !== null) {
-        params.category_id = this.categoryId
-      }
-      if (this.searchQuery) {
-        params.search = this.searchQuery
-      }
-      if (this.storageId && !this.filter.storage) {
-        params.storage_id = this.storageId
-      }
-      if (this.storageUuid && !this.filter.storage) {
-        params.storage_uuid = this.storageUuid
-      }
-      if (this.filter.footprint) {
-        params.footprint_id = this.filter.footprint.id
-      }
-      if (this.filter.qty === 'qty') {
-        params.qtyType = 'qty'
-      } else if (this.filter.qty === 'qtyMin') {
-        params.qtyType = 'qtyMin'
+      // Do a quick cleanup of datas before sending them
+      let params = cloneDeep(this.lazyParams);
+      if (params.filters["storage_id"].value) {
+        params.filters["storage_id"].value = Object.keys(
+          params.filters["storage_id"].value
+        )[0];
       }
 
-      this.busy = true
-      apiService.getParts(params)
-        .then((res) => {
-          this.parts = res.data.results
-          this.partsCount = res.data.count
-          this.busy = false
-          this.bulkEditNewCategory = null
-          this.bulkEditNewCategoryPopover = false
-          this.bulkEditNewStorageLocation = null
-          this.bulkEditNewStorageLocationPopover = false
-          // eslint-disable-next-line vue/custom-event-name-casing
-          this.$root.$emit('bv::refresh::table', 'tablePartsList')
-        })
+      apiService.getParts(params).then((res) => {
+        this.parts = res.data.results;
+        this.totalRecords = res.data.count;
+        this.loading = false;
+      });
     },
-    deletePart (part) {
-      this.closeBulkEditPopovers()
-
-      let categoryId = part.category ? part.category.id : null
-
-      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete the part '${part.name}' ?`, {
-        title: 'Please Confirm',
-        size: 'sm',
-        buttonSize: 'sm',
-        okVariant: 'danger',
-        okTitle: 'YES',
-        cancelTitle: 'NO',
-        footerClass: 'p-2',
-        hideHeaderClose: false,
-        centered: true
-      })
-        .then((value) => {
-          if (value === false) { return }
-
-          if (value === true) {
-            apiService.deletePart(part.id)
-              .then((val) => {
-                this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                  title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'primary',
-                  toaster: 'b-toaster-top-center'
-                })
-                this.fetchParts(1, null)
-                this.$store.commit('decrementCategoryPartsCount', { nodeId: categoryId })
-              })
-              .catch((err) => {
-                this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                  title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger',
-                  toaster: 'b-toaster-top-center'
-                })
-                logger.default.error('Error with part deletion', err)
-                this.fetchParts(1, null)
-              })
-          }
-        })
-        .catch((err) => {
-          logger.default.error('Error with the delete modal', err)
-        })
+    qrcodeId(id, size) {
+      return size ? `qrcode-${id}-${size}` : `qrcode-${id}`;
     },
-    deleteAllSelected () {
-      this.closeBulkEditPopovers()
-
-      this.$bvModal.msgBoxConfirm(`Are you sure you want to delete all the selected parts ?`, {
-        title: 'Please Confirm',
-        size: 'sm',
-        buttonSize: 'sm',
-        okVariant: 'danger',
-        okTitle: 'YES',
-        cancelTitle: 'NO',
-        footerClass: 'p-2',
-        hideHeaderClose: false,
-        centered: true
-      })
-        .then((value) => {
-          if (value === false) { return }
-
-          if (value === true) {
-            const _bulkDelete = async (parts) => {
-              for (let x of parts) {
-                await apiService.deletePart(x.id)
-                  .then(() => {
-                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Success/Message', 'Success'), {
-                      title: this.$pgettext('Part/Delete/Toast/Success/Title', 'Deleting part'),
-                      autoHideDelay: 5000,
-                      appendToast: true,
-                      variant: 'primary',
-                      toaster: 'b-toaster-top-center'
-                    })
-                    this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id })
-                  })
-                  .catch((err) => {
-                    this.$bvToast.toast(this.$pgettext('Part/Delete/Toast/Error/Message', 'An error occured, please try again later'), {
-                      title: this.$pgettext('Part/Delete/Toast/Error/Title', 'Deleting part'),
-                      autoHideDelay: 5000,
-                      appendToast: true,
-                      variant: 'danger',
-                      toaster: 'b-toaster-top-center'
-                    })
-                    logger.default.error('Error with part deletion', err)
-                  })
-              }
-            }
-            _bulkDelete(this.selectedParts)
-              .then(() => {
-              // Then reload
-                this.fetchParts(1, null)
-              })
-          }
-        })
-        .catch((err) => {
-          logger.default.error('Error with the delete modal', err)
-        })
+    qrCodePart(uuid) {
+      return `web+stockazio:part,${uuid}`;
     },
-    viewPartModal (part) {
-      this.closeBulkEditPopovers()
-
-      apiService.getPart(part.id)
-        .then((val) => {
-          this.partDetails = val.data
-          this.$bvModal.show('modalManage')
-        })
-        .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/ShowModal/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/ShowModal/Toast/Error/Title', 'Part details'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
-          })
-          logger.default.error('Error fetching part', err)
-          this.partDetails = null
-        })
-    },
-    storagesNormalizer: function (node) {
-      let childs = (node.children || []).concat(node.storage_locations || [])
-      let id = node.uuid ? node.id : `cat_${node.id}`
-      return { id: id, label: node.name, children: childs && childs.length ? childs : 0 }
-    },
-    categoriesNormalizer: function (node) {
-      return { id: node.id, label: node.name, children: node.children && node.children.length ? node.children : 0 }
-    },
-    filterFootprintChanged (value, id) {
-      if (value) {
-        this.fetchParts(1, { footprint_id: value.id })
-      } else {
-        this.fetchParts(1, null)
-      }
-    },
-    filterStorageChanged (value, id) {
-      if (value || value === 0) {
-        this.fetchParts(1, { storage_id: value })
-      } else {
-        this.fetchParts(1, null)
-      }
-    },
-    onPartModalClosed () {
-      this.partDetails = null
-    },
-    partGetDefaultAttachment (attachments) {
+    partGetDefaultAttachment(attachments) {
       // If only one attachment, and it is a picture, elect as default
       if (attachments.length === 1 && attachments[0].picture) {
-        return attachments[0]
+        return attachments[0];
       }
 
       // Else return the one marked as default
-      let att = attachments.filter(x => {
+      let att = attachments.filter((x) => {
         if (x.picture_default) {
-          return x
+          return x;
         }
-      })[0] // return first item
+      })[0]; // return first item
       if (att) {
-        return att
+        return att;
       }
 
       // Else return first attachment being an image
-      return attachments.filter(x => {
+      return attachments.filter((x) => {
         if (x.picture) {
-          return x
+          return x;
         }
-      })[0] // return first item
+      })[0]; // return first item
     },
-    closeBulkEditPopovers () {
-      this.bulkEditNewCategoryPopover = false
-      this.bulkEditNewStorageLocationPopover = false
-    },
-    onBulkEditNewCategoryPopoverClose () {
-      this.bulkEditNewCategory = null
-      this.bulkEditNewCategoryPopover = false
-    },
-    onBulkEditNewCategoryPopoverOk () {
-      this.bulkEditNewStorageLocationPopover = false
-
-      if (!(this.selectedParts && this.selectedParts.length)) {
-        return
-      }
-
-      let ids = this.selectedParts.map(x => { return x.id })
-
-      apiService.changePartsCategory(ids, this.bulkEditNewCategory)
+    viewPartModal(part) {
+      // Get full part object infos
+      apiService
+        .getPart(part.id)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
-          })
-          this.fetchParts(1, null)
-
-          this.$nextTick(() => {
-            this.$store.commit('decrementCategoryPartsCount', { nodeId: this.actualCurrentCategory.id, by: ids.length })
-            this.$store.commit('incrementCategoryPartsCount', { nodeId: this.bulkEditNewCategory, by: ids.length })
-            this.closeBulkEditPopovers()
-          })
+          const viewPartRef = this.$dialog.open(PartViewModal, {
+            props: {
+              modal: true,
+              style: {
+                width: "70vw",
+              },
+            },
+            templates: {
+              header: () => {
+                if (part.private) {
+                  return [
+                    h("h3", [
+                      h("i", { class: "fa fa-lock mr-1" }),
+                      h("span", part.name),
+                    ]),
+                  ];
+                } else {
+                  return [h("h3", part.name)];
+                }
+              },
+              footer: () => {
+                return [
+                  h(Button, {
+                    label: "Show full details",
+                    onClick: () => {
+                      viewPartRef.close();
+                      this.$router.replace({
+                        name: "parts-details",
+                        params: { partId: part.id },
+                      });
+                    },
+                    class: "p-button-outlined",
+                  }),
+                  h(Button, {
+                    label: "Delete",
+                    onClick: () => {
+                      this.deletePart(null, part);
+                      viewPartRef.close();
+                    },
+                    class: "p-button-danger",
+                  }),
+                  h(Button, {
+                    label: "Close",
+                    onClick: () => viewPartRef.close(),
+                    class: "p-button-success",
+                  }),
+                ];
+              },
+            },
+            data: {
+              part: val.data,
+            },
+          });
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
-          })
-          logger.default.error('Error with category part update', err)
-          this.fetchParts(1, null)
-        })
+          this.toast.add({
+            severity: "error",
+            summary: "Part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with getting part details", err);
+        });
     },
-    onBulkEditNewStorageLocationPopoverClose () {
-      this.bulkEditNewStorageLocationPopover = false
+    showLabelGenerator(item) {
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [
+              h("h3", [
+                h("i", { class: "fa fa-qrcode mr-1" }),
+                h("span", "Label Generator"),
+              ]),
+            ];
+          },
+        },
+        data: {
+          items: [item],
+          kind: "part",
+        },
+      });
     },
-    onBulkEditNewStorageLocationPopoverOk () {
-      this.bulkEditNewCategoryPopover = false
+    toggleOverlayPanel(event, ref) {
+      this.$refs[ref].toggle(event);
+    },
+    onPage(event) {
+      this.lazyParams = event;
+      this.loadLazyData();
+    },
+    onPageDV(event) {
+      this.lazyParams.first = event.first;
+      this.lazyParams.rows = event.rows;
+      this.loadLazyData();
+    },
+    onSort(event) {
+      this.lazyParams = event;
+      this.loadLazyData();
+    },
+    onFilter(event) {
+      this.lazyParams.filters = this.filters;
+      this.loadLazyData();
+    },
+    onSelectAllChange(event) {
+      const selectAll = event.checked;
 
-      if (!(this.selectedParts && this.selectedParts.length)) {
-        return
+      if (selectAll) {
+        this.selectAll = true;
+        this.selectedParts = cloneDeep(this.parts);
+      } else {
+        this.selectAll = false;
+        this.selectedParts = [];
       }
+    },
+    onRowSelect() {
+      this.selectAll = this.selectedParts.length === this.totalRecords;
+    },
+    onRowUnselect() {
+      this.selectAll = false;
+    },
+    deletePart(event, part) {
+      this.confirm.require({
+        message: `Are you sure you want to delete the part '${part.name}' ?`,
+        header: `Deleting '${part.name}' ?`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          apiService
+            .deletePart(part.id)
+            .then((val) => {
+              this.toast.add({
+                severity: "success",
+                summary: "Deleting part",
+                detail: "Success",
+                life: 5000,
+              });
+              this.loadLazyData();
+              this.preloadsStore.decrementCategoryPartsCount(this.categoryId);
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Deleting part",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with part deletion", err);
+              this.loadLazyData();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
+    },
+    deletePartMultiple(event) {
+      this.confirm.require({
+        message: `Are you sure you want to delete all the selected parts ?`,
+        header: `Deleting ${this.selectedParts.length} parts.`,
+        icon: "fa fa-exclamation-triangle",
+        accept: () => {
+          const _bulkDelete = async (parts) => {
+            for (let part of parts) {
+              logger.default.info("delete part", part.name);
+              await apiService
+                .deletePart(part.id)
+                .then((val) => {
+                  this.toast.add({
+                    severity: "success",
+                    summary: `Deleting ${part.name}`,
+                    detail: "Success",
+                    life: 5000,
+                  });
+                  this.preloadsStore.decrementCategoryPartsCount(
+                    this.categoryId
+                  );
+                })
+                .catch((err) => {
+                  this.toast.add({
+                    severity: "error",
+                    summary: `Deleting ${part.name}`,
+                    detail: "An error occured, please try again later",
+                    life: 5000,
+                  });
+                  logger.default.error("Error with part deletion", err);
+                });
+            }
+          };
 
-      let ids = this.selectedParts.map(x => { return x.id })
+          _bulkDelete(this.selectedParts).then(() => {
+            logger.default.info("reload");
+            this.selectedParts = [];
+            this.loadLazyData();
+          });
+        },
+        reject: () => {
+          return;
+        },
+      });
+    },
+    bulkChangeStorageLocation(event) {
+      let ids = this.selectedParts.map((x) => {
+        return x.id;
+      });
+      let storageId = Object.keys(this.bulkEditStorage)[0];
 
-      apiService.changePartsStorageLocation(ids, this.bulkEditNewStorageLocation)
+      apiService
+        .changePartsStorageLocation(ids, storageId)
         .then((val) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Success/Message', 'Success'), {
-            title: this.$pgettext('Part/Update/Toast/Success/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'primary',
-            toaster: 'b-toaster-top-center'
-          })
-          this.fetchParts(1, null)
-
+          this.toast.add({
+            severity: "success",
+            summary: `Updating parts`,
+            detail: "Success",
+            life: 5000,
+          });
           this.$nextTick(() => {
-            this.bulkEditNewStorageLocationPopover = false
-          })
+            this.bulkEditStorage = null;
+            this.toggleOverlayPanel(event, "btnChangeLoc");
+            this.loadLazyData();
+          });
         })
         .catch((err) => {
-          this.$bvToast.toast(this.$pgettext('Part/Update/Toast/Error/Message', 'An error occured, please try again later'), {
-            title: this.$pgettext('Part/Update/Toast/Error/Title', 'Updating part'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger',
-            toaster: 'b-toaster-top-center'
-          })
-          logger.default.error('Error with category storage location update', err)
-          this.fetchParts(1, null)
+          this.toast.add({
+            severity: "error",
+            summary: `Updating parts`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with storage part update", err);
+          this.bulkEditStorage = null;
+          this.toggleOverlayPanel(event, "btnChangeLoc");
+          this.selectedParts = null;
+          this.loadLazyData();
+        });
+    },
+    bulkChangeCategory(event) {
+      let ids = this.selectedParts.map((x) => {
+        return x.id;
+      });
+      let categoryId = Object.keys(this.bulkEditCategory)[0];
+
+      apiService
+        .changePartsCategory(ids, categoryId)
+        .then((val) => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating parts`,
+            detail: "Success",
+            life: 5000,
+          });
+          this.$nextTick(() => {
+            this.bulkEditCategory = null;
+            this.toggleOverlayPanel(event, "btnChangeCat");
+            for (let part of this.selectedParts) {
+              this.preloadsStore.decrementCategoryPartsCount(
+                part.category.id,
+                ids.length
+              );
+              this.preloadsStore.incrementCategoryPartsCount(
+                categoryId,
+                ids.length
+              );
+            }
+            this.selectedParts = null;
+            this.loadLazyData();
+          });
         })
-    }
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating parts`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with category part update", err);
+          this.bulkEditCategory = null;
+          this.toggleOverlayPanel(event, "btnChangeCat");
+          this.loadLazyData();
+        });
+    },
+    updateInplaceQty(event, part, qty) {
+      logger.default.info("update inplace qty", part.id, qty);
+      apiService
+        .updatePartialPart(part.id, { stock_qty: qty })
+        .then(() => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating part quantity`,
+            detail: "Success",
+            life: 5000,
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating part quantity`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with quantity part update", err);
+        });
+      this.$refs[`inplace_qty_${part.id}`].close();
+    },
+    updateInplaceQtyMin(event, part, qty) {
+      logger.default.info("update inplace qty min", part.id, qty);
+      apiService
+        .updatePartialPart(part.id, { stock_qty_min: qty })
+        .then(() => {
+          this.toast.add({
+            severity: "success",
+            summary: `Updating min part quantity`,
+            detail: "Success",
+            life: 5000,
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: `Updating min part quantity`,
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with min quantity part update", err);
+        });
+      this.$refs[`inplace_qty_min_${part.id}`].close();
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.card {
+  background: #ffffff;
+  padding: 2rem;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.product-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.product-description {
+  margin: 0 0 1rem 0;
+}
+
+.product-category {
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+::v-deep(.product-grid-item) {
+  margin: 0.5rem;
+  border: 1px solid var(--surface-border);
+
+  .product-grid-item-top,
+  .product-grid-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-grid-item-content {
+    text-align: center;
   }
 }
-</script>
+</style>

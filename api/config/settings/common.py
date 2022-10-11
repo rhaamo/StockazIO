@@ -96,9 +96,11 @@ THIRD_PARTY_APPS = [
     "oauth2_provider",
     "corsheaders",
     "rest_framework",
+    "django_rest_passwordreset",
     "django_extensions",
-    "drf_yasg",
     "silk",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 ]
 
 LOCAL_APPS = [
@@ -333,6 +335,8 @@ OAUTH2_PROVIDER_GRANT_MODEL = "oauth.Grant"
 OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = "oauth.RefreshToken"
 OAUTH2_PROVIDER_ID_TOKEN_MODEL = "oauth.IDToken"
 
+# No thanks, true will results in error: invalid_client, and I have no will to handle that yet
+PKCE_REQUIRED = False
 
 REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": (
@@ -342,12 +346,12 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        # "rest_framework.authentication.BasicAuthentication",  # disable thoses or we will have
-        # "rest_framework.authentication.SessionAuthentication",  # some annoying CSRF issues
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("controllers.oauth.permissions.ScopePermission",),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
@@ -394,3 +398,34 @@ CACHES = {
     "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "default-cache"},
     "local": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "local-cache"},
 }
+
+# Swagger / Redoc auto schema etc. doc generator
+
+SPECTACULAR_SETTINGS = {
+    "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "SCHEMA_PATH_PREFIX": r"/api/v1/",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "REDOC_DIST": "SIDECAR",
+    "TITLE": "StockazIO API",
+    "DESCRIPTION": "StockazIO API",
+    "VERSION": "v1",
+    "CONTACT": {"email": "stockazio@sigpipe.me"},
+    "LICENSE": {"name": "Same as project"},
+    "TOS": "https://github.com/rhaamo/stockazio",
+    # idk how to have our custom flow working
+    # 'OAUTH2_FLOWS': ['password'],
+    # 'OAUTH2_AUTHORIZATION_URL': "/oauth/authorize/",
+    # 'OAUTH2_TOKEN_URL': "/oauth/token/",
+    # 'OAUTH2_REFRESH_URL': None,
+    # 'OAUTH2_SCOPES': None,
+    # 'OAUTH2_SCOPES': "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
+    "SERVE_PUBLIC": True,
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
+    "SERVE_AUTHENTICATION": ["controllers.users.authentication.BearerAuthentication"],
+    "AUTHENTICATION_WHITELIST": ["controllers.users.authentication.BearerAuthentication"],
+}
+
+# Password reset settings
+DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME = 24  # hours
+DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE = True  # always return a 200 to avoid leaks

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Manufacturer, PartManufacturer
+from controllers.manufacturer.models import Manufacturer, PartManufacturer
 
 
 class ManufacturersSerializer(serializers.ModelSerializer):
@@ -12,6 +12,7 @@ class ManufacturersSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "aliases",
             "address",
             "url",
             "email",

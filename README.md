@@ -17,18 +17,19 @@ Manage your inventory of electronic stuff
 - Project management with BOM with parts from inventory or free-form (with export of BOM to CSV or XLSX)
 - PDF Generator for labels printing of Storage Locations (plus bulk-generation) or Parts
 
-# V2 Caveats
-
-The following is not implemented and needs to be accessed through django admin `/admin`:
-- Edition of:
-  - Footprints
-  - Categories
-
 # Requirements
 - Python 3.8 (minimum !)
 - A pretty decent NodeJS + Yarn
 - Nginx
 - PostgreSQL
+
+# API Documentation
+
+After installing the backend, Swagger documentation will be accessible at:
+- http://backend_url/api/doc/swagger/
+- http://backend_url/api/doc/redoc/
+
+A better guide for the Oauth2 Auth flow is [available here](./oauth2_flow.md).
 
 # Install - manual
 
@@ -75,6 +76,11 @@ For NodeJS 17.x:
 ```
 CXXFLAGS="--std=c++14" yarn install
 NODE_OPTIONS=--openssl-legacy-provider yarn build
+```
+
+The build might also fails related to memory (https://github.com/vitejs/vite/issues/2433) so the workaround is:
+```
+node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build
 ```
 
 ## Frontend

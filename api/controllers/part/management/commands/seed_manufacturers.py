@@ -21,6 +21,15 @@ class Command(BaseCommand):
         for name in manufacturers:
             try:
                 man = Manufacturer.objects.get(name=name)
+                # also check for aliases
+                if manufacturers[name]:
+                    if "aliases" in manufacturers[name]:
+                        aliases = [x.strip() for x in man.aliases]
+                        for alias in manufacturers[name]["aliases"]:
+                            if alias.strip() not in aliases:
+                                aliases.append(alias.strip())
+                        man.aliases = ", ".join(aliases)
+                        man.save()
             except Manufacturer.DoesNotExist:
                 man = Manufacturer(name=name)
 

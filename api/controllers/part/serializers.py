@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import (
+from controllers.part.models import (
     ParametersUnit,
     PartUnit,
     Part,
@@ -18,6 +18,7 @@ from controllers.distributor.serializers import DistributorSkuSerializer, Distri
 from controllers.manufacturer.serializers import PartManufacturerSerializer, PartManufacturerCreateSerializer
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from controllers.upload_validator import FileTypeValidator
+from drf_spectacular.utils import extend_schema_field
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):
@@ -56,6 +57,7 @@ class PartSerializer(serializers.ModelSerializer):
     part_stock_history = PartStockHistory(many=True, read_only=True)
     part_attachments = PartAttachmentSerializer(many=True, read_only=True)
 
+    @extend_schema_field(serializers.CharField())
     def get_category_name(self, obj):
         return obj.category.name if obj.category else None
 
@@ -164,6 +166,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     part_attachments = PartAttachmentSerializer(many=True, read_only=True)
     part_stock_history = PartStockHistory(many=True, read_only=True)
 
+    @extend_schema_field(serializers.CharField())
     def get_category_name(self, obj):
         return obj.category.name if obj.category else None
 

@@ -1,116 +1,54 @@
-//Import Required Bootstrap stuff
+@import "primevue/resources/themes/bootstrap4-light-purple/theme.css";
+// @import "primevue/resources/themes/bootstrap4-dark-purple/theme.css";
+@import "primevue/resources/primevue.min.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+@import "fork-awesome/css/fork-awesome.css";
 
-@import 'node_modules/bootstrap/scss/bootstrap';
-@import 'node_modules/bootstrap-vue/src/index.scss';
+div#preloadScreen {
+    font-size: 1.5em;
+    text-align: center;
 
-body {
-  font-size: 0.875rem;
+    color: black;
+    padding: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
 }
 
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/*
-* Sidebar
-*/
+div.p-menubar {
+    padding-top:0px !important;
+}
 
 .sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+    // z-index: -999; /* Behind the navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    position: relative;
+    top: 0;
+    // height: calc(100vh - 48px);
+    height: 92vh;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
-  .sidebar-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-  }
+    .sidebar-sticky {
+        position: -webkit-sticky;
+        position: sticky;
+    }
 }
-
-.sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
-}
-
-.sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #999;
-}
-
-.sidebar .nav-link.active {
-  color: #007bff;
-}
-
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-  color: inherit;
-}
-
-.sidebar-heading {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-/*
-* Content
-*/
-
-[role="main"] {
-  padding-top: 75px; /* Space for fixed navbar */
-}
-
-@media (min-width: 768px) {
-  [role="main"] {
-    padding-top: 75px; /* Space for fixed navbar */
-  }
-}
-
-/*
-* Navbar
-*/
-
-.navbar-brand {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0.25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
-}
-
-.navbar .form-control {
-  padding: 0.75rem 1rem;
-  border-width: 0;
-  border-radius: 0;
-}
-
-.form-control-dark {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
-}
-
-/* custom */
 
 /* Categories */
 ul.mptt-tree-storage_categories,
@@ -122,7 +60,7 @@ ul.cat-list {
   text-align: left;
   margin: 0;
   padding-left: 5px;
-  padding-top: 5px;
+//   padding-top: 5px;
   padding-bottom: 5px;
 }
 
@@ -156,27 +94,7 @@ ul.cat-list li a:hover {
   -webkit-border-radius: 2px;
 }
 
-#modalPart .modal-body .container .row {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-div.description {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
-table#tablePartsList td.qrCode {
-  width: 6em;
-  text-align: center;
-}
-
-table#tablePartsList td.select {
-  width: 1em;
-  text-align: center;
-}
-
-span.qtyMinWarning {
-  color: red;
-  font-weight: bold;
+// PrimeVue custom
+li.p-menu-separator {
+    width: 4rem;
 }

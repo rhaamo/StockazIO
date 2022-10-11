@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import StorageCategory, StorageLocation
-from controllers.utils import RecursiveField
+from drf_spectacular.utils import extend_schema_field
 
 
 class StorageCategorySerializer(serializers.ModelSerializer):
@@ -12,6 +12,7 @@ class StorageCategorySerializer(serializers.ModelSerializer):
 class StorageLocationSerializer(serializers.ModelSerializer):
     picture_medium = serializers.ImageField(read_only=True)
 
+    @extend_schema_field(serializers.CharField())
     def get_category_name(self, obj):
         return obj.category.name
 
@@ -26,19 +27,9 @@ StorageLocationSerializer._declared_fields["category_name"] = serializers.Serial
 class StorageSerializer(serializers.ModelSerializer):
     storage_locations = StorageLocationSerializer(many=True, read_only=True)
 
-    def __init__(self, *args, depth=0, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.depth = depth
-
     class Meta:
         model = StorageCategory
         fields = ["id", "name", "children", "storage_locations", "parent"]
-
-    def get_fields(self):
-        fields = super().get_fields()
-        if self.depth != 1:
-            fields["children"] = RecursiveField(many=True, required=False)
-        return fields
 
 
 StorageSerializer._declared_fields["children"] = StorageSerializer(

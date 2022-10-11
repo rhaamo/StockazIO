@@ -94,3 +94,5 @@ api/config/settings/prod.py
 api/config/settings/production.py
 
 api/test-reports
+
+api/schema.yml

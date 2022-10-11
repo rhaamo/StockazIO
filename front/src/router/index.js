@@ -1,255 +1,261 @@
-import LoginForm from '../components/login_form/login_form.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import { useOauthStore } from "@/stores/oauth";
 
-import PartsAddFull from '../views/parts/AddFull'
-import PartsAddQuick from '../views/parts/AddQuick'
-import PartsList from '../views/parts/List'
-import PartsDetails from '../views/parts/Details'
-import PartsEdit from '../views/parts/Edit'
-import ViewInfos from '../views/view/Infos'
-import ViewStorageTree from '../views/view/StorageTree'
-import PartUnitsList from '../views/PartUnit/List'
-import ParametersUnitsList from '../views/ParametersUnits'
-import ParametersPresetsList from '../views/ParametersPresets/list'
-import ParametersPresetsAdd from '../views/ParametersPresets/add'
-import ParametersPresetsDetails from '../views/ParametersPresets/details'
-import ParametersPresetsEdit from '../views/ParametersPresets/edit'
-import Distributors from '../views/Distributors'
-import Manufacturers from '../views/Manufacturers'
-import OrdersImporter from '../views/view/OrdersImporter'
-import OrdersImporterDetails from '../views/view/OrdersImporterDetails'
-import OrdersCategoryMatchers from '../views/view/OrdersCategoryMatchers'
-import PublicPartsList from '../views/view/public/PartsList'
-import ProjectsList from '../views/projects/list'
-import ProjectsAdd from '../views/projects/add'
-import ProjectsEdit from '../views/projects/edit'
-import ProjectsDetails from '../views/projects/details'
-import StoragesList from '../views/storages/list'
-import LabelTemplatesList from '@/views/labeltemplates/list'
-import UrlHandler from '@/views/UrlHandler'
+import LoginForm from "@/views/login/Form.vue";
+import PasswordRequest from "@/views/login/PasswordRequest.vue";
+import PasswordConfirm from "@/views/login/PasswordConfirm.vue";
+import About from "@/views/About.vue";
+import PublicPartsList from "@/views/parts/ListPublic.vue";
+import UrlHandler from "@/views/About.vue";
+import PartsAddFull from "@/views/parts/AddFull.vue";
+import PartsAddQuick from "@/views/parts/AddQuick.vue";
+import PartsList from "@/views/parts/List.vue";
+import PartsDetails from "@/views/parts/View.vue";
+import PartsEdit from "@/views/parts/Edit.vue";
+import PartUnitsList from "@/views/part_units/List.vue";
+import ParametersUnitsList from "@/views/parameters_units/List.vue";
+import ParametersPresetsList from "@/views/part_parameters_presets/List.vue";
+import Distributors from "@/views/distributors/List.vue";
+import Manufacturers from "@/views/manufacturers/List.vue";
+import ViewInfos from "@/views/Infos.vue";
+import ViewStorageTree from "@/views/storages/ReadOnlyList.vue";
+import OrdersCategoryMatchers from "@/views/orders_importer/CategoryMatchers.vue";
+import OrdersImporter from "@/views/orders_importer/List.vue";
+import OrdersImporterDetails from "@/views/orders_importer/Details.vue";
+import ProjectsList from "@/views/projects/List.vue";
+import ProjectsDetails from "@/views/projects/Details.vue";
+import PublicProjectsDetails from "@/views/projects/PublicDetails.vue";
+import StoragesList from "@/views/storages/List.vue";
+import LabelTemplatesManage from "@/views/label_templates/Manage.vue";
+import FootprintsManage from "@/views/footprints/Manage.vue";
+import CategoriesManage from "@/views/categories/Manage.vue";
 
-export default (store) => {
-  const validateAuthenticatedRoute = (to, from, next) => {
-    if (store.state.oauth.loggedIn) {
-      next()
-    } else {
-      next('/')
-    }
+const validateAuthenticatedRoute = (to, from, next) => {
+  const oauthStore = useOauthStore();
+  if (oauthStore.loggedIn) {
+    next();
+  } else {
+    next("/");
   }
+};
 
-  return [
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
     // Main stuff
     {
-      path: '/',
-      name: 'home',
-      redirect: _to => { return (store.state.oauth.loggedIn ? '/parts' : '/login') }
+      path: "/",
+      name: "home",
+      redirect: (_to) => {
+        const oauthStore = useOauthStore();
+        return oauthStore.loggedIn ? "/parts" : "/login";
+      },
     },
     // Url Handler
     {
-      path: '/urlhandler',
-      name: 'urlhandler',
+      path: "/urlhandler",
+      name: "urlhandler",
       component: UrlHandler,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Parts
     {
-      path: '/parts/new',
-      name: 'parts-new',
+      path: "/parts/new",
+      name: "parts-new",
       component: PartsAddFull,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/parts/quick-new',
-      name: 'parts-quick-new',
+      path: "/parts/quick-new",
+      name: "parts-quick-new",
       component: PartsAddQuick,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/parts/category/:categoryId',
-      name: 'parts-category-list',
+      path: "/parts/category/:categoryId",
+      name: "parts-category-list",
       component: PartsList,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/parts',
-      name: 'parts-list',
+      path: "/parts",
+      name: "parts-list",
       component: PartsList,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/parts/:partId',
-      name: 'parts-details',
+      path: "/parts/:partId",
+      name: "parts-details",
       component: PartsDetails,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/parts/:partId/edit',
-      name: 'parts-edit',
+      path: "/parts/:partId/edit",
+      name: "parts-edit",
       component: PartsEdit,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // PartUnits
     {
-      path: '/part/units',
-      name: 'part-units-list',
+      path: "/part/units",
+      name: "part-units-list",
       component: PartUnitsList,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Parameters Units
     {
-      path: '/part/parameters/units',
-      name: 'parameters-units-list',
+      path: "/part/parameters/units",
+      name: "parameters-units-list",
       component: ParametersUnitsList,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Parameters Presets
     {
-      path: '/part/parameters/presets',
-      name: 'parameters-presets-list',
+      path: "/part/parameters/presets",
+      name: "parameters-presets-list",
       component: ParametersPresetsList,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
-    },
-    {
-      path: '/part/parameters/presets/:presetId',
-      name: 'parameters-presets-details',
-      component: ParametersPresetsDetails,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute
-    },
-    {
-      path: '/part/parameters/presets/:presetId/edit',
-      name: 'parameters-presets-edit',
-      component: ParametersPresetsEdit,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute
-    },
-    {
-      path: '/part/parameters/presets/new',
-      name: 'parameters-presets-add',
-      component: ParametersPresetsAdd,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Distributors
     {
-      path: '/distributors',
-      name: 'distributors-list',
+      path: "/distributors",
+      name: "distributors-list",
       component: Distributors,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Manufacturers
     {
-      path: '/manufacturers',
-      name: 'manufacturers-list',
+      path: "/manufacturers",
+      name: "manufacturers-list",
       component: Manufacturers,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Views
     {
-      path: '/view/infos',
-      name: 'view-infos',
+      path: "/view/infos",
+      name: "view-infos",
       component: ViewInfos,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/views/storage-tree',
-      name: 'view-storage-tree',
+      path: "/views/storage-tree",
+      name: "view-storage-tree",
       component: ViewStorageTree,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // OrdersImporter
     {
       // this one needs to be before orders-importer-details for props reasons
-      path: '/orders/importer/category_matcher',
-      name: 'orders-importer-category-matcher',
+      path: "/orders/importer/category_matcher",
+      name: "orders-importer-category-matcher",
       component: OrdersCategoryMatchers,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/orders/importer',
-      name: 'orders-importer',
+      path: "/orders/importer",
+      name: "orders-importer",
       component: OrdersImporter,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/orders/importer/:id',
-      name: 'orders-importer-details',
+      path: "/orders/importer/:id",
+      name: "orders-importer-details",
       component: OrdersImporterDetails,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Public
     {
-      path: '/public/parts',
-      name: 'public-parts',
+      path: "/public/parts",
+      name: "public-parts",
       component: PublicPartsList,
-      props: true
+      props: true,
     },
     {
-      path: '/public/parts/category/:categoryId',
-      name: 'public-parts-category-list',
+      path: "/public/parts/category/:categoryId",
+      name: "public-parts-category-list",
       component: PublicPartsList,
-      props: true
+      props: true,
+    },
+    {
+      path: "/public/projects/:projectId",
+      name: "public-projects-details",
+      component: PublicProjectsDetails,
+      props: true,
     },
     // Projects
     {
-      path: '/projects',
-      name: 'projects-list',
+      path: "/projects",
+      name: "projects-list",
       component: ProjectsList,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     {
-      path: '/projects/new',
-      name: 'projects-new',
-      component: ProjectsAdd,
-      beforeEnter: validateAuthenticatedRoute
-    },
-    {
-      path: '/projects/:projectId/edit',
-      name: 'projects-edit',
-      component: ProjectsEdit,
-      props: true,
-      beforeEnter: validateAuthenticatedRoute
-    },
-    {
-      path: '/projects/:projectId',
-      name: 'projects-details',
+      path: "/projects/:projectId",
+      name: "projects-details",
       component: ProjectsDetails,
       props: true,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Storages
     {
-      path: '/storages',
-      name: 'storages-list',
+      path: "/storages",
+      name: "storages-list",
       component: StoragesList,
-      beforeEnter: validateAuthenticatedRoute
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Label Templates
     {
-      path: '/labeltemplates',
-      name: 'label-templates-list',
-      component: LabelTemplatesList,
-      beforeEnter: validateAuthenticatedRoute
+      path: "/labeltemplates",
+      name: "label-templates-list",
+      component: LabelTemplatesManage,
+      beforeEnter: validateAuthenticatedRoute,
+    },
+    // Footprints
+    {
+      path: "/footprints",
+      name: "footprints-list",
+      component: FootprintsManage,
+      beforeEnter: validateAuthenticatedRoute,
+    },
+    // Categories
+    {
+      path: "/categories",
+      name: "categories-list",
+      component: CategoriesManage,
+      beforeEnter: validateAuthenticatedRoute,
     },
     // Other
     {
-      path: '/about',
-      name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+      path: "/about",
+      name: "about",
+      component: About,
     },
     // Auth
-    { path: '/login', name: 'login_form', component: LoginForm },
-    { name: 'password-reset', path: '/password-reset' },
+    { path: "/login", name: "login_form", component: LoginForm },
+    {
+      path: "/password_reset/request",
+      name: "password-reset-request",
+      component: PasswordRequest,
+    },
+    {
+      path: "/password_reset/confirm/:token",
+      name: "password-reset-confirm",
+      component: PasswordConfirm,
+      props: true,
+    },
     // Parts
-    { path: '/parts', name: 'parts', beforeEnter: validateAuthenticatedRoute }
-  ]
-}
+    { path: "/parts", name: "parts", beforeEnter: validateAuthenticatedRoute },
+  ],
+});
+
+export default router;

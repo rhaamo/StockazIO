@@ -88,6 +88,10 @@ class ScopePermission(permissions.BasePermission):
             if not has_perms:
                 print(f"DENIED, has token; required_scopes={required_scope!r} token={token.scopes.keys()!r}")
             return has_perms
+        # Used for SessionAuthentication in tests
+        elif request.user.is_authenticated:
+            user_scopes = scopes.get_from_permissions(**request.user.get_permissions())
+            return should_allow(required_scope=required_scope, request_scopes=user_scopes)
         else:
             # Is it an anonymous policy ?
             if anonymous_policy is False:

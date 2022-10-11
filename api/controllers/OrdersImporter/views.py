@@ -1,19 +1,37 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import views, filters
+from rest_framework import views
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 
-from .serializers import OrderSerializer, CategoryMatcherSerializer, OrderCreateSerializer, OrderListSerializer
-from .models import CategoryMatcher, Order
+from controllers.OrdersImporter.serializers import (
+    OrderSerializer,
+    CategoryMatcherSerializer,
+    OrderCreateSerializer,
+    OrderListSerializer,
+    CategoryMatcherCreateSerializer,
+)
+from controllers.OrdersImporter.models import CategoryMatcher, Order
 from controllers.categories.models import Category
 from controllers.part.models import Part
 from controllers.manufacturer.models import PartManufacturer
 from controllers.distributor.models import DistributorSku
-from .utils import rematch_orders
+from controllers.OrdersImporter.utils import rematch_orders
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+from rest_framework import serializers as drf_serializers
+from rest_framework.pagination import LimitOffsetPagination
+
+
+class PrimeVuePagination(LimitOffsetPagination):
+    limit_query_param = "rows"
+    offset_query_param = "first"
 
 
 class OrderViewSet(ModelViewSet):
+    """
+    Orders importer
+    """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -23,24 +41,39 @@ class OrderViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ["date", "order_number", "status", "vendor", "import_state"]
-    ordering = ["-date"]
+    pagination_class = PrimeVuePagination
 
     def get_serializer_class(self):
         if self.action in ["list"]:
             return OrderListSerializer
         elif self.action in ["retrieve"]:
             return OrderSerializer
+        elif self.action in ["update", "partial_update"]:
+            return OrderCreateSerializer
         else:
             return OrderCreateSerializer
 
     def get_queryset(self):
+        sortField = self.request.query_params.get("sortField", None)
+        sortOrder = self.request.query_params.get("sortOrder", None)
+
         queryset = Order.objects.all().annotate(items_count=Count("items"))
+
+        if sortField and sortOrder:
+            if sortOrder == 1:
+                queryset = queryset.order_by(sortField)
+            else:
+                # -1
+                queryset = queryset.order_by(f"-{sortField}")
+
         return queryset
 
 
 class CategoryMatcherViewSet(ModelViewSet):
+    """
+    Categories Matcher
+    """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -52,15 +85,38 @@ class CategoryMatcherViewSet(ModelViewSet):
     }
     serializer_class = CategoryMatcherSerializer
 
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return CategoryMatcherCreateSerializer
+        else:
+            return CategoryMatcherSerializer
+
     def get_queryset(self):
         queryset = CategoryMatcher.objects.all()
         return queryset
 
 
 class CategoryMatcherBatchUpdater(views.APIView):
+    """
+    Categories Matcher: Batch updater
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 
+    @extend_schema(
+        request=drf_serializers.ListSerializer(
+            child=inline_serializer(
+                name="CategoryMatcherBatchUpdater",
+                fields={
+                    "id": drf_serializers.IntegerField(),
+                    "regexp": drf_serializers.CharField(),
+                    "category": drf_serializers.IntegerField(),
+                },
+            )
+        ),
+        responses={200: CategoryMatcherSerializer},
+    )
     def patch(self, req):
         # update or create
         # Missing elements will be created
@@ -94,7 +150,30 @@ class CategoryMatcherBatchUpdater(views.APIView):
         return Response(serializer.data, status=200)
 
 
+@extend_schema(
+    request=drf_serializers.ListSerializer(
+        child=inline_serializer(
+            name="CategoryMatcherBatchRematcher",
+            fields={
+                "id": drf_serializers.IntegerField(),
+                "regexp": drf_serializers.CharField(),
+                "category": drf_serializers.IntegerField(),
+            },
+        )
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=inline_serializer(
+                name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}
+            )
+        )
+    },
+)
 class CategoryMatcherBatchRematcher(views.APIView):
+    """
+    Categories Matcher: Batch rematcher
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 
@@ -111,9 +190,38 @@ class CategoryMatcherBatchRematcher(views.APIView):
 
 
 class OrderImporterToInventory(views.APIView):
+    """
+    Orders importer to inventory
+    """
+
     required_scope = "parts"
     anonymous_policy = False
 
+    @extend_schema(
+        request=inline_serializer(
+            name="OrderImporterToInventory",
+            fields={
+                "id": drf_serializers.IntegerField(),
+            },
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="OrderImporterToInventory",
+                    fields={
+                        "detail": drf_serializers.CharField(default="done"),
+                        "stats": inline_serializer(
+                            name="OrderImporterToInventoryStats",
+                            fields={
+                                "created": drf_serializers.IntegerField(),
+                                "updated": drf_serializers.IntegerField(),
+                            },
+                        ),
+                    },
+                )
+            )
+        },
+    )
     def post(self, req):
         if "id" not in req.data:
             return Response({"detail": "id is missing"}, 503)

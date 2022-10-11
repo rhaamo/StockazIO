@@ -4,6 +4,10 @@ from .serializers import LabelTemplateSerializer
 
 
 class LabelTemplateViewSet(ModelViewSet):
+    """
+    PDF Label Templates
+    """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",

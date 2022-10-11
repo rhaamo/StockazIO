@@ -44,3 +44,15 @@ COMMON_SCOPES = ANONYMOUS_SCOPES | {
 }
 
 OAUTH_APP_SCOPES = COMMON_SCOPES
+
+
+def get_from_permissions(**permissions):
+    from controllers.users import models
+
+    final = COMMON_SCOPES
+    for permission_name, value in permissions.items():
+        if value is False:
+            continue
+        config = models.PERMISSIONS_CONFIGURATION[permission_name]
+        final = final | config["scopes"]
+    return final

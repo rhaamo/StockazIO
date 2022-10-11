@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project, ProjectAttachment, ProjectPart
+from controllers.project.models import Project, ProjectAttachment, ProjectPart
 from controllers.part.serializers import PartSerializer
 from controllers.part.models import Part
 from controllers.upload_validator import FileTypeValidator
@@ -30,6 +30,22 @@ class ProjectAttachmentsSerializer(serializers.ModelSerializer):
                 allowed_types=settings.PART_ATTACHMENT_ALLOWED_FILES + settings.PART_ATTACHMENT_ALLOWED_IMAGES
             )
         ]
+    )
+    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+
+    class Meta:
+        model = ProjectAttachment
+        fields = ("id", "description", "file", "project")
+
+
+class ProjectAttachmentsCreateSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(
+        required=False,
+        validators=[
+            FileTypeValidator(
+                allowed_types=settings.PART_ATTACHMENT_ALLOWED_FILES + settings.PART_ATTACHMENT_ALLOWED_IMAGES
+            )
+        ],
     )
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
 

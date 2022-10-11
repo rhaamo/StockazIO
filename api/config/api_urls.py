@@ -1,22 +1,7 @@
 from django.conf.urls import include
 from django.urls import re_path
 from rest_framework import routers
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="StockazIO API",
-        default_version="v1",
-        description="StockazIO API",
-        terms_of_service="https://github.com/rhaamo/stockazio",
-        contact=openapi.Contact(email="stockazio@sigpipe.me"),
-        license=openapi.License(name="Same as project"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 router = routers.DefaultRouter()
 v1_patterns = router.urls
@@ -39,10 +24,16 @@ v1_patterns += [
     ),
 ]
 
-swagger = [
-    re_path(r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json"),
-    re_path(r"^swagger/$", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
-    re_path(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+# Swagger / Redoc
+v1_patterns += [
+    re_path(r"^doc$", SpectacularAPIView.as_view(), name="schema"),
+    re_path(r"^doc/swagger/", SpectacularSwaggerView.as_view(url_name="api:v1:schema"), name="swagger"),
+    re_path(r"^doc/redoc/", SpectacularRedocView.as_view(url_name="api:v1:schema"), name="redoc"),
 ]
 
-urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))] + swagger
+# Password reset
+v1_patterns += [
+    re_path(r"^password_reset/", include("django_rest_passwordreset.urls", namespace="password_reset")),
+]
+
+urlpatterns = [re_path(r"v1/", include((v1_patterns, "v1"), namespace="v1"))]

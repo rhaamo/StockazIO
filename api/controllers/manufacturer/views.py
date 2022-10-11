@@ -1,10 +1,15 @@
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import parsers
 
-from .models import Manufacturer
-from .serializers import ManufacturersSerializer
+from controllers.manufacturer.models import Manufacturer
+from controllers.manufacturer.serializers import ManufacturersSerializer
 
 
 class ManufacturersViewSet(ModelViewSet):
+    """
+    Manufacturer addresses
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -14,7 +19,11 @@ class ManufacturersViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
     }
-    serializer_class = ManufacturersSerializer
+
+    def get_serializer_class(self):
+        return ManufacturersSerializer
+
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser)
 
     def get_queryset(self):
         queryset = Manufacturer.objects.all()

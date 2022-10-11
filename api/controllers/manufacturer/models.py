@@ -33,6 +33,7 @@ class Manufacturer(models.Model):
     logo_medium = ImageSpecField(
         source="logo", processors=[ResizeToFill(400, 400, upscale=False)], format="JPEG", options={"quality": 80}
     )
+    aliases = models.CharField(_("aliases"), max_length=255, blank=True, unique=False, help_text=_("Aliases"))
 
     class Meta(object):
         ordering = ("name",)

@@ -1,11 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 from .models import StorageCategory, StorageLocation
 from .serializers import StorageSerializer, StorageCategorySerializer, StorageLocationSerializer
 
 
-# TODO: we want only list/get from this ViewSet
+@extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])
 class StorageViewSet(ModelViewSet):
+    """
+    Storage tree
+    """
+
     anonymous_policy = True
     required_scope = {
         "retrieve": "read",
@@ -16,6 +21,8 @@ class StorageViewSet(ModelViewSet):
         "list": None,
     }
     serializer_class = StorageSerializer
+    # we want only get and list
+    http_method_names = ["get"]
 
     def get_queryset(self):
         queryset = StorageCategory.objects.all()
@@ -24,6 +31,10 @@ class StorageViewSet(ModelViewSet):
 
 
 class StorageCategoryViewSet(ModelViewSet):
+    """
+    Storage categories
+    """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",
@@ -40,6 +51,10 @@ class StorageCategoryViewSet(ModelViewSet):
 
 
 class StorageLocationViewSet(ModelViewSet):
+    """
+    Storage locations
+    """
+
     anonymous_policy = False
     required_scope = {
         "retrieve": "read",

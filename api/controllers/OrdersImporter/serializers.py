@@ -1,10 +1,11 @@
 from rest_framework import serializers
-from .models import Order, Item, CategoryMatcher
+from controllers.OrdersImporter.models import Order, Item, CategoryMatcher
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.distributor.serializers import DistributorsSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
+from drf_spectacular.utils import extend_schema_field
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -37,7 +38,6 @@ class ItemCreateSerializer(serializers.ModelSerializer):
             "manufacturer",
             "description",
             "quantity",
-            "order",
             "category",
             "ignore",
             "manufacturer_db",
@@ -57,6 +57,7 @@ class OrderListSerializer(WritableNestedModelSerializer):
     vendor_db = DistributorsSerializer(many=False, read_only=True)
     items_count = serializers.SerializerMethodField()
 
+    @extend_schema_field(serializers.IntegerField())
     def get_items_count(self, obj):
         return obj.items_count
 
@@ -71,6 +72,14 @@ class OrderCreateSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Order
         fields = ("id", "date", "order_number", "status", "vendor", "import_state", "items", "vendor_db")
+
+
+class CategoryMatcherCreateSerializer(serializers.ModelSerializer):
+    category = SingleCategorySerializer(many=False, read_only=True)
+
+    class Meta:
+        model = CategoryMatcher
+        fields = ("id", "regexp", "category")
 
 
 class CategoryMatcherSerializer(serializers.ModelSerializer):
