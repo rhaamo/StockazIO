@@ -15,14 +15,13 @@
         </li>
       </ul>
       <template v-for="item in storages">
-        <ListCategory
+        <ListItem
           v-if="item.children"
           :key="item.id"
           :item="item"
           :level="1"
           :readonly="true"
         />
-        <ListLocation v-else :key="item.uuid" :item="item" :readonly="true" />
       </template>
     </div>
   </div>
@@ -32,14 +31,12 @@
 import { usePreloadsStore } from "@/stores/preloads";
 import { mapState } from "pinia";
 import { h } from "vue";
-import ListCategory from "@/components/storages/ListCategory.vue";
-import ListLocation from "@/components/storages/ListLocation.vue";
+import ListItem from "@/components/storages/ListItem.vue";
 import LabelGeneratorModal from "@/components/label/generator.vue";
 
 export default {
   components: {
-    ListCategory,
-    ListLocation,
+    ListItem,
   },
   data: () => ({
     breadcrumb: {
@@ -63,11 +60,8 @@ export default {
     showBulkLabelGenerator() {
       let slocs = [];
       const cb = (e) => {
-        if (e.category) {
-          slocs.push(e);
-        } else {
-          e.children.forEach(cb);
-        }
+        slocs.push(e);
+        e.children.forEach(cb);
       };
       this.storages.forEach(cb);
 
