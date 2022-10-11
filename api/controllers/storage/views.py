@@ -2,8 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from rest_framework.response import Response
 
-from controllers.storage.models import StorageCategory, StorageLocation, Storage
-from controllers.storage.serializers import StorageSerializer, StorageCategorySerializer, StorageLocationSerializer
+from controllers.storage.models import Storage
+from controllers.storage.serializers import StorageSerializer
 from collections import defaultdict
 
 @extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])
@@ -51,43 +51,3 @@ class StorageViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = Storage.objects.all()
         return queryset
-
-
-class StorageCategoryViewSet(ModelViewSet):
-    """
-    Storage categories
-    """
-
-    anonymous_policy = False
-    required_scope = {
-        "retrieve": "read",
-        "create": "write",
-        "destroy": "write",
-        "update": "write",
-        "partial_update": "write",
-        "list": "read",
-    }
-    serializer_class = StorageCategorySerializer
-
-    def get_queryset(self):
-        return StorageCategory.objects.all()
-
-
-class StorageLocationViewSet(ModelViewSet):
-    """
-    Storage locations
-    """
-
-    anonymous_policy = False
-    required_scope = {
-        "retrieve": "read",
-        "create": "write",
-        "destroy": "write",
-        "update": "write",
-        "partial_update": "write",
-        "list": "read",
-    }
-    serializer_class = StorageLocationSerializer
-
-    def get_queryset(self):
-        return StorageLocation.objects.all()
