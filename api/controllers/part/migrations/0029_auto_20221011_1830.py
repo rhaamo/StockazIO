@@ -2,9 +2,10 @@
 
 from django.db import migrations
 
+
 def remap_storage_fk(apps, schema_editor):
-    Part = apps.get_model('part', 'Part')
-    Storage = apps.get_model('storage', 'Storage')
+    Part = apps.get_model("part", "Part")
+    Storage = apps.get_model("storage", "Storage")
 
     for part in Part.objects.all():
         if part.storage:
@@ -20,5 +21,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-                migrations.RunPython(code=remap_storage_fk, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(code=remap_storage_fk, reverse_code=migrations.RunPython.noop),
     ]

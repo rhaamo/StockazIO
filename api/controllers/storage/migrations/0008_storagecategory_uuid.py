@@ -3,11 +3,13 @@
 from django.db import migrations, models
 import uuid
 
+
 def create_uuid(apps, schema_editor):
-    StorageCategory = apps.get_model('storage', 'StorageCategory')
+    StorageCategory = apps.get_model("storage", "StorageCategory")
     for sc in StorageCategory.objects.all():
         sc.uuid = uuid.uuid4()
         sc.save()
+
 
 class Migration(migrations.Migration):
 
@@ -23,8 +25,8 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(code=create_uuid, reverse_code=migrations.RunPython.noop),
         migrations.AlterField(
-            model_name='storagecategory',
-            name='uuid',
+            model_name="storagecategory",
+            name="uuid",
             field=models.UUIDField(editable=False, null=False),
-        )
+        ),
     ]

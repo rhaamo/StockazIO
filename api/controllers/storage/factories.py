@@ -1,6 +1,7 @@
 import factory
 from controllers.factories import registry
 
+
 @registry.register
 class StorageFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")

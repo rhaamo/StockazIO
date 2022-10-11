@@ -5,7 +5,6 @@ from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 
-
 class StorageAdmin(CommonAdmin):
     list_display = ("name", "description", "get_picture")
     search_fields = ("name",)
@@ -20,8 +19,6 @@ class StorageAdmin(CommonAdmin):
             )
 
     get_picture.short_description = _("Picture")
-
-
 
 
 admin.site.register(Storage, StorageAdmin)

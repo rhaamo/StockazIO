@@ -6,6 +6,7 @@ from controllers.storage.models import Storage
 from controllers.storage.serializers import StorageSerializer
 from collections import defaultdict
 
+
 @extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])
 class StorageViewSet(ModelViewSet):
     """
@@ -37,7 +38,7 @@ class StorageViewSet(ModelViewSet):
                 "name": parent.name,
                 "uuid": parent.uuid,
                 "description": parent.description,
-                "children": [serialize(child) for child in children[parent]]
+                "children": [serialize(child) for child in children[parent]],
             }
             if parent.picture:
                 d["picture"] = parent.picture.url
