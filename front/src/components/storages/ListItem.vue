@@ -63,17 +63,7 @@
             @click.prevent="addElementModal(item.id)"
             class="no-underline"
           >
-            [add element]
-          </router-link>
-
-          &nbsp;&nbsp;
-          <router-link
-            to="#"
-            v-tooltip="`${addElementTitle(item.name)}`"
-            @click.prevent="addElementModal(item.id)"
-            class="no-underline"
-          >
-            [add element]
+            [add sub element]
           </router-link>
         </template>
       </li>
@@ -90,7 +80,7 @@
 
 <script>
 import { h } from "vue";
-import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
+import ManageItemDialog from "@/components/storages/ManageLocation.vue";
 import LabelGeneratorModal from "@/components/label/generator.vue";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
@@ -115,7 +105,7 @@ export default {
   }),
   methods: {
     addElementTitle(name) {
-      return `Add element under '${name}'`;
+      return `Add sub element under '${name}'`;
     },
     fetchStorages() {
       logger.default.info("reloading storages");
@@ -160,7 +150,7 @@ export default {
       });
     },
     editElementModal(item) {
-      this.$dialog.open(ManageCategoryDialog, {
+      this.$dialog.open(ManageItemDialog, {
         props: {
           modal: true,
           style: {
@@ -169,7 +159,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("span", "Edit category")])];
+            return [h("h3", [h("span", "Edit element")])];
           },
         },
         data: {
@@ -188,7 +178,7 @@ export default {
     },
     deleteElementModal(item) {
       this.confirm.require({
-        message: `Are you sure you want to delete the category '${item.name}' ?`,
+        message: `Are you sure you want to delete the element '${item.name}' ?`,
         header: `Deleting '${item.name}' ?`,
         icon: "fa fa-exclamation-triangle",
         accept: () => {
@@ -210,7 +200,7 @@ export default {
                 detail: "An error occured, please try again later",
                 life: 5000,
               });
-              logger.default.error("Error with storage category deletion", err);
+              logger.default.error("Error with storage element deletion", err);
               this.fetchStorages();
             });
         },
@@ -220,7 +210,7 @@ export default {
       });
     },
     addElementModal(id) {
-      this.$dialog.open(ManageCategoryDialog, {
+      this.$dialog.open(ManageItemDialog, {
         props: {
           modal: true,
           style: {
@@ -229,7 +219,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("span", "Add category")])];
+            return [h("h3", [h("span", "Add element")])];
           },
         },
         data: {
