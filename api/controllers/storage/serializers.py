@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import StorageCategory, StorageLocation
+from controllers.storage.models import StorageCategory, StorageLocation, Storage
 from drf_spectacular.utils import extend_schema_field
 
 
@@ -25,14 +25,6 @@ StorageLocationSerializer._declared_fields["category_name"] = serializers.Serial
 
 
 class StorageSerializer(serializers.ModelSerializer):
-    storage_locations = StorageLocationSerializer(many=True, read_only=True)
-
     class Meta:
-        model = StorageCategory
-        fields = ["id", "name", "children", "storage_locations", "parent"]
-
-
-StorageSerializer._declared_fields["children"] = StorageSerializer(
-    many=True,
-    source="get_children",
-)
+        model = Storage
+        fields = '__all__'
