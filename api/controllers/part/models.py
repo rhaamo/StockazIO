@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from controllers.footprints.models import Footprint
 from controllers.categories.models import Category
-from controllers.storage.models import StorageLocation
+from controllers.storage.models import Storage
 from controllers.part.validators import validate_file_type_file, validate_file_type_image
 import uuid
 from django.db.models.signals import post_save, pre_save
@@ -48,7 +48,7 @@ class Part(models.Model):
     )
     part_unit = models.ForeignKey(PartUnit, blank=True, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
-    storage = models.ForeignKey(StorageLocation, blank=True, null=True, on_delete=models.PROTECT)
+    storage = models.ForeignKey(Storage, blank=True, null=True, on_delete=models.PROTECT)
     footprint = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.PROTECT)
     comment = models.CharField(
         _("comment"), max_length=255, unique=False, blank=True, help_text=_("Comments about the part itself")

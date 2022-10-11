@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (
+from controllers.part.models import (
     Part,
     PartUnit,
     PartParameter,
@@ -58,7 +58,7 @@ class PartAdmin(CommonAdmin):
     list_display = (
         "name",
         "description",
-        "storage",
+        # "storage",
         # "category",
         "stock_qty",
         "stock_qty_min",
@@ -70,10 +70,11 @@ class PartAdmin(CommonAdmin):
     inlines = [DistributorSkuInLine, PartManufacturerInLine, PartParameterInLine, PartAttachmentInLine]
     list_filter = [
         ("footprint__name", DropdownFilter),
-        ("storage__name", DropdownFilter),
+        # ("storage__name", DropdownFilter),
         ("category", TreeRelatedFieldListFilter),
     ]
-    autocomplete_fields = ("storage", "category", "footprint")
+    autocomplete_fields = ("category", "footprint")
+    # autocomplete_fields = ("storage", "category", "footprint")
 
 
 class PartAttachmentAdmin(CommonAdmin):
