@@ -463,7 +463,7 @@
                       :filter="true"
                       placeholder="Preset to apply"
                     />
-                    <PvButtonDeleteInline
+                    <ButtonDeleteInline
                       size="p-button-sm"
                       btn-variant-main="p-button-info"
                       btn-variant-ok="p-button-success"

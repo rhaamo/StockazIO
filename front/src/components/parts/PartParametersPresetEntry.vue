@@ -86,7 +86,7 @@
     </div>
 
     <div class="mt-2">
-      <PvButtonDeleteInline
+      <ButtonDeleteInline
         size="p-button-sm"
         btn-variant-main="p-button-danger"
         btn-variant-ok="p-button-success"
