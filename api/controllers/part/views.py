@@ -119,11 +119,11 @@ class PartViewSet(ModelViewSet):
 
         queryset = Part.objects.all()
 
-        # category is recursive, thaks to .get_descendants()
+        # category is recursive, thaks to .descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
         elif category_id:
-            category = Category.objects.get(id=category_id).get_descendants(include_self=True)
+            category = Category.objects.get(id=category_id).descendants(include_self=True)
             if category is not None:
                 queryset = queryset.filter(category__in=category)
 
@@ -315,11 +315,11 @@ class PartsPublic(ModelViewSet):
         # fixed field for public parts
         queryset = queryset.filter(private=False)
 
-        # category is recursive, thaks to .get_descendants()
+        # category is recursive, thaks to .descendants()
         if category_id in ["0", 0]:
             queryset = queryset.filter(category_id__isnull=True)
         elif category_id:
-            category = Category.objects.get(id=category_id).get_descendants(include_self=True)
+            category = Category.objects.get(id=category_id).descendants(include_self=True)
             if category is not None:
                 queryset = queryset.filter(category__in=category)
 
