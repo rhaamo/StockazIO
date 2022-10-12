@@ -44,7 +44,7 @@ jobs:
     - name: Check black formatting
       run: |
         cd api
-        ufmt --check .
+        ufmt check .
     - name: Check flake8
       run: |
         cd api

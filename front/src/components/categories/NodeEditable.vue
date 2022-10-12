@@ -1,6 +1,6 @@
 <template>
   <li class="list-none">
-    <i class="fa fa-folder mr-2" />
+    <i class="fa fa-ellipsis-h mr-2" />
     <span class="text-primary">{{ node.name }}</span>
     <i
       v-tooltip="`Edit`"

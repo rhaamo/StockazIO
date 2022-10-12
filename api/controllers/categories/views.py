@@ -1,9 +1,12 @@
+from collections import defaultdict
+
 from django.db.models import Case, Count, IntegerField, Sum, When
 from rest_framework import mixins
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Category
-from .serializers import CategorySerializer, CreateCategorySerializer
+from controllers.categories.models import Category
+from controllers.categories.serializers import CategorySerializer, CreateCategorySerializer
 
 
 class CategoryViewSet(
@@ -34,8 +37,31 @@ class CategoryViewSet(
         else:
             return CreateCategorySerializer
 
+    def list(self, request, *args, **kwargs):
+        """
+        Return a nested json tree of the categories from the flat representation
+        """
+        children = defaultdict(list)
+        for node in self.get_queryset():
+            children[node.parent].append(node)
+
+        def serialize(item, parent_id):
+            d = {
+                "id": item.id,
+                "name": item.name,
+                "parent": parent_id,
+                "parts_count": item.parts_count,
+                "children": [serialize(child, item.id) for child in children[item]],
+            }
+            return d
+
+        roots = [serialize(root, None) for root in children[None]]
+
+        return Response(roots, status=200)
+
     def get_queryset(self):
-        queryset = Category.objects.all()
+        # somehow the order_by is necessary even if the model still have ordering...
+        queryset = Category.objects.with_tree_fields(False).select_related("parent").order_by("name")
 
         # Do weird magic only for list (parts count, etc.)
         if self.action == "list":
@@ -45,6 +71,5 @@ class CategoryViewSet(
                 queryset = queryset.annotate(
                     parts_count=Sum(Case(When(part__private=False, then=1), default=0, output_field=IntegerField()))
                 )
-            queryset = queryset.get_cached_trees()
 
         return queryset
