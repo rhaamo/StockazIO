@@ -1,6 +1,6 @@
 import pytest
-from django import forms
 from controllers.oauth import models
+from django import forms
 
 
 @pytest.mark.parametrize(

@@ -1,9 +1,9 @@
 import logging
-from rest_framework import permissions
-from django.core.exceptions import ImproperlyConfigured
 
-from . import models
-from . import scopes
+from django.core.exceptions import ImproperlyConfigured
+from rest_framework import permissions
+
+from . import models, scopes
 
 log = logging.getLogger("oauth2_provider")
 

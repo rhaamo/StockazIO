@@ -2,19 +2,16 @@ import json
 import urllib.parse
 
 from django import http
-from django.utils import timezone
 from django.db.models import Q
-from rest_framework import mixins, permissions, views, viewsets
-from drf_spectacular.utils import inline_serializer, extend_schema, OpenApiResponse
-from rest_framework import serializers as drf_serializers
+from django.utils import timezone
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+
+from oauth2_provider import exceptions as oauth2_exceptions, views as oauth_views
+from oauth2_provider.settings import oauth2_settings
+from rest_framework import mixins, permissions, serializers as drf_serializers, views, viewsets
 from rest_framework.generics import GenericAPIView
 
-from oauth2_provider import exceptions as oauth2_exceptions
-from oauth2_provider import views as oauth_views
-from oauth2_provider.settings import oauth2_settings
-
-from . import models
-from . import serializers
+from . import models, serializers
 from .permissions import ScopePermission
 
 

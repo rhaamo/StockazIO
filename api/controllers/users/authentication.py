@@ -1,5 +1,5 @@
-from rest_framework import authentication
 from drf_spectacular.extensions import OpenApiAuthenticationExtension
+from rest_framework import authentication
 
 
 # Used for Swagger/Redoc

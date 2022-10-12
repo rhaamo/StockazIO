@@ -1,8 +1,9 @@
 import factory
-from controllers.factories import registry
+
 from controllers.categories.factories import CategoryFactory
-from controllers.storage.factories import StorageFactory
+from controllers.factories import registry
 from controllers.footprints.factories import FootprintFactory
+from controllers.storage.factories import StorageFactory
 
 
 @registry.register

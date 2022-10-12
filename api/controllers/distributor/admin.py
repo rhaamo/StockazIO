@@ -1,6 +1,7 @@
-from django.contrib import admin
-from .models import Distributor
 from config.admin import CommonAdmin
+from django.contrib import admin
+
+from .models import Distributor
 
 
 class DistributorAdmin(CommonAdmin):

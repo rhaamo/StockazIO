@@ -1,10 +1,12 @@
-import os
 import csv
+import os
+
 from django.core.management.base import BaseCommand, CommandError
 
-from controllers.part.models import Part, PartUnit
-from controllers.footprints.models import Footprint, FootprintCategory
 from controllers.categories.models import Category
+from controllers.footprints.models import Footprint, FootprintCategory
+
+from controllers.part.models import Part, PartUnit
 from controllers.storage.models import StorageCategory, StorageLocation
 
 

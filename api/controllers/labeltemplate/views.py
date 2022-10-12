@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+
 from .models import LabelTemplate
 from .serializers import LabelTemplateSerializer
 

@@ -1,5 +1,6 @@
-from django.contrib import admin
 from config.admin import CommonAdmin
+from django.contrib import admin
+
 from .models import LabelTemplate
 
 

@@ -1,25 +1,27 @@
-from rest_framework import filters, views, mixins
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from datetime import datetime
-from controllers.app.renderers import PlainTextRenderer
-from rest_framework_csv.renderers import CSVRenderer
-from drf_excel.renderers import XLSXRenderer
-import urllib
 import json
+import urllib
+from datetime import datetime
+
+from django.shortcuts import get_object_or_404
+from drf_excel.renderers import XLSXRenderer
 from drf_spectacular.utils import extend_schema
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework import filters, mixins, views
 from rest_framework.generics import GenericAPIView
+from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework_csv.renderers import CSVRenderer
+
+from controllers.app.renderers import PlainTextRenderer
 
 from controllers.project.models import Project, ProjectAttachment, ProjectPart
 from controllers.project.serializers import (
+    ProjectAttachmentsCreateSerializer,
     ProjectPartSerializer,
     ProjectPartStandaloneSerializer,
     ProjectRetrieveSerializer,
     ProjectSerializer,
-    ProjectAttachmentsCreateSerializer,
 )
 
 

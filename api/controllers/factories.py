@@ -1,6 +1,7 @@
+import random
+
 import factory
 import persisting_theory
-import random
 from faker.providers import internet as internet_provider
 
 

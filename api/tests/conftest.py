@@ -1,13 +1,14 @@
+import os
+
+import factory
 import pytest
 from rest_framework.test import APIClient
-import factory
-import os
 
 
 @pytest.fixture(scope="session", autouse=True)
 def factories_autodiscover():
-    from django.apps import apps
     from controllers import factories
+    from django.apps import apps
 
     app_names = [app.name for app in apps.app_configs.values()]
     factories.registry.autodiscover(app_names)

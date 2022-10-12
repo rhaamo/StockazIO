@@ -16,15 +16,8 @@
     "source.fixAll": false
   },
   "python.pythonPath": "${workspaceFolder}/venv/bin/python",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "vue"
-  ],
-  "vetur.format.defaultFormatter.js": "vscode-typescript",
-  "vetur.format.defaultFormatter.html": "js-beautify-html",
-  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
-  "vetur.languageFeatures.codeActions": true,
-  "vetur.experimental.templateInterpolationService": true,
-  "vetur.validation.template": false
+  "[python]": {
+    "editor.defaultFormatter": "omnilib.ufmt",
+    "editor.formatOnSave": true
+  }
 }

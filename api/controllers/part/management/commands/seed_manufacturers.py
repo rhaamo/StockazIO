@@ -1,8 +1,10 @@
-import yaml
 from os import path
-from django.core.management.base import BaseCommand
-from controllers.manufacturer.models import Manufacturer
+
+import yaml
 from django.conf import settings
+from django.core.management.base import BaseCommand
+
+from controllers.manufacturer.models import Manufacturer
 
 
 class Command(BaseCommand):

@@ -1,6 +1,6 @@
-from django.urls import reverse
 from controllers import __version__
 from django.conf import settings
+from django.urls import reverse
 
 
 def test_informations(api_client, db):

@@ -1,19 +1,20 @@
-from django.contrib import admin
-from controllers.part.models import (
-    Part,
-    PartUnit,
-    PartParameter,
-    ParametersUnit,
-    PartAttachment,
-    PartStockHistory,
-    PartParameterPreset,
-    PartParameterPresetItem,
-)
 from config.admin import CommonAdmin
-from controllers.distributor.models import DistributorSku
-from controllers.manufacturer.models import PartManufacturer
+from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import DropdownFilter
 from mptt.admin import TreeRelatedFieldListFilter
+
+from controllers.distributor.models import DistributorSku
+from controllers.manufacturer.models import PartManufacturer
+from controllers.part.models import (
+    ParametersUnit,
+    Part,
+    PartAttachment,
+    PartParameter,
+    PartParameterPreset,
+    PartParameterPresetItem,
+    PartStockHistory,
+    PartUnit,
+)
 
 
 class PartUnitAdmin(CommonAdmin):

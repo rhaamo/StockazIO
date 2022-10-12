@@ -1,6 +1,7 @@
-from controllers.part import views
-from rest_framework import routers
 from django.urls import path
+from rest_framework import routers
+
+from controllers.part import views
 
 router = routers.DefaultRouter()
 router.register(r"parameters/units", views.PartsParametersUnitViewSet, basename="PartsParametersUnit")

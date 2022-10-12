@@ -1,8 +1,9 @@
-from django.contrib import admin
-from controllers.storage.models import Storage
 from config.admin import CommonAdmin
+from django.contrib import admin
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
+
+from controllers.storage.models import Storage
 
 
 class StorageAdmin(CommonAdmin):

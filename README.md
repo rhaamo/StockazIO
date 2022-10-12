@@ -105,6 +105,8 @@ export DJANGO_SETTINGS_MODULE=config.settings.local
 python manage.py ...
 ```
 
+A sample config and extensions list for VScode are provided in `api/.vscode/` and `front/.vscode/`, open two separate instance for front and api to use them.
+
 ### Docker All-In-One image build
 ```
 docker build -t stockazio-allinone -f Dockerfile-allinone

@@ -1,16 +1,18 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from controllers.footprints.models import Footprint
-from controllers.categories.models import Category
-from controllers.storage.models import Storage
-from controllers.part.validators import validate_file_type_file, validate_file_type_image
 import uuid
+
+import magic
+from django.core.exceptions import ValidationError
+from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from django.core.exceptions import ValidationError
-import magic
+
+from controllers.categories.models import Category
+from controllers.footprints.models import Footprint
+from controllers.part.validators import validate_file_type_file, validate_file_type_image
+from controllers.storage.models import Storage
 
 
 class PartUnit(models.Model):

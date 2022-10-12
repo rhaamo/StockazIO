@@ -1,8 +1,9 @@
+import base64
+
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from fpdf import FPDF
-import base64
 
 
 class LabelTemplate(models.Model):

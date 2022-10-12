@@ -1,24 +1,25 @@
+from django.conf import settings
+from drf_spectacular.utils import extend_schema_field
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework import serializers
+
+from controllers.categories.serializers import SingleCategorySerializer
+from controllers.distributor.serializers import DistributorSkuCreateSerializer, DistributorSkuSerializer
+from controllers.footprints.serializers import FootprintSerializer
+from controllers.manufacturer.serializers import PartManufacturerCreateSerializer, PartManufacturerSerializer
 from controllers.part.models import (
     ParametersUnit,
-    PartUnit,
     Part,
-    PartParameter,
     PartAttachment,
-    PartStockHistory,
+    PartParameter,
     PartParameterPreset,
     PartParameterPresetItem,
+    PartStockHistory,
+    PartUnit,
 )
-from django.conf import settings
 
 from controllers.storage.serializers import StorageSerializer
-from controllers.categories.serializers import SingleCategorySerializer
-from controllers.footprints.serializers import FootprintSerializer
-from controllers.distributor.serializers import DistributorSkuSerializer, DistributorSkuCreateSerializer
-from controllers.manufacturer.serializers import PartManufacturerSerializer, PartManufacturerCreateSerializer
-from drf_writable_nested.serializers import WritableNestedModelSerializer
 from controllers.upload_validator import FileTypeValidator
-from drf_spectacular.utils import extend_schema_field
 
 
 class ParametersUnitSerializer(serializers.ModelSerializer):

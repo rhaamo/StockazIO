@@ -1,7 +1,7 @@
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-from django.conf import settings
 
 from django_rest_passwordreset.signals import reset_password_token_created
 

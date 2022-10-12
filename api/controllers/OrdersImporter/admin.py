@@ -1,6 +1,7 @@
-from django.contrib import admin
 from config.admin import CommonAdmin
-from .models import Order, Item, CategoryMatcher
+from django.contrib import admin
+
+from .models import CategoryMatcher, Item, Order
 
 
 class ItemInLine(admin.TabularInline):

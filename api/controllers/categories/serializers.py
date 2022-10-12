@@ -1,6 +1,7 @@
-from rest_framework import serializers
-from .models import Category
 from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
+
+from .models import Category
 
 
 class CategorySerializer(serializers.ModelSerializer):

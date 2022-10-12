@@ -1,10 +1,11 @@
-from rest_framework.viewsets import ModelViewSet
+from collections import defaultdict
+
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from controllers.storage.models import Storage
 from controllers.storage.serializers import StorageSerializer
-from collections import defaultdict
 
 
 @extend_schema(parameters=[OpenApiParameter("id", type=OpenApiTypes.INT, location=OpenApiParameter.PATH)])

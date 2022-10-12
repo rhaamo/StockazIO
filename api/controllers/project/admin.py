@@ -1,6 +1,7 @@
-from django.contrib import admin
-from .models import Project, ProjectAttachment, ProjectPart
 from config.admin import CommonAdmin
+from django.contrib import admin
+
+from .models import Project, ProjectAttachment, ProjectPart
 
 
 class ProjectAttachmentInLine(admin.TabularInline):

@@ -1,5 +1,5 @@
-from rest_framework.viewsets import ModelViewSet
 from rest_framework import parsers
+from rest_framework.viewsets import ModelViewSet
 
 from controllers.manufacturer.models import Manufacturer
 from controllers.manufacturer.serializers import ManufacturersSerializer

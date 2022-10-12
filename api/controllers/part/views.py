@@ -1,31 +1,30 @@
-from django.conf import settings
-from django.shortcuts import get_object_or_404, get_list_or_404
-from django.db.models import F
 import json
 
-from controllers.categories.models import Category
-from controllers.storage.models import Storage
-from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
-
-from rest_framework import views, mixins
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
-from rest_framework.response import Response
-from rest_framework.filters import SearchFilter
+from django.conf import settings
+from django.db.models import F
+from django.shortcuts import get_list_or_404, get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
-from rest_framework import serializers
-from rest_framework import generics
+
+from rest_framework import generics, mixins, serializers, views
+from rest_framework.filters import SearchFilter
+from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+
+from controllers.categories.models import Category
+from controllers.part.models import ParametersUnit, Part, PartAttachment, PartParameterPreset, PartUnit
 
 from controllers.part.serializers import (
-    PartSerializer,
-    PartCreateSeralizer,
-    PartRetrieveSerializer,
-    PartsUnitSerializer,
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
-    PartParametersPresetSerializer,
+    PartCreateSeralizer,
     PartParametersPresetRetrieveSerializer,
+    PartParametersPresetSerializer,
+    PartRetrieveSerializer,
+    PartSerializer,
+    PartsUnitSerializer,
 )
+from controllers.storage.models import Storage
 
 
 class PartViewSetPagination(PageNumberPagination):

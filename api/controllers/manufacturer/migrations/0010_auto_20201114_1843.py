@@ -2,8 +2,9 @@
 
 # migrate from a one-to-many to a well, no relations at all
 
-from django.db import migrations
 from os import path
+
+from django.db import migrations
 
 
 def move_logo_to_parent(apps, schema_editor):

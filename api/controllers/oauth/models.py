@@ -1,6 +1,5 @@
-from oauth2_provider import models as oauth2_models
-from oauth2_provider import validators as oauth2_validators
 from django.db import models
+from oauth2_provider import models as oauth2_models, validators as oauth2_validators
 
 
 class Application(oauth2_models.AbstractApplication):

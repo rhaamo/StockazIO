@@ -1,8 +1,9 @@
 import factory
-from controllers.factories import registry
+
 from controllers.categories.factories import CategoryFactory
-from controllers.manufacturer.factories import ManufacturerFactory
 from controllers.distributor.factories import DistributorFactory
+from controllers.factories import registry
+from controllers.manufacturer.factories import ManufacturerFactory
 
 
 @registry.register

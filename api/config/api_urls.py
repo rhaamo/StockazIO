@@ -1,7 +1,7 @@
 from django.conf.urls import include
 from django.urls import re_path
-from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from rest_framework import routers
 
 router = routers.DefaultRouter()
 v1_patterns = router.urls

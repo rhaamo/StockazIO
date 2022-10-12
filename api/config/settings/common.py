@@ -1,4 +1,5 @@
 import logging.config
+
 import environ
 
 print("Common config included")

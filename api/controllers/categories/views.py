@@ -1,8 +1,9 @@
-from .serializers import CreateCategorySerializer, CategorySerializer
-from rest_framework.viewsets import GenericViewSet
+from django.db.models import Case, Count, IntegerField, Sum, When
 from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
+
 from .models import Category
-from django.db.models import Count, Sum, Case, When, IntegerField
+from .serializers import CategorySerializer, CreateCategorySerializer
 
 
 class CategoryViewSet(

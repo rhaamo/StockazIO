@@ -1,11 +1,12 @@
+from drf_spectacular.utils import extend_schema_field
+
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework import serializers
-from controllers.OrdersImporter.models import Order, Item, CategoryMatcher
+
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.distributor.serializers import DistributorsSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
-
-from drf_writable_nested.serializers import WritableNestedModelSerializer
-from drf_spectacular.utils import extend_schema_field
+from controllers.OrdersImporter.models import CategoryMatcher, Item, Order
 
 
 class ItemSerializer(serializers.ModelSerializer):

@@ -1,4 +1,5 @@
 import factory
+
 from controllers.factories import registry
 from controllers.oauth import models
 from controllers.users.factories import UserFactory

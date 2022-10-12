@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import FootprintCategory, Footprint
+
+from .models import Footprint, FootprintCategory
 
 
 class FootprintSerializer(serializers.ModelSerializer):

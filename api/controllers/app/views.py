@@ -1,11 +1,10 @@
-from rest_framework import views
-from rest_framework.response import Response
-from django.conf import settings
 from controllers import __version__
-from controllers.part.models import Part
 from controllers.categories.models import Category
-from drf_spectacular.utils import inline_serializer, extend_schema, OpenApiResponse
-from rest_framework import serializers
+from controllers.part.models import Part
+from django.conf import settings
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+from rest_framework import serializers, views
+from rest_framework.response import Response
 
 
 class AppSettings(views.APIView):

@@ -1,8 +1,8 @@
-from django.core.management.base import BaseCommand
-from django.conf import settings
-from libs.mouser.mouser import Mouser
-from controllers.OrdersImporter.models import Order, Item
+from controllers.OrdersImporter.models import Item, Order
 from controllers.OrdersImporter.utils import rematch_orders
+from django.conf import settings
+from django.core.management.base import BaseCommand
+from libs.mouser.mouser import Mouser
 
 
 def import_from_mouser(api_key, filter):

@@ -1,8 +1,9 @@
+from config.admin import CommonAdmin
 from django.contrib import admin
-from controllers.manufacturer.models import Manufacturer
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
-from config.admin import CommonAdmin
+
+from controllers.manufacturer.models import Manufacturer
 
 
 class ManufacturerAdmin(CommonAdmin):

@@ -1,9 +1,10 @@
+import html
 import os
 import urllib.parse
-import requests
-import html
 
-from django import urls, http
+import requests
+
+from django import http, urls
 from django.conf import settings
 from django.core.cache import caches
 

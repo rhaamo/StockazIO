@@ -1,4 +1,5 @@
 from django.db import models
+
 from controllers.categories.models import Category
 from controllers.distributor.models import Distributor
 from controllers.manufacturer.models import Manufacturer

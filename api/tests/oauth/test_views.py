@@ -1,6 +1,5 @@
+from controllers.oauth import models, serializers
 from django.urls import reverse
-
-from controllers.oauth import serializers, models
 
 _OAUTH_APPNAME = "Test app"
 _OAUTH_CALLBACK = "http://test.app/oauth-callback"

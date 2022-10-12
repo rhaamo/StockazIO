@@ -1,5 +1,6 @@
-from oauth2_provider.oauth2_backends import OAuthLibCore
 import json
+
+from oauth2_provider.oauth2_backends import OAuthLibCore
 
 
 class JsonAndHtml(OAuthLibCore):

@@ -1,7 +1,8 @@
-from django.contrib import admin
-from .models import Category
 from config.admin import CommonAdmin
+from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
+
+from .models import Category
 
 
 class CategoryAdmin(MPTTModelAdmin, CommonAdmin):

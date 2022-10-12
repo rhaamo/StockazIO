@@ -1,8 +1,8 @@
-from rest_framework.viewsets import GenericViewSet
-from rest_framework import parsers, mixins
 from drf_spectacular.utils import extend_schema, OpenApiResponse
+from rest_framework import mixins, parsers
+from rest_framework.viewsets import GenericViewSet
 
-from controllers.footprints.models import FootprintCategory, Footprint
+from controllers.footprints.models import Footprint, FootprintCategory
 from controllers.footprints.serializers import (
     FootprintCategorySerializer,
     FootprintCategoryTreeSerializer,
