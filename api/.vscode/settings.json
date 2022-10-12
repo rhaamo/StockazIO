@@ -13,9 +13,9 @@
     "**/*.egg-info": true
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll": false
+    "source.fixAll": true
   },
-  "python.pythonPath": "${workspaceFolder}/venv/bin/python",
+  "python.pythonPath": "${workspaceFolder}/../venv/bin/python",
   "[python]": {
     "editor.defaultFormatter": "omnilib.ufmt",
     "editor.formatOnSave": true

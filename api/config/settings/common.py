@@ -91,7 +91,6 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    "mptt",
     "imagekit",
     "django_admin_listfilter_dropdown",
     "oauth2_provider",
