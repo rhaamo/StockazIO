@@ -6,7 +6,7 @@
         <li>
           <router-link
             to="#"
-            title="Add storage element on root level"
+            v-tooltip="'Add storage element on root level'"
             @click.prevent="showAddElementDialog"
             class="no-underline"
           >
@@ -18,7 +18,7 @@
 
           <router-link
             to="#"
-            title="Bulk-generate labels"
+            v-tooltip="'Bulk-generate labels'"
             @click.prevent="showBulkLabelGenerator()"
             class="no-underline"
           >

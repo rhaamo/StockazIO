@@ -63,7 +63,7 @@
             @click.prevent="addElementModal(item.id)"
             class="no-underline"
           >
-            [add sub element]
+            <i class="fa fa-plus-square-o" aria-hidden="true" />
           </router-link>
         </template>
         <br />

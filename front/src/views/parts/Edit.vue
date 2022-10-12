@@ -521,7 +521,6 @@ import { required, maxLength, integer, minValue } from "@vuelidate/validators";
 import logger from "@/logging";
 import apiService from "@/services/api/api.service";
 import { mapState } from "pinia";
-import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
 import DistributorsSkuEntry from "@/components/parts/DistributorsSkuEntry.vue";
 import ManufacturersSkuEntry from "@/components/parts/ManufacturersSkuEntry.vue";
