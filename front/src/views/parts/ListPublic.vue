@@ -362,16 +362,13 @@ export default {
             label: e.name,
             icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
           };
-          // Selectable only if no locations
-          obj["selectable"] = e.storage_locations ? false : true;
-          // Merge children with storage_locations
-          if (e.storage_locations && e.children) {
-            obj["children"] = e.children.concat(e.storage_locations).map(cb);
+          if (e.children) {
+            obj["children"] = e.children.map(cb);
           }
           // return obj
           return obj;
         };
-        return store.storages.filter(utils.removeStorageCatWithoutLocs).map(cb);
+        return store.storages.map(cb);
       },
       choicesFootprint: (store) =>
         store.footprints.map((x) => {
