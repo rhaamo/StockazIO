@@ -28,19 +28,21 @@ def test_logged_in_can_get_storage_tree(logged_in_api_client, db, factories):
     assert len(response.data[0]["children"]) == 1
     assert response.data[0]["children"][0]["name"] == location.name
 
+
 # ######
 
 
-def test_anonymous_cannot_get_storage(api_client, db, factories):
+def test_anonymous_can_get_storages(api_client, db, factories):
     factories["storage.Storage"]()
 
     url = reverse("api:v1:storages:Storage-list")
     response = api_client.get(url)
 
-    assert response.status_code == 401
+    assert response.status_code == 200
+    assert len(response.data) == 1
 
 
-def test_logged_in_can_get_storage(logged_in_api_client, db, factories):
+def test_logged_in_can_get_storages(logged_in_api_client, db, factories):
     factories["storage.Storage"]()
 
     url = reverse("api:v1:storages:Storage-list")
