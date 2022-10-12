@@ -433,7 +433,6 @@ import { required, maxLength, integer, minValue } from "@vuelidate/validators";
 import logger from "@/logging";
 import apiService from "@/services/api/api.service";
 import { mapState } from "pinia";
-import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
 import PartViewModal from "@/components/parts/view.vue";
 import { h } from "vue";
@@ -506,16 +505,13 @@ export default {
             label: e.name,
             icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
           };
-          // Selectable only if no locations
-          obj["selectable"] = e.storage_locations ? false : true;
-          // Merge children with storage_locations
-          if (e.storage_locations && e.children) {
-            obj["children"] = e.children.concat(e.storage_locations).map(cb);
+          if (e.children) {
+            obj["children"] = e.children.map(cb);
           }
           // return obj
           return obj;
         };
-        return store.storages.filter(utils.removeStorageCatWithoutLocs).map(cb);
+        return store.storages.map(cb);
       },
       choicesFootprint: (store) =>
         store.footprints.map((x) => {

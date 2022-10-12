@@ -2,30 +2,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from mptt.models import MPTTModel, TreeForeignKey
 import uuid
-from mptt.templatetags.mptt_tags import tree_path
+from tree_queries.models import TreeNode
 
 
-class StorageCategory(MPTTModel):
+class Storage(TreeNode):
     name = models.CharField(max_length=200)
-    parent = TreeForeignKey("self", blank=True, null=True, related_name="children", on_delete=models.CASCADE)
-
-    class MPTTMeta:
-        order_insertion_by = ["name"]
-
-    class Meta:
-        verbose_name_plural = _("storage categories")
-
-    def __str__(self):
-        return self.name
-
-
-class StorageLocation(models.Model):
-    name = models.CharField(_("name"), max_length=255, unique=False, blank=False)
-    category = models.ForeignKey(
-        StorageCategory, related_name="storage_locations", blank=False, null=False, on_delete=models.CASCADE
-    )
     description = models.CharField(_("description"), max_length=255, unique=False, blank=True)
 
     picture = models.ImageField(
@@ -38,7 +20,7 @@ class StorageLocation(models.Model):
     picture_medium = ImageSpecField(
         source="picture", processors=[ResizeToFill(400, 400, upscale=False)], format="JPEG", options={"quality": 80}
     )
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     class Meta(object):
         ordering = ("name",)
@@ -47,9 +29,3 @@ class StorageLocation(models.Model):
 
     def __str__(self):
         return self.name
-
-    def get_category_path(self, separator=" > "):
-        path = tree_path(self.category.get_ancestors(separator))
-        if not path:
-            return separator.join([self.category.name, self.name])
-        return separator.join([path, self.category.name, self.name])

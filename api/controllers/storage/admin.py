@@ -1,19 +1,12 @@
 from django.contrib import admin
-from .models import StorageCategory, StorageLocation
+from controllers.storage.models import Storage
 from config.admin import CommonAdmin
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
-from mptt.admin import MPTTModelAdmin
-from mptt.admin import TreeRelatedFieldListFilter
 
 
-class StorageLocationInLine(admin.TabularInline):
-    model = StorageLocation
-    extra = 1
-
-
-class StorageLocationAdmin(CommonAdmin):
-    list_display = ("name", "description", "category", "get_picture")
+class StorageAdmin(CommonAdmin):
+    list_display = ("name", "description", "get_picture")
     search_fields = ("name",)
     inlines = []
 
@@ -26,12 +19,6 @@ class StorageLocationAdmin(CommonAdmin):
             )
 
     get_picture.short_description = _("Picture")
-    list_filter = [("category", TreeRelatedFieldListFilter)]
 
 
-class StorageCategoryAdmin(MPTTModelAdmin, CommonAdmin):
-    inlines = [StorageLocationInLine]
-
-
-admin.site.register(StorageCategory, StorageCategoryAdmin)
-admin.site.register(StorageLocation, StorageLocationAdmin)
+admin.site.register(Storage, StorageAdmin)

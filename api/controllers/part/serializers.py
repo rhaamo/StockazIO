@@ -11,7 +11,7 @@ from controllers.part.models import (
 )
 from django.conf import settings
 
-from controllers.storage.serializers import StorageLocationSerializer
+from controllers.storage.serializers import StorageSerializer
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.footprints.serializers import FootprintSerializer
 from controllers.distributor.serializers import DistributorSkuSerializer, DistributorSkuCreateSerializer
@@ -50,7 +50,7 @@ class PartAttachmentSerializer(serializers.ModelSerializer):
 
 
 class PartSerializer(serializers.ModelSerializer):
-    storage = StorageLocationSerializer(many=False, read_only=True)
+    storage = StorageSerializer(many=False, read_only=True)
     category = SingleCategorySerializer(many=False, read_only=True)
     footprint = FootprintSerializer(many=False, read_only=True)
     part_unit = PartsUnitSerializer(many=False, read_only=True)
@@ -156,7 +156,7 @@ class PartCreateSeralizer(WritableNestedModelSerializer):
 
 
 class PartRetrieveSerializer(serializers.ModelSerializer):
-    storage = StorageLocationSerializer(many=False, read_only=True)
+    storage = StorageSerializer(many=False, read_only=True)
     category = SingleCategorySerializer(many=False, read_only=True)
     footprint = FootprintSerializer(many=False, read_only=True)
     part_unit = PartsUnitSerializer(many=False, read_only=True)

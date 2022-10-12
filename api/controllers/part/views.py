@@ -4,7 +4,7 @@ from django.db.models import F
 import json
 
 from controllers.categories.models import Category
-from controllers.storage.models import StorageLocation
+from controllers.storage.models import Storage
 from controllers.part.models import Part, PartUnit, ParametersUnit, PartAttachment, PartParameterPreset
 
 from rest_framework import views, mixins
@@ -566,7 +566,7 @@ class BulkEditChangeStorageLocation(views.APIView):
         if not request.data["storage_location"]:
             storage_location = None
         else:
-            storage_location = get_object_or_404(StorageLocation, id=request.data["storage_location"])
+            storage_location = get_object_or_404(Storage, id=request.data["storage_location"])
         for partId in request.data["parts"]:
             part = get_object_or_404(Part, id=partId)
             part.storage = storage_location

@@ -342,9 +342,9 @@ def test_logged_in_can_bulk_change_category(logged_in_api_client, db, factories)
 
 
 def test_anonymous_cannot_bulk_change_storage(api_client, db, factories):
-    category = factories["storage.StorageCategory"]()
-    storage1 = factories["storage.StorageLocation"](category=category)
-    storage2 = factories["storage.StorageLocation"](category=category)
+    category = factories["storage.Storage"]()
+    storage1 = factories["storage.Storage"](parent=category)
+    storage2 = factories["storage.Storage"](parent=category)
     part = factories["part.Part"](storage=storage1)
 
     # change storage
@@ -355,9 +355,9 @@ def test_anonymous_cannot_bulk_change_storage(api_client, db, factories):
 
 
 def test_logged_in_can_bulk_change_storage(logged_in_api_client, db, factories):
-    category = factories["storage.StorageCategory"]()
-    storage1 = factories["storage.StorageLocation"](category=category)
-    storage2 = factories["storage.StorageLocation"](category=category)
+    category = factories["storage.Storage"]()
+    storage1 = factories["storage.Storage"](parent=category)
+    storage2 = factories["storage.Storage"](parent=category)
     part = factories["part.Part"](storage=storage1)
 
     # fetch part initial

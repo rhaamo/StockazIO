@@ -463,7 +463,7 @@
                       :filter="true"
                       placeholder="Preset to apply"
                     />
-                    <PvButtonDeleteInline
+                    <ButtonDeleteInline
                       size="p-button-sm"
                       btn-variant-main="p-button-info"
                       btn-variant-ok="p-button-success"
@@ -527,7 +527,6 @@ import { required, maxLength, integer, minValue } from "@vuelidate/validators";
 import logger from "@/logging";
 import apiService from "@/services/api/api.service";
 import { mapState } from "pinia";
-import utils from "@/utils.js";
 import { useToast } from "primevue/usetoast";
 import DistributorsSkuEntry from "@/components/parts/DistributorsSkuEntry.vue";
 import ManufacturersSkuEntry from "@/components/parts/ManufacturersSkuEntry.vue";
@@ -612,16 +611,13 @@ export default {
             label: e.name,
             icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
           };
-          // Selectable only if no locations
-          obj["selectable"] = e.storage_locations ? false : true;
-          // Merge children with storage_locations
-          if (e.storage_locations && e.children) {
-            obj["children"] = e.children.concat(e.storage_locations).map(cb);
+          if (e.children) {
+            obj["children"] = e.children.map(cb);
           }
           // return obj
           return obj;
         };
-        return store.storages.filter(utils.removeStorageCatWithoutLocs).map(cb);
+        return store.storages.map(cb);
       },
       choicesFootprint: (store) =>
         store.footprints.map((x) => {

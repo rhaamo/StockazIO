@@ -6,19 +6,19 @@
         <li>
           <router-link
             to="#"
-            title="Add storage category on root level"
-            @click.prevent="showAddCategoryDialog"
+            v-tooltip="'Add storage element on root level'"
+            @click.prevent="showAddElementDialog"
             class="no-underline"
           >
             <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root
-            category
+            storage
           </router-link>
 
           &nbsp;&nbsp;&nbsp;
 
           <router-link
             to="#"
-            title="Bulk-generate labels"
+            v-tooltip="'Bulk-generate labels'"
             @click.prevent="showBulkLabelGenerator()"
             class="no-underline"
           >
@@ -27,13 +27,7 @@
         </li>
       </ul>
       <template v-for="item in storages">
-        <ListCategory
-          v-if="item.children && item.storage_locations"
-          :key="item.id"
-          :item="item"
-          :level="1"
-        />
-        <ListLocation v-else :key="item.uuid" :item="item" />
+        <ListItem v-if="item.children" :key="item.id" :item="item" :level="1" />
       </template>
     </div>
   </div>
@@ -45,15 +39,13 @@ import { mapState } from "pinia";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { h } from "vue";
-import ListCategory from "@/components/storages/ListCategory.vue";
-import ListLocation from "@/components/storages/ListLocation.vue";
-import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
+import ListItem from "@/components/storages/ListItem.vue";
+import ManageItemDialog from "@/components/storages/ManageLocation.vue";
 import LabelGeneratorModal from "@/components/label/generator.vue";
 
 export default {
   components: {
-    ListCategory,
-    ListLocation,
+    ListItem,
   },
   data: () => ({
     breadcrumb: {
@@ -75,12 +67,8 @@ export default {
     showBulkLabelGenerator() {
       let slocs = [];
       const cb = (e) => {
-        if (e.category) {
-          slocs.push(e);
-        } else {
-          e.storage_locations.forEach(cb);
-          e.children.forEach(cb);
-        }
+        slocs.push(e);
+        e.children.forEach(cb);
       };
       this.storages.forEach(cb);
 
@@ -125,8 +113,8 @@ export default {
           logger.default.error("Error fetching storages", err);
         });
     },
-    showAddCategoryDialog() {
-      this.$dialog.open(ManageCategoryDialog, {
+    showAddElementDialog() {
+      this.$dialog.open(ManageItemDialog, {
         props: {
           modal: true,
           style: {
@@ -135,7 +123,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("span", "Add root category")])];
+            return [h("h3", [h("span", "Add root storage")])];
           },
         },
         data: {

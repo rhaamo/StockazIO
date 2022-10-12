@@ -2,15 +2,45 @@
   <div>
     <ul class="list-none mt-1">
       <li class="mt-1 list-none">
-        <i class="fa fa-home" aria-hidden="true" /> {{ item.name }}
+        <i class="fa fa-ellipsis-h" aria-hidden="true" /> {{ item.name }}
+
+        <template v-if="item.picture">
+          &nbsp;
+          <i
+            :id="item.uuid"
+            class="fa fa-file-image-o"
+            aria-hidden="true"
+            v-tooltip="`Click to show picture`"
+            @click.prevent="$refs.storage_picture.toggle($event)"
+          />
+          <OverlayPanel
+            ref="storage_picture"
+            appendTo="body"
+            :showCloseIcon="true"
+            id="storage_picture"
+          >
+            <PvImage preview width="250" :src="item.picture_medium"></PvImage>
+          </OverlayPanel>
+        </template>
+
+        &nbsp;&nbsp;
+
+        <router-link
+          to="#"
+          v-tooltip="`QrCode label generator`"
+          @click.prevent="showLabelGeneratorModal(item)"
+          class="no-underline"
+        >
+          <i class="fa fa-qrcode" aria-hidden="true" />
+        </router-link>
 
         <template v-if="!readonly">
           &nbsp;&nbsp;
 
           <router-link
             to="#"
-            v-tooltip="`Edit Category`"
-            @click.prevent="editCategoryModal(item)"
+            v-tooltip="`Edit Element`"
+            @click.prevent="editElementModal(item)"
             class="no-underline"
           >
             <i class="fa fa-pencil-square-o" aria-hidden="true" />
@@ -18,8 +48,8 @@
           &nbsp;
           <router-link
             to="#"
-            v-tooltip="`Delete Category`"
-            @click.prevent="deleteCategoryModal(item)"
+            v-tooltip="`Delete Element`"
+            @click.prevent="deleteElementModal(item)"
             class="no-underline"
           >
             <i class="fa fa-trash-o" aria-hidden="true" />
@@ -29,49 +59,33 @@
 
           <router-link
             to="#"
-            v-tooltip="`${addCategoryTitle(item.name)}`"
-            @click.prevent="addCategoryModal(item.id)"
+            v-tooltip="`${addElementTitle(item.name)}`"
+            @click.prevent="addElementModal(item.id)"
             class="no-underline"
           >
-            [add category]
-          </router-link>
-
-          &nbsp;&nbsp;
-          <router-link
-            to="#"
-            v-tooltip="`${addLocationTitle(item.name)}`"
-            @click.prevent="addLocationModal(item.id)"
-            class="no-underline"
-          >
-            [add location/box]
+            <i class="fa fa-plus-square-o" aria-hidden="true" />
           </router-link>
         </template>
+        <br />
+        <template v-if="item.description">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }}
+        </template>
       </li>
-      <ListCategory
+      <ListItem
         v-for="category in item.children"
-        :key="category.id"
+        :key="category.uuid"
         :item="category"
         :level="level + 1"
         :readonly="readonly"
       />
-      <ul class="mt-1">
-        <ListLocation
-          v-for="storage in item.storage_locations"
-          :key="storage.uuid"
-          :item="storage"
-          :level="level + 1"
-          :readonly="readonly"
-        />
-      </ul>
     </ul>
   </div>
 </template>
 
 <script>
-import ListLocation from "@/components/storages/ListLocation.vue";
 import { h } from "vue";
-import ManageCategoryDialog from "@/components/storages/ManageCategory.vue";
-import ManageLocationDialog from "@/components/storages/ManageLocation.vue";
+import ManageItemDialog from "@/components/storages/ManageLocation.vue";
+import LabelGeneratorModal from "@/components/label/generator.vue";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
 import { useToast } from "primevue/usetoast";
@@ -79,9 +93,7 @@ import { usePreloadsStore } from "@/stores/preloads";
 import { useConfirm } from "primevue/useconfirm";
 
 export default {
-  components: {
-    ListLocation,
-  },
+  components: {},
   props: {
     item: Object,
     level: Number,
@@ -96,11 +108,8 @@ export default {
     confirm: useConfirm(),
   }),
   methods: {
-    addCategoryTitle(name) {
-      return `Add category under '${name}'`;
-    },
-    addLocationTitle(name) {
-      return `Add location/box under '${name}'`;
+    addElementTitle(name) {
+      return `Add element under '${name}'`;
     },
     fetchStorages() {
       logger.default.info("reloading storages");
@@ -120,8 +129,32 @@ export default {
           logger.default.error("Error fetching storages", err);
         });
     },
-    editCategoryModal(item) {
-      this.$dialog.open(ManageCategoryDialog, {
+    showLabelGeneratorModal(item) {
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [
+              h("h3", [
+                h("i", { class: "fa fa-qrcode mr-1" }),
+                h("span", "Label Generator"),
+              ]),
+            ];
+          },
+        },
+        data: {
+          items: [this.item],
+          kind: "storage",
+        },
+      });
+    },
+    editElementModal(item) {
+      this.$dialog.open(ManageItemDialog, {
         props: {
           modal: true,
           style: {
@@ -130,13 +163,14 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("span", "Edit category")])];
+            return [h("h3", [h("span", "Edit element")])];
           },
         },
         data: {
           id: item.id,
           name: item.name,
           parent_id: { [item.parent]: true },
+          picture: item.picture,
           mode: "edit",
         },
         onClose: (options) => {
@@ -147,18 +181,18 @@ export default {
         },
       });
     },
-    deleteCategoryModal(item) {
+    deleteElementModal(item) {
       this.confirm.require({
-        message: `Are you sure you want to delete the category '${item.name}' ?`,
+        message: `Are you sure you want to delete the element '${item.name}' ?`,
         header: `Deleting '${item.name}' ?`,
         icon: "fa fa-exclamation-triangle",
         accept: () => {
           apiService
-            .deleteStorageCategory(item.id)
+            .deleteStorageLocation(item.id)
             .then((val) => {
               this.toast.add({
                 severity: "success",
-                summary: "Storage category",
+                summary: "Storage location",
                 detail: "Deleted",
                 life: 5000,
               });
@@ -167,11 +201,11 @@ export default {
             .catch((err) => {
               this.toast.add({
                 severity: "error",
-                summary: "Storage category",
+                summary: "Storage location",
                 detail: "An error occured, please try again later",
                 life: 5000,
               });
-              logger.default.error("Error with storage category deletion", err);
+              logger.default.error("Error with storage element deletion", err);
               this.fetchStorages();
             });
         },
@@ -180,8 +214,8 @@ export default {
         },
       });
     },
-    addCategoryModal(id) {
-      this.$dialog.open(ManageCategoryDialog, {
+    addElementModal(id) {
+      this.$dialog.open(ManageItemDialog, {
         props: {
           modal: true,
           style: {
@@ -190,40 +224,12 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("span", "Add category")])];
+            return [h("h3", [h("span", "Add element")])];
           },
         },
         data: {
           name: "",
           parent_id: { [id]: true },
-          mode: "add",
-        },
-        onClose: (options) => {
-          if (options.data && options.data.finished) {
-            // reload storages
-            this.fetchStorages();
-          }
-        },
-      });
-    },
-    addLocationModal(id) {
-      this.$dialog.open(ManageLocationDialog, {
-        props: {
-          modal: true,
-          style: {
-            width: "25vw",
-          },
-        },
-        templates: {
-          header: () => {
-            return [h("h3", [h("span", "Add storage location")])];
-          },
-        },
-        data: {
-          name: "",
-          parent_id: { [id]: true },
-          description: "",
-          picture: "",
           mode: "add",
         },
         onClose: (options) => {
