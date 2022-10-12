@@ -1,7 +1,7 @@
 import factory
 from controllers.factories import registry
 from controllers.categories.factories import CategoryFactory
-from controllers.storage.factories import StorageLocationFactory
+from controllers.storage.factories import StorageFactory
 from controllers.footprints.factories import FootprintFactory
 
 
@@ -24,7 +24,7 @@ class PartFactory(factory.django.DjangoModelFactory):
     stock_qty = factory.Faker("random_int", min=10, max=128)
     part_unit = factory.SubFactory(PartUnitFactory)
     category = factory.SubFactory(CategoryFactory)
-    storage = factory.SubFactory(StorageLocationFactory)
+    storage = factory.SubFactory(StorageFactory)
     footprint = factory.SubFactory(FootprintFactory)
     comment = factory.Faker("text")
     production_remarks = factory.Faker("text")
