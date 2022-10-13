@@ -24,7 +24,7 @@ prompt-toolkit==3.0.31
 psycopg2==2.9.3
 ptyprocess==0.7.0
 python-magic==0.4.27
-pytz==2022.2.1
+pytz==2022.4
 PyYAML==6.0
 regex==2022.8.17
 six==1.16.0
