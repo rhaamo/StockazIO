@@ -45,7 +45,7 @@ django-extensions==3.2.0
 drf-writable-nested==0.7.0
 pytest-django==4.5.2
 pytest==7.1.3
-pytest-cov==3.0.0
+pytest-cov==4.0.0
 factory_boy==3.2.1
 persisting-theory==1.0
 pytest-env==0.6.2
