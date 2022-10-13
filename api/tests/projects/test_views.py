@@ -220,7 +220,9 @@ def test_anonymous_can_export_public_project_bom_xlsx(api_client, db, factories)
     response = api_client.get(url)
 
     assert response.status_code == 200
-    assert response.headers["content-type"].startswith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    assert response.headers["content-type"].startswith(
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
     assert response.headers["content-disposition"].startswith("attachment; filename=")
 
 
@@ -233,7 +235,9 @@ def test_logged_in_can_export_project_bom_xlsx(logged_in_api_client, db, factori
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
-    assert response.headers["content-type"].startswith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    assert response.headers["content-type"].startswith(
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
     assert response.headers["content-disposition"].startswith("attachment; filename=")
 
 
