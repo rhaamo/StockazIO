@@ -17,12 +17,14 @@ on:
     paths:
       - 'api/**'
       - 'front/**'
+      - '.github/**'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ master ]
     paths:
       - 'api/**'
       - 'front/**'
+      - '.github/**'
   schedule:
     - cron: '27 20 * * 0'
 
