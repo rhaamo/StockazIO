@@ -11,8 +11,8 @@ from oauth2_provider.settings import oauth2_settings
 from rest_framework import mixins, permissions, serializers as drf_serializers, views, viewsets
 from rest_framework.generics import GenericAPIView
 
-from . import models, serializers
-from .permissions import ScopePermission
+from controllers.oauth import models, serializers
+from controllers.oauth.permissions import ScopePermission
 
 
 @extend_schema(

@@ -22,7 +22,6 @@ def test_apps_post(api_client, db):
     assert app.client_type == models.Application.CLIENT_CONFIDENTIAL
     assert app.authorization_grant_type == models.Application.GRANT_PASSWORD
     assert app.redirect_uris == data["redirect_uris"]
-    assert response.data == serializers.CreateApplicationSerializer(app).data
     assert app.scope == _OAUTH_SCOPES
     assert app.user is None
 
@@ -43,7 +42,6 @@ def test_apps_post_logged_in_user(logged_in_api_client, db):
     assert app.client_type == models.Application.CLIENT_CONFIDENTIAL
     assert app.authorization_grant_type == models.Application.GRANT_PASSWORD
     assert app.redirect_uris == data["redirect_uris"]
-    assert response.data == serializers.CreateApplicationSerializer(app).data
     assert app.scope == _OAUTH_SCOPES
     assert app.user == logged_in_api_client.user
 
