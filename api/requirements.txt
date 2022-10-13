@@ -6,7 +6,7 @@ black==22.10.0
 Django==4.1.2
 django-admin-list-filter-dropdown==1.0.3
 django-appconf==1.0.5
-django-debug-toolbar==3.6.0
+django-debug-toolbar==3.7.0
 django-imagekit==4.1.0
 django-mptt==0.14.0
 entrypoints==0.4
