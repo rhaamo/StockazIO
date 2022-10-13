@@ -21,7 +21,7 @@ pickleshare==0.7.5
 pilkit==2.0
 Pillow==9.2.0
 prompt-toolkit==3.0.31
-psycopg2==2.9.3
+psycopg2==2.9.4
 ptyprocess==0.7.0
 python-magic==0.4.27
 pytz==2022.2.1
