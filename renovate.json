@@ -35,5 +35,9 @@
       "matchPackagePatterns": ["ufmt", "usort", "black", "flake8"],
       "groupName": "pylinters"
     },
+    {
+      "matchPackagePatterns": ["@vue", "vue"],
+      "groupName": "vuejs"
+    }
   ]
 }
