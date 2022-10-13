@@ -13,7 +13,7 @@
     "@chenfengyuan/vue-qrcode": "2.0.0",
     "@pdfme/generator": "1.0.14",
     "@vuelidate/core": "2.0.0-alpha.44",
-    "@vuelidate/validators": "2.0.0-alpha.31",
+    "@vuelidate/validators": "2.0.0",
     "axios": "0.27.2",
     "date-fns": "2.29.2",
     "fork-awesome": "1.2.0",
