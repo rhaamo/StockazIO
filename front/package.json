@@ -37,7 +37,7 @@
     "@vue/test-utils": "2.0.2",
     "eslint": "8.23.0",
     "eslint-plugin-vue": "9.4.0",
-    "jsdom": "20.0.0",
+    "jsdom": "20.0.1",
     "prettier": "2.7.1",
     "sass": "1.54.8",
     "sass-loader": "13.0.2",
