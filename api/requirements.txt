@@ -51,7 +51,7 @@ persisting-theory==1.0
 pytest-env==0.6.2
 django-silk==5.0.1
 djangorestframework-csv==2.1.1
-drf-excel==2.1.0
+drf-excel==2.2.0
 fpdf==1.7.2
 drf-spectacular[sidecar]==0.24.2
 django-rest-passwordreset==1.3.0
