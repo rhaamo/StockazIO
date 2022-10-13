@@ -5,5 +5,35 @@
   ],
   "major": {
     "dependencyDashboardApproval": true
-  }
+  },
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["sass"],
+      "groupName": "sass"
+    },
+    {
+      "matchPackagePatterns": ["eslint"],
+      "groupName": "eslint"
+    },
+    {
+      "matchPackagePatterns": ["pinia"],
+      "groupName": "pinia"
+    },
+    {
+      "matchPackagePatterns": ["django", "Django"],
+      "groupName": "django"
+    },
+    {
+      "matchPackagePatterns": ["drf", "djangorestframework", "django-rest-passwordreset"],
+      "groupName": "drf"
+    },
+    {
+      "matchPackagePatterns": ["@vuelidate"],
+      "groupName": "vuelidate"
+    },
+    {
+      "matchPackagePatterns": ["ufmt", "usort", "black", "flake8"],
+      "groupName": "pylinters"
+    },
+  ]
 }
