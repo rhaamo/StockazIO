@@ -6,6 +6,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
 
 from rest_framework import generics, mixins, serializers, views
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from rest_framework.response import Response
@@ -13,7 +14,6 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from controllers.categories.models import Category
 from controllers.part.models import ParametersUnit, Part, PartAttachment, PartParameterPreset, PartUnit
-
 from controllers.part.serializers import (
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
@@ -83,6 +83,7 @@ class PartViewSet(ModelViewSet):
         "update": "write",
         "partial_update": "write",
         "list": "read",
+        "autocompletion": "read",
     }
     filter_backends = [SearchFilter]
     pagination_class = PrimeVuePagination
@@ -196,18 +197,16 @@ class PartViewSet(ModelViewSet):
             serializer = PartRetrieveSerializer(obj, context={"request": request})
             return Response(serializer.data)
 
-
-class PartQuickAutocompletion(views.APIView):
-    """
-    Parts name autocompleter
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
     @extend_schema(responses={200: PartRetrieveSerializer})
-    def get(self, request, *args, **kwargs):
-        obj = get_list_or_404(Part, name__iexact=kwargs["name"])
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"autocomplete/quick_by_name",
+        url_name="Autocompletion",
+    )
+    def autocompletion(self, request, *args, **kwargs):
+        name = request.query_params.get("name", None)
+        obj = get_list_or_404(Part, name__iexact=name)
         serializer = PartRetrieveSerializer(obj, many=True)
         return Response(serializer.data, status=200)
 

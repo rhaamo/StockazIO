@@ -274,7 +274,7 @@ def test_anonymous_cannot_autocomplete_part(api_client, db, factories):
     factories["part.Part"](name="cap-2")
     factories["part.Part"](name="res-1")
 
-    url = reverse("api:v1:parts:parts_autocompletion", kwargs={"name": "cap-2"})
+    url = reverse("api:v1:parts:Part-Autocompletion") + "?name=cap-2"
     response = api_client.get(url)
 
     assert response.status_code == 401
@@ -285,7 +285,7 @@ def test_logged_in_can_autocomplete_part(logged_in_api_client, db, factories):
     part = factories["part.Part"](name="cap-2")
     factories["part.Part"](name="res-1")
 
-    url = reverse("api:v1:parts:parts_autocompletion", kwargs={"name": "cap-2"})
+    url = reverse("api:v1:parts:Part-Autocompletion") + "?name=cap-2"
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200

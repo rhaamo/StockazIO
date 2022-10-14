@@ -11,11 +11,6 @@ router.register(r"", views.PartViewSet, basename="Part")
 router.register(r"(?P<part_id>[^/.]+)/attachments", views.PartAttachmentsStandalone, basename="PartsAttachment")
 
 urlpatterns = [
-    path(
-        r"autocomplete/quick_by_name/<str:name>",
-        views.PartQuickAutocompletion.as_view(),
-        name="parts_autocompletion",
-    ),
     path(r"bulk/change_category", views.BulkEditChangeCategory.as_view(), name="bulk_edit_change_category"),
     path(
         r"bulk/change_storage_location",
