@@ -65,8 +65,7 @@ const PART_CHANGE_STORAGE_LOCATION =
 const PARTS_PUBLIC_LIST = "/api/v1/parts/public/";
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`;
 
-const PARTS_AUTOCOMPLETE_QUICK = (name) =>
-  `/api/v1/parts/autocomplete/quick_by_name/${name}`; // no final /
+const PARTS_AUTOCOMPLETE_QUICK = "/api/v1/parts/autocomplete/quick_by_name/";
 
 const MANUFACTURERS_URL = "/api/v1/manufacturers/";
 const MANUFACTURERS_CREATE = "/api/v1/manufacturers/";
@@ -412,7 +411,7 @@ const deletePart = (partId) => {
 };
 
 const partsAutocompleteQuick = (name) => {
-  return Axios.get(PARTS_AUTOCOMPLETE_QUICK(name));
+  return Axios.get(PARTS_AUTOCOMPLETE_QUICK, { params: { name: name } });
 };
 
 const getPublicParts = (params) => {
