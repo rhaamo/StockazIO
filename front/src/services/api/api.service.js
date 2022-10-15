@@ -105,11 +105,11 @@ const PROJECT_PARTS_UPDATE = (projectId, pk) =>
 const PROJECT_PARTS_DELETE = (projectId, pk) =>
   `/api/v1/projects/${projectId}/parts/${pk}/`;
 const PROJECT_EXPORT_INFOS_TXT = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/infos.txt`;
+  `/api/v1/projects/${projectId}/exports/infos/`;
 const PROJECT_EXPORT_BOM_CSV = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/bom.csv`;
+  `/api/v1/projects/${projectId}/exports/bom/csv/`;
 const PROJECT_EXPORT_BOM_XLSX = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/bom.xlsx`;
+  `/api/v1/projects/${projectId}/exports/bom/xlsx/`;
 
 const LABELTEMPLATE_LIST = "/api/v1/labeltemplates/";
 const LABELTEMPLATE_CREATE = "/api/v1/labeltemplates/";

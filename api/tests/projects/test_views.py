@@ -163,7 +163,7 @@ def test_anonymous_cannot_export_private_project_bom_csv(api_client, db, factori
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_bom_csv", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Bom-Csv", kwargs={"pk": project.id})
     response = api_client.get(url)
 
     assert response.status_code == 404
@@ -174,7 +174,7 @@ def test_anonymous_can_export_public_project_bom_csv(api_client, db, factories):
     part1 = factories["project.ProjectPart"](project=project, part_name="foobar")
     part2 = factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_bom_csv", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Bom-Csv", kwargs={"pk": project.id})
     response = api_client.get(url)
 
     assert response.status_code == 200
@@ -188,7 +188,7 @@ def test_logged_in_can_export_project_bom_csv(logged_in_api_client, db, factorie
     part1 = factories["project.ProjectPart"](project=project, part_name="foobar")
     part2 = factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_bom_csv", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Bom-Csv", kwargs={"pk": project.id})
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
@@ -205,7 +205,7 @@ def test_anonymous_cannot_export_private_project_bom_xlsx(api_client, db, factor
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_bom_xlsx", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Bom-Xlsx", kwargs={"pk": project.id})
     response = api_client.get(url)
 
     assert response.status_code == 404
@@ -216,7 +216,7 @@ def test_anonymous_can_export_public_project_bom_xlsx(api_client, db, factories)
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_bom_xlsx", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Bom-Xlsx", kwargs={"pk": project.id})
     response = api_client.get(url)
 
     assert response.status_code == 200
@@ -231,7 +231,7 @@ def test_logged_in_can_export_project_bom_xlsx(logged_in_api_client, db, factori
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_bom_xlsx", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Bom-Xlsx", kwargs={"pk": project.id})
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
@@ -249,7 +249,7 @@ def test_anonymous_cannot_export_private_project_infos_txt(api_client, db, facto
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_infos", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Infos", kwargs={"pk": project.id})
     response = api_client.get(url)
 
     assert response.status_code == 404
@@ -260,7 +260,7 @@ def test_anonymous_can_export_public_project_infos_txt(api_client, db, factories
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_infos", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Infos", kwargs={"pk": project.id})
     response = api_client.get(url)
 
     assert response.status_code == 200
@@ -272,7 +272,7 @@ def test_logged_in_can_export_project_infos_txt(logged_in_api_client, db, factor
     factories["project.ProjectPart"](project=project, part_name="foobar")
     factories["project.ProjectPart"](project=project, part_name="bazqux")
 
-    url = reverse("api:v1:projects:projects_export_infos", kwargs={"project_id": project.id})
+    url = reverse("api:v1:projects:Projects-Export-Infos", kwargs={"pk": project.id})
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200

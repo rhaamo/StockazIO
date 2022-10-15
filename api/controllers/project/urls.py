@@ -17,8 +17,6 @@ urlpatterns = [
         name="project_part",
     ),
     path(r"<int:project_id>/exports/infos.txt", views.ExportTextInfos.as_view(), name="projects_export_infos"),
-    path(r"<int:project_id>/exports/bom.csv", views.ExportBomCSV.as_view(), name="projects_export_bom_csv"),
-    path(r"<int:project_id>/exports/bom.xlsx", views.ExportBomXLSX.as_view(), name="projects_export_bom_xlsx"),
 ]
 
 # NOTE: router.urls has to be last or it will override the urlpatterns in the lookup order

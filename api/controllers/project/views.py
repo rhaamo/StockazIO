@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from drf_excel.renderers import XLSXRenderer
 from drf_spectacular.utils import extend_schema
 from rest_framework import filters, mixins, views
-from rest_framework.generics import GenericAPIView
+from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -48,6 +48,9 @@ class ProjectsViewSet(ModelViewSet):
         "update": "write",
         "partial_update": "write",
         "list": None,
+        "export_bom_csv": None,
+        "export_bom_xlsx": None,
+        "export_info": None,
     }
     filter_backends = [filters.SearchFilter]
     pagination_class = PrimeVuePagination
@@ -111,6 +114,79 @@ class ProjectsViewSet(ModelViewSet):
 
         return queryset
 
+    @extend_schema(responses=bytes)
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path=r"exports/bom/csv",
+        url_name="Export-Bom-Csv",
+        renderer_classes=[CSVRenderer],
+    )
+    def export_bom_csv(self, request, pk=None):
+        """
+        Export project BOM (csv)
+        """
+        if request.user.is_anonymous:
+            project = get_object_or_404(Project, id=pk, public=True)
+        else:
+            project = get_object_or_404(Project, id=pk)
+        serializer = ProjectPartSerializer(project.project_parts, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(responses=bytes)
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path=r"exports/bom/xlsx",
+        url_name="Export-Bom-Xlsx",
+        renderer_classes=[XLSXRenderer],
+        serializer_class=ProjectPartSerializer,
+    )
+    def export_bom_xlsx(self, request, pk=None):
+        """
+        Export project BOM (xslt)
+        """
+        if request.user.is_anonymous:
+            project = get_object_or_404(Project, id=pk, public=True)
+        else:
+            project = get_object_or_404(Project, id=pk)
+        serializer = ProjectPartSerializer(project.project_parts, many=True)
+        filename = f"{urllib.parse.quote(project.name)}.xlsx"
+        r = Response(serializer.data)
+        r["Content-Disposition"] = f"attachment; filename={filename}"
+        return r
+
+    @extend_schema(responses=bytes)
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path=r"exports/infos",
+        url_name="Export-Infos",
+        renderer_classes=[PlainTextRenderer],
+    )
+    def export_info(self, request, pk=None):
+        """
+        Export project infos (text)
+        """
+        if request.user.is_anonymous:
+            project = get_object_or_404(Project, id=pk, public=True)
+        else:
+            project = get_object_or_404(Project, id=pk)
+        txt = f"""File generated on {datetime.now()}
+
+Name: {project.name}
+State: {dict(Project.STATES)[project.state]}
+External BOM URL: {project.ibom_url}
+Public project: {'yes' if project.public else 'no'}
+
+Description:
+{project.description or 'No description'}
+
+Notes:
+{project.notes or 'No notes'}
+"""
+        return Response(txt)
+
 
 class ProjectAttachmentsStandalone(
     mixins.CreateModelMixin,
@@ -173,9 +249,7 @@ class ProjectPartsStandalone(views.APIView):
 
 
 class ExportTextInfos(views.APIView):
-    """
-    Export project infos (text)
-    """
+    """ """
 
     # Auth is handled in get()
     permission_classes = (AllowAny,)
@@ -204,57 +278,3 @@ Notes:
 {project.notes or 'No notes'}
 """
         return Response(txt)
-
-
-class ExportBomCSV(views.APIView):
-    """
-    Export project BOM (csv)
-    """
-
-    # Auth is handled in get()
-    permission_classes = (AllowAny,)
-
-    http_method_names = ["get"]
-
-    renderer_classes = [CSVRenderer]
-
-    # def get_renderer_context(self):
-    #     context = super().get_renderer_context()
-    #     context['header'] = ('id', 'part.id', 'part_name',)
-    #     return context
-
-    @extend_schema(responses=bytes)
-    def get(self, request, project_id, format=None):
-        if self.request.user.is_anonymous:
-            project = get_object_or_404(Project, id=project_id, public=True)
-        else:
-            project = get_object_or_404(Project, id=project_id)
-        serializer = ProjectPartSerializer(project.project_parts, many=True)
-        return Response(serializer.data)
-
-
-class ExportBomXLSX(GenericAPIView):
-    """
-    Export project BOM (Excel)
-    """
-
-    # Auth is handled in get()
-    permission_classes = (AllowAny,)
-
-    http_method_names = ["get"]
-
-    renderer_classes = [XLSXRenderer]
-
-    serializer_class = ProjectPartSerializer
-
-    @extend_schema(responses=bytes)
-    def get(self, request, project_id, format=None):
-        if self.request.user.is_anonymous:
-            project = get_object_or_404(Project, id=project_id, public=True)
-        else:
-            project = get_object_or_404(Project, id=project_id)
-        serializer = ProjectPartSerializer(project.project_parts, many=True)
-        filename = f"{urllib.parse.quote(project.name)}.xlsx"
-        r = Response(serializer.data)
-        r["Content-Disposition"] = f"attachment; filename={filename}"
-        return r
