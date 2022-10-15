@@ -332,7 +332,7 @@ def test_anonymous_cannot_category_matcher_batch_update_update(api_client, db, f
         "update": [{"category": category1.id, "regexp": "foo"}, {"category": category1.id, "regexp": "bar"}],
     }
 
-    url = reverse("api:v1:orders_importer:category_matcher_batch_update")
+    url = reverse("api:v1:orders_importer:CategoryMatcher-Batch-Update")
     response = api_client.patch(url, matchers, format="json")
 
     assert response.status_code == 401
@@ -346,7 +346,7 @@ def test_logged_in_can_category_matcher_batch_update_update(logged_in_api_client
         "update": [{"category": category1.id, "regexp": "foo"}, {"category": category1.id, "regexp": "bar"}],
     }
 
-    url = reverse("api:v1:orders_importer:category_matcher_batch_update")
+    url = reverse("api:v1:orders_importer:CategoryMatcher-Batch-Update")
     response = logged_in_api_client.patch(url, matchers, format="json")
 
     assert response.status_code == 200
@@ -365,7 +365,7 @@ def test_logged_in_can_category_matcher_batch_update_update_and_delete(logged_in
         "update": [{"category": category1.id, "regexp": "foo"}, {"category": category1.id, "regexp": "bar"}],
     }
 
-    url = reverse("api:v1:orders_importer:category_matcher_batch_update")
+    url = reverse("api:v1:orders_importer:CategoryMatcher-Batch-Update")
     response = logged_in_api_client.patch(url, matchers, format="json")
 
     assert response.status_code == 200
@@ -393,7 +393,7 @@ def test_anonymous_cannot_category_matcher_rematch(api_client, db, factories):
     factories["OrdersImporter.Order"]()
     factories["OrdersImporter.Order"]()
 
-    url = reverse("api:v1:orders_importer:category_matcher_rematch")
+    url = reverse("api:v1:orders_importer:CategoryMatcher-Rematch")
     response = api_client.get(url)
 
     assert response.status_code == 401
@@ -404,7 +404,7 @@ def test_logged_in_can_category_matcher_rematch(logged_in_api_client, db, factor
     _ = factories["OrdersImporter.Order"]()
     _ = factories["OrdersImporter.Order"]()
 
-    url = reverse("api:v1:orders_importer:category_matcher_rematch")
+    url = reverse("api:v1:orders_importer:CategoryMatcher-Rematch")
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
@@ -412,7 +412,7 @@ def test_logged_in_can_category_matcher_rematch(logged_in_api_client, db, factor
 
 
 def test_logged_in_can_category_matcher_rematch_no_orders(logged_in_api_client, db, factories):
-    url = reverse("api:v1:orders_importer:category_matcher_rematch")
+    url = reverse("api:v1:orders_importer:CategoryMatcher-Rematch")
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
@@ -422,8 +422,8 @@ def test_logged_in_can_category_matcher_rematch_no_orders(logged_in_api_client, 
 def test_anonymous_cannot_order_import_to_inventory(api_client, db, factories):
     order1 = factories["OrdersImporter.Order"]()
 
-    url = reverse("api:v1:orders_importer:import_to_inventory")
-    response = api_client.post(url, {"id": order1.id})
+    url = reverse("api:v1:orders_importer:OrdersImporter-Import", kwargs={"pk": order1.id})
+    response = api_client.post(url)
 
     assert response.status_code == 401
 
@@ -436,8 +436,8 @@ def test_logged_in_can_order_import_to_inventory(logged_in_api_client, db, facto
     factories["OrdersImporter.Item"](order=order1, manufacturer_db=manufacturer)
     factories["OrdersImporter.Item"](order=order1, manufacturer_db=manufacturer)
 
-    url = reverse("api:v1:orders_importer:import_to_inventory")
-    response = logged_in_api_client.post(url, {"id": order1.id})
+    url = reverse("api:v1:orders_importer:OrdersImporter-Import", kwargs={"pk": order1.id})
+    response = logged_in_api_client.post(url)
 
     assert response.status_code == 200
     assert response.data["detail"] == "done"

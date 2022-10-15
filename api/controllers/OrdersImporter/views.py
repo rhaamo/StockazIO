@@ -1,7 +1,8 @@
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
-from rest_framework import serializers as drf_serializers, views
+from rest_framework import serializers as drf_serializers
+from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -40,6 +41,7 @@ class OrderViewSet(ModelViewSet):
         "update": "write",
         "partial_update": "write",
         "list": "read",
+        "import_to_inventory": "write",
     }
     pagination_class = PrimeVuePagination
 
@@ -68,135 +70,6 @@ class OrderViewSet(ModelViewSet):
 
         return queryset
 
-
-class CategoryMatcherViewSet(ModelViewSet):
-    """
-    Categories Matcher
-    """
-
-    anonymous_policy = False
-    required_scope = {
-        "retrieve": "read",
-        "create": "write",
-        "destroy": "write",
-        "update": "write",
-        "partial_update": "write",
-        "list": "read",
-    }
-    serializer_class = CategoryMatcherSerializer
-
-    def get_serializer_class(self):
-        if self.action in ["create", "update", "partial_update"]:
-            return CategoryMatcherCreateSerializer
-        else:
-            return CategoryMatcherSerializer
-
-    def get_queryset(self):
-        queryset = CategoryMatcher.objects.all()
-        return queryset
-
-
-class CategoryMatcherBatchUpdater(views.APIView):
-    """
-    Categories Matcher: Batch updater
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
-    @extend_schema(
-        request=drf_serializers.ListSerializer(
-            child=inline_serializer(
-                name="CategoryMatcherBatchUpdater",
-                fields={
-                    "id": drf_serializers.IntegerField(),
-                    "regexp": drf_serializers.CharField(),
-                    "category": drf_serializers.IntegerField(),
-                },
-            )
-        ),
-        responses={200: CategoryMatcherSerializer},
-    )
-    def patch(self, req):
-        # update or create
-        # Missing elements will be created
-        new_items = []
-        if len(req.data.get("update", [])) <= 0:
-            return Response({"detail": "Not found."}, 404)
-        for item in req.data.get("update", []):
-            if "id" in item:
-                # Update
-                db_item = CategoryMatcher.objects.get(id=item["id"])
-                if db_item:
-                    db_item.regexp = item["regexp"]
-                    category = Category.objects.get(id=item["category"])
-                    if not category:
-                        continue
-                    db_item.category = category
-                    db_item.save()
-            else:
-                # Create
-                category = Category.objects.get(id=item["category"])
-                if not category:
-                    continue
-                db_item = CategoryMatcher(regexp=item["regexp"], category=category)
-                db_item.save()
-            new_items.append(db_item)
-        # deletes
-        for item in req.data.get("delete", []):
-            i = CategoryMatcher.objects.get(id=item)
-            i.delete()
-        serializer = CategoryMatcherSerializer(new_items, many=True)
-        return Response(serializer.data, status=200)
-
-
-@extend_schema(
-    request=drf_serializers.ListSerializer(
-        child=inline_serializer(
-            name="CategoryMatcherBatchRematcher",
-            fields={
-                "id": drf_serializers.IntegerField(),
-                "regexp": drf_serializers.CharField(),
-                "category": drf_serializers.IntegerField(),
-            },
-        )
-    ),
-    responses={
-        200: OpenApiResponse(
-            response=inline_serializer(
-                name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}
-            )
-        )
-    },
-)
-class CategoryMatcherBatchRematcher(views.APIView):
-    """
-    Categories Matcher: Batch rematcher
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
-    def get(self, req):
-        # fetch orders
-        orders = Order.objects.all().filter(import_state=1).prefetch_related("items")
-        if not orders:
-            return Response({"details": "ok"}, 200)
-
-        # rematch
-        rematch_orders(orders)
-
-        return Response({"detail": "done"})
-
-
-class OrderImporterToInventory(views.APIView):
-    """
-    Orders importer to inventory
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
     @extend_schema(
         request=inline_serializer(
             name="OrderImporterToInventory",
@@ -222,11 +95,20 @@ class OrderImporterToInventory(views.APIView):
             )
         },
     )
-    def post(self, req):
-        if "id" not in req.data:
+    @action(
+        detail=True,
+        methods=["post"],
+        url_path=r"import",
+        url_name="Import",
+    )
+    def import_to_inventory(self, request, pk=None):
+        """
+        Orders importer to inventory
+        """
+        if not pk:
             return Response({"detail": "id is missing"}, 503)
 
-        order = get_object_or_404(Order.objects.prefetch_related("items"), id=req.data["id"])
+        order = get_object_or_404(Order.objects.prefetch_related("items"), id=pk)
 
         if order.import_state != 1:  # refuse if import state isn't 1/fetched
             return Response({"detail": f"order import state {order.import_state} isn't valid for importing"})
@@ -297,3 +179,119 @@ class OrderImporterToInventory(views.APIView):
         order.save()
 
         return Response({"detail": "done", "stats": stats})
+
+
+class CategoryMatcherViewSet(ModelViewSet):
+    """
+    Categories Matcher
+    """
+
+    anonymous_policy = False
+    required_scope = {
+        "retrieve": "read",
+        "create": "write",
+        "destroy": "write",
+        "update": "write",
+        "partial_update": "write",
+        "list": "read",
+        "batch_update": "write",
+        "rematch": "write",
+    }
+    serializer_class = CategoryMatcherSerializer
+
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update"]:
+            return CategoryMatcherCreateSerializer
+        else:
+            return CategoryMatcherSerializer
+
+    def get_queryset(self):
+        queryset = CategoryMatcher.objects.all()
+        return queryset
+
+    @extend_schema(
+        request=drf_serializers.ListSerializer(
+            child=inline_serializer(
+                name="CategoryMatcherBatchUpdater",
+                fields={
+                    "id": drf_serializers.IntegerField(),
+                    "regexp": drf_serializers.CharField(),
+                    "category": drf_serializers.IntegerField(),
+                },
+            )
+        ),
+        responses={200: CategoryMatcherSerializer},
+    )
+    @action(
+        detail=False,
+        methods=["patch"],
+        url_path=r"category_matcher/batch_update",
+        url_name="Batch-Update",
+    )
+    def batch_update(self, request, *args, **kwargs):
+        # update or create
+        # Missing elements will be created
+        new_items = []
+        if len(request.data.get("update", [])) <= 0:
+            return Response({"detail": "Not found."}, 404)
+        for item in request.data.get("update", []):
+            if "id" in item:
+                # Update
+                db_item = CategoryMatcher.objects.get(id=item["id"])
+                if db_item:
+                    db_item.regexp = item["regexp"]
+                    category = Category.objects.get(id=item["category"])
+                    if not category:
+                        continue
+                    db_item.category = category
+                    db_item.save()
+            else:
+                # Create
+                category = Category.objects.get(id=item["category"])
+                if not category:
+                    continue
+                db_item = CategoryMatcher(regexp=item["regexp"], category=category)
+                db_item.save()
+            new_items.append(db_item)
+        # deletes
+        for item in request.data.get("delete", []):
+            i = CategoryMatcher.objects.get(id=item)
+            i.delete()
+        serializer = CategoryMatcherSerializer(new_items, many=True)
+        return Response(serializer.data, status=200)
+
+    @extend_schema(
+        request=drf_serializers.ListSerializer(
+            child=inline_serializer(
+                name="CategoryMatcherBatchRematcher",
+                fields={
+                    "id": drf_serializers.IntegerField(),
+                    "regexp": drf_serializers.CharField(),
+                    "category": drf_serializers.IntegerField(),
+                },
+            )
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}
+                )
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"category_matcher/rematch",
+        url_name="Rematch",
+    )
+    def rematch(self, request, *args, **kwargs):
+        # fetch orders
+        orders = Order.objects.all().filter(import_state=1).prefetch_related("items")
+        if not orders:
+            return Response({"details": "ok"}, 200)
+
+        # rematch
+        rematch_orders(orders)
+
+        return Response({"detail": "done"})

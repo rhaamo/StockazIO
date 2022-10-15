@@ -58,15 +58,14 @@ const PARTS_ATTACHMENTS_DELETE = (partId, pk) =>
   `/api/v1/parts/${partId}/attachments/${pk}/`;
 const PARTS_ATTACHMENTS_DEFAULT = (partId, attachmentId) =>
   `/api/v1/parts/${partId}/attachments/${attachmentId}/set_default`;
-const PART_CHANGE_CATEGORY = "/api/v1/parts/bulk/change_category";
+const PART_CHANGE_CATEGORY = "/api/v1/parts/bulk/change_category/";
 const PART_CHANGE_STORAGE_LOCATION =
-  "/api/v1/parts/bulk/change_storage_location";
+  "/api/v1/parts/bulk/change_storage_location/";
 
 const PARTS_PUBLIC_LIST = "/api/v1/parts/public/";
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`;
 
-const PARTS_AUTOCOMPLETE_QUICK = (name) =>
-  `/api/v1/parts/autocomplete/quick_by_name/${name}`; // no final /
+const PARTS_AUTOCOMPLETE_QUICK = "/api/v1/parts/autocomplete/quick_by_name/";
 
 const MANUFACTURERS_URL = "/api/v1/manufacturers/";
 const MANUFACTURERS_CREATE = "/api/v1/manufacturers/";
@@ -81,14 +80,14 @@ const DISTRIBUTORS_UPDATE = (id) => `/api/v1/distributors/${id}/`;
 const ORDERS_IMPORTER_LIST = "/api/v1/orders_importer/";
 const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}/`;
 const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}/`;
-const ORDERS_IMPORTER_TO_INVENTORY =
-  "/api/v1/orders_importer/import_to_inventory"; // no final /
+const ORDERS_IMPORTER_TO_INVENTORY = (id) =>
+  `/api/v1/orders_importer/${id}/import/`;
 
 const CATEGORIES_MATCHERS_LIST = "/api/v1/orders_importer/category_matcher/";
 const CATEGORIES_MATCHERS_BATCH_UPDATE =
-  "/api/v1/orders_importer/category_matcher/batch_update"; // no final /
+  "/api/v1/orders_importer/category_matcher/batch_update/";
 const CATEGORIES_MATCHERS_REMATCH =
-  "/api/v1/orders_importer/category_matcher/rematch"; // no final /
+  "/api/v1/orders_importer/category_matcher/rematch/";
 
 const PROJECTS_LIST = "/api/v1/projects/";
 const PROJECT_CREATE = "/api/v1/projects/";
@@ -106,11 +105,11 @@ const PROJECT_PARTS_UPDATE = (projectId, pk) =>
 const PROJECT_PARTS_DELETE = (projectId, pk) =>
   `/api/v1/projects/${projectId}/parts/${pk}/`;
 const PROJECT_EXPORT_INFOS_TXT = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/infos.txt`;
+  `/api/v1/projects/${projectId}/exports/infos/`;
 const PROJECT_EXPORT_BOM_CSV = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/bom.csv`;
+  `/api/v1/projects/${projectId}/exports/bom/csv/`;
 const PROJECT_EXPORT_BOM_XLSX = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/bom.xlsx`;
+  `/api/v1/projects/${projectId}/exports/bom/xlsx/`;
 
 const LABELTEMPLATE_LIST = "/api/v1/labeltemplates/";
 const LABELTEMPLATE_CREATE = "/api/v1/labeltemplates/";
@@ -412,7 +411,7 @@ const deletePart = (partId) => {
 };
 
 const partsAutocompleteQuick = (name) => {
-  return Axios.get(PARTS_AUTOCOMPLETE_QUICK(name));
+  return Axios.get(PARTS_AUTOCOMPLETE_QUICK, { params: { name: name } });
 };
 
 const getPublicParts = (params) => {
@@ -462,7 +461,7 @@ const getOrdersImporter = (params) => {
 };
 
 const importOrderToInventory = (id) => {
-  return Axios.post(ORDERS_IMPORTER_TO_INVENTORY, { id: id });
+  return Axios.post(ORDERS_IMPORTER_TO_INVENTORY(id));
 };
 
 const getCategoryMatchers = () => {
