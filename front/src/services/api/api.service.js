@@ -80,8 +80,8 @@ const DISTRIBUTORS_UPDATE = (id) => `/api/v1/distributors/${id}/`;
 const ORDERS_IMPORTER_LIST = "/api/v1/orders_importer/";
 const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}/`;
 const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}/`;
-const ORDERS_IMPORTER_TO_INVENTORY =
-  "/api/v1/orders_importer/import_to_inventory"; // no final /
+const ORDERS_IMPORTER_TO_INVENTORY = (id) =>
+  `/api/v1/orders_importer/${id}/import/`;
 
 const CATEGORIES_MATCHERS_LIST = "/api/v1/orders_importer/category_matcher/";
 const CATEGORIES_MATCHERS_BATCH_UPDATE =
@@ -461,7 +461,7 @@ const getOrdersImporter = (params) => {
 };
 
 const importOrderToInventory = (id) => {
-  return Axios.post(ORDERS_IMPORTER_TO_INVENTORY, { id: id });
+  return Axios.post(ORDERS_IMPORTER_TO_INVENTORY(id));
 };
 
 const getCategoryMatchers = () => {

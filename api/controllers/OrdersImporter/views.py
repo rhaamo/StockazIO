@@ -1,7 +1,7 @@
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
-from rest_framework import serializers as drf_serializers, views
+from rest_framework import serializers as drf_serializers
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
@@ -41,6 +41,7 @@ class OrderViewSet(ModelViewSet):
         "update": "write",
         "partial_update": "write",
         "list": "read",
+        "import_to_inventory": "write",
     }
     pagination_class = PrimeVuePagination
 
@@ -68,6 +69,116 @@ class OrderViewSet(ModelViewSet):
                 queryset = queryset.order_by(f"-{sortField}")
 
         return queryset
+
+    @extend_schema(
+        request=inline_serializer(
+            name="OrderImporterToInventory",
+            fields={
+                "id": drf_serializers.IntegerField(),
+            },
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="OrderImporterToInventory",
+                    fields={
+                        "detail": drf_serializers.CharField(default="done"),
+                        "stats": inline_serializer(
+                            name="OrderImporterToInventoryStats",
+                            fields={
+                                "created": drf_serializers.IntegerField(),
+                                "updated": drf_serializers.IntegerField(),
+                            },
+                        ),
+                    },
+                )
+            )
+        },
+    )
+    @action(
+        detail=True,
+        methods=["post"],
+        url_path=r"import",
+        url_name="Import",
+    )
+    def import_to_inventory(self, request, pk=None):
+        """
+        Orders importer to inventory
+        """
+        if not pk:
+            return Response({"detail": "id is missing"}, 503)
+
+        order = get_object_or_404(Order.objects.prefetch_related("items"), id=pk)
+
+        if order.import_state != 1:  # refuse if import state isn't 1/fetched
+            return Response({"detail": f"order import state {order.import_state} isn't valid for importing"})
+
+        stats = {"created": 0, "updated": 0}
+
+        for item in order.items.all():
+            if item.ignore:
+                continue
+
+            # Try to see if we already have an item in db
+            try:
+                part = Part.objects.get(name=item.mfr_part_number)
+            except Part.DoesNotExist:
+                part = None
+
+            if part:
+                part.stock_qty += item.quantity
+                if not part.category:
+                    part.category = item.category
+                if not part.description:
+                    part.description = item.description
+                part.save()
+
+                try:
+                    manuf_sku = part.manufacturers_sku.get(sku=item.mfr_part_number, manufacturer=item.manufacturer_db)
+                except PartManufacturer.DoesNotExist:
+                    manuf_sku = PartManufacturer(sku=item.mfr_part_number, manufacturer=item.manufacturer_db, part=part)
+                    manuf_sku.save()
+
+                if not manuf_sku:
+                    part.manufacturers_sku.add(manuf_sku)
+
+                try:
+                    distri_sku = part.distributors_sku.get(sku=item.vendor_part_number, distributor=order.vendor_db)
+                except DistributorSku.DoesNotExist:
+                    distri_sku = DistributorSku(sku=item.vendor_part_number, distributor=order.vendor_db, part=part)
+                    distri_sku.save()
+
+                if not distri_sku:
+                    part.distributors_sku.add(distri_sku)
+
+                part.save()
+                stats["updated"] += 1
+
+            else:
+                part = Part(
+                    name=item.mfr_part_number,
+                    stock_qty=item.quantity,
+                    description=item.description,
+                    category=item.category,
+                )
+                part.save()
+
+                manuf_sku = PartManufacturer(sku=item.mfr_part_number, manufacturer=item.manufacturer_db, part=part)
+                manuf_sku.save()
+                part.manufacturers_sku.add(manuf_sku)
+
+                distri_sku = DistributorSku(sku=item.vendor_part_number, distributor=order.vendor_db, part=part)
+                distri_sku.save()
+                part.distributors_sku.add(distri_sku)
+
+                part.save()
+                stats["created"] += 1
+
+        # finally, set import_state to 2
+        order.import_state = 2
+        order.save()
+
+        return Response({"detail": "done", "stats": stats})
 
 
 class CategoryMatcherViewSet(ModelViewSet):
@@ -184,113 +295,3 @@ class CategoryMatcherViewSet(ModelViewSet):
         rematch_orders(orders)
 
         return Response({"detail": "done"})
-
-
-class OrderImporterToInventory(views.APIView):
-    """
-    Orders importer to inventory
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
-    @extend_schema(
-        request=inline_serializer(
-            name="OrderImporterToInventory",
-            fields={
-                "id": drf_serializers.IntegerField(),
-            },
-        ),
-        responses={
-            200: OpenApiResponse(
-                response=inline_serializer(
-                    name="OrderImporterToInventory",
-                    fields={
-                        "detail": drf_serializers.CharField(default="done"),
-                        "stats": inline_serializer(
-                            name="OrderImporterToInventoryStats",
-                            fields={
-                                "created": drf_serializers.IntegerField(),
-                                "updated": drf_serializers.IntegerField(),
-                            },
-                        ),
-                    },
-                )
-            )
-        },
-    )
-    def post(self, req):
-        if "id" not in req.data:
-            return Response({"detail": "id is missing"}, 503)
-
-        order = get_object_or_404(Order.objects.prefetch_related("items"), id=req.data["id"])
-
-        if order.import_state != 1:  # refuse if import state isn't 1/fetched
-            return Response({"detail": f"order import state {order.import_state} isn't valid for importing"})
-
-        stats = {"created": 0, "updated": 0}
-
-        for item in order.items.all():
-            if item.ignore:
-                continue
-
-            # Try to see if we already have an item in db
-            try:
-                part = Part.objects.get(name=item.mfr_part_number)
-            except Part.DoesNotExist:
-                part = None
-
-            if part:
-                part.stock_qty += item.quantity
-                if not part.category:
-                    part.category = item.category
-                if not part.description:
-                    part.description = item.description
-                part.save()
-
-                try:
-                    manuf_sku = part.manufacturers_sku.get(sku=item.mfr_part_number, manufacturer=item.manufacturer_db)
-                except PartManufacturer.DoesNotExist:
-                    manuf_sku = PartManufacturer(sku=item.mfr_part_number, manufacturer=item.manufacturer_db, part=part)
-                    manuf_sku.save()
-
-                if not manuf_sku:
-                    part.manufacturers_sku.add(manuf_sku)
-
-                try:
-                    distri_sku = part.distributors_sku.get(sku=item.vendor_part_number, distributor=order.vendor_db)
-                except DistributorSku.DoesNotExist:
-                    distri_sku = DistributorSku(sku=item.vendor_part_number, distributor=order.vendor_db, part=part)
-                    distri_sku.save()
-
-                if not distri_sku:
-                    part.distributors_sku.add(distri_sku)
-
-                part.save()
-                stats["updated"] += 1
-
-            else:
-                part = Part(
-                    name=item.mfr_part_number,
-                    stock_qty=item.quantity,
-                    description=item.description,
-                    category=item.category,
-                )
-                part.save()
-
-                manuf_sku = PartManufacturer(sku=item.mfr_part_number, manufacturer=item.manufacturer_db, part=part)
-                manuf_sku.save()
-                part.manufacturers_sku.add(manuf_sku)
-
-                distri_sku = DistributorSku(sku=item.vendor_part_number, distributor=order.vendor_db, part=part)
-                distri_sku.save()
-                part.distributors_sku.add(distri_sku)
-
-                part.save()
-                stats["created"] += 1
-
-        # finally, set import_state to 2
-        order.import_state = 2
-        order.save()
-
-        return Response({"detail": "done", "stats": stats})

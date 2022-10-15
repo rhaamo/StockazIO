@@ -422,8 +422,8 @@ def test_logged_in_can_category_matcher_rematch_no_orders(logged_in_api_client, 
 def test_anonymous_cannot_order_import_to_inventory(api_client, db, factories):
     order1 = factories["OrdersImporter.Order"]()
 
-    url = reverse("api:v1:orders_importer:import_to_inventory")
-    response = api_client.post(url, {"id": order1.id})
+    url = reverse("api:v1:orders_importer:OrdersImporter-Import", kwargs={"pk": order1.id})
+    response = api_client.post(url)
 
     assert response.status_code == 401
 
@@ -436,8 +436,8 @@ def test_logged_in_can_order_import_to_inventory(logged_in_api_client, db, facto
     factories["OrdersImporter.Item"](order=order1, manufacturer_db=manufacturer)
     factories["OrdersImporter.Item"](order=order1, manufacturer_db=manufacturer)
 
-    url = reverse("api:v1:orders_importer:import_to_inventory")
-    response = logged_in_api_client.post(url, {"id": order1.id})
+    url = reverse("api:v1:orders_importer:OrdersImporter-Import", kwargs={"pk": order1.id})
+    response = logged_in_api_client.post(url)
 
     assert response.status_code == 200
     assert response.data["detail"] == "done"
