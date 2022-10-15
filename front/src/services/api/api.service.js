@@ -85,9 +85,9 @@ const ORDERS_IMPORTER_TO_INVENTORY =
 
 const CATEGORIES_MATCHERS_LIST = "/api/v1/orders_importer/category_matcher/";
 const CATEGORIES_MATCHERS_BATCH_UPDATE =
-  "/api/v1/orders_importer/category_matcher/batch_update"; // no final /
+  "/api/v1/orders_importer/category_matcher/batch_update/";
 const CATEGORIES_MATCHERS_REMATCH =
-  "/api/v1/orders_importer/category_matcher/rematch"; // no final /
+  "/api/v1/orders_importer/category_matcher/rematch/";
 
 const PROJECTS_LIST = "/api/v1/projects/";
 const PROJECT_CREATE = "/api/v1/projects/";

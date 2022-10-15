@@ -2,6 +2,7 @@ from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
 from rest_framework import serializers as drf_serializers, views
+from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -82,6 +83,8 @@ class CategoryMatcherViewSet(ModelViewSet):
         "update": "write",
         "partial_update": "write",
         "list": "read",
+        "batch_update": "write",
+        "rematch": "write",
     }
     serializer_class = CategoryMatcherSerializer
 
@@ -94,15 +97,6 @@ class CategoryMatcherViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = CategoryMatcher.objects.all()
         return queryset
-
-
-class CategoryMatcherBatchUpdater(views.APIView):
-    """
-    Categories Matcher: Batch updater
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
 
     @extend_schema(
         request=drf_serializers.ListSerializer(
@@ -117,13 +111,19 @@ class CategoryMatcherBatchUpdater(views.APIView):
         ),
         responses={200: CategoryMatcherSerializer},
     )
-    def patch(self, req):
+    @action(
+        detail=False,
+        methods=["patch"],
+        url_path=r"category_matcher/batch_update",
+        url_name="Batch-Update",
+    )
+    def batch_update(self, request, *args, **kwargs):
         # update or create
         # Missing elements will be created
         new_items = []
-        if len(req.data.get("update", [])) <= 0:
+        if len(request.data.get("update", [])) <= 0:
             return Response({"detail": "Not found."}, 404)
-        for item in req.data.get("update", []):
+        for item in request.data.get("update", []):
             if "id" in item:
                 # Update
                 db_item = CategoryMatcher.objects.get(id=item["id"])
@@ -143,41 +143,38 @@ class CategoryMatcherBatchUpdater(views.APIView):
                 db_item.save()
             new_items.append(db_item)
         # deletes
-        for item in req.data.get("delete", []):
+        for item in request.data.get("delete", []):
             i = CategoryMatcher.objects.get(id=item)
             i.delete()
         serializer = CategoryMatcherSerializer(new_items, many=True)
         return Response(serializer.data, status=200)
 
-
-@extend_schema(
-    request=drf_serializers.ListSerializer(
-        child=inline_serializer(
-            name="CategoryMatcherBatchRematcher",
-            fields={
-                "id": drf_serializers.IntegerField(),
-                "regexp": drf_serializers.CharField(),
-                "category": drf_serializers.IntegerField(),
-            },
-        )
-    ),
-    responses={
-        200: OpenApiResponse(
-            response=inline_serializer(
-                name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}
+    @extend_schema(
+        request=drf_serializers.ListSerializer(
+            child=inline_serializer(
+                name="CategoryMatcherBatchRematcher",
+                fields={
+                    "id": drf_serializers.IntegerField(),
+                    "regexp": drf_serializers.CharField(),
+                    "category": drf_serializers.IntegerField(),
+                },
             )
-        )
-    },
-)
-class CategoryMatcherBatchRematcher(views.APIView):
-    """
-    Categories Matcher: Batch rematcher
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
-    def get(self, req):
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="CategoryMatcherBatchRematcher", fields={"details": drf_serializers.CharField(default="done")}
+                )
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"category_matcher/rematch",
+        url_name="Rematch",
+    )
+    def rematch(self, request, *args, **kwargs):
         # fetch orders
         orders = Order.objects.all().filter(import_state=1).prefetch_related("items")
         if not orders:
