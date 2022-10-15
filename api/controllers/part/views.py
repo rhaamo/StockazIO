@@ -5,7 +5,7 @@ from django.db.models import F
 from django.shortcuts import get_list_or_404, get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
 
-from rest_framework import generics, mixins, serializers, views
+from rest_framework import generics, mixins, serializers
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
@@ -84,6 +84,8 @@ class PartViewSet(ModelViewSet):
         "partial_update": "write",
         "list": "read",
         "autocompletion": "read",
+        "bulk_change_storage": "write",
+        "bulk_change_category": "write",
     }
     filter_backends = [SearchFilter]
     pagination_class = PrimeVuePagination
@@ -205,10 +207,92 @@ class PartViewSet(ModelViewSet):
         url_name="Autocompletion",
     )
     def autocompletion(self, request, *args, **kwargs):
+        """
+        Part autocompletion
+        """
         name = request.query_params.get("name", None)
         obj = get_list_or_404(Part, name__iexact=name)
         serializer = PartRetrieveSerializer(obj, many=True)
         return Response(serializer.data, status=200)
+
+    @extend_schema(
+        request=inline_serializer(
+            name="BulkEditChangeCategory",
+            fields={
+                "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                "category": serializers.IntegerField(),
+            },
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="BulkEditChangeCategory",
+                    fields={
+                        "message": serializers.CharField(default="ok"),
+                        "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                    },
+                ),
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path=r"bulk/change_category",
+        url_name="Bulk-Change-Category",
+    )
+    def bulk_change_category(self, request, *args, **kwargs):
+        """
+        Bulk edit: change category
+        """
+        category = get_object_or_404(Category, id=request.data["category"])
+        for partId in request.data["parts"]:
+            part = get_object_or_404(Part, id=partId)
+            part.category = category
+            part.save()
+
+        return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
+
+    @extend_schema(
+        request=inline_serializer(
+            name="BulkEditChangeStorageLocation",
+            fields={
+                "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                "storage_location": serializers.IntegerField(),
+            },
+        ),
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="BulkEditChangeStorageLocation",
+                    fields={
+                        "message": serializers.CharField(default="ok"),
+                        "parts": serializers.ListSerializer(child=serializers.IntegerField()),
+                    },
+                ),
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path=r"bulk/change_storage_location",
+        url_name="Bulk-Change-Storage",
+    )
+    def bulk_change_storage(self, request, *args, **kwargs):
+        """
+        Bulk edit: change storage location
+        """
+        if not request.data["storage_location"]:
+            storage_location = None
+        else:
+            storage_location = get_object_or_404(Storage, id=request.data["storage_location"])
+        for partId in request.data["parts"]:
+            part = get_object_or_404(Part, id=partId)
+            part.storage = storage_location
+            part.save()
+
+        return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
 
 
 class PartAttachmentsStandalone(
@@ -492,82 +576,3 @@ class PartAttachmentsSetDefault(generics.CreateAPIView):
         attachment.save()
 
         return Response("ok", status=200)
-
-
-@extend_schema(
-    request=inline_serializer(
-        name="BulkEditChangeCategory",
-        fields={
-            "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-            "category": serializers.IntegerField(),
-        },
-    ),
-    responses={
-        200: OpenApiResponse(
-            response=inline_serializer(
-                name="BulkEditChangeCategory",
-                fields={
-                    "message": serializers.CharField(default="ok"),
-                    "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-                },
-            ),
-        )
-    },
-)
-class BulkEditChangeCategory(views.APIView):
-    """
-    Bulk edit: change category
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
-    def post(self, request, format=None):
-        category = get_object_or_404(Category, id=request.data["category"])
-        for partId in request.data["parts"]:
-            part = get_object_or_404(Part, id=partId)
-            part.category = category
-            part.save()
-
-        return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
-
-
-@extend_schema(
-    request=inline_serializer(
-        name="BulkEditChangeStorageLocation",
-        fields={
-            "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-            "storage_location": serializers.IntegerField(),
-        },
-    ),
-    responses={
-        200: OpenApiResponse(
-            response=inline_serializer(
-                name="BulkEditChangeStorageLocation",
-                fields={
-                    "message": serializers.CharField(default="ok"),
-                    "parts": serializers.ListSerializer(child=serializers.IntegerField()),
-                },
-            ),
-        )
-    },
-)
-class BulkEditChangeStorageLocation(views.APIView):
-    """
-    Bulk edit: change storage location
-    """
-
-    required_scope = "parts"
-    anonymous_policy = False
-
-    def post(self, request, format=None):
-        if not request.data["storage_location"]:
-            storage_location = None
-        else:
-            storage_location = get_object_or_404(Storage, id=request.data["storage_location"])
-        for partId in request.data["parts"]:
-            part = get_object_or_404(Part, id=partId)
-            part.storage = storage_location
-            part.save()
-
-        return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
