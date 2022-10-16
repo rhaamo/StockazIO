@@ -14,7 +14,6 @@ class PartUnitFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "part.PartUnit"
-        django_get_or_create = ("name",)
 
 
 @registry.register
@@ -38,7 +37,6 @@ class PartFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "part.Part"
-        django_get_or_create = ("name",)
 
 
 # @registry.register
@@ -49,7 +47,6 @@ class PartFactory(factory.django.DjangoModelFactory):
 
 #     class Meta:
 #         model = "part.PartAttachment"
-#         django_get_or_create = ("description",)
 
 
 @registry.register
@@ -61,7 +58,6 @@ class PartAttachmentTypePictureFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "part.PartAttachment"
-        django_get_or_create = ("description",)
 
 
 @registry.register
@@ -72,7 +68,6 @@ class ParametersUnitsFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "part.ParametersUnit"
-        django_get_or_create = ("name",)
 
 
 @registry.register
@@ -81,7 +76,6 @@ class PartParameterPresetFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "part.PartParameterPreset"
-        django_get_or_create = ("name",)
 
 
 @registry.register
@@ -93,7 +87,6 @@ class PartParameterPresetItemFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = "part.PartParameterPresetItem"
-        django_get_or_create = ("name",)
 
 
 @registry.register
@@ -101,9 +94,8 @@ class PartParameterFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")
     description = factory.Faker("text")
     value = factory.Faker("name")
-    unit = factory.Faker("name")
+    unit = factory.SubFactory(ParametersUnitsFactory)
     part = factory.SubFactory(PartFactory)
 
     class Meta:
         model = "part.PartParameter"
-        django_get_or_create = ("name",)
