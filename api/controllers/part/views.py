@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from django.db.models import F
 from django.shortcuts import get_list_or_404, get_object_or_404
-from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiParameter, OpenApiResponse
 
 from rest_framework import generics, mixins, serializers
 from rest_framework.decorators import action
@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from controllers.categories.models import Category
-from controllers.part.models import ParametersUnit, Part, PartAttachment, PartParameterPreset, PartUnit
+from controllers.part.models import ParametersUnit, Part, PartAttachment, PartParameter, PartParameterPreset, PartUnit
 from controllers.part.serializers import (
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
@@ -86,6 +86,8 @@ class PartViewSet(ModelViewSet):
         "autocompletion": "read",
         "bulk_change_storage": "write",
         "bulk_change_category": "write",
+        "get_parameters_names": "read",
+        "get_parameter_values": "read",
     }
     filter_backends = [SearchFilter]
     pagination_class = PrimeVuePagination
@@ -199,7 +201,10 @@ class PartViewSet(ModelViewSet):
             serializer = PartRetrieveSerializer(obj, context={"request": request})
             return Response(serializer.data)
 
-    @extend_schema(responses={200: PartRetrieveSerializer})
+    @extend_schema(
+        responses={200: PartRetrieveSerializer},
+        parameters=[OpenApiParameter(name="name", type=str, required=True, description="name of the part")],
+    )
     @action(
         detail=False,
         methods=["get"],
@@ -293,6 +298,50 @@ class PartViewSet(ModelViewSet):
             part.save()
 
         return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
+
+    @extend_schema(
+        responses={
+            200: OpenApiResponse(
+                response=serializers.ListSerializer(child=serializers.CharField()),
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"parameters/get/all_names",
+        url_name="Get-Parameters-Names",
+        pagination_class=[],
+    )
+    def get_parameters_names(self, request, *args, **kwargs):
+        """
+        Get list of all parameters names
+        """
+        names = PartParameter.objects.order_by().values_list("name", flat=True).distinct()
+        return Response(names, status=200)
+
+    @extend_schema(
+        parameters=[OpenApiParameter(name="name", type=str, required=True, description="name of the parameter")],
+        responses={
+            200: OpenApiResponse(
+                response=serializers.ListSerializer(child=serializers.CharField()),
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"parameters/get/values",
+        url_name="Get-Parameter-Values",
+        pagination_class=[],
+    )
+    def get_parameter_values(self, request, *args, **kwargs):
+        """
+        Get list of all parameters values for a given name
+        """
+        name = request.query_params.get("name", None)
+        values = PartParameter.objects.order_by().values_list("value", flat=True).distinct().filter(name=name)
+        return Response(values, status=200)
 
 
 class PartAttachmentsStandalone(

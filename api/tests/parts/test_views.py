@@ -294,6 +294,70 @@ def test_logged_in_can_autocomplete_part(logged_in_api_client, db, factories):
     assert response.data[0]["name"] == part.name
 
 
+def test_anonymous_cannot_get_part_parameters_names(api_client, db, factories):
+    part1 = factories["part.Part"]()
+    part2 = factories["part.Part"]()
+    factories["part.PartParameter"](name="foo", part=part1)
+    factories["part.PartParameter"](name="foo", part=part2)
+    factories["part.PartParameter"](name="foo", part=part1)
+    factories["part.PartParameter"](name="foo", part=part2)
+    factories["part.PartParameter"](name="bar", part=part1)
+    factories["part.PartParameter"](name="bar", part=part2)
+
+    url = reverse("api:v1:parts:Part-Get-Parameters-Names")
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_part_parameters_names(logged_in_api_client, db, factories):
+    part1 = factories["part.Part"]()
+    part2 = factories["part.Part"]()
+    factories["part.PartParameter"](name="foo", part=part1)
+    factories["part.PartParameter"](name="foo", part=part2)
+    factories["part.PartParameter"](name="foo", part=part1)
+    factories["part.PartParameter"](name="foo", part=part2)
+    factories["part.PartParameter"](name="bar", part=part1)
+    factories["part.PartParameter"](name="bar", part=part2)
+
+    url = reverse("api:v1:parts:Part-Get-Parameters-Names")
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert len(response.data) == 2
+    assert "foo" in response.data
+    assert "bar" in response.data
+
+
+def test_anonymous_cannot_get_part_parameter_values(api_client, db, factories):
+    factories["part.PartParameter"](name="foo")
+    factories["part.PartParameter"](name="foo")
+    factories["part.PartParameter"](name="foo")
+    factories["part.PartParameter"](name="bar")
+
+    url = reverse("api:v1:parts:Part-Get-Parameter-Values") + "?name=foo"
+    response = api_client.get(url)
+
+    assert response.status_code == 401
+
+
+def test_logged_in_can_get_part_parameter_values(logged_in_api_client, db, factories):
+    ppp1 = factories["part.PartParameter"](name="foo")
+    ppp2 = factories["part.PartParameter"](name="foo")
+    ppp3 = factories["part.PartParameter"](name="foo")
+    ppp4 = factories["part.PartParameter"](name="bar")
+
+    url = reverse("api:v1:parts:Part-Get-Parameter-Values") + "?name=foo"
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert len(response.data) == 3
+    assert ppp1.value in response.data
+    assert ppp2.value in response.data
+    assert ppp3.value in response.data
+    assert ppp4.value not in response.data
+
+
 # ##########
 
 
