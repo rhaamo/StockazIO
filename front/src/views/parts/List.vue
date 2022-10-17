@@ -2,7 +2,11 @@
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-    <div class="card ml-5 mt-4">
+    <div class="card ml-5 mt-4 pt-2" v-if="show_parameters_filter">
+      <h4>Filtering by part parameter</h4>
+    </div>
+
+    <div class="card ml-5 mt-4 pl-0 pr-0 pt-0">
       <TabView>
         <TabPanel>
           <template #header>
@@ -91,6 +95,17 @@
                     :binary="true"
                   />
                   <label for="only_qty_less_min">Only qty &lt; min</label>
+
+                  &nbsp;&nbsp;
+
+                  <Checkbox
+                    inputId="show_parameters_filter"
+                    v-model="show_parameters_filter"
+                    :binary="true"
+                  />
+                  <label for="show_parameters_filter"
+                    >Parameters Filtering</label
+                  >
                 </div>
               </template>
             </template>
@@ -522,6 +537,7 @@ export default {
     bulkEditCategory: null,
     filter_qty_min: false,
     filter_qty: false,
+    show_parameters_filter: false,
   }),
   computed: {
     ...mapState(usePreloadsStore, {
