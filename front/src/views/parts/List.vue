@@ -4,6 +4,29 @@
 
     <div class="card ml-5 mt-4 pt-2" v-if="show_parameters_filter">
       <h4>Filtering by part parameter</h4>
+
+      <div v-for="(_, i) in parameters_filters" :key="i">
+        <ParameterFilter
+          v-model:item="parameters_filters[i]"
+          v-model:names="parameters_filter_names"
+          @deleteItem="deletePartParameterFilter($event, i)"
+        />
+      </div>
+
+      <Divider />
+
+      <PvButton
+        @click.prevent="addPartParameterFilter($event)"
+        class="p-button-help"
+        label="add filter"
+      />
+
+      <PvButton
+        @click.prevent="searchPartsFilter($event)"
+        class="p-button-success ml-2"
+        label="search parts"
+        v-if="parameters_filters && parameters_filters.length"
+      />
     </div>
 
     <div class="card ml-5 mt-4 pl-0 pr-0 pt-0">
@@ -25,7 +48,7 @@
             @page="onPage($event)"
             @sort="onSort($event)"
             @filter="onFilter($event)"
-            filterDisplay="menu"
+            filterDisplay="row"
             responsiveLayout="scroll"
             v-model:selection="selectedParts"
             :selectAll="selectAll"
@@ -35,6 +58,7 @@
             stripedRows
             class="p-datatable-sm"
             removableSort
+            :showFilterOperator="false"
           >
             <template #empty> No parts found. </template>
 
@@ -228,6 +252,7 @@
               field="stock_qty"
               dataType="numeric"
               :filterMatchModeOptions="matchModes.qty"
+              headerStyle="width: 15em"
             >
               <template #body="slotProps">
                 <Inplace
@@ -281,15 +306,6 @@
                   class="p-column-filter"
                   placeholder="qty"
                 />
-
-                <div class="field-checkbox mt-2">
-                  <Checkbox
-                    inputId="only_out_of_stock"
-                    v-model="filter_qty"
-                    :binary="true"
-                  />
-                  <label for="only_out_of_stock">Only out of stock</label>
-                </div>
               </template>
             </Column>
             <Column
@@ -484,10 +500,14 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import PartViewModal from "@/components/parts/view.vue";
 import LabelGeneratorModal from "@/components/label/generator.vue";
+import ParameterFilter from "@/components/parts/ParameterFilter.vue";
 import { h } from "vue";
 import Button from "primevue/button";
 
 export default {
+  components: {
+    ParameterFilter,
+  },
   data: () => ({
     loading: true,
     lazyParams: {},
@@ -526,18 +546,31 @@ export default {
     },
     // Note: this is duplicated in watch: categoryId()
     filters: {
-      name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-      storage_id: { value: null, matchMode: FilterMatchMode.EQUALS },
-      stock_qty: { value: null, matchMode: FilterMatchMode.EQUALS },
-      footprint_id: { value: null, matchMode: FilterMatchMode.EQUALS },
+      name: {
+        value: null,
+        matchMode: FilterMatchMode.STARTS_WITH,
+      },
+      storage_id: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS,
+      },
+      stock_qty: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS,
+      },
+      footprint_id: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS,
+      },
     },
     selectAll: false,
     selectedParts: null,
     bulkEditStorage: null,
     bulkEditCategory: null,
     filter_qty_min: false,
-    filter_qty: false,
     show_parameters_filter: false,
+    parameters_filter_names: [],
+    parameters_filters: [],
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -684,16 +717,6 @@ export default {
       // reload
       this.loadLazyData();
     },
-    filter_qty: function () {
-      if (this.filter_qty) {
-        this.filters.stock_qty = {
-          value: 0,
-          matchMode: FilterMatchMode.EQUALS,
-        };
-      } else {
-        this.filters.stock_qty.value = null;
-      }
-    },
     filter_qty_min: function () {
       if (this.filter_qty_min) {
         this.lazyParams.qtyType = "qtyMin";
@@ -701,6 +724,13 @@ export default {
         delete this.lazyParams.qtyType;
       }
       this.loadLazyData();
+    },
+    show_parameters_filter: function () {
+      if (this.show_parameters_filter) {
+        this.loadPartParametersNames();
+      } else {
+        this.loadLazyData();
+      }
     },
   },
   setup: () => ({
@@ -795,6 +825,22 @@ export default {
             life: 5000,
           });
           logger.default.error("Error with parts loading", err);
+        });
+    },
+    loadPartParametersNames() {
+      apiService
+        .getPartParametersAllNames()
+        .then((res) => {
+          this.parameters_filter_names = res.data;
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Parts parameters names",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with parts parameters names", err);
         });
     },
     qrcodeId(id, size) {
@@ -1160,6 +1206,23 @@ export default {
           logger.default.error("Error with min quantity part update", err);
         });
       this.$refs[`inplace_qty_min_${part.id}`].close();
+    },
+    addPartParameterFilter(event) {
+      this.parameters_filters.push({
+        name: "",
+        mode: "",
+        value: "",
+      });
+    },
+    deletePartParameterFilter(event, idx) {
+      this.parameters_filters.splice(idx, 1);
+    },
+    searchPartsFilter(event) {
+      this.loading = true;
+      this.lazyParams.parameter_filters = this.parameters_filters.map((x) => {
+        return { name: x.name.value, matchMode: x.mode.value, value: x.value };
+      });
+      this.loadLazyData();
     },
   },
 };

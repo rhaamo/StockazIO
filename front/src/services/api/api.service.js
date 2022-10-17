@@ -39,6 +39,9 @@ const PART_UNITS_CREATE = "/api/v1/parts/units/";
 const PART_UNITS_DELETE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`;
 const PART_UNITS_UPDATE = (partUnitId) => `/api/v1/parts/units/${partUnitId}/`;
 
+const PART_PARAMETERS_GET_ALL_NAMES = "/api/v1/parts/parameters/get/all_names/";
+const PART_PARAMETERS_GET_VALUES = "/api/v1/parts/parameters/get/values/";
+
 const PART_PARAMETERS_PRESETS_URL = "/api/v1/parts/parameters/presets/";
 const PART_PARAMETERS_PRESETS_CREATE = "/api/v1/parts/parameters/presets/";
 const PART_PARAMETERS_PRESETS_DETAILS = (partParameterPresetId) =>
@@ -399,6 +402,12 @@ const changePartsStorageLocation = (partsId, storageLocationId) => {
 };
 
 const getParts = (params) => {
+  if (params.filters) {
+    params.filters = JSON.stringify(params.filters);
+  }
+  if (params.parameter_filters) {
+    params.parameter_filters = JSON.stringify(params.parameter_filters);
+  }
   return Axios.get(PARTS_LIST, { params: params });
 };
 
@@ -420,6 +429,14 @@ const getPublicParts = (params) => {
 
 const getPublicPart = (partId) => {
   return Axios.get(PARTS_PUBLIC_ITEM(partId));
+};
+
+const getPartParametersAllNames = () => {
+  return Axios.get(PART_PARAMETERS_GET_ALL_NAMES);
+};
+
+const getPartParametersValues = (name) => {
+  return Axios.get(PART_PARAMETERS_GET_VALUES, { name: name });
 };
 
 const partAttachmentCreate = (partId, data) => {
@@ -479,6 +496,9 @@ const rematchOrderItems = () => {
 // Projects
 
 const getProjects = (params) => {
+  if (params.filters) {
+    params.filters = JSON.stringify(params.filters);
+  }
   return Axios.get(PROJECTS_LIST, { params: params });
 };
 
@@ -639,6 +659,8 @@ const apiService = {
   partsAutocompleteQuick,
   getPublicParts,
   getPublicPart,
+  getPartParametersAllNames,
+  getPartParametersValues,
   partAttachmentCreate,
   partAttachmentDelete,
   partAttachmentSetDefault,
