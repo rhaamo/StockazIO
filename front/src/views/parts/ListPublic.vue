@@ -575,11 +575,22 @@ export default {
         )[0];
       }
 
-      apiService.getPublicParts(params).then((res) => {
-        this.parts = res.data.results;
-        this.totalRecords = res.data.count;
-        this.loading = false;
-      });
+      apiService
+        .getPublicParts(params)
+        .then((res) => {
+          this.parts = res.data.results;
+          this.totalRecords = res.data.count;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Parts loading",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with parts loading", err);
+        });
     },
     qrcodeId(id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`;
