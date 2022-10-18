@@ -729,6 +729,8 @@ export default {
       if (this.show_parameters_filter) {
         this.loadPartParametersNames();
       } else {
+        this.parameters_filters = [];
+        delete this.lazyParams.parameter_filters;
         this.loadLazyData();
       }
     },
