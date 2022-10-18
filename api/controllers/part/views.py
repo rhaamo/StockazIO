@@ -190,43 +190,43 @@ class PartViewSet(ModelViewSet):
                 value = filter["value"]
                 if filter["matchMode"] == "startsWith":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__istartswith": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__istartswith": value}
                     )
                 elif filter["matchMode"] == "contains":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__icontains": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__icontains": value}
                     )
                 elif filter["matchMode"] == "notContains":
                     queryset = queryset.exclude(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__icontains": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__icontains": value}
                     )
                 elif filter["matchMode"] == "endsWith":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__iendswith": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__iendswith": value}
                     )
                 elif filter["matchMode"] == "equals":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value": value}
                     )
                 elif filter["matchMode"] == "notEquals":
                     queryset = queryset.exclude(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value": value}
                     )
                 elif filter["matchMode"] == "lt":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__lt": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__lt": value}
                     )
                 elif filter["matchMode"] == "lte":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__lte": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__lte": value}
                     )
                 elif filter["matchMode"] == "gt":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__gt": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__gt": value}
                     )
                 elif filter["matchMode"] == "gte":
                     queryset = queryset.filter(
-                        **{f"part_parameters_value__name": name, "part_parameters_value__value__gte": value}
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__gte": value}
                     )
 
         if sortField and sortOrder:
