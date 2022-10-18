@@ -424,6 +424,9 @@ const partsAutocompleteQuick = (name) => {
 };
 
 const getPublicParts = (params) => {
+  if (params.filters) {
+    params.filters = JSON.stringify(params.filters);
+  }
   return Axios.get(PARTS_PUBLIC_LIST, { params: params });
 };
 

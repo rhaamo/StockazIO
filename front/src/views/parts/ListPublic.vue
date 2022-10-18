@@ -21,7 +21,7 @@
             @page="onPage($event)"
             @sort="onSort($event)"
             @filter="onFilter($event)"
-            filterDisplay="menu"
+            filterDisplay="row"
             responsiveLayout="scroll"
             stripedRows
             class="p-datatable-sm"
