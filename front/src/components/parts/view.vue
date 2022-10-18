@@ -80,11 +80,14 @@
               <Column field="name" header="Name"></Column>
               <Column field="description" header="Description"></Column>
               <Column header="Value">
-                <template #body="slotProps">{{
-                  slotProps.data.unit
-                    ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})`
-                    : ""
-                }}</template>
+                <template #body="slotProps"
+                  >{{ slotProps.data.value }}
+                  {{
+                    slotProps.data.unit
+                      ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})`
+                      : ""
+                  }}</template
+                >
               </Column>
             </DataTable>
           </TabPanel>

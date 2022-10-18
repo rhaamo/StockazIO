@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from django.db.models import F
 from django.shortcuts import get_list_or_404, get_object_or_404
-from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiParameter, OpenApiResponse
 
 from rest_framework import generics, mixins, serializers
 from rest_framework.decorators import action
@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from controllers.categories.models import Category
-from controllers.part.models import ParametersUnit, Part, PartAttachment, PartParameterPreset, PartUnit
+from controllers.part.models import ParametersUnit, Part, PartAttachment, PartParameter, PartParameterPreset, PartUnit
 from controllers.part.serializers import (
     ParametersUnitSerializer,
     PartAttachmentCreateSerializer,
@@ -86,6 +86,8 @@ class PartViewSet(ModelViewSet):
         "autocompletion": "read",
         "bulk_change_storage": "write",
         "bulk_change_category": "write",
+        "get_parameters_names": "read",
+        "get_parameter_values": "read",
     }
     filter_backends = [SearchFilter]
     pagination_class = PrimeVuePagination
@@ -117,6 +119,7 @@ class PartViewSet(ModelViewSet):
         sellable = self.request.query_params.get("sellable", None)
 
         filters = self.request.query_params.get("filters", None)
+        parameter_filters = self.request.query_params.get("parameter_filters", None)
         sortField = self.request.query_params.get("sortField", None)
         sortOrder = self.request.query_params.get("sortOrder", None)
 
@@ -178,6 +181,54 @@ class PartViewSet(ModelViewSet):
                         elif filters[field]["matchMode"] == "gte":
                             queryset = queryset.filter(**{f"{field}__gte": filters[field]["value"]})
 
+        # Filtering but by part parameter
+        if parameter_filters:
+            filters = json.loads(parameter_filters)
+            for filter in filters:
+                # we get: name, matchMode and value
+                name = filter["name"]
+                value = filter["value"]
+                if filter["matchMode"] == "startsWith":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__istartswith": value}
+                    )
+                elif filter["matchMode"] == "contains":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__icontains": value}
+                    )
+                elif filter["matchMode"] == "notContains":
+                    queryset = queryset.exclude(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__icontains": value}
+                    )
+                elif filter["matchMode"] == "endsWith":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__iendswith": value}
+                    )
+                elif filter["matchMode"] == "equals":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value": value}
+                    )
+                elif filter["matchMode"] == "notEquals":
+                    queryset = queryset.exclude(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value": value}
+                    )
+                elif filter["matchMode"] == "lt":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__lt": value}
+                    )
+                elif filter["matchMode"] == "lte":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__lte": value}
+                    )
+                elif filter["matchMode"] == "gt":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__gt": value}
+                    )
+                elif filter["matchMode"] == "gte":
+                    queryset = queryset.filter(
+                        **{"part_parameters_value__name": name, "part_parameters_value__value__gte": value}
+                    )
+
         if sortField and sortOrder:
             if sortOrder == 1:
                 queryset = queryset.order_by(sortField)
@@ -199,7 +250,10 @@ class PartViewSet(ModelViewSet):
             serializer = PartRetrieveSerializer(obj, context={"request": request})
             return Response(serializer.data)
 
-    @extend_schema(responses={200: PartRetrieveSerializer})
+    @extend_schema(
+        responses={200: PartRetrieveSerializer},
+        parameters=[OpenApiParameter(name="name", type=str, required=True, description="name of the part")],
+    )
     @action(
         detail=False,
         methods=["get"],
@@ -293,6 +347,50 @@ class PartViewSet(ModelViewSet):
             part.save()
 
         return Response({"message": "ok", "parts": request.data["parts"]}, status=200)
+
+    @extend_schema(
+        responses={
+            200: OpenApiResponse(
+                response=serializers.ListSerializer(child=serializers.CharField()),
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"parameters/get/all_names",
+        url_name="Get-Parameters-Names",
+        pagination_class=[],
+    )
+    def get_parameters_names(self, request, *args, **kwargs):
+        """
+        Get list of all parameters names
+        """
+        names = PartParameter.objects.order_by().values_list("name", flat=True).distinct()
+        return Response(names, status=200)
+
+    @extend_schema(
+        parameters=[OpenApiParameter(name="name", type=str, required=True, description="name of the parameter")],
+        responses={
+            200: OpenApiResponse(
+                response=serializers.ListSerializer(child=serializers.CharField()),
+            )
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path=r"parameters/get/values",
+        url_name="Get-Parameter-Values",
+        pagination_class=[],
+    )
+    def get_parameter_values(self, request, *args, **kwargs):
+        """
+        Get list of all parameters values for a given name
+        """
+        name = request.query_params.get("name", None)
+        values = PartParameter.objects.order_by().values_list("value", flat=True).distinct().filter(name=name)
+        return Response(values, status=200)
 
 
 class PartAttachmentsStandalone(

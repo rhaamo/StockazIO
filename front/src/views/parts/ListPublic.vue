@@ -2,7 +2,7 @@
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-    <div class="card ml-5 mt-4">
+    <div class="card ml-5 mt-4 pt-0 pl-0 pr-0">
       <TabView>
         <TabPanel>
           <template #header>
@@ -21,7 +21,7 @@
             @page="onPage($event)"
             @sort="onSort($event)"
             @filter="onFilter($event)"
-            filterDisplay="menu"
+            filterDisplay="row"
             responsiveLayout="scroll"
             stripedRows
             class="p-datatable-sm"
@@ -575,11 +575,22 @@ export default {
         )[0];
       }
 
-      apiService.getPublicParts(params).then((res) => {
-        this.parts = res.data.results;
-        this.totalRecords = res.data.count;
-        this.loading = false;
-      });
+      apiService
+        .getPublicParts(params)
+        .then((res) => {
+          this.parts = res.data.results;
+          this.totalRecords = res.data.count;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Parts loading",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with parts loading", err);
+        });
     },
     qrcodeId(id, size) {
       return size ? `qrcode-${id}-${size}` : `qrcode-${id}`;
