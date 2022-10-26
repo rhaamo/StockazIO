@@ -15,8 +15,6 @@ RUN \
 
 FROM alpine:3.16 as builder-backend
 
-COPY --from=builder-front /front/dist /app/front
-
 RUN \
     echo 'installing dependencies' && \
     apk add --no-cache \
@@ -50,6 +48,8 @@ RUN \
     sed -i 's/six==.*$//' /app/api/requirements.txt && \
     pip3 install --ignore-installed -r /app/api/requirements.txt && \
     rm -rf $PIP_DOWNLOAD_CACHE
+
+COPY --from=builder-front /front/dist /app/front
 
 RUN mkdir /uploads /statics
 VOLUME /uploads
