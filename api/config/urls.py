@@ -35,8 +35,7 @@ if settings.DEBUG:
     # we don't really have choice, silk really wants to have them...
     urlpatterns += [re_path(r"^silk/", include("silk.urls", namespace="silk"))]
 
-urlpatterns += static("/css/", document_root=settings.STOCKAZIO_SPA_CSS_ROOT)
-urlpatterns += static("/js/", document_root=settings.STOCKAZIO_SPA_JS_ROOT)
+urlpatterns += static("/assets/", document_root=settings.STOCKAZIO_SPA_ASSETS_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
