@@ -24,6 +24,10 @@
       "groupName": "django"
     },
     {
+      "matchPackagePatterns": ["pytest"],
+      "groupName": "pytest"
+    },
+    {
       "matchPackagePatterns": ["drf", "djangorestframework", "django-rest-passwordreset"],
       "groupName": "drf"
     },
