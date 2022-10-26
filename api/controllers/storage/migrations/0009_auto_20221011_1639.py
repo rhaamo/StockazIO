@@ -32,15 +32,33 @@ def handle_category(item, apps):
         handle_location(child, item, apps)
 
 
+def dump_tree(item, idx):
+    print(f"{'-'*idx} C: {item.name}")
+    # sub cats
+    for child in item.children.all():
+        dump_tree(child, idx + 2)
+    # sub locations
+    for child in item.storage_locations.all():
+        print(f"{'-'*idx}-- L: {child.name}")
+
+
 def transfer_storage(apps, schema_editor):
     """
     Transfer StorageCategory and StorageLocation to Storage
     """
     StorageCategory = apps.get_model("storage", "StorageCategory")
     mptt.register(StorageCategory)
-    storage_tree = StorageCategory.objects.all()
+    # somehow we need to order_by(id) or django-mptt just craps on itself
+    storage_tree = StorageCategory.objects.order_by("id").all()
+
     storage_tree = get_cached_trees(storage_tree)
 
+    # dump tree
+    print("")
+    for i in storage_tree:
+        dump_tree(i, 0)
+
+    # migrate
     for i in storage_tree:
         handle_category(i, apps)
 
