@@ -105,10 +105,10 @@
   dependencies:
     zod "^3.11.6"
 
-"@pdfme/generator@1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@pdfme/generator/-/generator-1.0.15.tgz#7fdc92f3f8bf0de1cf4259847e7a22cf3e0ad713"
-  integrity sha512-5iKH388t03p8fcVQuixH3nMkUOHSPZO9PFHvyF4Y0XaMgxeHSqE5Kq81BCURcWdcSD2Pgum+WovrMrTFDjgcZQ==
+"@pdfme/generator@1.0.17":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@pdfme/generator/-/generator-1.0.17.tgz#b00f046efcfe4c83d3038f03f90fe3eadef17a35"
+  integrity sha512-c1dZzHf2tZ4QlbCsSgopSxK6x5zLnNJqxhgrmQ0nTANVTx9hdhMcYLNICnZqSmPYk2JlZzwsZoU++gzeqWDW/A==
   dependencies:
     "@pdf-lib/fontkit" "^1.1.1"
     "@pdfme/common" "^1.0.0"
