@@ -58,7 +58,7 @@
           <PvButton
             class="ml-2"
             @click.prevent="downloadPdf"
-            label="Print Labels PDF"
+            label="Download PDF"
           >
           </PvButton>
           <br />
