@@ -216,12 +216,14 @@
                   </template>
                 </div>
               </template>
-              <template #filter="{ filterModel }">
+              <template #filter="{ filterModel, filterCallback }">
                 <InputText
                   type="text"
                   v-model="filterModel.value"
                   class="p-column-filter"
                   placeholder="Search by name"
+                  @keydown.enter="filterCallback()"
+                  v-tooltip.top.focus="'Hit enter key to filter'"
                 />
               </template>
             </Column>
@@ -236,13 +238,14 @@
                   ? slotProps.data.storage.name
                   : "-"
               }}</template>
-              <template #filter="{ filterModel }">
+              <template #filter="{ filterModel, filterCallback }">
                 <TreeSelect
                   v-model="filterModel.value"
                   class="p-column-filter"
                   placeholder="Search by storage"
                   :options="choicesStorageLocationWithNo"
                   selectionMode="single"
+                  @change="filterCallback()"
                 />
               </template>
             </Column>
@@ -300,11 +303,13 @@
                   </template>
                 </Inplace>
               </template>
-              <template #filter="{ filterModel }">
+              <template #filter="{ filterModel, filterCallback }">
                 <InputNumber
                   v-model="filterModel.value"
                   class="p-column-filter"
                   placeholder="qty"
+                  @keydown.enter="filterCallback()"
+                  v-tooltip.top.focus="'Hit enter key to filter'"
                 />
               </template>
             </Column>
@@ -374,7 +379,7 @@
                   }}
                 </span>
               </template>
-              <template #filter="{ filterModel }">
+              <template #filter="{ filterModel, filterCallback }">
                 <Dropdown
                   v-model="filterModel.value"
                   class="p-column-filter"
@@ -385,6 +390,7 @@
                   optionGroupLabel="category"
                   optionGroupChildren="footprints"
                   :filter="true"
+                  @change="filterCallback()"
                 />
               </template>
             </Column>
