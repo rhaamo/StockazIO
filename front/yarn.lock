@@ -1562,10 +1562,10 @@ primeicons@6.0.1:
   resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-6.0.1.tgz#431fa7c79825934eefd62087d8e1faa6a9e376ad"
   integrity sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==
 
-primevue@3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/primevue/-/primevue-3.17.0.tgz#42936873808966a3eaf48345efcbad37262cff39"
-  integrity sha512-z7ZCHk4kgkHJ29hg0izN1M8Xst2MOObimq62waE2TDE8ztH9mp2sAdGGsQu1shMa4/23dZ+fcN4t+KpYNICRyQ==
+primevue@3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/primevue/-/primevue-3.18.0.tgz#bf20e0eec34ded1ef4b9c0af77407df2c55cefd6"
+  integrity sha512-7E3BTQRlvdVMh8OXIKqDVHFvF6UrrKacd80drTwiTHgjO98NLWtpDthxByM2z2yooGURx8JJ7GeFoMj8kKrScg==
 
 proxy-from-env@^1.1.0:
   version "1.1.0"
