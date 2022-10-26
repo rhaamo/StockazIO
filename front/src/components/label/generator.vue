@@ -55,6 +55,12 @@
         <div v-if="template && pdf">
           <PvButton @click.prevent="printPdf" label="Print Labels PDF">
           </PvButton>
+          <PvButton
+            class="ml-2"
+            @click.prevent="downloadPdf"
+            label="Print Labels PDF"
+          >
+          </PvButton>
           <br />
           <VuePdfEmbed ref="pdfViewer" :source="pdf" />
         </div>
@@ -149,6 +155,14 @@ export default {
     },
     printPdf() {
       this.$refs.pdfViewer.print();
+    },
+    downloadPdf() {
+      let link = document.createElement("a");
+      link.href = this.pdf;
+      link.download = "labels.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
 };
