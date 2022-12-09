@@ -2,7 +2,7 @@
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-    <div class="card ml-5 mt-4 pt-2" v-if="show_parameters_filter">
+    <div class="card ml-5 mt-4 pt-2 mr-5" v-if="show_parameters_filter">
       <h4>Filtering by part parameter</h4>
 
       <div v-for="(_, i) in parameters_filters" :key="i">
@@ -29,7 +29,7 @@
       />
     </div>
 
-    <div class="card ml-5 mt-4 pl-0 pr-0 pt-0">
+    <div class="card mt-4 pl-0 pr-0 pt-0">
       <TabView>
         <TabPanel>
           <template #header>
@@ -394,8 +394,8 @@
                 />
               </template>
             </Column>
-            <Column :sortable="false" headerStyle="width: 6em"
-              ><template #body="slotProps">
+            <Column :sortable="false" headerStyle="min-width: 6em">
+              <template #body="slotProps">
                 <span class="p-buttonset">
                   <router-link
                     :to="{

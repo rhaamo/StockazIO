@@ -203,7 +203,7 @@
 
           <TabPanel>
             <template #header>
-              <span>Files attachments</span>
+              <span>Files</span>
             </template>
 
             <form
