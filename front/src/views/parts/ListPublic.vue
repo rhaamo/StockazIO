@@ -2,7 +2,7 @@
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-    <div class="card ml-5 mt-4 pt-0 pl-0 pr-0">
+    <div class="card mt-4 pt-0 pl-0 pr-0">
       <TabView>
         <TabPanel>
           <template #header>
