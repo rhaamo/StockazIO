@@ -4,17 +4,17 @@
 
     <div class="mt-4 ml-4">
       <div class="grid">
-        <div class="col-1">Parts<Divider /></div>
+        <div class="col-2">Parts<Divider /></div>
         <div class="col-1">{{ parts_count }}<Divider /></div>
       </div>
 
       <div class="grid">
-        <div class="col-1">Categories<Divider /></div>
+        <div class="col-2">Categories<Divider /></div>
         <div class="col-1">{{ categories_count }}<Divider /></div>
       </div>
 
       <div class="grid">
-        <div class="col-1">App Version<Divider /></div>
+        <div class="col-2">App Version<Divider /></div>
         <div class="col-1">{{ version }}<Divider /></div>
       </div>
     </div>

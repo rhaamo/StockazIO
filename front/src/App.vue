@@ -8,7 +8,7 @@
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
         <template #start
           ><router-link :to="{ name: 'home' }" class="no-underline"
-            >StockazIO - {{ backendVersion }}</router-link
+            >StockazIO</router-link
           ></template
         >
         <template #end>
@@ -23,7 +23,7 @@
       <Menubar :model="menuItemsLoggedOut" v-else>
         <template #start
           ><router-link :to="{ name: 'home' }" class="no-underline"
-            >StockazIO - {{ backendVersion }}</router-link
+            >StockazIO</router-link
           ></template
         >
         <template #end> </template>
@@ -241,14 +241,14 @@ export default {
               icon: "fa fa-shopping-cart fa-fw",
               to: { name: "orders-importer" },
             },
+            {
+              label: "Projects",
+              icon: "fa fa-list-ul fa-fw",
+              to: { name: "projects-list" },
+            },
           ],
         },
         { separator: true },
-        {
-          label: "Projects",
-          icon: "fa fa-list-ul fa-fw",
-          to: { name: "projects-list" },
-        },
         {
           label: "Add part",
           icon: "fa fa-plus fa-fw",
