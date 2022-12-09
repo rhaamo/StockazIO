@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-4 grid align-items-center justify-content-center">
-      <div class="surface-card p-4 shadow-2 border-round col-3">
+      <div class="surface-card p-4 shadow-2 border-round col-4">
         <div class="text-center mb-5">
           <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
         </div>
