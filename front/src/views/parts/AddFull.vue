@@ -6,7 +6,7 @@
       <form>
         <div class="grid">
           <div class="col-6">
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="name"
                 :class="{
@@ -52,7 +52,7 @@
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="description"
                 :class="{
@@ -83,7 +83,7 @@
               </small>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="comment"
                 :class="{
@@ -114,14 +114,13 @@
               </small>
             </div>
 
-            <div class="mb-3 grid">
-              <div class="col-5">
+            <div class="grid">
+              <div class="field col-6">
                 <label
                   for="qty"
                   :class="{
-                    block: true,
                     'p-error': v$.form.qty.$invalid && submitted,
-                    'w-8': true,
+                    'pr-3': true,
                   }"
                   >Stock Qty*</label
                 >
@@ -132,8 +131,8 @@
                   :min="0"
                   :class="{
                     'p-invalid': v$.form.qty.$invalid && submitted,
-                    'w-8': true,
                   }"
+                  inputStyle="max-width: 50%;"
                   v-model="form.qty"
                 />
                 <small
@@ -150,14 +149,12 @@
                   {{ v$.form.qty.minValue.$message }}
                 </small>
               </div>
-
-              <div class="col-5">
+              <div class="field col-6">
                 <label
                   for="qty_min"
                   :class="{
-                    block: true,
                     'p-error': v$.form.qty_min.$invalid && submitted,
-                    'w-8': true,
+                    'pr-3': true,
                   }"
                   >Stock Qty Min*</label
                 >
@@ -168,8 +165,8 @@
                   :min="0"
                   :class="{
                     'p-invalid': v$.form.qty_min.$invalid && submitted,
-                    'w-8': true,
                   }"
+                  inputStyle="max-width: 50%;"
                   v-model="form.qty_min"
                 />
                 <small
@@ -189,7 +186,7 @@
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="sheet_status"
                 :class="{
@@ -219,7 +216,7 @@
               </small>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="condition"
                 :class="{
@@ -250,7 +247,7 @@
               </small>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="production_remarks"
                 :class="{
@@ -280,7 +277,7 @@
               </small>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label
                 for="internal_pn"
                 :class="{
@@ -364,7 +361,7 @@
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label for="part_unit" class="block">Part unit</label>
               <Dropdown
                 v-model="form.part_unit"
@@ -376,7 +373,7 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label for="category" class="block">Category</label>
               <TreeSelect
                 inputId="category"
@@ -388,7 +385,7 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label for="storage_location" class="block"
                 >Storage Location</label
               >
@@ -402,7 +399,7 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <label for="footprint" class="block">Footprint</label>
               <Dropdown
                 inputId="footprint"
@@ -418,7 +415,7 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="field">
               <!-- save and save add another-->
               <PvButton
                 label="Save and view"
