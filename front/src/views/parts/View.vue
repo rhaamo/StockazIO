@@ -33,7 +33,7 @@
             type="button"
             icon="fa fa-edit"
             class="p-button-primary"
-            v-tooltip="'edit'"
+            v-tooltip.left="'edit'"
           ></PvButton>
         </router-link>
 
@@ -41,7 +41,7 @@
           type="button"
           icon="fa fa-trash-o"
           class="p-button-danger ml-2"
-          v-tooltip="'delete'"
+          v-tooltip.left="'delete'"
           @click="deletePart($event, part)"
         ></PvButton>
       </div>
@@ -211,7 +211,7 @@
               @submit.prevent="addAttachment(!v$.$invalid)"
             >
               <div class="grid">
-                <div class="col-5">
+                <div class="col-6">
                   <InputText
                     ref="description"
                     inputId="description"
@@ -252,6 +252,7 @@
                     type="file"
                     v-model="formAddAttachment.file"
                     @change="attachmentFileChanged($event.target.files)"
+                    v-if="!formAddAttachment.fromWebcam"
                     :class="{
                       'p-invalid':
                         v$.formAddAttachment.file.$invalid &&
@@ -270,10 +271,23 @@
                   >
                     {{ v$.formAddAttachment.file.required.$message }}
                   </small>
+                  <div v-if="formAddAttachment.fromWebcam">
+                    <PvButton
+                      label="Clear webcam image"
+                      @click.prevent="clearWebcamImage()"
+                    />
+                  </div>
                 </div>
+              </div>
 
-                <div class="col-1">
-                  <PvButton label="add" type="submit" />
+              <div class="grid">
+                <div class="col-6">
+                  <PvButton
+                    label="Take a picture"
+                    class="p-button-info"
+                    @click.prevent="takeAPicture()"
+                  />
+                  <PvButton label="add" type="submit" class="ml-3" />
                 </div>
               </div>
             </form>
@@ -380,6 +394,7 @@ import { required, maxLength } from "@vuelidate/validators";
 import { mapState } from "pinia";
 import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
+import CameraSnapshotter from "@/components/parts/CameraSnapshotter.vue";
 
 export default {
   props: {
@@ -391,6 +406,7 @@ export default {
     formAddAttachment: {
       description: null,
       file: null,
+      fromWebcam: false,
     },
   }),
   setup: () => ({
@@ -449,7 +465,7 @@ export default {
         },
         {
           item: "Category",
-          value: this.part.category ? this.part.category.name : "",
+          value: this.part.category ? this.part.category.name : "Uncategorized",
         },
         {
           item: "Internal part number",
@@ -612,6 +628,11 @@ export default {
           logger.default.error("Error with part attachment deletion", err);
         });
     },
+    clearWebcamImage() {
+      this.formAddAttachment.file = null;
+      this.formAddAttachment.realFile = null;
+      this.formAddAttachment.fromWebcam = false;
+    },
     setAttachmentAsDefault(partId, fileId) {
       apiService
         .partAttachmentSetDefault(partId, fileId)
@@ -665,6 +686,39 @@ export default {
         },
         reject: () => {
           return;
+        },
+      });
+    },
+    takeAPicture() {
+      const takeApictureRef = this.$dialog.open(CameraSnapshotter, {
+        props: {
+          header: "Take a picture",
+          modal: true,
+          closable: false,
+        },
+        onClose: async (options) => {
+          const data = options.data;
+          if (data) {
+            if (data.error) {
+              this.toast.add({
+                severity: "error",
+                summary: "Camera",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error(
+                "Error with getting part details",
+                data.error
+              );
+            } else {
+              this.formAddAttachment.fromWebcam = true;
+              this.formAddAttachment.file = "C:\\fakepath\\webcam.jpg";
+              this.formAddAttachment.realFile = utils.dataUrlToFile(
+                data.picture,
+                "webcam.jpg"
+              );
+            }
+          }
         },
       });
     },

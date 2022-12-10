@@ -248,7 +248,7 @@ export default {
         },
         {
           item: "Category",
-          value: this.part.category ? this.part.category.name : "",
+          value: this.part.category ? this.part.category.name : "Uncategorized",
         },
         {
           item: "Internal part number",

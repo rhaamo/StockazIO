@@ -607,6 +607,9 @@ export default {
           : null,
         footprint: this.form.footprint,
       };
+      if (datas.category === 0 || datas.category === "0") {
+        datas.category = null;
+      }
 
       logger.default.info("submitting part", datas);
 
