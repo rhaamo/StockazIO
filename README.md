@@ -16,6 +16,7 @@ Manage your inventory of electronic stuff
 - Can import orders from vendors (Mouser for now) and selective import into inventory with category matching through regexpes
 - Project management with BOM with parts from inventory or free-form (with export of BOM to CSV or XLSX)
 - PDF Generator for labels printing of Storage Locations (plus bulk-generation) or Parts
+- Add item image from webcam
 
 # Requirements
 - Python 3.8 (minimum !)
@@ -109,7 +110,7 @@ A sample config and extensions list for VScode are provided in `api/.vscode/` an
 
 ### Docker All-In-One image build
 ```
-docker build -t stockazio-allinone -f Dockerfile-allinone
+docker build -t stockazio-allinone -f Dockerfile-allinone .
 ```
 
 ## Updating
