@@ -36,7 +36,7 @@ jobs:
         python-version: 3.8
     - name: Python dependencies
       run: |
-        sudo apt install python-dev libpq-dev
+        sudo apt install python3-dev libpq-dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
