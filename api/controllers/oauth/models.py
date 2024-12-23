@@ -19,14 +19,14 @@ class Application(oauth2_models.AbstractApplication):
 OOB_SCHEMES = ["urn:ietf:wg:oauth:2.0:oob", "urn:ietf:wg:oauth:2.0:oob:auto"]
 
 
-class CustomRedirectURIValidator(oauth2_validators.RedirectURIValidator):
+class CustomRedirectURIValidator(oauth2_validators.AllowedURIValidator):
     def __call__(self, value):
         if value in OOB_SCHEMES:
             return value
         return super().__call__(value)
 
 
-oauth2_models.RedirectURIValidator = CustomRedirectURIValidator
+oauth2_models.AllowedURIValidator = CustomRedirectURIValidator
 
 
 class Grant(oauth2_models.AbstractGrant):
