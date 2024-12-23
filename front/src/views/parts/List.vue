@@ -143,7 +143,7 @@
                     :value="qrCodePart(slotProps.data.uuid)"
                     :options="{
                       scale: 1,
-                      color: { dark: '#000000', light: '#0000' },
+                      color: { dark: '#000000', light: '#FFFFFF' },
                     }"
                     v-tooltip="'show label generator'"
                     :data-uuid="slotProps.data.uuid"
