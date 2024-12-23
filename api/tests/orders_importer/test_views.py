@@ -165,7 +165,7 @@ def test_logged_in_can_patch_edit_order(logged_in_api_client, db, factories):
 
     assert response.status_code == 200
     assert response.data["order_number"] == "69"
-    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     assert response.data["status"] == order1.status
     assert response.data["import_state"] == order1.import_state
     assert len(response.data["items"]) == 2
