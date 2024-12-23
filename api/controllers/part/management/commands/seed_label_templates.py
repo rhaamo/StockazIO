@@ -28,7 +28,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Brother 90x38",
-                "width": 90,
+                "width": 60,
                 "height": 38,
                 "text_template": """{description}""",
                 "template": """{
