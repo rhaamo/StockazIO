@@ -169,7 +169,7 @@
               'p-error': v$.form.text_template.$invalid && submitted,
               'w-full': true,
             }"
-            >Text Template</label
+            >Description Template</label
           >
           <PvTextarea
             ref="text_template"
@@ -220,10 +220,11 @@
         >
         for the exact schema syntax.<br />
         Please note that, currently, only two elements can use substitutions.<br />
-        The QrCode element needs to be called "qrcode", and the text one "text",
-        the following list will show available substitutions.<br />
+        The QrCode element needs to be called "qrcode", and the description
+        "description", the name will stays as the plain name.<br />
+        The following list will show available substitutions.<br />
         You can add other fixed elements if wanted.<br /><br /><br />
-        The following substitutions for the Text Template is available,
+        The following substitutions for the Description Template is available,
         depending if it's a Storage Location or Part:
         <ul>
           <li>

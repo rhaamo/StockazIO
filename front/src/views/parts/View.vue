@@ -14,6 +14,7 @@
             :options="{ scale: 1 }"
             :data-uuid="part.uuid"
             :data-name="part.name"
+            class="mr-3"
           />
         </span>
 
