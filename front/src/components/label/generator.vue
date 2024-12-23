@@ -156,10 +156,12 @@ export default {
         text: text,
         image: image,
       };
-      generate({ template, inputs, plugins }).then((pdf) => {
-        let blob = new Blob([pdf.buffer], { type: "application/pdf" });
-        this.pdf = URL.createObjectURL(blob);
-      });
+      if (inputs.length) {
+        generate({ template, inputs, plugins }).then((pdf) => {
+          let blob = new Blob([pdf.buffer], { type: "application/pdf" });
+          this.pdf = URL.createObjectURL(blob);
+        });
+      }
     },
     printPdf() {
       this.$refs.pdfViewer.print();
