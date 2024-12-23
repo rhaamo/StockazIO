@@ -17,7 +17,7 @@ def test_logged_in_can_get_orders(logged_in_api_client, db, factories):
 
     assert response.status_code == 200
     assert len(response.data) == 1
-    assert response.data[0]["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data[0]["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     assert response.data[0]["order_number"] == order1.order_number
     assert response.data[0]["status"] == "Fetched"
     assert response.data[0]["import_state"] == 1
@@ -41,7 +41,7 @@ def test_logged_in_can_get_order(logged_in_api_client, db, factories):
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
-    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     assert response.data["order_number"] == order1.order_number
     assert response.data["status"] == "Fetched"
     assert response.data["import_state"] == 1
