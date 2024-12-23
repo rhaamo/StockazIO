@@ -71,7 +71,6 @@ db.sqlite3
 virtualenv
 /venv/
 .vagrant
-docker-compose.yml
 docker-compose.env
 
 # Used for development

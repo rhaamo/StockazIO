@@ -132,7 +132,7 @@ python manage.py migrate
 Then restart your `stockazio-server` service.
 
 # Install - docker All In One
-You can use the `Dockerfile-allinone` to run StockazIO.
+You can use the `Dockerfile-allinone` to run StockazIO, a `docker-compose.yml` is also given as an example if wanted.
 
 See the file ./deploy/env.prod.sample for the list of ENV variables you can use for the container.
 

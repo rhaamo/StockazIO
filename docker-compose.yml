@@ -1,0 +1,11 @@
+name: stockazio
+services:
+  web:
+    build: .
+    volumes:
+      - ./uploads:/uploads
+    env_file:
+      - env.prod
+    ports:
+      - 8081:8000
+    restart: always
