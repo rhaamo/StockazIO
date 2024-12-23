@@ -29,7 +29,7 @@
       />
     </div>
 
-    <div class="card mt-4 pl-0 pr-0 pt-0">
+    <div class="card mt-4 pl-0 pr-0 pt-0 pb-0">
       <TabView>
         <TabPanel>
           <template #header>
@@ -143,7 +143,7 @@
                     :value="qrCodePart(slotProps.data.uuid)"
                     :options="{
                       scale: 1,
-                      color: { dark: '#000000', light: '#0000' },
+                      color: { dark: '#000000', light: '#FFFFFF' },
                     }"
                     v-tooltip="'show label generator'"
                     :data-uuid="slotProps.data.uuid"
@@ -394,7 +394,7 @@
                 />
               </template>
             </Column>
-            <Column :sortable="false" headerStyle="min-width: 6em">
+            <Column :sortable="false" headerStyle="min-width: 6.3em">
               <template #body="slotProps">
                 <span class="p-buttonset">
                   <router-link
@@ -413,7 +413,7 @@
                   <PvButton
                     type="button"
                     icon="fa fa-trash-o"
-                    class="p-button-danger"
+                    class="p-button-danger ml-1"
                     v-tooltip="'delete'"
                     @click="deletePart($event, slotProps.data)"
                   ></PvButton>
@@ -500,7 +500,7 @@ import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from "@primevue/core/api";
 import { cloneDeep } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -650,17 +650,22 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: "/",
+            command: () => {
+              this.$router.push({ name: "home" });
+            },
             label: "Parts by category",
           },
           items: [
             {
               label: this.actualCurrentCategory.name,
-              to: {
-                name: "parts-category-list",
-                params: {
-                  categoryId: this.actualCurrentCategory.id || this.categoryId,
-                },
+              command: () => {
+                this.$router.push({
+                  name: "parts-category-list",
+                  params: {
+                    categoryId:
+                      this.actualCurrentCategory.id || this.categoryId,
+                  },
+                });
               },
             },
           ],
@@ -669,11 +674,13 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: {
-              name: "parts-category-list",
-              params: {
-                categoryId: this.actualCurrentCategory.id || this.categoryId,
-              },
+            command: () => {
+              this.$router.push({
+                name: "parts-category-list",
+                params: {
+                  categoryId: this.actualCurrentCategory.id || this.categoryId,
+                },
+              });
             },
             label: "Uncategorized parts",
           },
@@ -682,7 +689,9 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: { name: "parts-list" },
+            command: () => {
+              this.$router.push({ name: "parts-list" });
+            },
             label: "All parts",
           },
         };

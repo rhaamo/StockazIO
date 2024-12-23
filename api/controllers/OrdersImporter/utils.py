@@ -15,8 +15,8 @@ def rematch_orders(orders):
             matched = False
             for m in matchers:
                 if not matched:
-                    if re.match(m["regexp"], item.description):
-                        # print('matched', m['string'], 'with', item.description)
+                    if m["regexp"].findall(item.description):
+                        # print("matched", m["string"], "with", item.description)
                         item.category = m["category"]
                         item.save()
                         matched = True

@@ -302,7 +302,7 @@ import { required, maxLength, minValue } from "@vuelidate/validators";
 import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from "@primevue/core/api";
 import { cloneDeep } from "lodash";
 import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";

@@ -42,7 +42,7 @@
         ></Column>
         <Column field="description" header="Description"></Column>
 
-        <Column headerStyle="width: 6em">
+        <Column headerStyle="width: 6.3em">
           <template #body="slotProps">
             <span class="p-buttonset">
               <PvButton
@@ -55,7 +55,7 @@
               <PvButton
                 type="button"
                 icon="fa fa-trash-o"
-                class="p-button-danger"
+                class="p-button-danger ml-1"
                 v-tooltip="'delete'"
                 @click="deleteItem($event, slotProps.data)"
               ></PvButton>
@@ -71,7 +71,7 @@
 import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from "@primevue/core/api";
 import ManagePartUnitModal from "@/components/part_units/Form.vue";
 import { h } from "vue";
 import apiService from "@/services/api/api.service";
@@ -82,10 +82,25 @@ import { useConfirm } from "primevue/useconfirm";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Parts", to: { name: "parts-list" } },
-        { label: "Units", to: { name: "part-units-list" } },
+        {
+          label: "Parts",
+          command: () => {
+            this.$router.push({ name: "parts-list" });
+          },
+        },
+        {
+          label: "Units",
+          command: () => {
+            this.$router.push({ name: "part-units-list" });
+          },
+        },
       ],
     },
     filters: {

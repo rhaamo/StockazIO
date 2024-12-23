@@ -1,7 +1,11 @@
+import csv
+import datetime
+import io
+
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiResponse
-from rest_framework import serializers as drf_serializers
+from rest_framework import serializers as drf_serializers, views
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
@@ -10,7 +14,7 @@ from rest_framework.viewsets import ModelViewSet
 from controllers.categories.models import Category
 from controllers.distributor.models import DistributorSku
 from controllers.manufacturer.models import PartManufacturer
-from controllers.OrdersImporter.models import CategoryMatcher, Order
+from controllers.OrdersImporter.models import CategoryMatcher, Item, Order
 
 from controllers.OrdersImporter.serializers import (
     CategoryMatcherCreateSerializer,
@@ -225,7 +229,7 @@ class CategoryMatcherViewSet(ModelViewSet):
     @action(
         detail=False,
         methods=["patch"],
-        url_path=r"category_matcher/batch_update",
+        url_path=r"batch_update",
         url_name="Batch-Update",
     )
     def batch_update(self, request, *args, **kwargs):
@@ -282,16 +286,75 @@ class CategoryMatcherViewSet(ModelViewSet):
     @action(
         detail=False,
         methods=["get"],
-        url_path=r"category_matcher/rematch",
+        url_path=r"rematch",
         url_name="Rematch",
     )
     def rematch(self, request, *args, **kwargs):
         # fetch orders
         orders = Order.objects.all().filter(import_state=1).prefetch_related("items")
         if not orders:
-            return Response({"details": "ok"}, 200)
+            return Response({"details": "no orders"}, 200)
 
         # rematch
         rematch_orders(orders)
 
         return Response({"detail": "done"})
+
+
+class LcscCsvImporter(views.APIView):
+    """
+    LCSC CSV Import endpoint
+    """
+
+    anonymous_policy = False
+    required_scope = "parts"  # should create a dedicated scope maybe
+
+    http_method_names = ["post"]
+
+    @extend_schema(
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="LcscCsvImporter",
+                    fields={
+                        "parts_count": drf_serializers.FileField(),
+                    },
+                ),
+            )
+        }
+    )
+    def post(self, request):
+        if "file" not in request.data:
+            return Response(status=400)
+
+        # now uh, process it I guess
+        print(request.data)
+
+        order = Order(
+            date=datetime.datetime.now(),
+            order_number=f"LCSC-{datetime.datetime.now().timestamp()}",
+            status="Lossy CSV Import",
+            vendor="LCSC",
+            import_state=1,
+        )
+        order.save()
+
+        csv_file = request.FILES["file"]
+        csv_file.seek(0)
+
+        csvreader = csv.DictReader(io.StringIO(csv_file.read().decode("utf-8")), delimiter=",")
+        for row in csvreader:
+            order_item, _ = Item.objects.get_or_create(
+                vendor_part_number=row["LCSC Part Number"],
+                mfr_part_number=row["Manufacture Part Number"],
+                manufacturer=row["Manufacturer"],
+                description=row["Description"],
+                quantity=row["Order Qty."],
+                order=order,
+            )
+
+        # Update order and save
+        order.import_state = 2  # imported
+        order.save()
+
+        return Response(status=200)

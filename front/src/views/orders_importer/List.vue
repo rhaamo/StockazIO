@@ -24,6 +24,13 @@
           <router-link :to="{ name: 'orders-importer-category-matcher' }">
             <PvButton label="Manage category matchers"
           /></router-link>
+
+          <PvButton
+            class="ml-2"
+            severity="info"
+            label="Import a LCSC .csv order"
+            @click.prevent="showImportLCSCcsv"
+          />
         </template>
 
         <Column
@@ -118,14 +125,28 @@ import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
-import dateFnsFormat from "date-fns/format";
-import dateFnsParseISO from "date-fns/parseISO";
+import { format as dateFnsFormat } from "date-fns/format";
+import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
+import { h } from "vue";
+import ImportLCSCorderModal from "@/components/orders/LcscCsv.vue";
 
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Orders importer", to: { name: "orders-importer" } }],
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
+      items: [
+        {
+          label: "Orders importer",
+          command: () => {
+            this.$router.push({ name: "orders-importer" });
+          },
+        },
+      ],
     },
     orders: [],
     totalRecords: 0,
@@ -246,6 +267,28 @@ export default {
         },
         reject: () => {
           return;
+        },
+      });
+    },
+    showImportLCSCcsv() {
+      this.$dialog.open(ImportLCSCorderModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Import LCSC .csv order")])];
+          },
+        },
+        data: {},
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            // reload orders
+            this.loadLazyData();
+          }
         },
       });
     },

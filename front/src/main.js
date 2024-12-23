@@ -36,7 +36,7 @@ import DialogService from "primevue/dialogservice";
 import DynamicDialog from "primevue/dynamicdialog";
 import Galleria from "primevue/galleria";
 import VuePdfEmbed from "vue-pdf-embed";
-import Dropdown from "primevue/dropdown";
+import Select from "primevue/select";
 import Divider from "primevue/divider";
 import ButtonDeleteInline from "@/components/btn_delete_inline.vue";
 import FileUpload from "primevue/fileupload";
@@ -46,6 +46,8 @@ import DataView from "primevue/dataview";
 import Message from "primevue/message";
 
 import router from "@/router";
+
+import Nora from "@primevue/themes/aura";
 
 const app = createApp(App);
 
@@ -58,7 +60,11 @@ pinia.use(
 
 app.use(pinia);
 app.use(router);
-app.use(PrimeVue);
+app.use(PrimeVue, {
+  theme: {
+    preset: Nora,
+  },
+});
 app.use(ToastService);
 app.use(ConfirmationService);
 app.use(DialogService);
@@ -107,7 +113,7 @@ app.component("Card", Card);
 app.component("DynamicDialog", DynamicDialog);
 app.component("Galleria", Galleria);
 app.component("VuePdfEmbed", VuePdfEmbed);
-app.component("Dropdown", Dropdown);
+app.component("Dropdown", Select); // keep Dropdown name for compatibility
 app.component("Divider", Divider);
 app.component("ButtonDeleteInline", ButtonDeleteInline);
 app.component("FileUpload", FileUpload);

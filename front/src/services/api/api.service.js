@@ -85,6 +85,7 @@ const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}/`;
 const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}/`;
 const ORDERS_IMPORTER_TO_INVENTORY = (id) =>
   `/api/v1/orders_importer/${id}/import/`;
+const ORDERS_IMPORTER_LCSC_CSV = "/api/v1/orders_importer/lcsc_csv";
 
 const CATEGORIES_MATCHERS_LIST = "/api/v1/orders_importer/category_matcher/";
 const CATEGORIES_MATCHERS_BATCH_UPDATE =
@@ -496,13 +497,21 @@ const rematchOrderItems = () => {
   return Axios.get(CATEGORIES_MATCHERS_REMATCH);
 };
 
+const importLcscOrder = (data) => {
+  let formData = new FormData();
+  formData.append("file", data);
+  return Axios.post(ORDERS_IMPORTER_LCSC_CSV, formData);
+};
+
 // Projects
 
 const getProjects = (params) => {
-  if (params.filters) {
-    params.filters = JSON.stringify(params.filters);
+  // Clone it to avoid issues
+  const newParams = { ...params };
+  if (newParams.filters) {
+    newParams.filters = JSON.stringify(params.filters);
   }
-  return Axios.get(PROJECTS_LIST, { params: params });
+  return Axios.get(PROJECTS_LIST, { params: newParams });
 };
 
 const getProject = (id) => {
@@ -696,6 +705,7 @@ const apiService = {
   userPasswordResetRequest,
   userPasswordResetConfirm,
   userPasswordResetValidate,
+  importLcscOrder,
 };
 
 export default apiService;

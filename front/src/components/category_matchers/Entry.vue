@@ -40,6 +40,9 @@
           :options="categories"
           selectionMode="single"
           class="w-full"
+          :filter="true"
+          :fluid="true"
+          :showClear="true"
         />
         <small
           v-if="

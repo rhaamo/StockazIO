@@ -1,6 +1,9 @@
 <template>
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
+
+    <p>They are regexp, you need to escape <code>(, ), [ etc.</code>.</p>
+
     <div class="mt-2">
       <div class="grid" v-if="matchers.length">
         <div class="col-5">Regexp</div>
@@ -47,12 +50,24 @@ export default {
   },
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Orders importer", to: { name: "orders-importer" } },
+        {
+          label: "Orders importer",
+          command: () => {
+            this.$router.push({ name: "orders-importer" });
+          },
+        },
         {
           label: "Category Matchers",
-          to: { name: "orders-importer-category-matcher" },
+          command: () => {
+            this.$router.push({ name: "orders-importer-category-matcher" });
+          },
         },
       ],
     },

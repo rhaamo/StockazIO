@@ -17,7 +17,7 @@ def test_logged_in_can_get_orders(logged_in_api_client, db, factories):
 
     assert response.status_code == 200
     assert len(response.data) == 1
-    assert response.data[0]["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data[0]["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     assert response.data[0]["order_number"] == order1.order_number
     assert response.data[0]["status"] == "Fetched"
     assert response.data[0]["import_state"] == 1
@@ -41,7 +41,7 @@ def test_logged_in_can_get_order(logged_in_api_client, db, factories):
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
-    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     assert response.data["order_number"] == order1.order_number
     assert response.data["status"] == "Fetched"
     assert response.data["import_state"] == 1
@@ -165,7 +165,7 @@ def test_logged_in_can_patch_edit_order(logged_in_api_client, db, factories):
 
     assert response.status_code == 200
     assert response.data["order_number"] == "69"
-    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%SZ")
+    assert response.data["date"] == order1.date.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     assert response.data["status"] == order1.status
     assert response.data["import_state"] == order1.import_state
     assert len(response.data["items"]) == 2
@@ -416,7 +416,7 @@ def test_logged_in_can_category_matcher_rematch_no_orders(logged_in_api_client, 
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
-    assert response.data["details"] == "ok"
+    assert response.data["details"] == "no orders"
 
 
 def test_anonymous_cannot_order_import_to_inventory(api_client, db, factories):

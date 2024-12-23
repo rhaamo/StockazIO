@@ -10,6 +10,7 @@
             <template v-else>Item infos:<br /></template>
             <ul>
               <li>Name: {{ items[0].name }}</li>
+              <li>Category: {{ items[0].category.name }}</li>
               <li>Description: {{ items[0].description || "none" }}</li>
               <li>UUID: {{ items[0].uuid }}</li>
               <li>qrCode content: {{ qrCodeUri(items[0]) }}</li>
@@ -61,8 +62,7 @@
             label="Download PDF"
           >
           </PvButton>
-          <br />
-          <VuePdfEmbed ref="pdfViewer" :source="pdf" />
+          <VuePdfEmbed class="mt-2" ref="pdfViewer" :source="pdf" />
         </div>
       </div>
     </div>
@@ -73,6 +73,7 @@
 import { usePreloadsStore } from "@/stores/preloads";
 import { mapState } from "pinia";
 import { generate } from "@pdfme/generator";
+import { barcodes, text, image } from "@pdfme/schemas";
 
 export default {
   inject: ["dialogRef"],
@@ -145,13 +146,22 @@ export default {
       this.items.forEach((cb) => {
         inputs.push({
           qrcode: this.qrCodeUri(cb),
-          text: this.doSubstitutions(cb),
+          name: cb.name ? cb.name : "Unnamed item :(",
+          category: cb.category.name ? cb.category.name : "No category",
+          description: this.doSubstitutions(cb),
         });
       });
-      generate({ template, inputs }).then((pdf) => {
-        let blob = new Blob([pdf.buffer], { type: "application/pdf" });
-        this.pdf = URL.createObjectURL(blob);
-      });
+      const plugins = {
+        "QR Code": barcodes.qrcode,
+        text: text,
+        image: image,
+      };
+      if (inputs.length) {
+        generate({ template, inputs, plugins }).then((pdf) => {
+          let blob = new Blob([pdf.buffer], { type: "application/pdf" });
+          this.pdf = URL.createObjectURL(blob);
+        });
+      }
     },
     printPdf() {
       this.$refs.pdfViewer.print();

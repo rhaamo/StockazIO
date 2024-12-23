@@ -33,13 +33,13 @@ def handle_category(item, apps):
 
 
 def dump_tree(item, idx):
-    print(f"{'-'*idx} C: {item.name}")
+    print(f"{'-' * idx} C: {item.name}")
     # sub cats
     for child in item.children.all():
         dump_tree(child, idx + 2)
     # sub locations
     for child in item.storage_locations.all():
-        print(f"{'-'*idx}-- L: {child.name}")
+        print(f"{'-' * idx}-- L: {child.name}")
 
 
 def transfer_storage(apps, schema_editor):

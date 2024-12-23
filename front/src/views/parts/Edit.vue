@@ -631,18 +631,33 @@ export default {
     },
     breadcrumb() {
       let bc = {
-        home: { icon: "pi pi-home", to: "/" },
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
         items: [
           {
             label: "Edit part",
-            to: { name: "parts-edit", params: { partId: this.partId } },
+            command: () => {
+              this.$router.push({
+                name: "parts-edit",
+                params: { partId: this.partId },
+              });
+            },
           },
         ],
       };
       if (this.part) {
         bc.items.push({
           label: this.part.name,
-          to: { name: "parts-details", params: { partId: this.partId } },
+          command: () => {
+            this.$router.push({
+              name: "parts-details",
+              params: { partId: this.partId },
+            });
+          },
         });
       }
       return bc;

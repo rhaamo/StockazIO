@@ -22,8 +22,20 @@ export default {
   },
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Categories", to: { name: "categories-list" } }],
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
+      items: [
+        {
+          label: "Categories",
+          command: () => {
+            this.$router.push({ name: "categories-list" });
+          },
+        },
+      ],
     },
   }),
   setup: () => ({

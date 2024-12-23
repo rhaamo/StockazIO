@@ -181,6 +181,8 @@ You then will have to navigate to 'View - Order importer' in the web ui to manag
 # TODO List
 - Export of all components or a category or search
 - Mobile app / better mobile layout
+- More substitutions for labels template
+- Web QrCode scanner
 
 # Generated QRCodes format
 Format changed but both URLs are handled by the search.
@@ -188,8 +190,13 @@ Format changed but both URLs are handled by the search.
 - StorageLocation: `web+stockazio:storageLocation,{uuid}` (old format: `stockazio://storageLocation/{uuid}`)
 - Part: `web+stockazio:part,{uuid}` (old format: `stockazio://part/{uuid}`)
 
-# Changelog
+# Changelog of breaking changes
 - Part file attachments split into file and picture, if you had uploads prior to that split, use that command to migrate them: `python3 manage.py migrations_move_from_one_to_two_part_file_fields`
+## 1.4
+Label Templates format changed. Three text fields are now possible: `name` (fixed), `category` (fixed) and `description` (templated).
+See the file https://github.com/rhaamo/StockazIO/blob/master/api/controllers/part/management/commands/seed_label_templates.py#L16 for the new formats to adapt yours.
+The 12mm template only gets `name` and a `description` with category name and description, while the bigger one gets the three separated.
+The 12mm template has been changed to a width of 60.
 
 # Images sources
 - Footprints
@@ -202,8 +209,8 @@ Format changed but both URLs are handled by the search.
     - \*shrug*
 
 # Contact
-- Fedivers: dashie at pleroma.otter.sh
-- Email: stockazio at squeaky dot tech
+- Fedivers: dashie at nya.otter.sh
+- Email: stockazio at otter dot sh
 
 # License
 AGPL v3

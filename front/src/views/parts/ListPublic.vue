@@ -302,7 +302,7 @@ import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from "@primevue/core/api";
 import { cloneDeep } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
@@ -427,15 +427,19 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: "/",
+            command: () => {
+              this.$router.push({ name: "home" });
+            },
             label: "Public parts by category",
           },
           items: [
             {
               label: this.actualCurrentCategory.name,
-              to: {
-                name: "public-parts-category-list",
-                params: { categoryId: this.actualCurrentCategory.id },
+              command: () => {
+                this.$router.push({
+                  name: "public-parts-category-list",
+                  params: { categoryId: this.actualCurrentCategory.id },
+                });
               },
             },
           ],
@@ -444,9 +448,11 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: {
-              name: "public-parts-category-list",
-              params: { categoryId: this.actualCurrentCategory.id },
+            command: () => {
+              this.$router.push({
+                name: "public-parts-category-list",
+                params: { categoryId: this.actualCurrentCategory.id },
+              });
             },
             label: "Uncategorized public parts",
           },
@@ -455,7 +461,9 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: { name: "public-parts" },
+            command: () => {
+              this.$router.push({ name: "public-parts" });
+            },
             label: "All public parts",
           },
         };

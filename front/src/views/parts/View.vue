@@ -14,6 +14,7 @@
             :options="{ scale: 1 }"
             :data-uuid="part.uuid"
             :data-name="part.name"
+            class="mr-3"
           />
         </span>
 
@@ -380,8 +381,8 @@
 </template>
 
 <script>
-import dateFnsFormat from "date-fns/format";
-import dateFnsParseISO from "date-fns/parseISO";
+import { format as dateFnsFormat } from "date-fns/format";
+import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import utils from "@/utils.js";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";

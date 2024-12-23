@@ -132,7 +132,7 @@
                   :class="{
                     'p-invalid': v$.form.qty.$invalid && submitted,
                   }"
-                  inputStyle="max-width: 50%;"
+                  style="max-width: 50%"
                   v-model="form.qty"
                 />
                 <small
@@ -166,7 +166,7 @@
                   :class="{
                     'p-invalid': v$.form.qty_min.$invalid && submitted,
                   }"
-                  inputStyle="max-width: 50%;"
+                  style="max-width: 50%"
                   v-model="form.qty_min"
                 />
                 <small
@@ -382,6 +382,9 @@
                 :options="choicesCategory"
                 selectionMode="single"
                 class="w-7"
+                :filter="true"
+                :fluid="true"
+                :showClear="true"
               />
             </div>
 
@@ -451,7 +454,12 @@ export default {
   data: () => ({
     submitted: false,
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [{ label: "Quick add new part" }],
     },
     form: {

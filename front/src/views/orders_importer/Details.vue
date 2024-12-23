@@ -80,7 +80,7 @@
           header="Manufacturer"
           :sortable="false"
           field="manufacturer_db"
-          headerStyle="width: 17em"
+          headerStyle="width: 20em"
         >
           <template #body="slotProps">
             {{ slotProps.data.manufacturer }}<br />
@@ -107,12 +107,7 @@
         >
         </Column>
 
-        <Column
-          header="Vendor PN"
-          :sortable="false"
-          field="vendor_part_number"
-          headerStyle="width: 15em"
-        >
+        <Column header="Vendor PN" :sortable="false" field="vendor_part_number">
           <template #body="slotProps">
             <span class="text-sm">{{ slotProps.data.vendor_part_number }}</span>
           </template>
@@ -122,7 +117,7 @@
           header="Category"
           :sortable="false"
           field="category"
-          headerStyle="width: 15em"
+          headerStyle="width: 25em"
         >
           <template #body="slotProps">
             <TreeSelect
@@ -132,6 +127,9 @@
               :options="choicesCategory"
               selectionMode="single"
               class="w-full"
+              :filter="true"
+              :fluid="true"
+              :showClear="true"
             />
           </template>
         </Column>
@@ -160,8 +158,8 @@ import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
-import dateFnsFormat from "date-fns/format";
-import dateFnsParseISO from "date-fns/parseISO";
+import { format as dateFnsFormat } from "date-fns/format";
+import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import Fuse from "fuse.js";
 
 export default {
@@ -217,8 +215,20 @@ export default {
     },
     breadcrumb() {
       let bc = {
-        home: { icon: "pi pi-home", to: "/" },
-        items: [{ label: "Orders importer", to: { name: "orders-importer" } }],
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Orders importer",
+            command: () => {
+              this.$router.push({ name: "orders-importer" });
+            },
+          },
+        ],
       };
       if (this.order) {
         bc.items.push({ label: this.order.order_number });
