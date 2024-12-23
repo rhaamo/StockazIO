@@ -10,7 +10,9 @@
             <template v-else>Item infos:<br /></template>
             <ul>
               <li>Name: {{ items[0].name }}</li>
-              <li>Category: {{ items[0].category.name }}</li>
+              <li v-if="items[0].category">
+                Category: {{ items[0].category.name }}
+              </li>
               <li>Description: {{ items[0].description || "none" }}</li>
               <li>UUID: {{ items[0].uuid }}</li>
               <li>qrCode content: {{ qrCodeUri(items[0]) }}</li>
@@ -147,7 +149,7 @@ export default {
         inputs.push({
           qrcode: this.qrCodeUri(cb),
           name: cb.name ? cb.name : "Unnamed item :(",
-          category: cb.category.name ? cb.category.name : "No category",
+          category: cb.category ? cb.category.name : "No category",
           description: this.doSubstitutions(cb),
         });
       });
