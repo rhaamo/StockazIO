@@ -182,7 +182,6 @@ You then will have to navigate to 'View - Order importer' in the web ui to manag
 - Export of all components or a category or search
 - Mobile app / better mobile layout
 - More substitutions for labels template
-- LCSC Order CSV Import
 - Web QrCode scanner
 
 # Generated QRCodes format
