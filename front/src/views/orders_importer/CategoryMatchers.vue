@@ -1,6 +1,9 @@
 <template>
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
+
+    <p>They are regexp, you need to escape <code>(, ), [ etc.</code>.</p>
+
     <div class="mt-2">
       <div class="grid" v-if="matchers.length">
         <div class="col-5">Regexp</div>

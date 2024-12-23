@@ -80,7 +80,7 @@
           header="Manufacturer"
           :sortable="false"
           field="manufacturer_db"
-          headerStyle="width: 17em"
+          headerStyle="width: 20em"
         >
           <template #body="slotProps">
             {{ slotProps.data.manufacturer }}<br />
@@ -107,12 +107,7 @@
         >
         </Column>
 
-        <Column
-          header="Vendor PN"
-          :sortable="false"
-          field="vendor_part_number"
-          headerStyle="width: 15em"
-        >
+        <Column header="Vendor PN" :sortable="false" field="vendor_part_number">
           <template #body="slotProps">
             <span class="text-sm">{{ slotProps.data.vendor_part_number }}</span>
           </template>
@@ -122,7 +117,7 @@
           header="Category"
           :sortable="false"
           field="category"
-          headerStyle="width: 15em"
+          headerStyle="width: 25em"
         >
           <template #body="slotProps">
             <TreeSelect
@@ -132,6 +127,9 @@
               :options="choicesCategory"
               selectionMode="single"
               class="w-full"
+              :filter="true"
+              :fluid="true"
+              :showClear="true"
             />
           </template>
         </Column>

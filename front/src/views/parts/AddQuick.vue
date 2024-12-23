@@ -382,6 +382,9 @@
                 :options="choicesCategory"
                 selectionMode="single"
                 class="w-7"
+                :filter="true"
+                :fluid="true"
+                :showClear="true"
               />
             </div>
 
