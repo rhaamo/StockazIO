@@ -1,7 +1,9 @@
 name: stockazio
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-allinone
     volumes:
       - ./uploads:/uploads
     env_file:
