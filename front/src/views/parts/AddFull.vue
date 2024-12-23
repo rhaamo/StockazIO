@@ -132,7 +132,7 @@
                   :class="{
                     'p-invalid': v$.form.qty.$invalid && submitted,
                   }"
-                  inputStyle="max-width: 50%;"
+                  style="max-width: 50%"
                   v-model="form.qty"
                 />
                 <small
@@ -166,7 +166,7 @@
                   :class="{
                     'p-invalid': v$.form.qty_min.$invalid && submitted,
                   }"
-                  inputStyle="max-width: 50%;"
+                  style="max-width: 50%"
                   v-model="form.qty_min"
                 />
                 <small
