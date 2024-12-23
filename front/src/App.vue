@@ -20,7 +20,7 @@
           </form>
         </template>
       </Menubar>
-      <Menubar class="pt-5" :model="menuItemsLoggedOut" v-else>
+      <Menubar :model="menuItemsLoggedOut" v-else>
         <template #start
           ><router-link :to="{ name: 'home' }" class="no-underline"
             >StockazIO</router-link
