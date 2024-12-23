@@ -202,8 +202,8 @@ Format changed but both URLs are handled by the search.
     - \*shrug*
 
 # Contact
-- Fedivers: dashie at pleroma.otter.sh
-- Email: stockazio at squeaky dot tech
+- Fedivers: dashie at nya.otter.sh
+- Email: stockazio at otter dot sh
 
 # License
 AGPL v3
