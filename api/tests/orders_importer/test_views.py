@@ -416,7 +416,7 @@ def test_logged_in_can_category_matcher_rematch_no_orders(logged_in_api_client, 
     response = logged_in_api_client.get(url)
 
     assert response.status_code == 200
-    assert response.data["details"] == "ok"
+    assert response.data["details"] == "no orders"
 
 
 def test_anonymous_cannot_order_import_to_inventory(api_client, db, factories):
