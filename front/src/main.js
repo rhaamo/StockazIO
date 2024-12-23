@@ -47,6 +47,8 @@ import Message from "primevue/message";
 
 import router from "@/router";
 
+import Nora from "@primevue/themes/aura";
+
 const app = createApp(App);
 
 const pinia = createPinia();
@@ -58,7 +60,11 @@ pinia.use(
 
 app.use(pinia);
 app.use(router);
-app.use(PrimeVue);
+app.use(PrimeVue, {
+  theme: {
+    preset: Nora,
+  },
+});
 app.use(ToastService);
 app.use(ConfirmationService);
 app.use(DialogService);

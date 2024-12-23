@@ -67,7 +67,7 @@
 import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from "@primevue/core/api";
 import ManageParametersUnitModal from "@/components/parameters_units/Form.vue";
 import { h } from "vue";
 import apiService from "@/services/api/api.service";

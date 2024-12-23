@@ -302,7 +302,7 @@ import { useServerStore } from "@/stores/server";
 import { mapState } from "pinia";
 import apiService from "@/services/api/api.service";
 import logger from "@/logging";
-import { FilterMatchMode } from "primevue/api";
+import { FilterMatchMode } from "@primevue/core/api";
 import { cloneDeep } from "lodash";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";

@@ -160,8 +160,8 @@ import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
-import dateFnsFormat from "date-fns/format";
-import dateFnsParseISO from "date-fns/parseISO";
+import { format as dateFnsFormat } from "date-fns/format";
+import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import Fuse from "fuse.js";
 
 export default {
