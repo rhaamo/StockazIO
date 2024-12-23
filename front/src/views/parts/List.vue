@@ -29,7 +29,7 @@
       />
     </div>
 
-    <div class="card mt-4 pl-0 pr-0 pt-0">
+    <div class="card mt-4 pl-0 pr-0 pt-0 pb-0">
       <TabView>
         <TabPanel>
           <template #header>
