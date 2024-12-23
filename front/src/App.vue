@@ -167,47 +167,65 @@ export default {
             {
               label: "Footprints",
               icon: "fa fa-paw fa-fw",
-              to: { name: "footprints-list" },
+              command: () => {
+                this.$router.push({ name: "footprints-list" });
+              },
             },
             {
               label: "Manufacturers",
               icon: "fa fa-home fa-fw",
-              to: { name: "manufacturers-list" },
+              command: () => {
+                this.$router.push({ name: "manufacturers-list" });
+              },
             },
             {
               label: "Distributors",
               icon: "fa fa-car fa-fw",
-              to: { name: "distributors-list" },
+              command: () => {
+                this.$router.push({ name: "distributors-list" });
+              },
             },
             {
               label: "Storage",
               icon: "fa fa-archive fa-fw",
-              to: { name: "storages-list" },
+              command: () => {
+                this.$router.push({ name: "storages-list" });
+              },
             },
             {
               label: "Parts units",
               icon: "fa fa-cogs fa-fw",
-              to: { name: "part-units-list" },
+              command: () => {
+                this.$router.push({ name: "part-units-list" });
+              },
             },
             {
               label: "Parameters Units",
               icon: "fa fa-cogs fa-fw",
-              to: { name: "parameters-units-list" },
+              command: () => {
+                this.$router.push({ name: "parameters-units-list" });
+              },
             },
             {
               label: "Part Parameters Presets",
               icon: "fa fa-list fa-fw",
-              to: { name: "parameters-presets-list" },
+              command: () => {
+                this.$router.push({ name: "parameters-presets-list" });
+              },
             },
             {
               label: "Label Templates",
               icon: "fa fa-file-text fa-fw",
-              to: { name: "label-templates-list" },
+              command: () => {
+                this.$router.push({ name: "label-templates-list" });
+              },
             },
             {
               label: "Categories",
               icon: "fa fa-tree fa-fw",
-              to: { name: "categories-list" },
+              command: () => {
+                this.$router.push({ name: "categories-list" });
+              },
             },
           ],
         },
@@ -218,17 +236,23 @@ export default {
             {
               label: "Informations",
               icon: "fa fa-cogs fa-fw",
-              to: { name: "view-infos" },
+              command: () => {
+                this.$router.push({ name: "view-infos" });
+              },
             },
             {
               label: "Storage tree",
               icon: "fa fa-list-alt fa-fw",
-              to: { name: "view-storage-tree" },
+              command: () => {
+                this.$router.push({ name: "view-storage-tree" });
+              },
             },
             {
               label: "Public parts",
               icon: "fa fa-list-alt fa-fw",
-              to: { name: "public-parts" },
+              command: () => {
+                this.$router.push({ name: "public-parts" });
+              },
             },
           ],
         },
@@ -239,12 +263,16 @@ export default {
             {
               label: "Orders importer",
               icon: "fa fa-shopping-cart fa-fw",
-              to: { name: "orders-importer" },
+              command: () => {
+                this.$router.push({ name: "orders-importer" });
+              },
             },
             {
               label: "Projects",
               icon: "fa fa-list-ul fa-fw",
-              to: { name: "projects-list" },
+              command: () => {
+                this.$router.push({ name: "projects-list" });
+              },
             },
           ],
         },
@@ -252,12 +280,16 @@ export default {
         {
           label: "Add part",
           icon: "fa fa-plus fa-fw",
-          to: { name: "parts-new" },
+          command: () => {
+            this.$router.push({ name: "parts-new" });
+          },
         },
         {
           label: "Quick add part",
           icon: "fa fa-fast-forward fa-fw",
-          to: { name: "parts-quick-new" },
+          command: () => {
+            this.$router.push({ name: "parts-quick-new" });
+          },
         },
         { separator: true },
         {
@@ -268,7 +300,9 @@ export default {
             {
               label: "Change password",
               icon: "fa fa-key fa-fw",
-              to: { name: "password-reset-request" },
+              command: () => {
+                this.$router.push({ name: "password-reset-request" });
+              },
             },
             {
               label: "Force reload datas",
@@ -299,9 +333,24 @@ export default {
       ],
       menuItemsLoggedOut: [
         { separator: true },
-        { label: "Login", to: { name: "login_form" } },
-        { label: "Public parts list", to: { name: "public-parts" } },
-        { label: "About", to: { name: "about" } },
+        {
+          label: "Login",
+          command: () => {
+            this.$router.push({ name: "login_form" });
+          },
+        },
+        {
+          label: "Public parts list",
+          command: () => {
+            this.$router.push({ name: "public-parts" });
+          },
+        },
+        {
+          label: "About",
+          command: () => {
+            this.$router.push({ name: "about" });
+          },
+        },
       ],
     };
   },

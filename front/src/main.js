@@ -36,7 +36,7 @@ import DialogService from "primevue/dialogservice";
 import DynamicDialog from "primevue/dynamicdialog";
 import Galleria from "primevue/galleria";
 import VuePdfEmbed from "vue-pdf-embed";
-import Dropdown from "primevue/dropdown";
+import Select from "primevue/select";
 import Divider from "primevue/divider";
 import ButtonDeleteInline from "@/components/btn_delete_inline.vue";
 import FileUpload from "primevue/fileupload";
@@ -113,7 +113,7 @@ app.component("Card", Card);
 app.component("DynamicDialog", DynamicDialog);
 app.component("Galleria", Galleria);
 app.component("VuePdfEmbed", VuePdfEmbed);
-app.component("Dropdown", Dropdown);
+app.component("Dropdown", Select); // keep Dropdown name for compatibility
 app.component("Divider", Divider);
 app.component("ButtonDeleteInline", ButtonDeleteInline);
 app.component("FileUpload", FileUpload);
