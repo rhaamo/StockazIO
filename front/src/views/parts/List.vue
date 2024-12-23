@@ -658,11 +658,14 @@ export default {
           items: [
             {
               label: this.actualCurrentCategory.name,
-              to: {
-                name: "parts-category-list",
-                params: {
-                  categoryId: this.actualCurrentCategory.id || this.categoryId,
-                },
+              command: () => {
+                this.$router.push({
+                  name: "parts-category-list",
+                  params: {
+                    categoryId:
+                      this.actualCurrentCategory.id || this.categoryId,
+                  },
+                });
               },
             },
           ],

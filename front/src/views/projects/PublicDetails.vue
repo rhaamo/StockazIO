@@ -296,9 +296,11 @@ export default {
       if (this.project) {
         bc.items.push({
           label: this.project.name,
-          to: {
-            name: "projects-details",
-            params: { projectId: this.project.id },
+          command: () => {
+            this.$router.push({
+              name: "projects-details",
+              params: { projectId: this.project.id },
+            });
           },
         });
       }

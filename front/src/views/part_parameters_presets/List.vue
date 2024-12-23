@@ -114,7 +114,9 @@ export default {
         },
         {
           label: "Parameters Presets",
-          to: { name: "parameters-presets-list" },
+          command: () => {
+            this.$router.push({ name: "parameters-presets-list" });
+          },
         },
       ],
     },
