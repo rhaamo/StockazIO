@@ -183,6 +183,7 @@ You then will have to navigate to 'View - Order importer' in the web ui to manag
 - Mobile app / better mobile layout
 - More substitutions for labels template
 - LCSC Order CSV Import
+- Web QrCode scanner
 
 # Generated QRCodes format
 Format changed but both URLs are handled by the search.
