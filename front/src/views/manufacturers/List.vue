@@ -137,8 +137,20 @@ import { useConfirm } from "primevue/useconfirm";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Manufacturers", to: { name: "manufacturers-list" } }],
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
+      items: [
+        {
+          label: "Manufacturers",
+          command: () => {
+            this.$router.push({ name: "manufacturers-list" });
+          },
+        },
+      ],
     },
     filters: {
       global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

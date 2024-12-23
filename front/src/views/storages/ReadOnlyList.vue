@@ -40,9 +40,19 @@ export default {
   },
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Storages management", to: { name: "view-storage-tree" } },
+        {
+          label: "Storages management",
+          command: () => {
+            this.$router.push({ name: "view-storage-tree" });
+          },
+        },
       ],
     },
   }),

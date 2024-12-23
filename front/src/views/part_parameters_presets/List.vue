@@ -99,9 +99,19 @@ import { useConfirm } from "primevue/useconfirm";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Parts", to: { name: "parts-list" } },
+        {
+          label: "Parts",
+          command: () => {
+            this.$router.push({ name: "parts-list" });
+          },
+        },
         {
           label: "Parameters Presets",
           to: { name: "parameters-presets-list" },

@@ -650,7 +650,9 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: "/",
+            command: () => {
+              this.$router.push({ name: "home" });
+            },
             label: "Parts by category",
           },
           items: [
@@ -669,11 +671,13 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: {
-              name: "parts-category-list",
-              params: {
-                categoryId: this.actualCurrentCategory.id || this.categoryId,
-              },
+            command: () => {
+              this.$router.push({
+                name: "parts-category-list",
+                params: {
+                  categoryId: this.actualCurrentCategory.id || this.categoryId,
+                },
+              });
             },
             label: "Uncategorized parts",
           },
@@ -682,7 +686,9 @@ export default {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
-            to: { name: "parts-list" },
+            command: () => {
+              this.$router.push({ name: "parts-list" });
+            },
             label: "All parts",
           },
         };

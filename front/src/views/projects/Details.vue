@@ -461,8 +461,20 @@ export default {
     },
     breadcrumb() {
       let bc = {
-        home: { icon: "pi pi-home", to: "/" },
-        items: [{ label: "Projects", to: { name: "projects-list" } }],
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Projects",
+            command: () => {
+              this.$router.push({ name: "projects-list" });
+            },
+          },
+        ],
       };
       if (this.project) {
         bc.items.push({

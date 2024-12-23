@@ -451,7 +451,12 @@ export default {
   data: () => ({
     submitted: false,
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [{ label: "Quick add new part" }],
     },
     form: {

@@ -217,8 +217,20 @@ export default {
     },
     breadcrumb() {
       let bc = {
-        home: { icon: "pi pi-home", to: "/" },
-        items: [{ label: "Orders importer", to: { name: "orders-importer" } }],
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Orders importer",
+            command: () => {
+              this.$router.push({ name: "orders-importer" });
+            },
+          },
+        ],
       };
       if (this.order) {
         bc.items.push({ label: this.order.order_number });

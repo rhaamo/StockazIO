@@ -27,8 +27,20 @@ import apiService from "@/services/api/api.service";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Informations", to: { name: "view-infos" } }],
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
+      items: [
+        {
+          label: "Informations",
+          command: () => {
+            this.$router.push({ name: "view-infos" });
+          },
+        },
+      ],
     },
     parts_count: 0,
     categories_count: 0,

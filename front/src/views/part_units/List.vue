@@ -82,10 +82,25 @@ import { useConfirm } from "primevue/useconfirm";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Parts", to: { name: "parts-list" } },
-        { label: "Units", to: { name: "part-units-list" } },
+        {
+          label: "Parts",
+          command: () => {
+            this.$router.push({ name: "parts-list" });
+          },
+        },
+        {
+          label: "Units",
+          command: () => {
+            this.$router.push({ name: "part-units-list" });
+          },
+        },
       ],
     },
     filters: {

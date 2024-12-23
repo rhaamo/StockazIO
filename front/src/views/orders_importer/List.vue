@@ -124,8 +124,20 @@ import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
-      items: [{ label: "Orders importer", to: { name: "orders-importer" } }],
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
+      items: [
+        {
+          label: "Orders importer",
+          command: () => {
+            this.$router.push({ name: "orders-importer" });
+          },
+        },
+      ],
     },
     orders: [],
     totalRecords: 0,

@@ -131,9 +131,19 @@ export default {
         footprint = { label: "No category selected" };
       }
       return {
-        home: { icon: "pi pi-home", to: "/" },
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
         items: [
-          { label: "Footprints", to: { name: "footprints-list" } },
+          {
+            label: "Footprints",
+            command: () => {
+              this.$router.push({ name: "footprints-list" });
+            },
+          },
           footprint,
         ],
       };

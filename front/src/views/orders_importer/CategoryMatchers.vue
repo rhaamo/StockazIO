@@ -47,12 +47,24 @@ export default {
   },
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Orders importer", to: { name: "orders-importer" } },
+        {
+          label: "Orders importer",
+          command: () => {
+            this.$router.push({ name: "orders-importer" });
+          },
+        },
         {
           label: "Category Matchers",
-          to: { name: "orders-importer-category-matcher" },
+          command: () => {
+            this.$router.push({ name: "orders-importer-category-matcher" });
+          },
         },
       ],
     },
