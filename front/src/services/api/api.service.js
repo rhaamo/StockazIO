@@ -499,10 +499,12 @@ const rematchOrderItems = () => {
 // Projects
 
 const getProjects = (params) => {
-  if (params.filters) {
-    params.filters = JSON.stringify(params.filters);
+  // Clone it to avoid issues
+  const newParams = { ...params };
+  if (newParams.filters) {
+    newParams.filters = JSON.stringify(params.filters);
   }
-  return Axios.get(PROJECTS_LIST, { params: params });
+  return Axios.get(PROJECTS_LIST, { params: newParams });
 };
 
 const getProject = (id) => {

@@ -394,7 +394,7 @@
                 />
               </template>
             </Column>
-            <Column :sortable="false" headerStyle="min-width: 6em">
+            <Column :sortable="false" headerStyle="min-width: 6.3em">
               <template #body="slotProps">
                 <span class="p-buttonset">
                   <router-link
@@ -413,7 +413,7 @@
                   <PvButton
                     type="button"
                     icon="fa fa-trash-o"
-                    class="p-button-danger"
+                    class="p-button-danger ml-1"
                     v-tooltip="'delete'"
                     @click="deletePart($event, slotProps.data)"
                   ></PvButton>

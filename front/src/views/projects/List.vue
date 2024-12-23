@@ -225,6 +225,8 @@ export default {
     loadLazyData() {
       this.loading = true;
 
+      console.log(this.lazyParams);
+
       apiService
         .getProjects(this.lazyParams)
         .then((res) => {
