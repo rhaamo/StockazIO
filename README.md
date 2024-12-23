@@ -161,6 +161,8 @@ docker build -t stockazio-allinone -f Dockerfile-allinone .
 docker run --net=host --name stockazio -it --rm --env-file .env -v /local/path/to/uploads:/uploads stockazio-allinone:latest
 ```
 
+You will still have to runs the "crons" (like importers) from your main system crontab.
+
 # Install - docker split frontend & backend
 TODO
 
