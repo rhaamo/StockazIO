@@ -262,9 +262,19 @@ import { required, maxLength, minValue } from "@vuelidate/validators";
 export default {
   data: () => ({
     breadcrumb: {
-      home: { icon: "pi pi-home", to: "/" },
+      home: {
+        icon: "pi pi-home",
+        command: () => {
+          this.$router.push({ name: "home" });
+        },
+      },
       items: [
-        { label: "Label Templates", to: { name: "label-templates-list" } },
+        {
+          label: "Label Templates",
+          command: () => {
+            this.$router.push({ name: "label-templates-list" });
+          },
+        },
       ],
     },
     submitted: false,
