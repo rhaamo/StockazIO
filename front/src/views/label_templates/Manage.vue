@@ -167,8 +167,11 @@
         The template is a JSON as string, you can look at
         <a href="https://pdfme.com/docs/getting-started#sample-template" target="_blank">this doc</a>
         for the exact schema syntax.<br />
-        Please note that, currently, only two elements can use substitutions.<br />
-        The QrCode element needs to be called "qrcode", and the description "description", the name will stays as the plain name.<br />
+        You can also checkout the <a href="https://github.com/rhaamo/StockazIO/tree/master/docs" target="_blank">docs</a> folder for the template
+        files to uses with <a href="https://pdfme.com/template-design" target="_blank">this online designer</a>.<br />
+        Please note that, currently, only three elements can use substitutions.<br />
+        The QrCode element needs to be called "qrcode", and the description "description", the name will stays as the plain name (full storage path
+        for storage).<br />
         The following list will show available substitutions.<br />
         You can add other fixed elements if wanted.<br /><br /><br />
         The following substitutions for the Description Template is available, depending if it's a Storage Location or Part:
