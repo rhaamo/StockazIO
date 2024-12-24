@@ -155,6 +155,9 @@ class OrderViewSet(ModelViewSet):
                 if not distri_sku:
                     part.distributors_sku.add(distri_sku)
 
+                if not part.footprint:
+                    part.footprint = item.footprint_db
+
                 part.save()
                 stats["updated"] += 1
 
@@ -164,6 +167,7 @@ class OrderViewSet(ModelViewSet):
                     stock_qty=item.quantity,
                     description=item.description,
                     category=item.category,
+                    footprint=item.footprint_db,
                 )
                 part.save()
 

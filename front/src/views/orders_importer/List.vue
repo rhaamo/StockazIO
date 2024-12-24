@@ -133,8 +133,8 @@ export default {
     this.lazyParams = {
       first: 0,
       rows: this.$refs.dt.rows,
-      sortField: null,
-      sortOrder: null,
+      sortField: "date",
+      sortOrder: -1,
     };
 
     this.$nextTick(() => {
