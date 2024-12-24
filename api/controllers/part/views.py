@@ -242,7 +242,10 @@ class PartViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         if kwargs["pk"].isdigit():
             # ID
-            return super(PartViewSet, self).retrieve(self, *args, **kwargs)
+            queryset = Part.objects.all()
+            obj = get_object_or_404(queryset, id=kwargs["pk"])
+            serializer = PartRetrieveSerializer(obj, context={"request": request})
+            return Response(serializer.data)
         else:
             # UUID
             queryset = Part.objects.all()

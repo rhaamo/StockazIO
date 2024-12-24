@@ -62,6 +62,10 @@ class PartSerializer(serializers.ModelSerializer):
     def get_category_name(self, obj):
         return obj.category.name if obj.category else None
 
+    @extend_schema_field(serializers.CharField())
+    def get_storage_path(self, obj):
+        return obj.storage.full_path() if obj.storage else []
+
     class Meta:
         model = Part
         fields = (
@@ -80,6 +84,7 @@ class PartSerializer(serializers.ModelSerializer):
             "category",
             "category_name",
             "storage",
+            "storage_path",
             "footprint",
             "uuid",
             "comment",
@@ -92,6 +97,7 @@ class PartSerializer(serializers.ModelSerializer):
 
 
 PartSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
+PartSerializer._declared_fields["storage_path"] = serializers.SerializerMethodField()
 
 
 class PartParameterSerializer(serializers.ModelSerializer):
@@ -171,6 +177,10 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     def get_category_name(self, obj):
         return obj.category.name if obj.category else None
 
+    @extend_schema_field(serializers.CharField())
+    def get_storage_path(self, obj):
+        return obj.storage.full_path() if obj.storage else []
+
     class Meta:
         model = Part
         fields = (
@@ -189,6 +199,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "category",
             "category_name",
             "storage",
+            "storage_path",
             "footprint",
             "uuid",
             "comment",
@@ -204,6 +215,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
 
 
 PartRetrieveSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
+PartRetrieveSerializer._declared_fields["storage_path"] = serializers.SerializerMethodField()
 
 
 class PartParametersPresetItemSerializer(serializers.ModelSerializer):

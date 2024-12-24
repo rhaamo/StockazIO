@@ -155,7 +155,12 @@
               </template>
             </Column>
             <Column header="Storage" :sortable="true" field="storage_id" :filterMatchModeOptions="matchModes.storage">
-              <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
+              <template #body="slotProps">
+                <template v-if="slotProps.data.storage && slotProps.data.storage.name">
+                  {{ slotProps.data.storage_path.join(" / ") }}
+                </template>
+                <template v-else>-</template>
+              </template>
               <template #filter="{ filterModel, filterCallback }">
                 <TreeSelect
                   v-model="filterModel.value"
