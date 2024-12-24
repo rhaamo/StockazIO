@@ -138,21 +138,21 @@ See the file ./deploy/env.prod.sample for the list of ENV variables you can use 
 
 You can copy that env file, edit it, and use `--env-file your-env-file.prod` for `docker run/exec` too.
 
-The volume for uploads is `/uploads`.
+The volume for uploads is `/uploads`, `/statics` for the static files.
 
 To migrate the database:
 ```
-docker exec -it stockazio python manage.py migrate
+docker exec -it stockazio /venv/bin/python manage.py migrate
 ```
 
 To seed database:
 ```
-docker exec -it stockazio python manage.py seeds_database
+docker exec -it stockazio /venv/bin/python manage.py seeds_database
 ```
 
 To create your superuser:
 ```
-docker exec -it stockazio python manage.py createsuperuser
+docker exec -it stockazio /venv/bin/python manage.py createsuperuser
 ```
 
 Example build & run:
@@ -161,7 +161,24 @@ docker build -t stockazio-allinone -f Dockerfile-allinone .
 docker run --net=host --name stockazio -it --rm --env-file .env -v /local/path/to/uploads:/uploads stockazio-allinone:latest
 ```
 
+Uses the following when using Docker Compose:
+```
+docker compose exec -it web /venv/bin/python manage.py
+```
+
 You will still have to runs the "crons" (like importers) from your main system crontab.
+
+Examples:
+```
+# /etc/cron.d/stockazio
+# Choose only one
+# System
+0 0 * * * root /opt/stockazio/venv/bin/python /opt/stockazio/stockazio/api/manage.py import_orders
+# Docker
+0 0 * * * root docker exec -it stockazio /venv/bin/python manage.py import_orders
+# Docker Compose
+0 0 * * * root docker compose exec -it -p stockazio web /venv/bin/python manage.py import_orders
+``` 
 
 # Install - docker split frontend & backend
 TODO
