@@ -2,6 +2,7 @@ from django.db import models
 
 from controllers.categories.models import Category
 from controllers.distributor.models import Distributor
+from controllers.footprints.models import Footprint
 from controllers.manufacturer.models import Manufacturer
 
 
@@ -29,6 +30,7 @@ class Item(models.Model):
     description = models.CharField("description", max_length=255, unique=False, blank=False)
     quantity = models.IntegerField("quantity", default=0)
     order = models.ForeignKey(Order, blank=False, null=False, on_delete=models.CASCADE, related_name="items")
+    footprint_db = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.SET_NULL)
 
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     ignore = models.BooleanField("ignore import", default=False)

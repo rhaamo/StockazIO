@@ -333,6 +333,7 @@
                 :filter="true"
                 :fluid="true"
                 :showClear="true"
+                autoFilterFocus
               />
             </div>
 
@@ -361,6 +362,7 @@
                 optionGroupLabel="category"
                 optionGroupChildren="footprints"
                 :filter="true"
+                autoFilterFocus
               />
             </div>
 

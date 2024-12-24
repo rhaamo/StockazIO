@@ -324,6 +324,7 @@
             <div class="field">
               <label for="category" class="block">Category</label>
               <TreeSelect
+                ref="categoryTree"
                 inputId="category"
                 placeholder="Film resistors ? MCUs ?"
                 v-model="form.category"
@@ -333,6 +334,7 @@
                 :filter="true"
                 :fluid="true"
                 :showClear="true"
+                autoFilterFocus
               />
             </div>
 
@@ -361,6 +363,7 @@
                 optionGroupLabel="category"
                 optionGroupChildren="footprints"
                 :filter="true"
+                autoFilterFocus
               />
             </div>
 

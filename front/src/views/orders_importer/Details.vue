@@ -1,13 +1,14 @@
 <template>
   <div>
-    <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
+    <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" class="mb-2" />
 
-    <Message v-if="manufacturers_matched" severity="info"
+    <Message v-if="manufacturers_matched" severity="info" class="mb-2"
       >The parts manufacturers have been fuzzy-matched, please check and correct if there is any wrong ones.</Message
     >
 
-    <Message severity="warn"
-      >Various items has been automatically selected to the best matching element, please review and don't forget to save.</Message
+    <Message severity="warn" class="mb-2"
+      >Various items has been automatically selected to the best matching element, <b>please review and <u>don't forget to save</u></b
+      >.</Message
     >
 
     <div class="mt-2">
@@ -62,6 +63,24 @@
         <Column header="Description" :sortable="false" field="description">
           <template #body="slotProps">
             <span class="text-sm">{{ slotProps.data.description }}</span>
+          </template>
+        </Column>
+
+        <Column header="Footprint" :sortable="false" field="footprint_db" headerStyle="width: 20em">
+          <template #body="slotProps">
+            <Dropdown
+              inputId="footprint"
+              v-model="slotProps.data.footprint_db"
+              placeholder="match known one"
+              :options="choicesFootprints"
+              optionLabel="name"
+              optionValue="id"
+              optionGroupLabel="category"
+              optionGroupChildren="footprints"
+              :filter="true"
+              autoFilterFocus
+              showClear
+            />
           </template>
         </Column>
 
@@ -127,6 +146,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { format as dateFnsFormat } from "date-fns/format";
 import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import Fuse from "fuse.js";
+import { fuzzyMatch } from "fuzzbunny";
 
 export default {
   data: () => ({
@@ -134,9 +154,10 @@ export default {
     loading: true,
     fuse_options: {
       includeScore: true,
-      keys: ["text", "aliases"],
+      keys: ["text", "aliases", "name"],
     },
     manufacturers_matched: false,
+    footprints_matched: false,
   }),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
@@ -152,6 +173,23 @@ export default {
         store.distributors.map((x) => {
           return { value: x.id, text: x.name, datasheet_url: x.datasheet_url };
         }),
+      choicesFootprints: (store) =>
+        store.footprints.map((x) => {
+          return {
+            category: x.name,
+            footprints: x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            }),
+          };
+        }),
+      flattenedChoicesFootprints: (store) =>
+        store.footprints
+          .map((x) => {
+            return x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            });
+          })
+          .flat(),
       choicesManufacturers: (store) =>
         store.manufacturers.map((x) => {
           return {
@@ -219,7 +257,7 @@ export default {
         .then((res) => {
           this.order = res.data;
 
-          // fix category & manufacturer objects for the dropdown thingy
+          // fix category, manufacturer and footprint objects for the dropdown thingy
           for (const [i] of this.order.items.entries()) {
             if (this.order.items[i].category) {
               this.order.items[i].category = {
@@ -235,9 +273,14 @@ export default {
                 aliases: this.order.items[i].manufacturer_db.aliases.split(",").map((x) => x.trim()),
               };
             }
+
+            if (this.order.items[i].footprint_db) {
+              this.order.items[i].footprint_db = this.order.items[i].footprint_db.id;
+            }
           }
 
           this.fuseMatchManufacturers();
+          this.fuseMatchFootprints();
           if (!this.order.vendor_db) {
             this.fuseMatchDistributor();
           } else {
@@ -272,9 +315,11 @@ export default {
       return states[state];
     },
     fuseMatchManufacturers() {
+      // using Fuse.io here because we have a list of manufacturers to match a manufacturer string against it
       let fuse = new Fuse(this.choicesManufacturers, this.fuse_options);
 
       for (const [i] of this.order.items.entries()) {
+        // if there is no associated manufacturer, match it
         if (!this.order.items[i].manufacturer_db) {
           let results = fuse.search(this.order.items[i].manufacturer);
 
@@ -295,12 +340,32 @@ export default {
         this.order.vendor_db = results[0].item;
       }
     },
+    fuseMatchFootprints() {
+      // using fuzzbunny here because we can't fuzzy search "12gigawatt SOT-23 super-component" against a list of [sot-23, tssop, bga...]
+      // so instead we try to match every items in the footprints against the description, and accepts the first match found
+      for (const [i] of this.order.items.entries()) {
+        // if there is no associated footprint, match it
+        if (this.order.items[i].footprint_db === null) {
+          for (const j of this.flattenedChoicesFootprints) {
+            const match = fuzzyMatch(this.order.items[i].description, j.name);
+            if (match) {
+              // Match found, break the loop for this item
+              this.order.items[i].footprint_db = j.id;
+              break;
+            }
+          }
+        }
+      }
+
+      this.footprints_matched = true;
+    },
     rematchCategories() {
       apiService
         .rematchOrderItems()
         .then((res) => {
           this.loadLazyData();
           this.fuseMatchManufacturers();
+          this.fuseMatchFootprints();
         })
         .catch((err) => {
           this.toast.add({

@@ -21,6 +21,7 @@
     "date-fns": "^4.1.0",
     "fork-awesome": "^1.2.0",
     "fuse.js": "^7.0.0",
+    "fuzzbunny": "^1.0.1",
     "js-file-download": "0.4.12",
     "js-logger": "1.6.1",
     "pinia": "^2.3.0",

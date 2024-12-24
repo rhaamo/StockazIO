@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from controllers.categories.serializers import SingleCategorySerializer
 from controllers.distributor.serializers import DistributorsSerializer
+from controllers.footprints.serializers import FootprintSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
 from controllers.OrdersImporter.models import CategoryMatcher, Item, Order
 
@@ -12,6 +13,7 @@ from controllers.OrdersImporter.models import CategoryMatcher, Item, Order
 class ItemSerializer(serializers.ModelSerializer):
     category = SingleCategorySerializer(many=False, read_only=False)
     manufacturer_db = ManufacturersSerializer(many=False, read_only=True)
+    footprint_db = FootprintSerializer(many=False, read_only=True)
 
     class Meta:
         model = Item
@@ -26,6 +28,7 @@ class ItemSerializer(serializers.ModelSerializer):
             "category",
             "ignore",
             "manufacturer_db",
+            "footprint_db",
         )
 
 
@@ -42,6 +45,7 @@ class ItemCreateSerializer(serializers.ModelSerializer):
             "category",
             "ignore",
             "manufacturer_db",
+            "footprint_db",
         )
 
 
