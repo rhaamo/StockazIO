@@ -4,10 +4,17 @@
 
     <div class="grid mt-2">
       <div class="col-2">
-        <Listbox v-model="selectedCategory" :options="footprintsCategories" optionLabel="name" :multiple="false" @change="categoryChanged($event)" />
+        <Listbox
+          v-model="selectedCategory"
+          scrollHeight="38rem"
+          :options="footprintsCategories"
+          optionLabel="name"
+          :multiple="false"
+          @change="categoryChanged($event)"
+        />
       </div>
 
-      <div class="col-6 col-offset-1">
+      <div class="col-8 col-offset-1">
         <div class="mb-4">
           <PvButton label="Add category" @click="showAddCategory($event)" />
 

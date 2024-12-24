@@ -20,10 +20,12 @@
             </div>
 
             <div class="col-2 col-offset-7">
-              <span class="p-input-icon-left">
-                <i class="pi pi-search" />
-                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-              </span>
+              <div class="p-inputgroup">
+                <IconField>
+                  <InputIcon class="pi pi-search"></InputIcon>
+                  <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+                </IconField>
+              </div>
             </div>
           </div>
         </template>
