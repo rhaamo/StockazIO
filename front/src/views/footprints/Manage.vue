@@ -163,8 +163,8 @@ export default {
         .then((val) => {
           this.footprints = val.data;
           // Also update the store
-          this.preloadsStore.setFootprints(val.data);
-          this.preloadsStore.setLastUpdate("footprints", new Date());
+          this.preloadsStore.setLastUpdate("footprints", new Date("1970/12/12")); // force refresh
+          this.preloadsStore.preloadFootprints();
         })
         .catch((err) => {
           this.toast.add({
