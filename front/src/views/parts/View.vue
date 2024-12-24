@@ -336,11 +336,11 @@ export default {
         },
         {
           item: "Storage",
-          value: this.part.storage ? this.part.storage.name : "",
+          value: this.part.storage ? this.part.storage_path.join(" / ") : "-",
         },
         {
           item: "Category",
-          value: this.part.category ? this.part.category.name : "Uncategorized",
+          value: this.part.category ? this.part.category_path.join(" / ") : "Uncategorized",
         },
         {
           item: "Internal part number",

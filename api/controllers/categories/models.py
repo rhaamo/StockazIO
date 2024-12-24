@@ -12,3 +12,6 @@ class Category(TreeNode):
 
     def __str__(self):
         return self.name
+
+    def full_path(self):
+        return [a for a in self.ancestors(include_self=True).values_list("name", flat=True)]

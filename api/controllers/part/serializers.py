@@ -66,6 +66,10 @@ class PartSerializer(serializers.ModelSerializer):
     def get_storage_path(self, obj):
         return obj.storage.full_path() if obj.storage else []
 
+    @extend_schema_field(serializers.CharField())
+    def get_category_path(self, obj):
+        return obj.category.full_path() if obj.category else []
+
     class Meta:
         model = Part
         fields = (
@@ -83,6 +87,7 @@ class PartSerializer(serializers.ModelSerializer):
             "part_unit",
             "category",
             "category_name",
+            "category_path",
             "storage",
             "storage_path",
             "footprint",
@@ -97,6 +102,7 @@ class PartSerializer(serializers.ModelSerializer):
 
 
 PartSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
+PartSerializer._declared_fields["category_path"] = serializers.SerializerMethodField()
 PartSerializer._declared_fields["storage_path"] = serializers.SerializerMethodField()
 
 
@@ -181,6 +187,10 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     def get_storage_path(self, obj):
         return obj.storage.full_path() if obj.storage else []
 
+    @extend_schema_field(serializers.CharField())
+    def get_category_path(self, obj):
+        return obj.category.full_path() if obj.category else []
+
     class Meta:
         model = Part
         fields = (
@@ -198,6 +208,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "part_unit",
             "category",
             "category_name",
+            "category_path",
             "storage",
             "storage_path",
             "footprint",
@@ -216,6 +227,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
 
 PartRetrieveSerializer._declared_fields["category_name"] = serializers.SerializerMethodField()
 PartRetrieveSerializer._declared_fields["storage_path"] = serializers.SerializerMethodField()
+PartRetrieveSerializer._declared_fields["category_path"] = serializers.SerializerMethodField()
 
 
 class PartParametersPresetItemSerializer(serializers.ModelSerializer):
