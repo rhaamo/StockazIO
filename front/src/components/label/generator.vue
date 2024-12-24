@@ -104,6 +104,7 @@ export default {
       text = item && item.category_name ? text.replace("{category_path}", item.category_path.join(" / ")) : text.replace("{category_path}", "");
       text = item && item.storage ? text.replace("{storage_name}", item.storage) : text.replace("{storage_name}", "");
       text = item && item.storage_path ? text.replace("{storage_path}", item.storage_path.join(" / ")) : text.replace("{storage_path}", "");
+      text = item && item.footprint ? text.replace("{footprint}", item.footprint.name) : text.replace("{footprint}", "");
       return text;
     },
     qrCodeUri(item) {

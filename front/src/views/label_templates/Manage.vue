@@ -182,6 +182,7 @@
           <li><code>{category_path}</code> Full path of the category (if any) of the item</li>
           <li><code>{storage_name}</code> Name of the storage (if any) of the item</li>
           <li><code>{storage_path}</code> Full path of the storage (if any) of the item</li>
+          <li><code>{footprint}</code> Footprint value</li>
         </ul>
       </div>
     </div>
