@@ -3,18 +3,20 @@
     <div class="grid">
       <div class="col-5">
         <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">/</span>
-          <InputText
-            ref="regexp"
-            inputId="regexp"
-            type="text"
-            v-model="item.regexp"
-            :class="{
-              'p-invalid': v$.item.regexp.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <span class="p-inputgroup-addon">/i</span>
+          <IconField>
+            <InputIcon>/</InputIcon>
+            <InputText
+              ref="regexp"
+              inputId="regexp"
+              type="text"
+              v-model="item.regexp"
+              :class="{
+                'p-invalid': v$.item.regexp.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <InputIcon>/i</InputIcon>
+          </IconField>
         </div>
 
         <small v-if="(v$.item.regexp.$invalid && submitted) || v$.item.regexp.$pending.$response" class="p-error"

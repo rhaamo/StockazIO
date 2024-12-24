@@ -11,6 +11,8 @@ import PrimeVue from "primevue/config";
 import ProgressSpinner from "primevue/progressspinner";
 import Menubar from "primevue/menubar";
 import InputText from "primevue/inputtext";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
 import Button from "primevue/button";
 import Password from "primevue/password";
 import ToastService from "primevue/toastservice";
@@ -119,6 +121,8 @@ app.component("PvTextarea", Textarea);
 app.component("Listbox", Listbox);
 app.component("DataView", DataView);
 app.component("Message", Message);
+app.component("IconField", IconField);
+app.component("InputIcon", InputIcon);
 
 app.directive("tooltip", Tooltip);
 
