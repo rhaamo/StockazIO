@@ -224,6 +224,8 @@ Label Templates format changed. Three text fields are now possible: `name` (fixe
 See the file https://github.com/rhaamo/StockazIO/blob/master/api/controllers/part/management/commands/seed_label_templates.py#L16 for the new formats to adapt yours.
 The 12mm template only gets `name` and a `description` with category name and description, while the bigger one gets the three separated.
 The 12mm template has been changed to a width of 60.
+## 1.4.1
+Label templates fixes
 
 # Images sources
 - Footprints
