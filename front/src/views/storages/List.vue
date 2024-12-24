@@ -4,13 +4,13 @@
     <div>
       <ul class="list-none">
         <li>
-          <router-link to="#" v-tooltip="'Add storage element on root level'" @click.prevent="showAddElementDialog" class="no-underline">
+          <router-link to="#" v-tooltip.top="'Add storage element on root level'" @click.prevent="showAddElementDialog" class="no-underline">
             <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root storage
           </router-link>
 
           &nbsp;&nbsp;&nbsp;
 
-          <router-link to="#" v-tooltip="'Bulk-generate labels'" @click.prevent="showBulkLabelGenerator()" class="no-underline">
+          <router-link to="#" v-tooltip.top="'Bulk-generate labels'" @click.prevent="showBulkLabelGenerator()" class="no-underline">
             <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
           </router-link>
         </li>
