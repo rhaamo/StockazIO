@@ -155,6 +155,9 @@ export default {
         .getFootprintsList({ category_id: this.selectedCategory.id })
         .then((val) => {
           this.footprints = val.data;
+          // Also update the store
+          this.preloadsStore.setFootprints(val.data);
+          this.preloadsStore.setLastUpdate("footprints", new Date());
         })
         .catch((err) => {
           this.toast.add({
