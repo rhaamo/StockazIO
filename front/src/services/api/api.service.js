@@ -19,10 +19,8 @@ const FOOTPRINTS_UPDATE = (id) => `/api/v1/footprints/${id}/`;
 const FOOTPRINTS_DELETE = (id) => `/api/v1/footprints/${id}/`;
 const FOOTPRINTS_CATEGORIES_URL = "/api/v1/footprints/categories/";
 const FOOTPRINTS_CATEGORY_CREATE = "/api/v1/footprints/categories/";
-const FOOTPRINTS_CATEGORY_UPDATE = (id) =>
-  `/api/v1/footprints/categories/${id}/`;
-const FOOTPRINTS_CATEGORY_DELETE = (id) =>
-  `/api/v1/footprints/categories/${id}/`;
+const FOOTPRINTS_CATEGORY_UPDATE = (id) => `/api/v1/footprints/categories/${id}/`;
+const FOOTPRINTS_CATEGORY_DELETE = (id) => `/api/v1/footprints/categories/${id}/`;
 
 const STORAGES_URL = "/api/v1/storages/";
 const STORAGES_CREATE = "/api/v1/storages/";
@@ -44,26 +42,19 @@ const PART_PARAMETERS_GET_VALUES = "/api/v1/parts/parameters/get/values/";
 
 const PART_PARAMETERS_PRESETS_URL = "/api/v1/parts/parameters/presets/";
 const PART_PARAMETERS_PRESETS_CREATE = "/api/v1/parts/parameters/presets/";
-const PART_PARAMETERS_PRESETS_DETAILS = (partParameterPresetId) =>
-  `/api/v1/parts/parameters/presets/${partParameterPresetId}/`;
-const PART_PARAMETERS_PRESETS_DELETE = (partParameterPresetId) =>
-  `/api/v1/parts/parameters/presets/${partParameterPresetId}/`;
-const PART_PARAMETERS_PRESETS_UPDATE = (partParameterPresetId) =>
-  `/api/v1/parts/parameters/presets/${partParameterPresetId}/`;
+const PART_PARAMETERS_PRESETS_DETAILS = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`;
+const PART_PARAMETERS_PRESETS_DELETE = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`;
+const PART_PARAMETERS_PRESETS_UPDATE = (partParameterPresetId) => `/api/v1/parts/parameters/presets/${partParameterPresetId}/`;
 
 const PARTS_CREATE = "/api/v1/parts/";
 const PARTS_LIST = "/api/v1/parts/";
 const PARTS_UPDATE = (id) => `/api/v1/parts/${id}/`;
 const PARTS_ITEM = (partId) => `/api/v1/parts/${partId}/`;
-const PARTS_ATTACHMENTS_CREATE = (partId) =>
-  `/api/v1/parts/${partId}/attachments/`;
-const PARTS_ATTACHMENTS_DELETE = (partId, pk) =>
-  `/api/v1/parts/${partId}/attachments/${pk}/`;
-const PARTS_ATTACHMENTS_DEFAULT = (partId, attachmentId) =>
-  `/api/v1/parts/${partId}/attachments/${attachmentId}/set_default`;
+const PARTS_ATTACHMENTS_CREATE = (partId) => `/api/v1/parts/${partId}/attachments/`;
+const PARTS_ATTACHMENTS_DELETE = (partId, pk) => `/api/v1/parts/${partId}/attachments/${pk}/`;
+const PARTS_ATTACHMENTS_DEFAULT = (partId, attachmentId) => `/api/v1/parts/${partId}/attachments/${attachmentId}/set_default`;
 const PART_CHANGE_CATEGORY = "/api/v1/parts/bulk/change_category/";
-const PART_CHANGE_STORAGE_LOCATION =
-  "/api/v1/parts/bulk/change_storage_location/";
+const PART_CHANGE_STORAGE_LOCATION = "/api/v1/parts/bulk/change_storage_location/";
 
 const PARTS_PUBLIC_LIST = "/api/v1/parts/public/";
 const PARTS_PUBLIC_ITEM = (partId) => `/api/v1/parts/public/${partId}/`;
@@ -83,37 +74,26 @@ const DISTRIBUTORS_UPDATE = (id) => `/api/v1/distributors/${id}/`;
 const ORDERS_IMPORTER_LIST = "/api/v1/orders_importer/";
 const ORDERS_IMPORTER_DETAILS = (id) => `/api/v1/orders_importer/${id}/`;
 const ORDERS_IMPORTER_UPDATE = (id) => `/api/v1/orders_importer/${id}/`;
-const ORDERS_IMPORTER_TO_INVENTORY = (id) =>
-  `/api/v1/orders_importer/${id}/import/`;
+const ORDERS_IMPORTER_TO_INVENTORY = (id) => `/api/v1/orders_importer/${id}/import/`;
 const ORDERS_IMPORTER_LCSC_CSV = "/api/v1/orders_importer/lcsc_csv";
 
 const CATEGORIES_MATCHERS_LIST = "/api/v1/orders_importer/category_matcher/";
-const CATEGORIES_MATCHERS_BATCH_UPDATE =
-  "/api/v1/orders_importer/category_matcher/batch_update/";
-const CATEGORIES_MATCHERS_REMATCH =
-  "/api/v1/orders_importer/category_matcher/rematch/";
+const CATEGORIES_MATCHERS_BATCH_UPDATE = "/api/v1/orders_importer/category_matcher/batch_update/";
+const CATEGORIES_MATCHERS_REMATCH = "/api/v1/orders_importer/category_matcher/rematch/";
 
 const PROJECTS_LIST = "/api/v1/projects/";
 const PROJECT_CREATE = "/api/v1/projects/";
 const PROJECT_GET = (id) => `/api/v1/projects/${id}/`;
 const PROJECT_UPDATE = (id) => `/api/v1/projects/${id}/`;
 const PROJECT_DELETE = (id) => `/api/v1/projects/${id}/`;
-const PROJECT_ATTACHMENTS_CREATE = (projectId) =>
-  `/api/v1/projects/${projectId}/attachments/`;
-const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) =>
-  `/api/v1/projects/${projectId}/attachments/${pk}/`;
-const PROJECT_PARTS_CREATE = (projectId) =>
-  `/api/v1/projects/${projectId}/parts/`;
-const PROJECT_PARTS_UPDATE = (projectId, pk) =>
-  `/api/v1/projects/${projectId}/parts/${pk}/`;
-const PROJECT_PARTS_DELETE = (projectId, pk) =>
-  `/api/v1/projects/${projectId}/parts/${pk}/`;
-const PROJECT_EXPORT_INFOS_TXT = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/infos/`;
-const PROJECT_EXPORT_BOM_CSV = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/bom/csv/`;
-const PROJECT_EXPORT_BOM_XLSX = (projectId) =>
-  `/api/v1/projects/${projectId}/exports/bom/xlsx/`;
+const PROJECT_ATTACHMENTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/attachments/`;
+const PROJECT_ATTACHMENTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/attachments/${pk}/`;
+const PROJECT_PARTS_CREATE = (projectId) => `/api/v1/projects/${projectId}/parts/`;
+const PROJECT_PARTS_UPDATE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}/`;
+const PROJECT_PARTS_DELETE = (projectId, pk) => `/api/v1/projects/${projectId}/parts/${pk}/`;
+const PROJECT_EXPORT_INFOS_TXT = (projectId) => `/api/v1/projects/${projectId}/exports/infos/`;
+const PROJECT_EXPORT_BOM_CSV = (projectId) => `/api/v1/projects/${projectId}/exports/bom/csv/`;
+const PROJECT_EXPORT_BOM_XLSX = (projectId) => `/api/v1/projects/${projectId}/exports/bom/xlsx/`;
 
 const LABELTEMPLATE_LIST = "/api/v1/labeltemplates/";
 const LABELTEMPLATE_CREATE = "/api/v1/labeltemplates/";

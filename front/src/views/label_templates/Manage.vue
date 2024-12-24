@@ -4,13 +4,7 @@
 
     <div class="grid mt-2">
       <div class="col-2">
-        <Listbox
-          v-model="selectedTemplate"
-          :options="choicesTemplates"
-          optionLabel="name"
-          :multiple="false"
-          @change="templateChanged($event)"
-        />
+        <Listbox v-model="selectedTemplate" :options="choicesTemplates" optionLabel="name" :multiple="false" @change="templateChanged($event)" />
       </div>
 
       <div class="col-6">
@@ -37,17 +31,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.form.name.$invalid && submitted) ||
-              v$.form.name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
             ><br />
             {{ v$.form.name.required.$message }}
-            <template v-if="v$.form.name.required && v$.form.name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.form.name.required && v$.form.name.maxLength"><br /></template>
             {{ v$.form.name.maxLength.$message }}
           </small>
         </div>
@@ -75,17 +62,10 @@
               }"
               v-model="form.width"
             />
-            <small
-              v-if="
-                (v$.form.width.$invalid && submitted) ||
-                v$.form.width.$pending.$response
-              "
-              class="p-error"
+            <small v-if="(v$.form.width.$invalid && submitted) || v$.form.width.$pending.$response" class="p-error"
               ><br />
               {{ v$.form.width.required.$message }}
-              <template v-if="v$.form.width.required && v$.form.width.minValue"
-                ><br
-              /></template>
+              <template v-if="v$.form.width.required && v$.form.width.minValue"><br /></template>
               {{ v$.form.width.minValue.$message }}
             </small>
           </div>
@@ -112,18 +92,10 @@
               }"
               v-model="form.height"
             />
-            <small
-              v-if="
-                (v$.form.height.$invalid && submitted) ||
-                v$.form.height.$pending.$response
-              "
-              class="p-error"
+            <small v-if="(v$.form.height.$invalid && submitted) || v$.form.height.$pending.$response" class="p-error"
               ><br />
               {{ v$.form.height.required.$message }}
-              <template
-                v-if="v$.form.height.required && v$.form.height.minValue"
-                ><br
-              /></template>
+              <template v-if="v$.form.height.required && v$.form.height.minValue"><br /></template>
               {{ v$.form.height.minValue.$message }}
             </small>
           </div>
@@ -150,12 +122,7 @@
             }"
             rows="10"
           />
-          <small
-            v-if="
-              (v$.form.template.$invalid && submitted) ||
-              v$.form.template.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.form.template.$invalid && submitted) || v$.form.template.$pending.$response" class="p-error"
             ><br />
             {{ v$.form.template.required.$message }}
           </small>
@@ -182,12 +149,7 @@
             }"
             rows="5"
           />
-          <small
-            v-if="
-              (v$.form.text_template.$invalid && submitted) ||
-              v$.form.text_template.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.form.text_template.$invalid && submitted) || v$.form.text_template.$pending.$response" class="p-error"
             ><br />
             {{ v$.form.text_template.required.$message }}
           </small>
@@ -195,37 +157,21 @@
 
         <div class="mt-2">
           <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
-          <template
-            v-if="
-              this.selectedTemplate &&
-              'id' in this.selectedTemplate &&
-              this.selectedTemplate.id != 0
-            "
-          >
-            <PvButton
-              label="Delete"
-              class="p-button-danger ml-2"
-              @click.prevent="deleteItem"
-            />
+          <template v-if="this.selectedTemplate && 'id' in this.selectedTemplate && this.selectedTemplate.id != 0">
+            <PvButton label="Delete" class="p-button-danger ml-2" @click.prevent="deleteItem" />
           </template>
         </div>
       </div>
 
       <div class="col-4">
         The template is a JSON as string, you can look at
-        <a
-          href="https://pdfme.com/docs/getting-started#sample-template"
-          target="_blank"
-          >this doc</a
-        >
+        <a href="https://pdfme.com/docs/getting-started#sample-template" target="_blank">this doc</a>
         for the exact schema syntax.<br />
         Please note that, currently, only two elements can use substitutions.<br />
-        The QrCode element needs to be called "qrcode", and the description
-        "description", the name will stays as the plain name.<br />
+        The QrCode element needs to be called "qrcode", and the description "description", the name will stays as the plain name.<br />
         The following list will show available substitutions.<br />
         You can add other fixed elements if wanted.<br /><br /><br />
-        The following substitutions for the Description Template is available,
-        depending if it's a Storage Location or Part:
+        The following substitutions for the Description Template is available, depending if it's a Storage Location or Part:
         <ul>
           <li>
             <code>{name}</code> Name of the element
@@ -239,10 +185,7 @@
             <code>{qrcode}</code> QrCode of the element
             <small>(storage, part)</small>
           </li>
-          <li>
-            <code>{category_name}</code> Name of the parent category (if any) of
-            the element <small>(storage)</small>
-          </li>
+          <li><code>{category_name}</code> Name of the parent category (if any) of the element <small>(storage)</small></li>
         </ul>
       </div>
     </div>

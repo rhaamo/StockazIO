@@ -6,30 +6,18 @@
 
     <template v-if="isLoaded && !cannotLoad">
       <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
-        <template #start
-          ><router-link :to="{ name: 'home' }" class="no-underline"
-            >StockazIO</router-link
-          ></template
-        >
+        <template #start><router-link :to="{ name: 'home' }" class="no-underline">StockazIO</router-link></template>
         <template #end>
           <form role="search" @submit.prevent="doSearch">
             <div class="p-inputgroup">
-              <InputText
-                v-model="searchTerm"
-                placeholder="Keyword"
-                class="mr-2"
-              />
+              <InputText v-model="searchTerm" placeholder="Keyword" class="mr-2" />
               <PvButton type="submit" label="Search" />
             </div>
           </form>
         </template>
       </Menubar>
       <Menubar :model="menuItemsLoggedOut" v-else>
-        <template #start
-          ><router-link :to="{ name: 'home' }" class="no-underline"
-            >StockazIO</router-link
-          ></template
-        >
+        <template #start><router-link :to="{ name: 'home' }" class="no-underline">StockazIO</router-link></template>
         <template #end> </template>
       </Menubar>
 
@@ -54,15 +42,11 @@
     </template>
 
     <template v-if="!isLoaded && !cannotLoad">
-      <div id="preloadScreen">
-        Preloading in progress.<br /><ProgressSpinner />
-      </div>
+      <div id="preloadScreen">Preloading in progress.<br /><ProgressSpinner /></div>
     </template>
 
     <template v-if="!isLoaded && cannotLoad">
-      <div id="preloadScreen">
-        An error occured and the application cannot load.
-      </div>
+      <div id="preloadScreen">An error occured and the application cannot load.</div>
     </template>
   </div>
 </template>
@@ -92,8 +76,7 @@ export default {
   },
   created() {
     logger.default.info("Doing preliminary app initialization...");
-    let defaultServerUrl =
-      process.env.VUE_APP_SERVER_URL || this.serverStore.defaultUrl;
+    let defaultServerUrl = process.env.VUE_APP_SERVER_URL || this.serverStore.defaultUrl;
     logger.default.info("Detected server url:", defaultServerUrl);
     this.serverStore.setServerUrl(defaultServerUrl);
 
@@ -104,10 +87,7 @@ export default {
           // Check token and try to log user if found
           this.userStore.checkOauthToken(),
           // Try to get or create oauth2 app and token thingy
-          this.oauthStore.getOrCreateApp(
-            this.oauthStore.getClientId,
-            this.oauthStore.getClientSecret
-          ),
+          this.oauthStore.getOrCreateApp(this.oauthStore.getClientId, this.oauthStore.getClientSecret),
         ])
           .then(() => {
             logger.default.info("Initialization done.");
@@ -376,10 +356,7 @@ export default {
       if (this.currentUser) {
         return true;
       }
-      if (
-        this.$route.name === "public-parts" ||
-        this.$route.name === "public-parts-category-list"
-      ) {
+      if (this.$route.name === "public-parts" || this.$route.name === "public-parts-category-list") {
         return true;
       }
       return false;
@@ -432,11 +409,7 @@ export default {
       });
     },
     registerUrlHandler() {
-      navigator.registerProtocolHandler(
-        "web+stockazio",
-        `${window.location.origin}/urlhandler?q=%s`,
-        "StockazIO handler"
-      );
+      navigator.registerProtocolHandler("web+stockazio", `${window.location.origin}/urlhandler?q=%s`, "StockazIO handler");
     },
     doSearch() {
       let search = this.searchTerm;
@@ -446,35 +419,25 @@ export default {
         // old url handler (location)
         let str = search.split("/");
         let uuid = str[str.length - 1];
-        this.$router
-          .replace({ name: "parts-list", query: { storage_uuid: uuid } })
-          .catch(() => {});
+        this.$router.replace({ name: "parts-list", query: { storage_uuid: uuid } }).catch(() => {});
       } else if (search.startsWith("web+stockazio:storageLocation,")) {
         // new url handler (location)
         let str = search.split(",");
         let uuid = str[str.length - 1];
-        this.$router
-          .replace({ name: "parts-list", query: { storage_uuid: uuid } })
-          .catch(() => {});
+        this.$router.replace({ name: "parts-list", query: { storage_uuid: uuid } }).catch(() => {});
       } else if (search.startsWith("stockazio://part/")) {
         // old url handler (part)
         let str = search.split("/");
         let uuid = str[str.length - 1];
-        this.$router
-          .replace({ name: "parts-details", params: { partId: uuid } })
-          .catch(() => {});
+        this.$router.replace({ name: "parts-details", params: { partId: uuid } }).catch(() => {});
       } else if (search.startsWith("web+stockazio:part,")) {
         // new url handler (part)
         let str = search.split(",");
         let uuid = str[str.length - 1];
-        this.$router
-          .replace({ name: "parts-details", params: { partId: uuid } })
-          .catch(() => {});
+        this.$router.replace({ name: "parts-details", params: { partId: uuid } }).catch(() => {});
       } else {
         // keyword search
-        this.$router
-          .replace({ name: "parts-list", query: { q: search } })
-          .catch(() => {});
+        this.$router.replace({ name: "parts-list", query: { q: search } }).catch(() => {});
       }
     },
   },

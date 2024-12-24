@@ -24,17 +24,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.name.$invalid && submitted) ||
-              v$.item.name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
             {{ v$.item.name.maxLength.$message }}
           </small>
 
@@ -58,13 +51,7 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.description.$invalid && submitted) ||
-              v$.item.description.$pending.$response
-            "
-            class="p-error"
-          >
+          <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error">
             {{ v$.item.description.maxLength.$message }}
           </small>
 
@@ -90,19 +77,11 @@
             }"
             :accept="allowedUploadTypes"
           />
-          <small
-            v-if="
-              (v$.item.picture.$invalid && submitted) ||
-              v$.item.picture.$pending.$response
-            "
-            class="p-error"
-          >
+          <small v-if="(v$.item.picture.$invalid && submitted) || v$.item.picture.$pending.$response" class="p-error">
             {{ v$.item.picture.required.$message }}
           </small>
 
-          <template
-            v-if="mode === 'edit' && typeof item.hasPicture === 'string'"
-          >
+          <template v-if="mode === 'edit' && typeof item.hasPicture === 'string'">
             <br />
             Actual picture
             <a :href="item.hasPicture" target="_blank">file</a>.
@@ -164,10 +143,7 @@ export default {
   computed: {
     ...mapState(useServerStore, {
       allowedUploadTypes: (store) => {
-        let types = store.settings.partAttachmentAllowedTypes || [
-          "image/png",
-          "image/jpeg",
-        ];
+        let types = store.settings.partAttachmentAllowedTypes || ["image/png", "image/jpeg"];
         return types.join(", ");
       },
     }),
@@ -205,10 +181,7 @@ export default {
           this.dialogRef.close({ finished: true });
         })
         .catch((err) => {
-          let errMsg =
-            "name" in err.response.data
-              ? err.response.data.name[0]
-              : "Save failed";
+          let errMsg = "name" in err.response.data ? err.response.data.name[0] : "Save failed";
 
           this.toast.add({
             severity: "error",
@@ -242,10 +215,7 @@ export default {
           this.dialogRef.close({ finished: true });
         })
         .catch((err) => {
-          let errMsg =
-            "name" in err.response.data
-              ? err.response.data.name[0]
-              : "Save failed";
+          let errMsg = "name" in err.response.data ? err.response.data.name[0] : "Save failed";
 
           this.toast.add({
             severity: "error",

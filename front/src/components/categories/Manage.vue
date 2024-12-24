@@ -24,23 +24,14 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.name.$invalid && submitted) ||
-              v$.item.name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
             {{ v$.item.name.maxLength.$message }}
           </small>
 
-          <div class="mt-4" v-if="parent">
-            Parent category: {{ parent.name }}.
-          </div>
+          <div class="mt-4" v-if="parent">Parent category: {{ parent.name }}.</div>
 
           <div class="mt-4">
             <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />

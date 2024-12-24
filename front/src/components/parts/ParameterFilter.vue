@@ -3,35 +3,16 @@
     <div class="grid">
       <div class="col-4">
         <label for="name" class="block">Name</label>
-        <Dropdown
-          inputId="name"
-          v-model="item.name"
-          class="w-full"
-          :options="choicesNames"
-          optionLabel="text"
-          :filter="true"
-        />
-        <small
-          v-if="v$.item.name.$invalid || v$.item.name.$pending.$response"
-          class="p-error"
-        >
+        <Dropdown inputId="name" v-model="item.name" class="w-full" :options="choicesNames" optionLabel="text" :filter="true" />
+        <small v-if="v$.item.name.$invalid || v$.item.name.$pending.$response" class="p-error">
           {{ v$.item.name.required.$message }}
         </small>
       </div>
 
       <div class="col-2">
         <label for="mode" class="block">Mode</label>
-        <Dropdown
-          inputId="mode"
-          v-model="item.mode"
-          class="w-full"
-          :options="choicesModes"
-          optionLabel="text"
-        />
-        <small
-          v-if="v$.item.mode.$invalid || v$.item.mode.$pending.$response"
-          class="p-error"
-        >
+        <Dropdown inputId="mode" v-model="item.mode" class="w-full" :options="choicesModes" optionLabel="text" />
+        <small v-if="v$.item.mode.$invalid || v$.item.mode.$pending.$response" class="p-error">
           {{ v$.item.mode.required.$message }}
         </small>
       </div>
@@ -57,10 +38,7 @@
             'w-full': true,
           }"
         />
-        <small
-          v-if="v$.item.value.$invalid || v$.item.value.$pending.$response"
-          class="p-error"
-        >
+        <small v-if="v$.item.value.$invalid || v$.item.value.$pending.$response" class="p-error">
           {{ v$.item.value.required.$message }}
         </small>
       </div>

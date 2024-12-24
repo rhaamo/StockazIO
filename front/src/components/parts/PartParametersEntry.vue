@@ -22,17 +22,10 @@
             'w-10': true,
           }"
         />
-        <small
-          v-if="
-            (v$.item.name.$invalid && submitted) ||
-            v$.item.name.$pending.$response
-          "
-          class="p-error"
+        <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.name.required.$message }}
-          <template v-if="v$.item.name.required && v$.item.name.maxLength"
-            ><br
-          /></template>
+          <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
           {{ v$.item.name.maxLength.$message }}
         </small>
       </div>
@@ -58,13 +51,7 @@
             'w-10': true,
           }"
         />
-        <small
-          v-if="
-            (v$.item.description.$invalid && submitted) ||
-            v$.item.description.$pending.$response
-          "
-          class="p-error"
-        >
+        <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error">
           {{ v$.item.description.maxLength.$message }}
         </small>
       </div>
@@ -92,32 +79,17 @@
             'w-10': true,
           }"
         />
-        <small
-          v-if="
-            (v$.item.value.$invalid && submitted) ||
-            v$.item.value.$pending.$response
-          "
-          class="p-error"
+        <small v-if="(v$.item.value.$invalid && submitted) || v$.item.value.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.value.required.$message }}
-          <template v-if="v$.item.value.required && v$.item.value.maxLength"
-            ><br
-          /></template>
+          <template v-if="v$.item.value.required && v$.item.value.maxLength"><br /></template>
           {{ v$.item.value.maxLength.$message }}
         </small>
       </div>
 
       <div class="col-6">
         <label for="unit" class="block">Unit</label>
-        <Dropdown
-          inputId="unit"
-          v-model="item.unit"
-          class="w-10"
-          :options="choicesPartUnit"
-          optionLabel="text"
-          optionValue="value"
-          :filter="true"
-        />
+        <Dropdown inputId="unit" v-model="item.unit" class="w-10" :options="choicesPartUnit" optionLabel="text" optionValue="value" :filter="true" />
       </div>
     </div>
 

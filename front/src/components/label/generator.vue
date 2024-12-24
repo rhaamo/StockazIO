@@ -4,15 +4,11 @@
       <div class="col-4">
         <div>
           <template v-if="items && items.length === 1">
-            <template v-if="kind === 'storage'"
-              >Storage location infos:<br
-            /></template>
+            <template v-if="kind === 'storage'">Storage location infos:<br /></template>
             <template v-else>Item infos:<br /></template>
             <ul>
               <li>Name: {{ items[0].name }}</li>
-              <li v-if="items[0].category">
-                Category: {{ items[0].category.name }}
-              </li>
+              <li v-if="items[0].category">Category: {{ items[0].category.name }}</li>
               <li>Description: {{ items[0].description || "none" }}</li>
               <li>UUID: {{ items[0].uuid }}</li>
               <li>qrCode content: {{ qrCodeUri(items[0]) }}</li>
@@ -43,27 +39,15 @@
 
         <div class="mt-5 text-sm">
           <p>You can use the PDF on the right to print corresponding labels.</p>
-          <p>
-            Do not hesitate to download the PDF and open it natively if the
-            print preview is showing a bad layout.
-          </p>
-          <p>
-            When printing, make sure to select the right template for the used
-            label paper.
-          </p>
+          <p>Do not hesitate to download the PDF and open it natively if the print preview is showing a bad layout.</p>
+          <p>When printing, make sure to select the right template for the used label paper.</p>
         </div>
       </div>
 
       <div class="col-8">
         <div v-if="template && pdf">
-          <PvButton @click.prevent="printPdf" label="Print Labels PDF">
-          </PvButton>
-          <PvButton
-            class="ml-2"
-            @click.prevent="downloadPdf"
-            label="Download PDF"
-          >
-          </PvButton>
+          <PvButton @click.prevent="printPdf" label="Print Labels PDF"> </PvButton>
+          <PvButton class="ml-2" @click.prevent="downloadPdf" label="Download PDF"> </PvButton>
           <VuePdfEmbed class="mt-2" ref="pdfViewer" :source="pdf" />
         </div>
       </div>
@@ -114,18 +98,9 @@ export default {
     doSubstitutions(item) {
       let text = this.template.text_template;
       text = item && item.name ? text.replace("{name}", item.name) : text;
-      text =
-        item && item.description
-          ? text.replace("{description}", item.description)
-          : text.replace("{description}", ""); // description is optional
-      text =
-        item && item.uuid
-          ? text.replace("{qrcode}", this.qrCodeUri(item))
-          : text;
-      text =
-        item && item.category_name
-          ? text.replace("{category_name}", item.category_name)
-          : text.replace("{category_name}", ""); // category_name is optional
+      text = item && item.description ? text.replace("{description}", item.description) : text.replace("{description}", ""); // description is optional
+      text = item && item.uuid ? text.replace("{qrcode}", this.qrCodeUri(item)) : text;
+      text = item && item.category_name ? text.replace("{category_name}", item.category_name) : text.replace("{category_name}", ""); // category_name is optional
       return text;
     },
     qrCodeUri(item) {
@@ -140,9 +115,7 @@ export default {
     generatePdf() {
       const template = {
         basePdf: this.template.base_pdf,
-        schemas: Array(this.items.length).fill(
-          JSON.parse(this.template.template)
-        ),
+        schemas: Array(this.items.length).fill(JSON.parse(this.template.template)),
       };
       let inputs = [];
       this.items.forEach((cb) => {

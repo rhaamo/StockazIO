@@ -30,17 +30,10 @@
                 }"
                 @blur="checkIfPartExists"
               />
-              <small
-                v-if="
-                  (v$.form.name.$invalid && submitted) ||
-                  v$.form.name.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.name.required.$message }}
-                <template v-if="v$.form.name.required && v$.form.name.maxLength"
-                  ><br
-                /></template>
+                <template v-if="v$.form.name.required && v$.form.name.maxLength"><br /></template>
                 {{ v$.form.name.maxLength.$message }}
               </small>
               <div v-if="partsExists && partsExists.length">
@@ -72,12 +65,7 @@
                 }"
                 v-model="form.description"
               />
-              <small
-                v-if="
-                  (v$.form.description.$invalid && submitted) ||
-                  v$.form.description.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.description.$invalid && submitted) || v$.form.description.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.description.maxLength.$message }}
               </small>
@@ -103,12 +91,7 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.form.comment.$invalid && submitted) ||
-                  v$.form.comment.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.comment.$invalid && submitted) || v$.form.comment.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.comment.maxLength.$message }}
               </small>
@@ -136,17 +119,10 @@
                   }"
                   v-model="form.qty"
                 />
-                <small
-                  v-if="
-                    (v$.form.qty.$invalid && submitted) ||
-                    v$.form.qty.$pending.$response
-                  "
-                  class="p-error"
+                <small v-if="(v$.form.qty.$invalid && submitted) || v$.form.qty.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.qty.required.$message }}
-                  <template v-if="v$.form.qty.required && v$.form.qty.minValue"
-                    ><br
-                  /></template>
+                  <template v-if="v$.form.qty.required && v$.form.qty.minValue"><br /></template>
                   {{ v$.form.qty.minValue.$message }}
                 </small>
               </div>
@@ -172,18 +148,10 @@
                   }"
                   v-model="form.qty_min"
                 />
-                <small
-                  v-if="
-                    (v$.form.qty_min.$invalid && submitted) ||
-                    v$.form.qty_min.$pending.$response
-                  "
-                  class="p-error"
+                <small v-if="(v$.form.qty_min.$invalid && submitted) || v$.form.qty_min.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.qty_min.required.$message }}
-                  <template
-                    v-if="v$.form.qty_min.required && v$.form.qty_min.minValue"
-                    ><br
-                  /></template>
+                  <template v-if="v$.form.qty_min.required && v$.form.qty_min.minValue"><br /></template>
                   {{ v$.form.qty_min.minValue.$message }}
                 </small>
               </div>
@@ -208,12 +176,7 @@
                 }"
                 v-model="form.sheet_status"
               />
-              <small
-                v-if="
-                  (v$.form.sheet_status.$invalid && submitted) ||
-                  v$.form.sheet_status.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.sheet_status.$invalid && submitted) || v$.form.sheet_status.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.sheet_status.maxLength.$message }}
               </small>
@@ -239,12 +202,7 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.form.condition.$invalid && submitted) ||
-                  v$.form.condition.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.condition.$invalid && submitted) || v$.form.condition.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.condition.maxLength.$message }}
               </small>
@@ -269,12 +227,7 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.form.production_remarks.$invalid && submitted) ||
-                  v$.form.production_remarks.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.production_remarks.$invalid && submitted) || v$.form.production_remarks.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.production_remarks.maxLength.$message }}
               </small>
@@ -299,12 +252,7 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.form.internal_pn.$invalid && submitted) ||
-                  v$.form.internal_pn.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.internal_pn.$invalid && submitted) || v$.form.internal_pn.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.internal_pn.maxLength.$message }}
               </small>
@@ -389,9 +337,7 @@
             </div>
 
             <div class="mb-3">
-              <label for="storage_location" class="block"
-                >Storage Location</label
-              >
+              <label for="storage_location" class="block">Storage Location</label>
               <TreeSelect
                 inputId="storage_location"
                 placeholder="A box under the bench or some drawer ?"
@@ -419,11 +365,7 @@
             </div>
 
             <div class="mb-3">
-              <PvButton
-                label="Update"
-                class="p-button-primary"
-                @click.prevent="submit(!v$.$invalid)"
-              />
+              <PvButton label="Update" class="p-button-primary" @click.prevent="submit(!v$.$invalid)" />
             </div>
           </div>
           <div class="col-6">
@@ -440,11 +382,7 @@
                 <Divider />
                 <div class="grid">
                   <div class="col-3">
-                    <PvButton
-                      @click.prevent="addPartParameter($event)"
-                      class="p-button-help"
-                      label="add item"
-                    />
+                    <PvButton @click.prevent="addPartParameter($event)" class="p-button-help" label="add item" />
                   </div>
                   <div class="col-9">
                     <Dropdown
@@ -482,29 +420,17 @@
 
                 <Divider />
                 <div>
-                  <PvButton
-                    @click.prevent="addManufacturer($event)"
-                    class="p-button-help"
-                    label="add item"
-                  />
+                  <PvButton @click.prevent="addManufacturer($event)" class="p-button-help" label="add item" />
                 </div>
               </TabPanel>
 
               <TabPanel header="Distributors">
                 <div v-for="(_, i) in form.distributors_sku" :key="i">
-                  <DistributorsSkuEntry
-                    v-model:item="form.distributors_sku[i]"
-                    :submitted="submitted"
-                    @deleteItem="deleteDistributor($event, i)"
-                  />
+                  <DistributorsSkuEntry v-model:item="form.distributors_sku[i]" :submitted="submitted" @deleteItem="deleteDistributor($event, i)" />
                 </div>
 
                 <Divider />
-                <PvButton
-                  @click.prevent="addDistributor($event)"
-                  class="p-button-help"
-                  label="add item"
-                />
+                <PvButton @click.prevent="addDistributor($event)" class="p-button-help" label="add item" />
               </TabPanel>
             </TabView>
           </div>
@@ -731,12 +657,8 @@ export default {
         internal_part_number: this.form.internal_pn,
 
         part_unit: this.form.part_unit,
-        category: this.form.category
-          ? Object.keys(this.form.category)[0]
-          : null,
-        storage: this.form.storage_location
-          ? Object.keys(this.form.storage_location)[0]
-          : null,
+        category: this.form.category ? Object.keys(this.form.category)[0] : null,
+        storage: this.form.storage_location ? Object.keys(this.form.storage_location)[0] : null,
         footprint: this.form.footprint,
 
         distributors_sku: this.form.distributors_sku.map((x) => {
@@ -768,21 +690,10 @@ export default {
             life: 5000,
           });
 
-          if (
-            Object.keys(this.origCategory)[0] != Object.keys(newCategoryId)[0]
-          ) {
-            logger.default.info(
-              "old category: ",
-              Object.keys(this.origCategory)[0],
-              " new: ",
-              Object.keys(newCategoryId)[0]
-            );
-            this.preloadsStore.decrementCategoryPartsCount(
-              Object.keys(this.origCategory)[0]
-            );
-            this.preloadsStore.incrementCategoryPartsCount(
-              Object.keys(newCategoryId)[0]
-            );
+          if (Object.keys(this.origCategory)[0] != Object.keys(newCategoryId)[0]) {
+            logger.default.info("old category: ", Object.keys(this.origCategory)[0], " new: ", Object.keys(newCategoryId)[0]);
+            this.preloadsStore.decrementCategoryPartsCount(Object.keys(this.origCategory)[0]);
+            this.preloadsStore.incrementCategoryPartsCount(Object.keys(newCategoryId)[0]);
             this.origCategory = { [Object.keys(newCategoryId)[0]]: true };
           }
         })
@@ -814,10 +725,7 @@ export default {
           if (err.response.status === 404) {
             logger.default.info("Autocompleter said part not found");
           } else {
-            logger.default.error(
-              "Got an error from the autocompleter",
-              err.message
-            );
+            logger.default.error("Got an error from the autocompleter", err.message);
           }
           this.partsExists = [];
         });
@@ -856,12 +764,7 @@ export default {
             templates: {
               header: () => {
                 if (part.private) {
-                  return [
-                    h("h3", [
-                      h("i", { class: "fa fa-lock mr-1" }),
-                      h("span", part.name),
-                    ]),
-                  ];
+                  return [h("h3", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
                 } else {
                   return [h("h3", part.name)];
                 }
@@ -952,17 +855,15 @@ export default {
           this.form.private = this.part.private;
           this.form.production_remarks = this.part.production_remarks;
           this.form.internal_pn = this.part.internal_part_number;
-          this.form.part_parameters_value = this.part.part_parameters_value.map(
-            (x) => {
-              return {
-                id: x.id,
-                name: x.name,
-                description: x.description,
-                value: x.value,
-                unit: x.unit ? x.unit.id : null,
-              };
-            }
-          );
+          this.form.part_parameters_value = this.part.part_parameters_value.map((x) => {
+            return {
+              id: x.id,
+              name: x.name,
+              description: x.description,
+              value: x.value,
+              unit: x.unit ? x.unit.id : null,
+            };
+          });
           this.form.manufacturers_sku = this.part.manufacturers_sku.map((x) => {
             return {
               id: x.id,
@@ -970,9 +871,7 @@ export default {
               manufacturer: {
                 text: x.manufacturer ? x.manufacturer.name : null,
                 value: x.manufacturer ? x.manufacturer.id : null,
-                datasheet_url: x.manufacturer
-                  ? x.manufacturer.datasheet_url
-                  : null,
+                datasheet_url: x.manufacturer ? x.manufacturer.datasheet_url : null,
               },
               datasheet_url: x.datasheet_url,
             };
@@ -984,25 +883,15 @@ export default {
               distributor: {
                 text: x.distributor.name,
                 value: x.distributor.id,
-                datasheet_url: x.distributor
-                  ? x.distributor.datasheet_url
-                  : null,
+                datasheet_url: x.distributor ? x.distributor.datasheet_url : null,
               },
               datasheet_url: x.datasheet_url,
             };
           });
-          this.form.part_unit = this.part.part_unit
-            ? this.part.part_unit.id
-            : null;
-          this.form.category = this.part.category
-            ? { [this.part.category.id]: true }
-            : null;
-          this.form.storage_location = this.part.storage
-            ? { [this.part.storage.id]: true }
-            : null;
-          this.form.footprint = this.part.footprint
-            ? this.part.footprint.id
-            : null;
+          this.form.part_unit = this.part.part_unit ? this.part.part_unit.id : null;
+          this.form.category = this.part.category ? { [this.part.category.id]: true } : null;
+          this.form.storage_location = this.part.storage ? { [this.part.storage.id]: true } : null;
+          this.form.footprint = this.part.footprint ? this.part.footprint.id : null;
           this.origCategory = this.form.category;
         })
         .catch((err) => {

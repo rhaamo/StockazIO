@@ -3,11 +3,7 @@ require("@rushstack/eslint-patch/modern-module-resolution");
 
 module.exports = {
   root: true,
-  extends: [
-    "plugin:vue/vue3-essential",
-    "eslint:recommended",
-    "@vue/eslint-config-prettier",
-  ],
+  extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/eslint-config-prettier"],
   parserOptions: {
     ecmaVersion: "latest",
   },
@@ -19,5 +15,7 @@ module.exports = {
     "vue/multi-word-component-names": 1,
     // bleh: https://github.com/vuejs/eslint-plugin-vue/issues/1371
     "vue/no-mutating-props": 0,
+    "max-len": ["error", { code: 150 }],
+    "prettier/prettier": ["error", { printWidth: 150 }],
   },
 };

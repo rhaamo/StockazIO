@@ -25,18 +25,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.part_name.$invalid && submitted) ||
-              v$.item.part_name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.part_name.$invalid && submitted) || v$.item.part_name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.part_name.required.$message }}
-            <template
-              v-if="v$.item.part_name.required && v$.item.part_name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.part_name.required && v$.item.part_name.maxLength"><br /></template>
             {{ v$.item.part_name.maxLength.$message }}
           </small>
         </div>
@@ -66,17 +58,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.qty.$invalid && submitted) ||
-              v$.item.qty.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.qty.$invalid && submitted) || v$.item.qty.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.qty.required.$message }}
-            <template v-if="v$.item.qty.required && v$.item.qty.minVal"
-              ><br
-            /></template>
+            <template v-if="v$.item.qty.required && v$.item.qty.minVal"><br /></template>
             {{ v$.item.qty.minVal.$message }}
           </small>
         </div>
@@ -105,12 +90,7 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.notes.$invalid && submitted) ||
-              v$.item.notes.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.notes.$invalid && submitted) || v$.item.notes.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.notes.maxLength.$message }}
           </small>

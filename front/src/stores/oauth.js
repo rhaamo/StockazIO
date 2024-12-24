@@ -59,8 +59,7 @@ export const useOauthStore = defineStore("oauth", {
       return Axios.post("/oauth/apps/", {
         name: `stockazio_front_${new Date().toISOString()}`,
         redirect_uris: REDIRECT_URI,
-        scopes:
-          "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
+        scopes: "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
       })
         .then((app) => ({
           clientId: app.data.client_id,
@@ -76,8 +75,7 @@ export const useOauthStore = defineStore("oauth", {
         client_id: cid,
         client_secret: csecret,
         grant_type: "password",
-        scope:
-          "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
+        scope: "read write read:check_oauth_token read:app read:parts write:parts read:projects write:projects",
         username: uname,
         password: upass,
       });

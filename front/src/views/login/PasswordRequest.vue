@@ -18,27 +18,15 @@
                 }"
                 placeholder="Enter your email"
               />
-              <small
-                v-if="
-                  (v$.email.$invalid && submitted) ||
-                  v$.email.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.email.required.$message }}
-                <template v-if="v$.email.required && v$.email.email"
-                  ><br
-                /></template>
+                <template v-if="v$.email.required && v$.email.email"><br /></template>
                 {{ v$.email.email.$message }}
               </small>
             </div>
 
-            <PvButton
-              label="Request reset link"
-              icon="pi pi-user"
-              class="w-7"
-              type="submit"
-            ></PvButton>
+            <PvButton label="Request reset link" icon="pi pi-user" class="w-7" type="submit"></PvButton>
           </div>
         </form>
       </div>
@@ -92,10 +80,7 @@ export default {
           this.$router.push({ name: "home" });
         })
         .catch((error) => {
-          logger.default.error(
-            "cannot request new password reset link:",
-            error
-          );
+          logger.default.error("cannot request new password reset link:", error);
           this.toast.add({
             severity: "error",
             summary: "Password Reset",

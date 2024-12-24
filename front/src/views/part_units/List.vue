@@ -16,30 +16,20 @@
         <template #header>
           <div class="grid">
             <div class="col-2">
-              <PvButton
-                label="Add a part unit"
-                @click.prevent="showAddPartUnitModal"
-              />
+              <PvButton label="Add a part unit" @click.prevent="showAddPartUnitModal" />
             </div>
 
             <div class="col-2 col-offset-7">
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
+                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
               </span>
             </div>
           </div>
         </template>
 
         <Column field="name" header="Name" :sortable="true"></Column>
-        <Column
-          field="short_name"
-          header="Short name"
-          :sortable="true"
-        ></Column>
+        <Column field="short_name" header="Short name" :sortable="true"></Column>
         <Column field="description" header="Description"></Column>
 
         <Column headerStyle="width: 6.3em">

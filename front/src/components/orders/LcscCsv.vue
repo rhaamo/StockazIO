@@ -24,13 +24,7 @@
             }"
             :accept="allowedUploadTypes"
           />
-          <small
-            v-if="
-              (v$.item.file.$invalid && submitted) ||
-              v$.item.file.$pending.$response
-            "
-            class="p-error"
-          >
+          <small v-if="(v$.item.file.$invalid && submitted) || v$.item.file.$pending.$response" class="p-error">
             {{ v$.item.file.required.$message }}
           </small>
         </div>

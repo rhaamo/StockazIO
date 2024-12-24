@@ -16,19 +16,13 @@
         <template #header>
           <div class="grid">
             <div class="col-2">
-              <PvButton
-                label="Add a parameter unit"
-                @click.prevent="showAddParametersUnitsModal"
-              />
+              <PvButton label="Add a parameter unit" @click.prevent="showAddParametersUnitsModal" />
             </div>
 
             <div class="col-2 col-offset-7">
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
+                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
               </span>
             </div>
           </div>

@@ -4,13 +4,7 @@
 
     <div class="grid mt-2">
       <div class="col-2">
-        <Listbox
-          v-model="selectedCategory"
-          :options="footprintsCategories"
-          optionLabel="name"
-          :multiple="false"
-          @change="categoryChanged($event)"
-        />
+        <Listbox v-model="selectedCategory" :options="footprintsCategories" optionLabel="name" :multiple="false" @change="categoryChanged($event)" />
       </div>
 
       <div class="col-6 col-offset-1">
@@ -18,23 +12,11 @@
           <PvButton label="Add category" @click="showAddCategory($event)" />
 
           <template v-if="selectedCategory">
-            <PvButton
-              label="Edit category"
-              class="p-button-secondary ml-2"
-              @click="showEditCategory($event, selectedCategory)"
-            />
+            <PvButton label="Edit category" class="p-button-secondary ml-2" @click="showEditCategory($event, selectedCategory)" />
 
-            <PvButton
-              label="Delete category"
-              class="p-button-danger ml-2"
-              @click="deleteCategory($event, selectedCategory)"
-            />
+            <PvButton label="Delete category" class="p-button-danger ml-2" @click="deleteCategory($event, selectedCategory)" />
 
-            <PvButton
-              label="Add footprint"
-              class="ml-4"
-              @click.prevent="showAddFootprint($event)"
-            />
+            <PvButton label="Add footprint" class="ml-4" @click.prevent="showAddFootprint($event)" />
           </template>
         </div>
 
@@ -53,12 +35,7 @@
           >
             <Column header="Picture">
               <template #body="slotProps">
-                <PvImage
-                  preview
-                  :src="slotProps.data.picture_mini"
-                  :alt="slotProps.data.picture"
-                  class="product-image"
-                />
+                <PvImage preview :src="slotProps.data.picture_mini" :alt="slotProps.data.picture" class="product-image" />
               </template>
             </Column>
 
@@ -155,8 +132,7 @@ export default {
         .getFootprintsCategories()
         .then((val) => {
           this.footprintsCategories = val.data;
-          this.selectedCategory =
-            val.data && val.data.length > 0 ? val.data[0] : null;
+          this.selectedCategory = val.data && val.data.length > 0 ? val.data[0] : null;
           this.categoryChanged({ value: true });
         })
         .catch((err) => {
@@ -247,10 +223,7 @@ export default {
                 detail: "An error occured, please try again later",
                 life: 5000,
               });
-              logger.default.error(
-                "Error with footprint category deletion",
-                err
-              );
+              logger.default.error("Error with footprint category deletion", err);
               this.fetchFootprintsCategories();
             });
         },

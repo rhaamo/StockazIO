@@ -128,10 +128,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadSidebar() {
       // Preload sidebar
       let dateRefreshed = this.lastUpdate.categories;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Categories do not need reload");
         return;
@@ -150,10 +147,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadFootprints() {
       // Preload footprints
       let dateRefreshed = this.lastUpdate.footprints;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Footprints do not need reload");
         return;
@@ -172,10 +166,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadStorages() {
       // Preload storages
       let dateRefreshed = this.lastUpdate.storages;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Storages do not need reload");
         return;
@@ -194,10 +185,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadParametersUnits() {
       // Preload units
       let dateRefreshed = this.lastUpdate.parameters_units;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Parameters Units do not need reload");
         return;
@@ -210,19 +198,13 @@ export const usePreloadsStore = defineStore("preloads", {
           logger.default.info("Parameters Units preloaded");
         })
         .catch((error) => {
-          logger.default.error(
-            "Cannot preload parameters units",
-            error.message
-          );
+          logger.default.error("Cannot preload parameters units", error.message);
         });
     },
     preloadPartUnits() {
       // Preload part-units
       let dateRefreshed = this.lastUpdate.part_units;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Part Units do not need reload");
         return;
@@ -241,10 +223,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadManufacturers() {
       // Preload manufacturers
       let dateRefreshed = this.lastUpdate.manufacturers;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Manufacturers do not need reload");
         return;
@@ -263,10 +242,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadDistributors() {
       // Preload distributors
       let dateRefreshed = this.lastUpdate.distributors;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Distributors do not need reload");
         return;
@@ -285,10 +261,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadLabelTemplates() {
       // Preload Label Templates
       let dateRefreshed = this.lastUpdate.label_templates;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Label Templates do not need reload");
         return;
@@ -307,10 +280,7 @@ export const usePreloadsStore = defineStore("preloads", {
     preloadPartParametersPresets() {
       // Preload part parameters presets
       let dateRefreshed = this.lastUpdate.parameters_presets;
-      if (
-        dateRefreshed &&
-        differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME
-      ) {
+      if (dateRefreshed && differenceInMinutes(new Date(), parseISO(dateRefreshed)) < REFRESH_TIME) {
         // No refresh for now
         logger.default.info("Part parameters do not need reload");
         return;
@@ -323,10 +293,7 @@ export const usePreloadsStore = defineStore("preloads", {
           logger.default.info("Part parameters presets preloaded");
         })
         .catch((error) => {
-          logger.default.error(
-            "Cannot preload part parameters presets",
-            error.message
-          );
+          logger.default.error("Cannot preload part parameters presets", error.message);
         });
     },
   },

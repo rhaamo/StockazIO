@@ -26,12 +26,7 @@
                   'w-7': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.user.username.$invalid && submitted) ||
-                  v$.user.username.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.user.username.$invalid && submitted) || v$.user.username.$pending.$response" class="p-error"
                 ><br />{{ v$.user.username.required.$message }}</small
               >
             </div>
@@ -57,30 +52,18 @@
                 toggleMask
                 :feedback="false"
               />
-              <small
-                v-if="
-                  (v$.user.password.$invalid && submitted) ||
-                  v$.user.password.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.user.password.$invalid && submitted) || v$.user.password.$pending.$response" class="p-error"
                 ><br />{{ v$.user.password.required.$message }}</small
               >
             </div>
 
             <div class="mb-5 mt-5">
-              <router-link
-                class="font-medium no-underline text-blue-500 text-center cursor-pointer"
-                :to="{ name: 'password-reset-request' }"
+              <router-link class="font-medium no-underline text-blue-500 text-center cursor-pointer" :to="{ name: 'password-reset-request' }"
                 >Forgot password ?</router-link
               >
             </div>
 
-            <PvButton
-              label="Login"
-              icon="pi pi-user"
-              class="w-4"
-              type="submit"
-            ></PvButton>
+            <PvButton label="Login" icon="pi pi-user" class="w-4" type="submit"></PvButton>
           </div>
         </form>
       </div>
@@ -134,18 +117,10 @@ export default {
 
       this.oauthStore.getOrCreateApp().then((app) => {
         this.oauthStore
-          .getTokenWithCredentials(
-            app.clientId,
-            app.clientSecret,
-            this.user.username,
-            this.user.password
-          )
+          .getTokenWithCredentials(app.clientId, app.clientSecret, this.user.username, this.user.password)
           .then((result) => {
             if (result.data.error) {
-              logger.default.error(
-                "Error getting token with creds:",
-                result.data.error
-              );
+              logger.default.error("Error getting token with creds:", result.data.error);
               return;
             }
             this.userStore.login(result.data).then(() => {

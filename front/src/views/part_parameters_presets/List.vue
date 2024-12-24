@@ -16,19 +16,13 @@
         <template #header>
           <div class="grid">
             <div class="col-2">
-              <PvButton
-                label="Add a parameter unit"
-                @click.prevent="showAddParametersUnitsModal"
-              />
+              <PvButton label="Add a parameter unit" @click.prevent="showAddParametersUnitsModal" />
             </div>
 
             <div class="col-2 col-offset-7">
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
+                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
               </span>
             </div>
           </div>
@@ -47,11 +41,7 @@
               <Column field="name" header="Name" :sortable="true"></Column>
               <Column header="Unit">
                 <template #body="slotProps2">
-                  <template v-if="slotProps2.data.unit">
-                    {{ slotProps2.data.unit.symbol }} ({{
-                      slotProps2.data.unit.name
-                    }})
-                  </template>
+                  <template v-if="slotProps2.data.unit"> {{ slotProps2.data.unit.symbol }} ({{ slotProps2.data.unit.name }}) </template>
                 </template>
               </Column>
               <Column field="description" header="Description"></Column>
@@ -136,8 +126,7 @@ export default {
       },
     }),
     ...mapState(useServerStore, {
-      perPage: (store) =>
-        store.settings.pagination.PART_PARAMETERS_PRESETS || 10,
+      perPage: (store) => store.settings.pagination.PART_PARAMETERS_PRESETS || 10,
     }),
   },
   methods: {
@@ -231,10 +220,7 @@ export default {
                 detail: "An error occured, please try again later",
                 life: 5000,
               });
-              logger.default.error(
-                "Error with part parameters presets deletion",
-                err
-              );
+              logger.default.error("Error with part parameters presets deletion", err);
               this.fetchPartParameterPresets();
             });
         },

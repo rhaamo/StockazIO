@@ -15,11 +15,7 @@
 
       <Divider />
 
-      <PvButton
-        @click.prevent="addPartParameterFilter($event)"
-        class="p-button-help"
-        label="add filter"
-      />
+      <PvButton @click.prevent="addPartParameterFilter($event)" class="p-button-help" label="add filter" />
 
       <PvButton
         @click.prevent="searchPartsFilter($event)"
@@ -32,9 +28,7 @@
     <div class="card mt-4 pl-0 pr-0 pt-0 pb-0">
       <TabView>
         <TabPanel>
-          <template #header>
-            <i class="fa fa-table mr-2"></i><span>Table</span>
-          </template>
+          <template #header> <i class="fa fa-table mr-2"></i><span>Table</span> </template>
           <DataTable
             :value="parts"
             :lazy="true"
@@ -64,11 +58,7 @@
 
             <template #header>
               <template v-if="selectedParts && selectedParts.length">
-                <PvButton
-                  label="Change category"
-                  class="p-button-info"
-                  @click="toggleOverlayPanel($event, 'btnChangeCat')"
-                />
+                <PvButton label="Change category" class="p-button-info" @click="toggleOverlayPanel($event, 'btnChangeCat')" />
                 <OverlayPanel ref="btnChangeCat">
                   <TreeSelect
                     inputId="category"
@@ -77,18 +67,10 @@
                     :options="choicesCategory"
                     selectionMode="single"
                   />
-                  <PvButton
-                    label="Save"
-                    class="ml-1"
-                    @click="bulkChangeCategory($event)"
-                  ></PvButton>
+                  <PvButton label="Save" class="ml-1" @click="bulkChangeCategory($event)"></PvButton>
                 </OverlayPanel>
 
-                <PvButton
-                  label="Change location"
-                  class="p-button-help ml-2"
-                  @click="toggleOverlayPanel($event, 'btnChangeLoc')"
-                />
+                <PvButton label="Change location" class="p-button-help ml-2" @click="toggleOverlayPanel($event, 'btnChangeLoc')" />
                 <OverlayPanel ref="btnChangeLoc">
                   <TreeSelect
                     class="p-column-filter"
@@ -97,39 +79,21 @@
                     selectionMode="single"
                     v-model="bulkEditStorage"
                   />
-                  <PvButton
-                    label="Save"
-                    class="ml-1"
-                    @click="bulkChangeStorageLocation($event)"
-                  ></PvButton>
+                  <PvButton label="Save" class="ml-1" @click="bulkChangeStorageLocation($event)"></PvButton>
                 </OverlayPanel>
 
-                <PvButton
-                  label="Delete"
-                  class="p-button-danger ml-2"
-                  @click="deletePartMultiple($event)"
-                />
+                <PvButton label="Delete" class="p-button-danger ml-2" @click="deletePartMultiple($event)" />
               </template>
 
               <template v-else>
                 <div class="field-checkbox">
-                  <Checkbox
-                    inputId="only_qty_less_min"
-                    v-model="filter_qty_min"
-                    :binary="true"
-                  />
+                  <Checkbox inputId="only_qty_less_min" v-model="filter_qty_min" :binary="true" />
                   <label for="only_qty_less_min">Only qty &lt; min</label>
 
                   &nbsp;&nbsp;
 
-                  <Checkbox
-                    inputId="show_parameters_filter"
-                    v-model="show_parameters_filter"
-                    :binary="true"
-                  />
-                  <label for="show_parameters_filter"
-                    >Parameters Filtering</label
-                  >
+                  <Checkbox inputId="show_parameters_filter" v-model="show_parameters_filter" :binary="true" />
+                  <label for="show_parameters_filter">Parameters Filtering</label>
                 </div>
               </template>
             </template>
@@ -154,65 +118,28 @@
                 </div>
               </template>
             </Column>
-            <Column
-              header="Name"
-              :sortable="true"
-              field="name"
-              :filterMatchModeOptions="matchModes.name"
-            >
+            <Column header="Name" :sortable="true" field="name" :filterMatchModeOptions="matchModes.name">
               <template #body="slotProps">
                 <div>
-                  <template
-                    v-if="
-                      partGetDefaultAttachment(slotProps.data.part_attachments)
-                    "
-                  >
+                  <template v-if="partGetDefaultAttachment(slotProps.data.part_attachments)">
                     <i
                       :id="`p_a_${slotProps.data.id}`"
                       v-tooltip="'Click to show picture'"
                       class="fa fa-picture-o mr-1"
                       aria-hidden="true"
-                      @click="
-                        toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)
-                      "
+                      @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)"
                     />
-                    <OverlayPanel
-                      :ref="`p_a_${slotProps.data.id}`"
-                      appendTo="body"
-                      :showCloseIcon="true"
-                      :id="`p_a_${slotProps.data.id}`"
-                    >
-                      <PvImage
-                        preview
-                        width="250"
-                        :src="
-                          partGetDefaultAttachment(
-                            slotProps.data.part_attachments
-                          ).picture_medium
-                        "
-                      ></PvImage>
+                    <OverlayPanel :ref="`p_a_${slotProps.data.id}`" appendTo="body" :showCloseIcon="true" :id="`p_a_${slotProps.data.id}`">
+                      <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
                     </OverlayPanel>
                   </template>
-                  <a
-                    href="#"
-                    class="no-underline"
-                    @click.prevent="viewPartModal(slotProps.data)"
-                    >{{ slotProps.data.name }}</a
-                  >
+                  <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
                   <br />
                   <template v-if="slotProps.data.description">
-                    {{
-                      slotProps.data.category
-                        ? slotProps.data.category.name
-                        : "No category"
-                    }}: {{ slotProps.data.description }}
+                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
                   </template>
                   <template v-else>
-                    {{
-                      slotProps.data.category
-                        ? slotProps.data.category.name
-                        : "No category"
-                    }}
+                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
                   </template>
                 </div>
               </template>
@@ -227,17 +154,8 @@
                 />
               </template>
             </Column>
-            <Column
-              header="Storage"
-              :sortable="true"
-              field="storage_id"
-              :filterMatchModeOptions="matchModes.storage"
-            >
-              <template #body="slotProps">{{
-                slotProps.data.storage && slotProps.data.storage.name
-                  ? slotProps.data.storage.name
-                  : "-"
-              }}</template>
+            <Column header="Storage" :sortable="true" field="storage_id" :filterMatchModeOptions="matchModes.storage">
+              <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
               <template #filter="{ filterModel, filterCallback }">
                 <TreeSelect
                   v-model="filterModel.value"
@@ -258,25 +176,13 @@
               headerStyle="width: 15em"
             >
               <template #body="slotProps">
-                <Inplace
-                  :ref="`inplace_qty_${slotProps.data.id}`"
-                  :closable="true"
-                >
-                  <template
-                    #display
-                    v-if="
-                      slotProps.data.stock_qty >= slotProps.data.stock_qty_min
-                    "
+                <Inplace :ref="`inplace_qty_${slotProps.data.id}`" :closable="true">
+                  <template #display v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
                     ><span>{{ slotProps.data.stock_qty }}</span></template
                   >
                   <template #display v-else>
-                    <span
-                      class="text-red-500"
-                      v-tooltip="
-                        'Current stock is below minimum stock quantity or exhausted'
-                      "
-                      >{{ slotProps.data.stock_qty }}
-                      <i class="fa fa-circle"></i
+                    <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
+                      >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
                     ></span>
                   </template>
                   <template #content>
@@ -292,13 +198,7 @@
                     <PvButton
                       class="mt-1 mr-1"
                       label="update"
-                      @click.prevent="
-                        updateInplaceQty(
-                          $event,
-                          slotProps.data,
-                          slotProps.data.stock_qty
-                        )
-                      "
+                      @click.prevent="updateInplaceQty($event, slotProps.data, slotProps.data.stock_qty)"
                     ></PvButton>
                   </template>
                 </Inplace>
@@ -313,16 +213,9 @@
                 />
               </template>
             </Column>
-            <Column
-              header="Min"
-              :sortable="true"
-              field="stock_qty_min"
-              dataType="numeric"
+            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric"
               ><template #body="slotProps">
-                <Inplace
-                  :ref="`inplace_qty_min_${slotProps.data.id}`"
-                  :closable="true"
-                >
+                <Inplace :ref="`inplace_qty_min_${slotProps.data.id}`" :closable="true">
                   <template #display
                     ><span>{{ slotProps.data.stock_qty_min }}</span></template
                   >
@@ -339,44 +232,25 @@
                     <PvButton
                       class="mt-1 mr-1"
                       label="update"
-                      @click.prevent="
-                        updateInplaceQtyMin(
-                          $event,
-                          slotProps.data,
-                          slotProps.data.stock_qty_min
-                        )
-                      "
+                      @click.prevent="updateInplaceQtyMin($event, slotProps.data, slotProps.data.stock_qty_min)"
                     ></PvButton>
                   </template>
                 </Inplace> </template
             ></Column>
             <Column header="Unit" :sortable="true" field="part_unit.name">
               <template #body="slotProps">{{
-                slotProps.data.part_unit && slotProps.data.part_unit.name
-                  ? slotProps.data.part_unit.name
-                  : "-"
+                slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
               }}</template>
             </Column>
-            <Column
-              header="Footprint"
-              :sortable="true"
-              field="footprint_id"
-              :filterMatchModeOptions="matchModes.footprint"
-            >
+            <Column header="Footprint" :sortable="true" field="footprint_id" :filterMatchModeOptions="matchModes.footprint">
               <template #body="slotProps">
                 <span
                   v-tooltip="{
-                    value: slotProps.data.footprint
-                      ? slotProps.data.footprint.description
-                      : '',
+                    value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
                     disabled: false,
                   }"
                 >
-                  {{
-                    slotProps.data.footprint
-                      ? slotProps.data.footprint.name
-                      : "-"
-                  }}
+                  {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
                 </span>
               </template>
               <template #filter="{ filterModel, filterCallback }">
@@ -403,12 +277,7 @@
                       params: { partId: slotProps.data.id },
                     }"
                   >
-                    <PvButton
-                      type="button"
-                      icon="fa fa-edit"
-                      class="p-button-primary"
-                      v-tooltip="'edit'"
-                    ></PvButton>
+                    <PvButton type="button" icon="fa fa-edit" class="p-button-primary" v-tooltip="'edit'"></PvButton>
                   </router-link>
                   <PvButton
                     type="button"
@@ -424,18 +293,14 @@
         </TabPanel>
 
         <TabPanel>
-          <template #header>
-            <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
-          </template>
+          <template #header> <i class="fa fa-image mr-2"></i> <span>Thumbnails</span> </template>
 
           <div class="grid">
             <div class="col-4" v-for="part in parts" :key="part.id">
               <div class="product-grid-item card">
                 <div class="product-grid-item-top">
                   <div>
-                    <span class="product-category">{{
-                      part.category ? part.category.name : "Uncategorized"
-                    }}</span>
+                    <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
                   </div>
                   <span
                     >qty:
@@ -443,29 +308,15 @@
                       ><span>{{ part.stock_qty }}</span></template
                     >
                     <template v-else>
-                      <span
-                        class="text-red-500"
-                        v-tooltip="
-                          'Current stock is below minimum stock quantity or exhausted'
-                        "
+                      <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
                         >{{ part.stock_qty }} <i class="fa fa-circle"></i
                       ></span>
                     </template>
                   </span>
                 </div>
                 <div class="product-grid-item-content mt-3">
-                  <template
-                    v-if="partGetDefaultAttachment(part.part_attachments)"
-                  >
-                    <PvImage
-                      preview
-                      :src="
-                        partGetDefaultAttachment(part.part_attachments)
-                          .picture_medium
-                      "
-                      :alt="part.name"
-                      width="250"
-                    />
+                  <template v-if="partGetDefaultAttachment(part.part_attachments)">
+                    <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
                   </template>
                   <template v-else>
                     <span class="fa-stack fa-5x">
@@ -479,10 +330,7 @@
                     {{ part.description }}
                   </div>
                   <div class="product-button">
-                    <PvButton
-                      @click.prevent="viewPartModal(part)"
-                      label="View details"
-                    ></PvButton>
+                    <PvButton @click.prevent="viewPartModal(part)" label="View details"></PvButton>
                   </div>
                 </div>
               </div>
@@ -634,19 +482,13 @@ export default {
       ].concat(this.choicesFootprint);
     },
     choicesStorageLocationWithNo() {
-      return [
-        { key: "0", label: "No Storage Location", icon: "fa fa-close" },
-      ].concat(this.choicesStorageLocation);
+      return [{ key: "0", label: "No Storage Location", icon: "fa fa-close" }].concat(this.choicesStorageLocation);
     },
     searchQuery() {
       return this.$route.query.q;
     },
     breadcrumb() {
-      if (
-        this.actualCurrentCategory &&
-        this.categoryId &&
-        this.categoryId !== "0"
-      ) {
+      if (this.actualCurrentCategory && this.categoryId && this.categoryId !== "0") {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
@@ -662,8 +504,7 @@ export default {
                 this.$router.push({
                   name: "parts-category-list",
                   params: {
-                    categoryId:
-                      this.actualCurrentCategory.id || this.categoryId,
+                    categoryId: this.actualCurrentCategory.id || this.categoryId,
                   },
                 });
               },
@@ -822,9 +663,7 @@ export default {
       // Do a quick cleanup of datas before sending them
       let params = cloneDeep(this.lazyParams);
       if (params.filters["storage_id"].value) {
-        params.filters["storage_id"].value = Object.keys(
-          params.filters["storage_id"].value
-        )[0];
+        params.filters["storage_id"].value = Object.keys(params.filters["storage_id"].value)[0];
       }
 
       apiService
@@ -904,12 +743,7 @@ export default {
             templates: {
               header: () => {
                 if (part.private) {
-                  return [
-                    h("h3", [
-                      h("i", { class: "fa fa-lock mr-1" }),
-                      h("span", part.name),
-                    ]),
-                  ];
+                  return [h("h3", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
                 } else {
                   return [h("h3", part.name)];
                 }
@@ -968,12 +802,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [
-              h("h3", [
-                h("i", { class: "fa fa-qrcode mr-1" }),
-                h("span", "Label Generator"),
-              ]),
-            ];
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {
@@ -1071,9 +900,7 @@ export default {
                     detail: "Success",
                     life: 5000,
                   });
-                  this.preloadsStore.decrementCategoryPartsCount(
-                    this.categoryId
-                  );
+                  this.preloadsStore.decrementCategoryPartsCount(this.categoryId);
                 })
                 .catch((err) => {
                   this.toast.add({
@@ -1152,14 +979,8 @@ export default {
             this.bulkEditCategory = null;
             this.toggleOverlayPanel(event, "btnChangeCat");
             for (let part of this.selectedParts) {
-              this.preloadsStore.decrementCategoryPartsCount(
-                part.category.id,
-                ids.length
-              );
-              this.preloadsStore.incrementCategoryPartsCount(
-                categoryId,
-                ids.length
-              );
+              this.preloadsStore.decrementCategoryPartsCount(part.category.id, ids.length);
+              this.preloadsStore.incrementCategoryPartsCount(categoryId, ids.length);
             }
             this.selectedParts = null;
             this.loadLazyData();
@@ -1249,8 +1070,7 @@ export default {
 .card {
   background: #ffffff;
   padding: 2rem;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   margin-bottom: 2rem;
 }

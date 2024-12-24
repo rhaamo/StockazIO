@@ -21,15 +21,8 @@
 
       <Divider />
 
-      <PvButton
-        label="add matcher"
-        @click.prevent="addCategoryMatcher"
-      ></PvButton>
-      <PvButton
-        label="save matchers"
-        class="p-button-success ml-2"
-        @click.prevent="submit(!v$.$invalid)"
-      ></PvButton>
+      <PvButton label="add matcher" @click.prevent="addCategoryMatcher"></PvButton>
+      <PvButton label="save matchers" class="p-button-success ml-2" @click.prevent="submit(!v$.$invalid)"></PvButton>
     </div>
   </div>
 </template>
@@ -179,10 +172,7 @@ export default {
             detail: "An error occured, please try again later",
             life: 5000,
           });
-          logger.default.error(
-            "Cannot update category matchers",
-            error.message
-          );
+          logger.default.error("Cannot update category matchers", error.message);
           this.loadLazyData();
           this.deleted = [];
         });

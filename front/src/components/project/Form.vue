@@ -25,17 +25,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.name.$invalid && submitted) ||
-              v$.item.name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
             {{ v$.item.name.maxLength.$message }}
           </small>
         </div>
@@ -118,13 +111,7 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.ibom_url.$invalid && submitted) ||
-              v$.item.ibom_url.$pending.$response
-            "
-            class="p-error"
-          >
+          <small v-if="(v$.item.ibom_url.$invalid && submitted) || v$.item.ibom_url.$pending.$response" class="p-error">
             {{ v$.item.ibom_url.maxLength.$message }}
           </small>
         </div>
@@ -171,13 +158,7 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.state_notes.$invalid && submitted) ||
-              v$.item.state_notes.$pending.$response
-            "
-            class="p-error"
-          >
+          <small v-if="(v$.item.state_notes.$invalid && submitted) || v$.item.state_notes.$pending.$response" class="p-error">
             {{ v$.item.state_notes.maxLength.$message }}
           </small>
         </div>
@@ -209,10 +190,7 @@
     <div class="flex justify-content-center">
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field w-10">
-          <p>
-            You will be able to add attachments and parts after saving the
-            project.
-          </p>
+          <p>You will be able to add attachments and parts after saving the project.</p>
         </div>
       </div>
     </div>

@@ -21,24 +21,12 @@
         <template #empty> No orders found. </template>
 
         <template #header>
-          <router-link :to="{ name: 'orders-importer-category-matcher' }">
-            <PvButton label="Manage category matchers"
-          /></router-link>
+          <router-link :to="{ name: 'orders-importer-category-matcher' }"> <PvButton label="Manage category matchers" /></router-link>
 
-          <PvButton
-            class="ml-2"
-            severity="info"
-            label="Import a LCSC .csv order"
-            @click.prevent="showImportLCSCcsv"
-          />
+          <PvButton class="ml-2" severity="info" label="Import a LCSC .csv order" @click.prevent="showImportLCSCcsv" />
         </template>
 
-        <Column
-          header="Date"
-          :sortable="true"
-          field="date"
-          headerStyle="width: 12em"
-        >
+        <Column header="Date" :sortable="true" field="date" headerStyle="width: 12em">
           <template #body="slotProps">
             <router-link
               class="no-underline"
@@ -64,21 +52,9 @@
           </template>
         </Column>
 
-        <Column
-          header="Items Qty"
-          :sortable="true"
-          field="items_count"
-          headerStyle="width: 8em"
-        >
-        </Column>
+        <Column header="Items Qty" :sortable="true" field="items_count" headerStyle="width: 8em"> </Column>
 
-        <Column
-          header="Status (vendor)"
-          :sortable="false"
-          field="status"
-          headerStyle="width: 8em"
-        >
-        </Column>
+        <Column header="Status (vendor)" :sortable="false" field="status" headerStyle="width: 8em"> </Column>
 
         <Column header="Vendor" :sortable="true" field="vendor_db">
           <template #body="slotProps">
@@ -86,15 +62,8 @@
           </template>
         </Column>
 
-        <Column
-          header="Import state"
-          :sortable="false"
-          field="import_state"
-          headerStyle="width: 8em"
-        >
-          <template #body="slotProps">{{
-            importStateText(slotProps.data.import_state)
-          }}</template>
+        <Column header="Import state" :sortable="false" field="import_state" headerStyle="width: 8em">
+          <template #body="slotProps">{{ importStateText(slotProps.data.import_state) }}</template>
         </Column>
 
         <Column headerStyle="width: 6em">
@@ -105,10 +74,7 @@
               v-tooltip="'import'"
               label="import"
               @click.prevent="importOrder($event, slotProps.data)"
-              :disabled="
-                slotProps.data.import_state === 2 ||
-                slotProps.data.import_state === 99
-              "
+              :disabled="slotProps.data.import_state === 2 || slotProps.data.import_state === 99"
             ></PvButton>
           </template>
         </Column>

@@ -17,17 +17,10 @@
           <span class="p-inputgroup-addon">/i</span>
         </div>
 
-        <small
-          v-if="
-            (v$.item.regexp.$invalid && submitted) ||
-            v$.item.regexp.$pending.$response
-          "
-          class="p-error"
+        <small v-if="(v$.item.regexp.$invalid && submitted) || v$.item.regexp.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.regexp.required.$message }}
-          <template v-if="v$.item.regexp.required && v$.item.regexp.maxLength"
-            ><br
-          /></template>
+          <template v-if="v$.item.regexp.required && v$.item.regexp.maxLength"><br /></template>
           {{ v$.item.regexp.maxLength.$message }}
         </small>
       </div>
@@ -44,12 +37,7 @@
           :fluid="true"
           :showClear="true"
         />
-        <small
-          v-if="
-            (v$.item.category.$invalid && submitted) ||
-            v$.item.category.$pending.$response
-          "
-          class="p-error"
+        <small v-if="(v$.item.category.$invalid && submitted) || v$.item.category.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.category.required.$message }}
         </small>

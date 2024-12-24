@@ -24,36 +24,19 @@
         <template #empty> No projects found. </template>
 
         <template #header>
-          <PvButton
-            label="Add a project"
-            @click.prevent="showAddProjectModal"
-          />
+          <PvButton label="Add a project" @click.prevent="showAddProjectModal" />
         </template>
 
-        <Column
-          header="Visibility"
-          :sortable="false"
-          field="visibility"
-          headerStyle="width: 2em"
-        >
+        <Column header="Visibility" :sortable="false" field="visibility" headerStyle="width: 2em">
           <template #body="slotProps">
             <div>
-              <i
-                v-if="slotProps.data.public"
-                class="fa fa-globe"
-                aria-hidden="true"
-              />
+              <i v-if="slotProps.data.public" class="fa fa-globe" aria-hidden="true" />
               <i v-else class="fa fa-lock" aria-hidden="true" />
             </div>
           </template>
         </Column>
 
-        <Column
-          header="Name"
-          :sortable="true"
-          field="name"
-          :filterMatchModeOptions="matchModes.name"
-        >
+        <Column header="Name" :sortable="true" field="name" :filterMatchModeOptions="matchModes.name">
           <template #body="slotProps">
             <div>
               <router-link
@@ -68,12 +51,7 @@
             </div>
           </template>
           <template #filter="{ filterModel }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search by name"
-            />
+            <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name" />
           </template>
         </Column>
 
@@ -85,12 +63,7 @@
           </template>
         </Column>
 
-        <Column
-          header="State"
-          :sortable="true"
-          field="state"
-          :filterMatchModeOptions="matchModes.state"
-        >
+        <Column header="State" :sortable="true" field="state" :filterMatchModeOptions="matchModes.state">
           <template #body="slotProps">
             <div>
               <span>{{ projectStateText(slotProps.data.state) }}</span>
@@ -100,14 +73,7 @@
             </div>
           </template>
           <template #filter="{ filterModel }">
-            <Dropdown
-              v-model="filterModel.value"
-              class="w-full"
-              :options="projectStates"
-              optionLabel="text"
-              optionValue="value"
-              :filter="false"
-            />
+            <Dropdown v-model="filterModel.value" class="w-full" :options="projectStates" optionLabel="text" optionValue="value" :filter="false" />
           </template>
         </Column>
 

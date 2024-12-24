@@ -3,13 +3,11 @@
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
     <Message v-if="manufacturers_matched" severity="info"
-      >The parts manufacturers have been fuzzy-matched, please check and correct
-      if there is any wrong ones.</Message
+      >The parts manufacturers have been fuzzy-matched, please check and correct if there is any wrong ones.</Message
     >
 
     <Message severity="warn"
-      >Various items has been automatically selected to the best matching
-      element, please review and don't forget to save.</Message
+      >Various items has been automatically selected to the best matching element, please review and don't forget to save.</Message
     >
 
     <div class="mt-2">
@@ -32,10 +30,7 @@
               <PvButton label="save" @click.prevent="submit" />
             </div>
             <div class="col-2">
-              <PvButton
-                label="rematch categories"
-                @click.prevent="rematchCategories"
-              />
+              <PvButton label="rematch categories" @click.prevent="rematchCategories" />
             </div>
             <div class="col-3">
               <b>Ordered:</b> {{ formatDate(order.date) }}<br />
@@ -43,8 +38,7 @@
               <b>Items:</b> {{ rows }}
             </div>
             <div class="4">
-              <b>Import state:</b> {{ importStateText(order.import_state)
-              }}<br />
+              <b>Import state:</b> {{ importStateText(order.import_state) }}<br />
               <b>From:</b> {{ order.vendor }}<br />
               <Dropdown
                 inputId="distributor"
@@ -59,12 +53,7 @@
           </div>
         </template>
 
-        <Column
-          header="Manufacturer PN"
-          :sortable="false"
-          field="mfr_part_number"
-          headerStyle="width: 15em"
-        >
+        <Column header="Manufacturer PN" :sortable="false" field="mfr_part_number" headerStyle="width: 15em">
           <template #body="slotProps">
             <span class="text-sm">{{ slotProps.data.mfr_part_number }}</span>
           </template>
@@ -76,12 +65,7 @@
           </template>
         </Column>
 
-        <Column
-          header="Manufacturer"
-          :sortable="false"
-          field="manufacturer_db"
-          headerStyle="width: 20em"
-        >
+        <Column header="Manufacturer" :sortable="false" field="manufacturer_db" headerStyle="width: 20em">
           <template #body="slotProps">
             {{ slotProps.data.manufacturer }}<br />
             <Dropdown
@@ -97,14 +81,7 @@
           </template>
         </Column>
 
-        <Column
-          header="Quantity"
-          :sortable="false"
-          field="quantity"
-          headerStyle="width: 5em"
-          bodyClass="text-center"
-          headerClass="text-center"
-        >
+        <Column header="Quantity" :sortable="false" field="quantity" headerStyle="width: 5em" bodyClass="text-center" headerClass="text-center">
         </Column>
 
         <Column header="Vendor PN" :sortable="false" field="vendor_part_number">
@@ -113,12 +90,7 @@
           </template>
         </Column>
 
-        <Column
-          header="Category"
-          :sortable="false"
-          field="category"
-          headerStyle="width: 25em"
-        >
+        <Column header="Category" :sortable="false" field="category" headerStyle="width: 25em">
           <template #body="slotProps">
             <TreeSelect
               inputId="category"
@@ -134,13 +106,7 @@
           </template>
         </Column>
 
-        <Column
-          header="do not import"
-          field="ignore"
-          headerStyle="width: 6em"
-          bodyClass="text-center"
-          headerClass="text-center"
-        >
+        <Column header="do not import" field="ignore" headerStyle="width: 6em" bodyClass="text-center" headerClass="text-center">
           <template #body="slotProps">
             <Checkbox v-model="slotProps.data.ignore" :binary="true" />
           </template>
@@ -265,11 +231,8 @@ export default {
               this.order.items[i].manufacturer_db = {
                 value: this.order.items[i].manufacturer_db.id,
                 text: this.order.items[i].manufacturer_db.name,
-                datasheet_url:
-                  this.order.items[i].manufacturer_db.datasheet_url,
-                aliases: this.order.items[i].manufacturer_db.aliases
-                  .split(",")
-                  .map((x) => x.trim()),
+                datasheet_url: this.order.items[i].manufacturer_db.datasheet_url,
+                aliases: this.order.items[i].manufacturer_db.aliases.split(",").map((x) => x.trim()),
               };
             }
           }

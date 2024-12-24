@@ -26,17 +26,11 @@ export const useUserStore = defineStore("user", {
 
       logger.default.info("logging out");
 
-      await apiService
-        .oauthRevoke(
-          oauthStore.userToken.access_token,
-          oauthStore.clientId,
-          oauthStore.clientSecret
-        )
-        .then(() => {
-          this.currentUser = null;
-          oauthStore.setLoggedIn(false);
-          oauthStore.clearTokens();
-        });
+      await apiService.oauthRevoke(oauthStore.userToken.access_token, oauthStore.clientId, oauthStore.clientSecret).then(() => {
+        this.currentUser = null;
+        oauthStore.setLoggedIn(false);
+        oauthStore.clearTokens();
+      });
     },
     async login(access_token) {
       const oauthStore = useOauthStore();
@@ -53,10 +47,7 @@ export const useUserStore = defineStore("user", {
           this.currentUser = result.data.user;
         })
         .catch((error) => {
-          logger.default.error(
-            "login: cannot verify credentials",
-            error.message
-          );
+          logger.default.error("login: cannot verify credentials", error.message);
           oauthStore.setLoggedIn(false);
           this.currentUser = {};
         });
@@ -74,10 +65,7 @@ export const useUserStore = defineStore("user", {
             resolve();
           })
           .catch((error) => {
-            logger.default.error(
-              "loginUser: cannot verify credentials",
-              error.message
-            );
+            logger.default.error("loginUser: cannot verify credentials", error.message);
             oauthStore.setLoggedIn(false);
             this.currentUser = {};
             reject(error);

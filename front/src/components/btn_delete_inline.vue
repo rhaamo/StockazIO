@@ -8,18 +8,8 @@
     >
     </PvButton>
     <template v-if="clicked">
-      <PvButton
-        :class="btnVariantOk + ' ' + size"
-        @click.prevent="actionConfirmed"
-        :label="btnOkText"
-      >
-      </PvButton>
-      <PvButton
-        :class="btnVariantCancel + ' ' + size"
-        @click.prevent="actionCancelled"
-        :label="btnCancelText"
-      >
-      </PvButton>
+      <PvButton :class="btnVariantOk + ' ' + size" @click.prevent="actionConfirmed" :label="btnOkText"> </PvButton>
+      <PvButton :class="btnVariantCancel + ' ' + size" @click.prevent="actionCancelled" :label="btnCancelText"> </PvButton>
     </template>
   </span>
 </template>

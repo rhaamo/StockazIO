@@ -23,17 +23,10 @@
           }"
           @input="updateDatasheetUrl"
         />
-        <small
-          v-if="
-            (v$.item.sku.$invalid && submitted) ||
-            v$.item.sku.$pending.$response
-          "
-          class="p-error"
+        <small v-if="(v$.item.sku.$invalid && submitted) || v$.item.sku.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.sku.required.$message }}
-          <template v-if="v$.item.sku.required && v$.item.sku.maxLength"
-            ><br
-          /></template>
+          <template v-if="v$.item.sku.required && v$.item.sku.maxLength"><br /></template>
           {{ v$.item.sku.maxLength.$message }}
         </small>
       </div>
@@ -73,13 +66,7 @@
           'w-11': true,
         }"
       />
-      <small
-        v-if="
-          (v$.item.datasheet_url.$invalid && submitted) ||
-          v$.item.datasheet_url.$pending.$response
-        "
-        class="p-error"
-      >
+      <small v-if="(v$.item.datasheet_url.$invalid && submitted) || v$.item.datasheet_url.$pending.$response" class="p-error">
         {{ v$.item.datasheet_url.url.$message }}
       </small>
     </div>
@@ -144,11 +131,7 @@ export default {
   },
   methods: {
     replaceUrl(url, sku) {
-      if (
-        url.includes("{sku}") ||
-        url.includes("{sku_lower}") ||
-        url.includes("{sku_upper}")
-      ) {
+      if (url.includes("{sku}") || url.includes("{sku_lower}") || url.includes("{sku_upper}")) {
         url = url.replaceAll("{sku}", sku);
         url = url.replaceAll("{sku_lower}", sku.toLowerCase());
         url = url.replaceAll("{sku_upper}", sku.toUpperCase());
@@ -163,10 +146,7 @@ export default {
 
       if (this.item.sku) {
         if (this.item.datasheet_url) {
-          this.item.datasheet_url = this.replaceUrl(
-            this.item.distributor.datasheet_url,
-            this.item.sku
-          );
+          this.item.datasheet_url = this.replaceUrl(this.item.distributor.datasheet_url, this.item.sku);
         }
       } else {
         this.item.datasheet_url = this.item.distributor.datasheet_url;

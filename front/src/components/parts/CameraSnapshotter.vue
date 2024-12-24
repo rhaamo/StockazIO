@@ -1,37 +1,15 @@
 <template>
   <div class="camera">
     <div class="wrapper">
-      <PvButton
-        label="Close"
-        @click.prevent="closeDialog()"
-        class="mb-2 p-button-danger"
-      />
-      <PvButton
-        v-if="isPlaying"
-        label="Snap!"
-        @click.prevent="takePhoto()"
-        class="mb-2 ml-2"
-      />
-      <PvButton
-        label="save"
-        @click.prevent="saveAndClose()"
-        class="mb-2 ml-2 p-button-success"
-        v-if="isPhotoTaken"
-      />
+      <PvButton label="Close" @click.prevent="closeDialog()" class="mb-2 p-button-danger" />
+      <PvButton v-if="isPlaying" label="Snap!" @click.prevent="takePhoto()" class="mb-2 ml-2" />
+      <PvButton label="save" @click.prevent="saveAndClose()" class="mb-2 ml-2 p-button-success" v-if="isPhotoTaken" />
 
       <div class="grid">
         <div class="col-6">
-          <div v-if="!isPlaying">
-            Please wait while the camera initialize...
-          </div>
+          <div v-if="!isPlaying">Please wait while the camera initialize...</div>
           <video id="camera" ref="camera" autoplay playsinline></video>
-          <canvas
-            id="photoTaken"
-            v-show="isPhotoTaken"
-            class="ml-2"
-            ref="canvas"
-          >
-          </canvas>
+          <canvas id="photoTaken" v-show="isPhotoTaken" class="ml-2" ref="canvas"> </canvas>
         </div>
 
         <div class="col-6">
@@ -79,9 +57,7 @@ export default {
           this.$refs.camera.srcObject = stream;
           this.$refs.camera.play();
 
-          this.height =
-            this.$refs.camera.videoHeight /
-            (this.$refs.camera.videoWidth / this.width);
+          this.height = this.$refs.camera.videoHeight / (this.$refs.camera.videoWidth / this.width);
 
           if (isNaN(this.height)) {
             this.height = this.width / (4 / 3);
@@ -120,17 +96,11 @@ export default {
 
       context.drawImage(this.$refs.camera, 0, 0);
 
-      this.$refs.photo.setAttribute(
-        "src",
-        this.$refs.canvas.toDataURL("image/jpeg")
-      );
+      this.$refs.photo.setAttribute("src", this.$refs.canvas.toDataURL("image/jpeg"));
     },
     downloadImage() {
       const download = document.getElementById("downloadPhoto");
-      const canvas = document
-        .getElementById("photoTaken")
-        .toDataURL("image/jpeg")
-        .replace("image/jpeg", "image/octet-stream");
+      const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
       download.setAttribute("href", canvas);
     },
   },

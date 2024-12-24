@@ -24,17 +24,10 @@
               'w-10': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.qty.$invalid && submitted) ||
-              v$.item.qty.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.qty.$invalid && submitted) || v$.item.qty.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.qty.required.$message }}
-            <template v-if="v$.item.qty.required && v$.item.qty.minVal"
-              ><br
-            /></template>
+            <template v-if="v$.item.qty.required && v$.item.qty.minVal"><br /></template>
             {{ v$.item.qty.minVal.$message }}
           </small>
         </div>
@@ -59,12 +52,7 @@
               'w-10': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.notes.$invalid && submitted) ||
-              v$.item.notes.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.notes.$invalid && submitted) || v$.item.notes.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.notes.maxLength.$message }}
           </small>
@@ -100,10 +88,7 @@
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field w-10">
           <template v-if="mode === 'edit'">
-            <div class="mb-3">
-              When editing, the selected part might be in another page of the
-              table.
-            </div>
+            <div class="mb-3">When editing, the selected part might be in another page of the table.</div>
           </template>
 
           <DataTable
@@ -128,64 +113,31 @@
           >
             <template #empty> No parts found. </template>
 
-            <template
-              #footer
-              v-if="
-                (v$.item.part.$invalid && submitted) ||
-                v$.item.part.$pending.$response
-              "
-            >
+            <template #footer v-if="(v$.item.part.$invalid && submitted) || v$.item.part.$pending.$response">
               {{ v$.item.part.required.$message }}
             </template>
 
             <Column selectionMode="single" headerStyle="width: 3em"></Column>
 
-            <Column
-              header="Name"
-              :sortable="true"
-              field="name"
-              :filterMatchModeOptions="matchModes.name"
-            >
+            <Column header="Name" :sortable="true" field="name" :filterMatchModeOptions="matchModes.name">
               <template #body="slotProps">
                 <div>
                   {{ slotProps.data.name }}
                   <br />
                   <template v-if="slotProps.data.description">
-                    {{
-                      slotProps.data.category
-                        ? slotProps.data.category.name
-                        : "No category"
-                    }}: {{ slotProps.data.description }}
+                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
                   </template>
                   <template v-else>
-                    {{
-                      slotProps.data.category
-                        ? slotProps.data.category.name
-                        : "No category"
-                    }}
+                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
                   </template>
                 </div>
               </template>
               <template #filter="{ filterModel }">
-                <InputText
-                  type="text"
-                  v-model="filterModel.value"
-                  class="p-column-filter"
-                  placeholder="Search by name"
-                />
+                <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name" />
               </template>
             </Column>
-            <Column
-              header="Storage"
-              :sortable="true"
-              field="storage_id"
-              :filterMatchModeOptions="matchModes.storage"
-            >
-              <template #body="slotProps">{{
-                slotProps.data.storage && slotProps.data.storage.name
-                  ? slotProps.data.storage.name
-                  : "-"
-              }}</template>
+            <Column header="Storage" :sortable="true" field="storage_id" :filterMatchModeOptions="matchModes.storage">
+              <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
               <template #filter="{ filterModel }">
                 <TreeSelect
                   v-model="filterModel.value"
@@ -196,75 +148,40 @@
                 />
               </template>
             </Column>
-            <Column
-              header="Stock"
-              :sortable="true"
-              field="stock_qty"
-              dataType="numeric"
-              :filterMatchModeOptions="matchModes.qty"
-            >
+            <Column header="Stock" :sortable="true" field="stock_qty" dataType="numeric" :filterMatchModeOptions="matchModes.qty">
               <template #body="slotProps">
-                <template
-                  v-if="
-                    slotProps.data.stock_qty >= slotProps.data.stock_qty_min
-                  "
+                <template v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
                   ><span>{{ slotProps.data.stock_qty }}</span></template
                 >
                 <template v-else>
-                  <span
-                    class="text-red-500"
-                    v-tooltip="
-                      'Current stock is below minimum stock quantity or exhausted'
-                    "
+                  <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
                     >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
                   ></span>
                 </template>
               </template>
               <template #filter="{ filterModel }">
-                <InputNumber
-                  v-model="filterModel.value"
-                  class="p-column-filter"
-                  placeholder="qty"
-                />
+                <InputNumber v-model="filterModel.value" class="p-column-filter" placeholder="qty" />
               </template>
             </Column>
-            <Column
-              header="Min"
-              :sortable="true"
-              field="stock_qty_min"
-              dataType="numeric"
-            >
+            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric">
               <template #body="slotProps">
                 <span>{{ slotProps.data.stock_qty_min }}</span>
               </template></Column
             >
             <Column header="Unit" :sortable="true" field="part_unit.name">
               <template #body="slotProps">{{
-                slotProps.data.part_unit && slotProps.data.part_unit.name
-                  ? slotProps.data.part_unit.name
-                  : "-"
+                slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
               }}</template>
             </Column>
-            <Column
-              header="Footprint"
-              :sortable="true"
-              field="footprint_id"
-              :filterMatchModeOptions="matchModes.footprint"
-            >
+            <Column header="Footprint" :sortable="true" field="footprint_id" :filterMatchModeOptions="matchModes.footprint">
               <template #body="slotProps">
                 <span
                   v-tooltip="{
-                    value: slotProps.data.footprint
-                      ? slotProps.data.footprint.description
-                      : '',
+                    value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
                     disabled: false,
                   }"
                 >
-                  {{
-                    slotProps.data.footprint
-                      ? slotProps.data.footprint.name
-                      : "-"
-                  }}
+                  {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
                 </span>
               </template>
               <template #filter="{ filterModel }">
@@ -378,9 +295,7 @@ export default {
         qty: this.dialogRef.data.item.qty,
         sourced: this.dialogRef.data.item.sourced,
         part: {
-          id: this.dialogRef.data.item.part
-            ? this.dialogRef.data.item.part.id
-            : null,
+          id: this.dialogRef.data.item.part ? this.dialogRef.data.item.part.id : null,
         },
       };
     }
@@ -418,9 +333,7 @@ export default {
       // Do a quick cleanup of datas before sending them
       const params = cloneDeep(this.lazyParams);
       if (params.filters["storage_id"].value) {
-        params.filters["storage_id"].value = Object.keys(
-          params.filters["storage_id"].value
-        )[0];
+        params.filters["storage_id"].value = Object.keys(params.filters["storage_id"].value)[0];
       }
 
       apiService.getParts(params).then((res) => {

@@ -5,24 +5,17 @@
         <div class="grid">
           <div class="col-3">
             <template v-if="part.stock_qty >= part.stock_qty_min"
-              ><b>Qty:</b
-              ><span class="ml-1">{{ part.stock_qty }}</span></template
+              ><b>Qty:</b><span class="ml-1">{{ part.stock_qty }}</span></template
             >
             <template v-else>
               <b>Qty:</b>
-              <span
-                class="text-red-500 ml-1"
-                v-tooltip="
-                  'Current stock is below minimum stock quantity or exhausted'
-                "
+              <span class="text-red-500 ml-1" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
                 >{{ part.stock_qty }} <i class="fa fa-circle"></i
               ></span>
             </template>
           </div>
           <div class="col-3"><b>Qty min:</b> {{ part.stock_qty_min }}</div>
-          <div class="col-6">
-            <b>Unit: </b> {{ partUnit || "None defined" }}
-          </div>
+          <div class="col-6"><b>Unit: </b> {{ partUnit || "None defined" }}</div>
         </div>
 
         <div class="mt-2 mb-2 surface-50 p-2">
@@ -30,12 +23,7 @@
         </div>
 
         <div>
-          <DataTable
-            :value="mainTableItems"
-            class="p-datatable-sm"
-            stripedRows
-            responsiveLayout="scroll"
-          >
+          <DataTable :value="mainTableItems" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
             <Column field="item" header="Item"></Column>
             <Column field="value" header="Value"></Column>
           </DataTable>
@@ -44,24 +32,12 @@
 
       <div class="col-6">
         <div class="mb-3">
-          <Galleria
-            :value="pictureAttachments"
-            containerStyle="max-width: 640px"
-          >
+          <Galleria :value="pictureAttachments" containerStyle="max-width: 640px">
             <template #item="slotProps">
-              <PvImage
-                preview
-                height="100"
-                :src="slotProps.item.picture"
-                :alt="slotProps.item.description"
-              />
+              <PvImage preview height="100" :src="slotProps.item.picture" :alt="slotProps.item.description" />
             </template>
             <template #thumbnail="slotProps">
-              <img
-                :src="slotProps.item.picture_medium"
-                :alt="slotProps.item.description"
-                style="height: 60px"
-              />
+              <img :src="slotProps.item.picture_medium" :alt="slotProps.item.description" style="height: 60px" />
             </template>
           </Galleria>
         </div>
@@ -71,22 +47,12 @@
             <template #header>
               <span>Parameters</span>
             </template>
-            <DataTable
-              :value="part.part_parameters_value"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.part_parameters_value" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="name" header="Name"></Column>
               <Column field="description" header="Description"></Column>
               <Column header="Value">
                 <template #body="slotProps"
-                  >{{ slotProps.data.value }}
-                  {{
-                    slotProps.data.unit
-                      ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})`
-                      : ""
-                  }}</template
+                  >{{ slotProps.data.value }} {{ slotProps.data.unit ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})` : "" }}</template
                 >
               </Column>
             </DataTable>
@@ -96,26 +62,16 @@
             <template #header>
               <span>Distributors</span>
             </template>
-            <DataTable
-              :value="part.distributors_sku"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.distributors_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Distributor">
-                <template #body="slotProps">{{
-                  slotProps.data.distributor
-                    ? slotProps.data.distributor.name
-                    : "No name"
-                }}</template>
+                <template #body="slotProps">{{ slotProps.data.distributor ? slotProps.data.distributor.name : "No name" }}</template>
               </Column>
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
                     <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i>
-                      {{ slotProps.data.datasheet_url }}</a
+                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
                     ></template
                   ></template
                 >
@@ -127,26 +83,16 @@
             <template #header>
               <span>Manufacturers</span>
             </template>
-            <DataTable
-              :value="part.manufacturers_sku"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.manufacturers_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Manufacturer">
-                <template #body="slotProps">{{
-                  slotProps.data.manufacturer
-                    ? slotProps.data.manufacturer.name
-                    : "No name"
-                }}</template>
+                <template #body="slotProps">{{ slotProps.data.manufacturer ? slotProps.data.manufacturer.name : "No name" }}</template>
               </Column>
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
                     <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i>
-                      {{ slotProps.data.datasheet_url }}</a
+                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
                     ></template
                   ></template
                 >
@@ -158,29 +104,16 @@
             <template #header>
               <span>Files</span>
             </template>
-            <DataTable
-              :value="part.part_attachments"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.part_attachments" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column header="Link"
                 ><template #body="slotProps">
-                  <template
-                    v-if="
-                      slotProps.data.picture && slotProps.data.picture_medium
-                    "
-                  >
+                  <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
                     <i class="fa fa-picture-o"></i>
-                    <a class="no-underline" :href="slotProps.data.picture">{{
-                      stripPathFromFileUrl(slotProps.data.picture)
-                    }}</a>
+                    <a class="no-underline" :href="slotProps.data.picture">{{ stripPathFromFileUrl(slotProps.data.picture) }}</a>
                   </template>
                   <template v-else>
                     <i class="fa fa-code-o"></i>
-                    <a class="no-underline" :href="slotProps.data.file">{{
-                      stripPathFromFileUrl(slotProps.data.file)
-                    }}</a>
+                    <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>
                 </template></Column
               >
@@ -192,16 +125,9 @@
             <template #header>
               <span>Stock history</span>
             </template>
-            <DataTable
-              :value="part.part_stock_history"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.part_stock_history" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="created_at" header="Date"
-                ><template #body="slotProps">{{
-                  formatDate(slotProps.data.created_at)
-                }}</template></Column
+                ><template #body="slotProps">{{ formatDate(slotProps.data.created_at) }}</template></Column
               >
               <Column field="diff" header="Amount"> </Column>
             </DataTable>

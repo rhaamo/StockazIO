@@ -16,19 +16,13 @@
         <template #header>
           <div class="grid">
             <div class="col-2">
-              <PvButton
-                label="Add a manufacturer"
-                @click.prevent="showAddManufacturerModal"
-              />
+              <PvButton label="Add a manufacturer" @click.prevent="showAddManufacturerModal" />
             </div>
 
             <div class="col-2 col-offset-7">
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
+                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
               </span>
             </div>
           </div>
@@ -45,13 +39,7 @@
         </Column>
         <Column field="logo" header="Logo">
           <template #body="slotProps">
-            <img
-              :src="slotProps.data.logo_mini"
-              style="max-width: 100px"
-              :alt="slotProps.data.name"
-              lazy
-              v-if="slotProps.data.logo"
-            />
+            <img :src="slotProps.data.logo_mini" style="max-width: 100px" :alt="slotProps.data.name" lazy v-if="slotProps.data.logo" />
           </template>
         </Column>
         <Column field="address" header="Address"></Column>
@@ -59,41 +47,23 @@
           <template #body="slotProps">
             <template v-if="slotProps.data.url">
               Website:
-              <a :href="slotProps.data.url" target="_blank">{{
-                slotProps.data.url
-              }}</a>
+              <a :href="slotProps.data.url" target="_blank">{{ slotProps.data.url }}</a>
             </template>
-            <template v-if="slotProps.data.url && slotProps.data.email"
-              ><br
-            /></template>
-            <template v-if="slotProps.data.email">
-              Email: {{ slotProps.data.email }}
-            </template>
+            <template v-if="slotProps.data.url && slotProps.data.email"><br /></template>
+            <template v-if="slotProps.data.email"> Email: {{ slotProps.data.email }} </template>
 
-            <template
-              v-if="
-                slotProps.data.datasheet_url &&
-                (slotProps.data.email || slotProps.data.url)
-              "
-              ><br
-            /></template>
-            <template v-if="slotProps.data.datasheet_url">
-              Datasheet template: {{ slotProps.data.datasheet_url }}
-            </template>
+            <template v-if="slotProps.data.datasheet_url && (slotProps.data.email || slotProps.data.url)"><br /></template>
+            <template v-if="slotProps.data.datasheet_url"> Datasheet template: {{ slotProps.data.datasheet_url }} </template>
           </template>
         </Column>
         <Column field="comment" header="Comment"></Column>
         <Column field="phones" header="Phones">
           <template #body="slotProps">
-            <template v-if="slotProps.data.phone">
-              Tel: {{ slotProps.data.phone }}
-            </template>
+            <template v-if="slotProps.data.phone"> Tel: {{ slotProps.data.phone }} </template>
             <template v-if="slotProps.data.phone && slotProps.data.fax">
               <br />
             </template>
-            <template v-if="slotProps.data.fax">
-              Fax: {{ slotProps.data.fax }}
-            </template>
+            <template v-if="slotProps.data.fax"> Fax: {{ slotProps.data.fax }} </template>
           </template>
         </Column>
 

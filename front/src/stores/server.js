@@ -5,13 +5,7 @@ import { defineStore } from "pinia";
 import apiService from "@/services/api/api.service";
 
 function getDefaultUrl() {
-  return (
-    window.location.protocol +
-    "//" +
-    window.location.hostname +
-    (window.location.port ? ":" + window.location.port : "") +
-    "/"
-  );
+  return window.location.protocol + "//" + window.location.hostname + (window.location.port ? ":" + window.location.port : "") + "/";
 }
 
 export const useServerStore = defineStore("server", {
@@ -60,14 +54,12 @@ export const useServerStore = defineStore("server", {
         (response) => {
           logger.default.info("Successfully fetched server settings");
           let sections = {};
-          sections.partAttachmentAllowedTypes =
-            response.data.part_attachment_allowed_types;
+          sections.partAttachmentAllowedTypes = response.data.part_attachment_allowed_types;
           sections.pagination = response.data.pagination;
           sections.backendVersion = response.data.version;
           sections.registrationEnabled = false; // TODO
           this.settings = sections;
-          this.parts_uncategorized_count =
-            response.data.parts_uncategorized_count;
+          this.parts_uncategorized_count = response.data.parts_uncategorized_count;
         },
         (response) => {
           logger.default.error("Error while fetching settings", response.data);

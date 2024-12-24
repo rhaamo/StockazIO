@@ -13,71 +13,38 @@
             v-tooltip="`Click to show picture`"
             @click.prevent="$refs.storage_picture.toggle($event)"
           />
-          <OverlayPanel
-            ref="storage_picture"
-            appendTo="body"
-            :showCloseIcon="true"
-            id="storage_picture"
-          >
+          <OverlayPanel ref="storage_picture" appendTo="body" :showCloseIcon="true" id="storage_picture">
             <PvImage preview width="250" :src="item.picture_medium"></PvImage>
           </OverlayPanel>
         </template>
 
         &nbsp;&nbsp;
 
-        <router-link
-          to="#"
-          v-tooltip="`QrCode label generator`"
-          @click.prevent="showLabelGeneratorModal(item)"
-          class="no-underline"
-        >
+        <router-link to="#" v-tooltip="`QrCode label generator`" @click.prevent="showLabelGeneratorModal(item)" class="no-underline">
           <i class="fa fa-qrcode" aria-hidden="true" />
         </router-link>
 
         <template v-if="!readonly">
           &nbsp;&nbsp;
 
-          <router-link
-            to="#"
-            v-tooltip="`Edit Element`"
-            @click.prevent="editElementModal(item)"
-            class="no-underline"
-          >
+          <router-link to="#" v-tooltip="`Edit Element`" @click.prevent="editElementModal(item)" class="no-underline">
             <i class="fa fa-pencil-square-o" aria-hidden="true" />
           </router-link>
           &nbsp;
-          <router-link
-            to="#"
-            v-tooltip="`Delete Element`"
-            @click.prevent="deleteElementModal(item)"
-            class="no-underline"
-          >
+          <router-link to="#" v-tooltip="`Delete Element`" @click.prevent="deleteElementModal(item)" class="no-underline">
             <i class="fa fa-trash-o" aria-hidden="true" />
           </router-link>
 
           &nbsp;&nbsp;
 
-          <router-link
-            to="#"
-            v-tooltip="`${addElementTitle(item.name)}`"
-            @click.prevent="addElementModal(item.id)"
-            class="no-underline"
-          >
+          <router-link to="#" v-tooltip="`${addElementTitle(item.name)}`" @click.prevent="addElementModal(item.id)" class="no-underline">
             <i class="fa fa-plus-square-o" aria-hidden="true" />
           </router-link>
         </template>
         <br />
-        <template v-if="item.description">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }}
-        </template>
+        <template v-if="item.description"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }} </template>
       </li>
-      <ListItem
-        v-for="category in item.children"
-        :key="category.uuid"
-        :item="category"
-        :level="level + 1"
-        :readonly="readonly"
-      />
+      <ListItem v-for="category in item.children" :key="category.uuid" :item="category" :level="level + 1" :readonly="readonly" />
     </ul>
   </div>
 </template>
@@ -139,12 +106,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [
-              h("h3", [
-                h("i", { class: "fa fa-qrcode mr-1" }),
-                h("span", "Label Generator"),
-              ]),
-            ];
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

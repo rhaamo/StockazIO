@@ -5,9 +5,7 @@
     <div class="card mt-4 pt-0 pl-0 pr-0">
       <TabView>
         <TabPanel>
-          <template #header>
-            <i class="fa fa-table mr-2"></i><span>Table</span>
-          </template>
+          <template #header> <i class="fa fa-table mr-2"></i><span>Table</span> </template>
           <DataTable
             :value="parts"
             :lazy="true"
@@ -31,74 +29,33 @@
 
             <template #header>
               <div class="field-checkbox">
-                <Checkbox
-                  inputId="only_sellable"
-                  v-model="lazyParams.sellable"
-                  :binary="true"
-                />
+                <Checkbox inputId="only_sellable" v-model="lazyParams.sellable" :binary="true" />
                 <label for="only_sellable">Only show sellable parts</label>
               </div>
             </template>
 
-            <Column
-              header="Name"
-              :sortable="true"
-              field="name"
-              :filterMatchModeOptions="matchModes.name"
-            >
+            <Column header="Name" :sortable="true" field="name" :filterMatchModeOptions="matchModes.name">
               <template #body="slotProps">
                 <div>
-                  <template
-                    v-if="
-                      partGetDefaultAttachment(slotProps.data.part_attachments)
-                    "
-                  >
+                  <template v-if="partGetDefaultAttachment(slotProps.data.part_attachments)">
                     <i
                       :id="`p_a_${slotProps.data.id}`"
                       v-tooltip="'Click to show picture'"
                       class="fa fa-picture-o mr-1"
                       aria-hidden="true"
-                      @click="
-                        toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)
-                      "
+                      @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)"
                     />
-                    <OverlayPanel
-                      :ref="`p_a_${slotProps.data.id}`"
-                      appendTo="body"
-                      :showCloseIcon="true"
-                      :id="`p_a_${slotProps.data.id}`"
-                    >
-                      <PvImage
-                        preview
-                        width="250"
-                        :src="
-                          partGetDefaultAttachment(
-                            slotProps.data.part_attachments
-                          ).picture_medium
-                        "
-                      ></PvImage>
+                    <OverlayPanel :ref="`p_a_${slotProps.data.id}`" appendTo="body" :showCloseIcon="true" :id="`p_a_${slotProps.data.id}`">
+                      <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
                     </OverlayPanel>
                   </template>
-                  <a
-                    href="#"
-                    class="no-underline"
-                    @click.prevent="viewPartModal(slotProps.data)"
-                    >{{ slotProps.data.name }}</a
-                  >
+                  <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
                   <br />
                   <template v-if="slotProps.data.description">
-                    {{
-                      slotProps.data.category
-                        ? slotProps.data.category.name
-                        : "No category"
-                    }}: {{ slotProps.data.description }}
+                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
                   </template>
                   <template v-else>
-                    {{
-                      slotProps.data.category
-                        ? slotProps.data.category.name
-                        : "No category"
-                    }}
+                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
                   </template>
                 </div>
               </template>
@@ -113,17 +70,8 @@
                 />
               </template>
             </Column>
-            <Column
-              header="Storage"
-              :sortable="true"
-              field="storage_id"
-              :filterMatchModeOptions="matchModes.storage"
-            >
-              <template #body="slotProps">{{
-                slotProps.data.storage && slotProps.data.storage.name
-                  ? slotProps.data.storage.name
-                  : "-"
-              }}</template>
+            <Column header="Storage" :sortable="true" field="storage_id" :filterMatchModeOptions="matchModes.storage">
+              <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
               <template #filter="{ filterModel, filterCallback }">
                 <TreeSelect
                   v-model="filterModel.value"
@@ -135,26 +83,13 @@
                 />
               </template>
             </Column>
-            <Column
-              header="Stock"
-              :sortable="true"
-              field="stock_qty"
-              dataType="numeric"
-              :filterMatchModeOptions="matchModes.qty"
-            >
+            <Column header="Stock" :sortable="true" field="stock_qty" dataType="numeric" :filterMatchModeOptions="matchModes.qty">
               <template #body="slotProps">
-                <template
-                  v-if="
-                    slotProps.data.stock_qty >= slotProps.data.stock_qty_min
-                  "
+                <template v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
                   ><span>{{ slotProps.data.stock_qty }}</span></template
                 >
                 <template v-else>
-                  <span
-                    class="text-red-500"
-                    v-tooltip="
-                      'Current stock is below minimum stock quantity or exhausted'
-                    "
+                  <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
                     >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
                   ></span>
                 </template>
@@ -169,43 +104,25 @@
                 />
               </template>
             </Column>
-            <Column
-              header="Min"
-              :sortable="true"
-              field="stock_qty_min"
-              dataType="numeric"
-            >
+            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric">
               <template #body="slotProps">
                 <span>{{ slotProps.data.stock_qty_min }}</span>
               </template></Column
             >
             <Column header="Unit" :sortable="true" field="part_unit.name">
               <template #body="slotProps">{{
-                slotProps.data.part_unit && slotProps.data.part_unit.name
-                  ? slotProps.data.part_unit.name
-                  : "-"
+                slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
               }}</template>
             </Column>
-            <Column
-              header="Footprint"
-              :sortable="true"
-              field="footprint_id"
-              :filterMatchModeOptions="matchModes.footprint"
-            >
+            <Column header="Footprint" :sortable="true" field="footprint_id" :filterMatchModeOptions="matchModes.footprint">
               <template #body="slotProps">
                 <span
                   v-tooltip="{
-                    value: slotProps.data.footprint
-                      ? slotProps.data.footprint.description
-                      : '',
+                    value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
                     disabled: false,
                   }"
                 >
-                  {{
-                    slotProps.data.footprint
-                      ? slotProps.data.footprint.name
-                      : "-"
-                  }}
+                  {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
                 </span>
               </template>
               <template #filter="{ filterModel, filterCallback }">
@@ -226,18 +143,14 @@
           </DataTable>
         </TabPanel>
         <TabPanel>
-          <template #header>
-            <i class="fa fa-image mr-2"></i> <span>Thumbnails</span>
-          </template>
+          <template #header> <i class="fa fa-image mr-2"></i> <span>Thumbnails</span> </template>
 
           <div class="grid">
             <div class="col-4" v-for="part in parts" :key="part.id">
               <div class="product-grid-item card">
                 <div class="product-grid-item-top">
                   <div>
-                    <span class="product-category">{{
-                      part.category ? part.category.name : "Uncategorized"
-                    }}</span>
+                    <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
                   </div>
                   <span
                     >qty:
@@ -245,29 +158,15 @@
                       ><span>{{ part.stock_qty }}</span></template
                     >
                     <template v-else>
-                      <span
-                        class="text-red-500"
-                        v-tooltip="
-                          'Current stock is below minimum stock quantity or exhausted'
-                        "
+                      <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
                         >{{ part.stock_qty }} <i class="fa fa-circle"></i
                       ></span>
                     </template>
                   </span>
                 </div>
                 <div class="product-grid-item-content mt-3">
-                  <template
-                    v-if="partGetDefaultAttachment(part.part_attachments)"
-                  >
-                    <PvImage
-                      preview
-                      :src="
-                        partGetDefaultAttachment(part.part_attachments)
-                          .picture_medium
-                      "
-                      :alt="part.name"
-                      width="250"
-                    />
+                  <template v-if="partGetDefaultAttachment(part.part_attachments)">
+                    <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
                   </template>
                   <template v-else>
                     <span class="fa-stack fa-5x">
@@ -281,10 +180,7 @@
                     {{ part.description }}
                   </div>
                   <div class="product-button">
-                    <PvButton
-                      @click.prevent="viewPartModal(part)"
-                      label="View details"
-                    ></PvButton>
+                    <PvButton @click.prevent="viewPartModal(part)" label="View details"></PvButton>
                   </div>
                 </div>
               </div>
@@ -411,19 +307,13 @@ export default {
       ].concat(this.choicesFootprint);
     },
     choicesStorageLocationWithNo() {
-      return [
-        { key: "0", label: "No Storage Location", icon: "fa fa-close" },
-      ].concat(this.choicesStorageLocation);
+      return [{ key: "0", label: "No Storage Location", icon: "fa fa-close" }].concat(this.choicesStorageLocation);
     },
     searchQuery() {
       return this.$route.query.q;
     },
     breadcrumb() {
-      if (
-        this.actualCurrentCategory &&
-        this.categoryId &&
-        this.categoryId !== "0"
-      ) {
+      if (this.actualCurrentCategory && this.categoryId && this.categoryId !== "0") {
         return {
           home: {
             icon: "fa fa-folder-o mr-1",
@@ -584,9 +474,7 @@ export default {
       // Do a quick cleanup of datas before sending them
       const params = cloneDeep(this.lazyParams);
       if (params.filters["storage_id"].value) {
-        params.filters["storage_id"].value = Object.keys(
-          params.filters["storage_id"].value
-        )[0];
+        params.filters["storage_id"].value = Object.keys(params.filters["storage_id"].value)[0];
       }
 
       apiService
@@ -650,12 +538,7 @@ export default {
             templates: {
               header: () => {
                 if (part.private) {
-                  return [
-                    h("h3", [
-                      h("i", { class: "fa fa-lock mr-1" }),
-                      h("span", part.name),
-                    ]),
-                  ];
+                  return [h("h3", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
                 } else {
                   return [h("h3", part.name)];
                 }
@@ -708,8 +591,7 @@ export default {
 .card {
   background: #ffffff;
   padding: 2rem;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   margin-bottom: 2rem;
 }

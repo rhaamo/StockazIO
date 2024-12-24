@@ -32,11 +32,7 @@
     </template>
 
     <ul v-if="node.children && node.children.length" class="children">
-      <CategoriesNode
-        v-for="child in node.children"
-        :key="child.id"
-        :node="child"
-      />
+      <CategoriesNode v-for="child in node.children" :key="child.id" :node="child" />
     </ul>
   </li>
 </template>
@@ -65,16 +61,12 @@ export default {
       return this.userStore.currentUser && this.oauthStore.loggedIn;
     },
     categoriesRouteName() {
-      return this.currentUser
-        ? "parts-category-list"
-        : "public-parts-category-list";
+      return this.currentUser ? "parts-category-list" : "public-parts-category-list";
     },
   },
   methods: {
     categoryFolderClass(category) {
-      return category.id === parseInt(this.currentCategory.id)
-        ? "fa fa-folder-open mr-2"
-        : "fa fa-folder-o mr-2";
+      return category.id === parseInt(this.currentCategory.id) ? "fa fa-folder-open mr-2" : "fa fa-folder-o mr-2";
     },
   },
 };

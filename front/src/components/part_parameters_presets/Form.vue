@@ -25,17 +25,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.name.$invalid && submitted) ||
-              v$.item.name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
             {{ v$.item.name.maxLength.$message }}
           </small>
         </div>
@@ -61,11 +54,7 @@
     <div class="flex justify-content-center">
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field w-10">
-          <PvButton
-            @click.prevent="addPartParameter($event)"
-            class="p-button-help"
-            label="add item"
-          />
+          <PvButton @click.prevent="addPartParameter($event)" class="p-button-help" label="add item" />
         </div>
       </div>
     </div>
@@ -111,15 +100,14 @@ export default {
       this.item = {
         id: this.dialogRef.data.item.id,
         name: this.dialogRef.data.item.name,
-        part_parameters_presets:
-          this.dialogRef.data.item.part_parameters_presets.map((x) => {
-            return {
-              id: x.id,
-              name: x.name,
-              description: x.description,
-              unit: x.unit ? x.unit.id : null,
-            };
-          }),
+        part_parameters_presets: this.dialogRef.data.item.part_parameters_presets.map((x) => {
+          return {
+            id: x.id,
+            name: x.name,
+            description: x.description,
+            unit: x.unit ? x.unit.id : null,
+          };
+        }),
       };
     }
   },
@@ -177,10 +165,7 @@ export default {
             detail: "Save failed",
             life: 5000,
           });
-          logger.default.error(
-            "Error with part parameters presets saving",
-            err
-          );
+          logger.default.error("Error with part parameters presets saving", err);
           this.dialogRef.close({ finished: true });
         });
     },
@@ -208,10 +193,7 @@ export default {
             detail: "Save failed",
             life: 5000,
           });
-          logger.default.error(
-            "Error with part parameters presets update",
-            err
-          );
+          logger.default.error("Error with part parameters presets update", err);
           this.dialogRef.close({ finished: true });
         });
     },

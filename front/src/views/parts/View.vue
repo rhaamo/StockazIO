@@ -2,11 +2,7 @@
   <div v-if="part">
     <div class="grid">
       <div class="col-6">
-        <span
-          style="float: left"
-          class="pt-2"
-          @click="showLabelGenerator(part)"
-        >
+        <span style="float: left" class="pt-2" @click="showLabelGenerator(part)">
           <vue-qrcode
             :id="qrcodeId(part.id)"
             v-tooltip="'click to show label generator'"
@@ -30,12 +26,7 @@
             params: { partId: part.id },
           }"
         >
-          <PvButton
-            type="button"
-            icon="fa fa-edit"
-            class="p-button-primary"
-            v-tooltip.left="'edit'"
-          ></PvButton>
+          <PvButton type="button" icon="fa fa-edit" class="p-button-primary" v-tooltip.left="'edit'"></PvButton>
         </router-link>
 
         <PvButton
@@ -53,24 +44,17 @@
         <div class="grid">
           <div class="col-3">
             <template v-if="part.stock_qty >= part.stock_qty_min"
-              ><b>Qty:</b
-              ><span class="ml-1">{{ part.stock_qty }}</span></template
+              ><b>Qty:</b><span class="ml-1">{{ part.stock_qty }}</span></template
             >
             <template v-else>
               <b>Qty:</b>
-              <span
-                class="text-red-500 ml-1"
-                v-tooltip="
-                  'Current stock is below minimum stock quantity or exhausted'
-                "
+              <span class="text-red-500 ml-1" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
                 >{{ part.stock_qty }} <i class="fa fa-circle"></i
               ></span>
             </template>
           </div>
           <div class="col-3"><b>Qty min:</b> {{ part.stock_qty_min }}</div>
-          <div class="col-6">
-            <b>Unit: </b> {{ partUnit || "None defined" }}
-          </div>
+          <div class="col-6"><b>Unit: </b> {{ partUnit || "None defined" }}</div>
         </div>
 
         <div class="mt-2 mb-2 surface-50 p-2">
@@ -78,12 +62,7 @@
         </div>
 
         <div>
-          <DataTable
-            :value="mainTableItems"
-            class="p-datatable-sm"
-            stripedRows
-            responsiveLayout="scroll"
-          >
+          <DataTable :value="mainTableItems" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
             <Column field="item" header="Item"></Column>
             <Column field="value" header="Value"></Column>
           </DataTable>
@@ -92,24 +71,12 @@
 
       <div class="col-6">
         <div class="mb-3">
-          <Galleria
-            :value="pictureAttachments"
-            containerStyle="max-width: 640px"
-          >
+          <Galleria :value="pictureAttachments" containerStyle="max-width: 640px">
             <template #item="slotProps">
-              <PvImage
-                preview
-                height="100"
-                :src="slotProps.item.picture"
-                :alt="slotProps.item.description"
-              />
+              <PvImage preview height="100" :src="slotProps.item.picture" :alt="slotProps.item.description" />
             </template>
             <template #thumbnail="slotProps">
-              <img
-                :src="slotProps.item.picture_medium"
-                :alt="slotProps.item.description"
-                style="height: 60px"
-              />
+              <img :src="slotProps.item.picture_medium" :alt="slotProps.item.description" style="height: 60px" />
             </template>
           </Galleria>
         </div>
@@ -119,22 +86,12 @@
             <template #header>
               <span>Parameters</span>
             </template>
-            <DataTable
-              :value="part.part_parameters_value"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.part_parameters_value" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="name" header="Name"></Column>
               <Column field="description" header="Description"></Column>
               <Column header="Value">
                 <template #body="slotProps"
-                  >{{ slotProps.data.value }}
-                  {{
-                    slotProps.data.unit
-                      ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})`
-                      : ""
-                  }}</template
+                  >{{ slotProps.data.value }} {{ slotProps.data.unit ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})` : "" }}</template
                 >
               </Column>
             </DataTable>
@@ -144,26 +101,16 @@
             <template #header>
               <span>Distributors</span>
             </template>
-            <DataTable
-              :value="part.distributors_sku"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.distributors_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Distributor">
-                <template #body="slotProps">{{
-                  slotProps.data.distributor
-                    ? slotProps.data.distributor.name
-                    : "No name"
-                }}</template>
+                <template #body="slotProps">{{ slotProps.data.distributor ? slotProps.data.distributor.name : "No name" }}</template>
               </Column>
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
                     <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i>
-                      {{ slotProps.data.datasheet_url }}</a
+                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
                     ></template
                   ></template
                 >
@@ -175,26 +122,16 @@
             <template #header>
               <span>Manufacturers</span>
             </template>
-            <DataTable
-              :value="part.manufacturers_sku"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.manufacturers_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Manufacturer">
-                <template #body="slotProps">{{
-                  slotProps.data.manufacturer
-                    ? slotProps.data.manufacturer.name
-                    : "No name"
-                }}</template>
+                <template #body="slotProps">{{ slotProps.data.manufacturer ? slotProps.data.manufacturer.name : "No name" }}</template>
               </Column>
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
                     <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i>
-                      {{ slotProps.data.datasheet_url }}</a
+                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
                     ></template
                   ></template
                 >
@@ -207,10 +144,7 @@
               <span>Files</span>
             </template>
 
-            <form
-              enctype="multipart/form-data"
-              @submit.prevent="addAttachment(!v$.$invalid)"
-            >
+            <form enctype="multipart/form-data" @submit.prevent="addAttachment(!v$.$invalid)">
               <div class="grid">
                 <div class="col-6">
                   <InputText
@@ -220,28 +154,18 @@
                     v-model="formAddAttachment.description"
                     placeholder="File description"
                     :class="{
-                      'p-invalid':
-                        v$.formAddAttachment.description.$invalid &&
-                        formAddAttachmentSubmitted,
+                      'p-invalid': v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted,
                       'w-12': true,
                     }"
                   />
                   <small
                     v-if="
-                      (v$.formAddAttachment.description.$invalid &&
-                        formAddAttachmentSubmitted) ||
-                      v$.formAddAttachment.description.$pending.$response
+                      (v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.description.$pending.$response
                     "
                     class="p-error"
                   >
                     {{ v$.formAddAttachment.description.required.$message }}
-                    <template
-                      v-if="
-                        v$.formAddAttachment.description.required &&
-                        v$.formAddAttachment.description.maxLength
-                      "
-                      ><br
-                    /></template>
+                    <template v-if="v$.formAddAttachment.description.required && v$.formAddAttachment.description.maxLength"><br /></template>
                     {{ v$.formAddAttachment.description.maxLength.$message }}
                   </small>
                 </div>
@@ -255,100 +179,60 @@
                     @change="attachmentFileChanged($event.target.files)"
                     v-if="!formAddAttachment.fromWebcam"
                     :class="{
-                      'p-invalid':
-                        v$.formAddAttachment.file.$invalid &&
-                        formAddAttachmentSubmitted,
+                      'p-invalid': v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted,
                       'w-12': true,
                     }"
                     :accept="allowedUploadTypes"
                   />
                   <small
-                    v-if="
-                      (v$.formAddAttachment.file.$invalid &&
-                        formAddAttachmentSubmitted) ||
-                      v$.formAddAttachment.file.$pending.$response
-                    "
+                    v-if="(v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.file.$pending.$response"
                     class="p-error"
                   >
                     {{ v$.formAddAttachment.file.required.$message }}
                   </small>
                   <div v-if="formAddAttachment.fromWebcam">
-                    <PvButton
-                      label="Clear webcam image"
-                      @click.prevent="clearWebcamImage()"
-                    />
+                    <PvButton label="Clear webcam image" @click.prevent="clearWebcamImage()" />
                   </div>
                 </div>
               </div>
 
               <div class="grid">
                 <div class="col-6">
-                  <PvButton
-                    label="Take a picture"
-                    class="p-button-info"
-                    @click.prevent="takeAPicture()"
-                  />
+                  <PvButton label="Take a picture" class="p-button-info" @click.prevent="takeAPicture()" />
                   <PvButton label="add" type="submit" class="ml-3" />
                 </div>
               </div>
             </form>
 
             <Divider />
-            <DataTable
-              :value="part.part_attachments"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.part_attachments" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column header="Link"
                 ><template #body="slotProps">
-                  <template
-                    v-if="
-                      slotProps.data.picture && slotProps.data.picture_medium
-                    "
-                  >
+                  <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
                     <i class="fa fa-picture-o mr-1"></i>
-                    <a :href="slotProps.data.picture">{{
-                      stripPathFromFileUrl(slotProps.data.picture)
-                    }}</a>
+                    <a :href="slotProps.data.picture">{{ stripPathFromFileUrl(slotProps.data.picture) }}</a>
                   </template>
                   <template v-else>
                     <i class="fa fa-code-o"></i>
-                    <a class="no-underline" :href="slotProps.data.file">{{
-                      stripPathFromFileUrl(slotProps.data.file)
-                    }}</a>
+                    <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>
                 </template></Column
               >
               <Column field="description" header="Description"> </Column>
               <Column>
                 <template #body="slotProps">
-                  <template
-                    v-if="
-                      slotProps.data.picture && slotProps.data.picture_medium
-                    "
-                  >
-                    <i
-                      v-if="slotProps.data.picture_default"
-                      class="fa fa-check-square-o"
-                      title="Default picture"
-                      aria-hidden="true"
-                    />
+                  <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
+                    <i v-if="slotProps.data.picture_default" class="fa fa-check-square-o" title="Default picture" aria-hidden="true" />
                     <i
                       v-else
                       class="fa fa-square-o"
                       aria-hidden="true"
                       title="Set as default picture"
-                      @click.prevent="
-                        setAttachmentAsDefault(part.id, slotProps.data.id)
-                      "
+                      @click.prevent="setAttachmentAsDefault(part.id, slotProps.data.id)"
                     />
                     &nbsp;&nbsp;
                   </template>
-                  <router-link
-                    to="#"
-                    @click.prevent="deleteAttachment(slotProps.data)"
-                  >
+                  <router-link to="#" @click.prevent="deleteAttachment(slotProps.data)">
                     <i class="fa fa-trash-o" aria-hidden="true" />
                   </router-link>
                 </template>
@@ -360,16 +244,9 @@
             <template #header>
               <span>Stock history</span>
             </template>
-            <DataTable
-              :value="part.part_stock_history"
-              class="p-datatable-sm"
-              stripedRows
-              responsiveLayout="scroll"
-            >
+            <DataTable :value="part.part_stock_history" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
               <Column field="created_at" header="Date"
-                ><template #body="slotProps">{{
-                  formatDate(slotProps.data.created_at)
-                }}</template></Column
+                ><template #body="slotProps">{{ formatDate(slotProps.data.created_at) }}</template></Column
               >
               <Column field="diff" header="Amount"> </Column>
             </DataTable>
@@ -434,10 +311,7 @@ export default {
   computed: {
     ...mapState(useServerStore, {
       allowedUploadTypes: (store) => {
-        let types = store.settings.partAttachmentAllowedTypes || [
-          "application/pdf",
-          "image/jpeg",
-        ];
+        let types = store.settings.partAttachmentAllowedTypes || ["application/pdf", "image/jpeg"];
         return types.join(", ");
       },
     }),
@@ -547,12 +421,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [
-              h("h3", [
-                h("i", { class: "fa fa-qrcode mr-1" }),
-                h("span", "Label Generator"),
-              ]),
-            ];
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {
@@ -707,17 +576,11 @@ export default {
                 detail: "An error occured, please try again later",
                 life: 5000,
               });
-              logger.default.error(
-                "Error with getting part details",
-                data.error
-              );
+              logger.default.error("Error with getting part details", data.error);
             } else {
               this.formAddAttachment.fromWebcam = true;
               this.formAddAttachment.file = "C:\\fakepath\\webcam.jpg";
-              this.formAddAttachment.realFile = utils.dataUrlToFile(
-                data.picture,
-                "webcam.jpg"
-              );
+              this.formAddAttachment.realFile = utils.dataUrlToFile(data.picture, "webcam.jpg");
             }
           }
         },

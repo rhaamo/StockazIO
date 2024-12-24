@@ -4,24 +4,13 @@
     <div>
       <ul class="list-none">
         <li>
-          <router-link
-            to="#"
-            title="Bulk-generate labels"
-            @click.prevent="showBulkLabelGenerator()"
-            class="no-underline"
-          >
+          <router-link to="#" title="Bulk-generate labels" @click.prevent="showBulkLabelGenerator()" class="no-underline">
             <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
           </router-link>
         </li>
       </ul>
       <template v-for="item in storages">
-        <ListItem
-          v-if="item.children"
-          :key="item.id"
-          :item="item"
-          :level="1"
-          :readonly="true"
-        />
+        <ListItem v-if="item.children" :key="item.id" :item="item" :level="1" :readonly="true" />
       </template>
     </div>
   </div>
@@ -84,12 +73,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [
-              h("h3", [
-                h("i", { class: "fa fa-qrcode mr-1" }),
-                h("span", "Label Generator"),
-              ]),
-            ];
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

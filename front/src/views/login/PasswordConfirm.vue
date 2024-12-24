@@ -9,13 +9,7 @@
         <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
           <div>
             <div class="field">
-              <small
-                v-if="
-                  v$.form.token.$invalid || v$.form.token.$pending.$response
-                "
-                class="p-error"
-                >Token invalid or expired.</small
-              >
+              <small v-if="v$.form.token.$invalid || v$.form.token.$pending.$response" class="p-error">Token invalid or expired.</small>
             </div>
 
             <div class="field">
@@ -31,12 +25,7 @@
                 :feedback="false"
                 placeholder="Enter password"
               />
-              <small
-                v-if="
-                  (v$.form.password.$invalid && submitted) ||
-                  v$.form.password.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.password.$invalid && submitted) || v$.form.password.$pending.$response" class="p-error"
                 ><br />{{ v$.form.password.required.$message }}</small
               >
             </div>
@@ -54,31 +43,15 @@
                 :feedback="false"
                 placeholder="And confirm it again"
               />
-              <small
-                v-if="
-                  (v$.form.password_confirm.$invalid && submitted) ||
-                  v$.form.password_confirm.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.form.password_confirm.$invalid && submitted) || v$.form.password_confirm.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.password_confirm.required.$message }}
-                <template
-                  v-if="
-                    v$.form.password_confirm.required &&
-                    v$.form.password_confirm.sameAs
-                  "
-                  ><br
-                /></template>
+                <template v-if="v$.form.password_confirm.required && v$.form.password_confirm.sameAs"><br /></template>
                 {{ v$.form.password_confirm.sameAs.$message }}
               </small>
             </div>
 
-            <PvButton
-              label="Change password"
-              icon="pi pi-user"
-              class="w-7"
-              type="submit"
-            ></PvButton>
+            <PvButton label="Change password" icon="pi pi-user" class="w-7" type="submit"></PvButton>
           </div>
         </form>
       </div>

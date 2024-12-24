@@ -26,17 +26,10 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.item.name.$invalid && submitted) ||
-                  v$.item.name.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.item.name.required.$message }}
-                <template v-if="v$.item.name.required && v$.item.name.maxLength"
-                  ><br
-                /></template>
+                <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
                 {{ v$.item.name.maxLength.$message }}
               </small>
             </div>
@@ -63,19 +56,11 @@
                 }"
                 :accept="allowedUploadTypes"
               />
-              <small
-                v-if="
-                  (v$.item.logo.$invalid && submitted) ||
-                  v$.item.logo.$pending.$response
-                "
-                class="p-error"
-              >
+              <small v-if="(v$.item.logo.$invalid && submitted) || v$.item.logo.$pending.$response" class="p-error">
                 {{ v$.item.logo.required.$message }}
               </small>
 
-              <template
-                v-if="mode === 'edit' && typeof item.hasLogo === 'string'"
-              >
+              <template v-if="mode === 'edit' && typeof item.hasLogo === 'string'">
                 <br />
                 Actual logo <a :href="item.hasLogo" target="_blank">file</a>.
               </template>
@@ -151,17 +136,9 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.item.url.$invalid && submitted) ||
-                  v$.item.url.$pending.$response
-                "
-                class="p-error"
-              >
+              <small v-if="(v$.item.url.$invalid && submitted) || v$.item.url.$pending.$response" class="p-error">
                 {{ v$.item.url.url.$message }}
-                <template v-if="v$.item.url.url && v$.item.url.maxLength"
-                  ><br
-                /></template>
+                <template v-if="v$.item.url.url && v$.item.url.maxLength"><br /></template>
                 {{ v$.item.url.maxLength.$message }}
               </small>
             </div>
@@ -187,13 +164,7 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.item.phone.$invalid && submitted) ||
-                  v$.item.phone.$pending.$response
-                "
-                class="p-error"
-              >
+              <small v-if="(v$.item.phone.$invalid && submitted) || v$.item.phone.$pending.$response" class="p-error">
                 {{ v$.item.phone.maxLength.$message }}
               </small>
             </div>
@@ -219,17 +190,9 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.item.email.$invalid && submitted) ||
-                  v$.item.email.$pending.$response
-                "
-                class="p-error"
-              >
+              <small v-if="(v$.item.email.$invalid && submitted) || v$.item.email.$pending.$response" class="p-error">
                 {{ v$.item.email.email.$message }}
-                <template v-if="v$.item.email.email && v$.item.email.maxLength"
-                  ><br
-                /></template>
+                <template v-if="v$.item.email.email && v$.item.email.maxLength"><br /></template>
                 {{ v$.item.email.maxLength.$message }}
               </small>
             </div>
@@ -255,13 +218,7 @@
                   'w-10': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.item.fax.$invalid && submitted) ||
-                  v$.item.fax.$pending.$response
-                "
-                class="p-error"
-              >
+              <small v-if="(v$.item.fax.$invalid && submitted) || v$.item.fax.$pending.$response" class="p-error">
                 {{ v$.item.fax.maxLength.$message }}
               </small>
             </div>
@@ -291,21 +248,10 @@
               <br />
               You can uses the following template in the datasheet url:<br />
               {sku}, {sku_lower}, {sku_upper}
-              <small
-                v-if="
-                  (v$.item.datasheet_url.$invalid && submitted) ||
-                  v$.item.datasheet_url.$pending.$response
-                "
-                class="p-error"
-              >
+              <small v-if="(v$.item.datasheet_url.$invalid && submitted) || v$.item.datasheet_url.$pending.$response" class="p-error">
                 <br />
                 {{ v$.item.datasheet_url.url.$message }}
-                <template
-                  v-if="
-                    v$.item.datasheet_url.url && v$.item.datasheet_url.maxLength
-                  "
-                  ><br
-                /></template>
+                <template v-if="v$.item.datasheet_url.url && v$.item.datasheet_url.maxLength"><br /></template>
                 {{ v$.item.datasheet_url.maxLength.$message }}
               </small>
             </div>
@@ -332,12 +278,7 @@
                   'w-full': true,
                 }"
               />
-              <small
-                v-if="
-                  (v$.item.aliases.$invalid && submitted) ||
-                  v$.item.aliases.$pending.$response
-                "
-                class="p-error"
+              <small v-if="(v$.item.aliases.$invalid && submitted) || v$.item.aliases.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.item.aliases.maxLength.$message }}
               </small>
@@ -419,10 +360,7 @@ export default {
   computed: {
     ...mapState(useServerStore, {
       allowedUploadTypes: (store) => {
-        let types = store.settings.partAttachmentAllowedTypes || [
-          "image/png",
-          "image/jpeg",
-        ];
+        let types = store.settings.partAttachmentAllowedTypes || ["image/png", "image/jpeg"];
         return types.join(", ");
       },
     }),

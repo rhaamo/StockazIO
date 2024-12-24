@@ -25,17 +25,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.name.$invalid && submitted) ||
-              v$.item.name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
             {{ v$.item.name.maxLength.$message }}
           </small>
         </div>
@@ -65,18 +58,10 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.short_name.$invalid && submitted) ||
-              v$.item.short_name.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.short_name.$invalid && submitted) || v$.item.short_name.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.short_name.required.$message }}
-            <template
-              v-if="v$.item.short_name.required && v$.item.short_name.maxLength"
-              ><br
-            /></template>
+            <template v-if="v$.item.short_name.required && v$.item.short_name.maxLength"><br /></template>
             {{ v$.item.short_name.maxLength.$message }}
           </small>
         </div>
@@ -105,12 +90,7 @@
               'w-full': true,
             }"
           />
-          <small
-            v-if="
-              (v$.item.description.$invalid && submitted) ||
-              v$.item.description.$pending.$response
-            "
-            class="p-error"
+          <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.description.maxLength.$message }}
           </small>
