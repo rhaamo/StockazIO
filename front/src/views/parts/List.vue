@@ -2,30 +2,31 @@
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
-    <div class="card ml-5 mt-4 pt-2 mr-5" v-if="show_parameters_filter">
-      <h4>Filtering by part parameter</h4>
+    <Card class="ml-5 mt-4 pt-2 mr-5" v-if="show_parameters_filter">
+      <template #title>Filtering by part parameter</template>
+      <template #content>
+        <div v-for="(_, i) in parameters_filters" :key="i">
+          <ParameterFilter
+            v-model:item="parameters_filters[i]"
+            v-model:names="parameters_filter_names"
+            @deleteItem="deletePartParameterFilter($event, i)"
+          />
+        </div>
 
-      <div v-for="(_, i) in parameters_filters" :key="i">
-        <ParameterFilter
-          v-model:item="parameters_filters[i]"
-          v-model:names="parameters_filter_names"
-          @deleteItem="deletePartParameterFilter($event, i)"
+        <Divider />
+
+        <PvButton @click.prevent="addPartParameterFilter($event)" class="p-button-help" label="add filter" />
+
+        <PvButton
+          @click.prevent="searchPartsFilter($event)"
+          class="p-button-success ml-2"
+          label="search parts"
+          v-if="parameters_filters && parameters_filters.length"
         />
-      </div>
+      </template>
+    </Card>
 
-      <Divider />
-
-      <PvButton @click.prevent="addPartParameterFilter($event)" class="p-button-help" label="add filter" />
-
-      <PvButton
-        @click.prevent="searchPartsFilter($event)"
-        class="p-button-success ml-2"
-        label="search parts"
-        v-if="parameters_filters && parameters_filters.length"
-      />
-    </div>
-
-    <div class="card mt-4 pl-0 pr-0 pt-0 pb-0">
+    <div class="mt-4 pl-0 pr-0 pt-0 pb-0">
       <TabView>
         <TabPanel>
           <template #header> <i class="fa fa-table mr-2"></i><span>Table</span> </template>
@@ -302,43 +303,45 @@
 
           <div class="grid">
             <div class="col-4" v-for="part in parts" :key="part.id">
-              <div class="product-grid-item card">
-                <div class="product-grid-item-top">
-                  <div>
-                    <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
-                  </div>
-                  <span
-                    >qty:
-                    <template v-if="part.stock_qty >= part.stock_qty_min"
-                      ><span>{{ part.stock_qty }}</span></template
-                    >
-                    <template v-else>
-                      <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
-                        >{{ part.stock_qty }} <i class="fa fa-circle"></i
-                      ></span>
-                    </template>
-                  </span>
-                </div>
-                <div class="product-grid-item-content mt-3">
-                  <template v-if="partGetDefaultAttachment(part.part_attachments)">
-                    <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
-                  </template>
-                  <template v-else>
-                    <span class="fa-stack fa-5x">
-                      <i class="fa fa-file-picture-o fa-stack-2x" />
-                      <i class="fa fa-question fa-stack-1x text-orange-400" />
+              <Card class="product-grid-item">
+                <template #content>
+                  <div class="product-grid-item-top">
+                    <div>
+                      <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
+                    </div>
+                    <span
+                      >qty:
+                      <template v-if="part.stock_qty >= part.stock_qty_min"
+                        ><span>{{ part.stock_qty }}</span></template
+                      >
+                      <template v-else>
+                        <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
+                          >{{ part.stock_qty }} <i class="fa fa-circle"></i
+                        ></span>
+                      </template>
                     </span>
-                  </template>
+                  </div>
+                  <div class="product-grid-item-content mt-3">
+                    <template v-if="partGetDefaultAttachment(part.part_attachments)">
+                      <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
+                    </template>
+                    <template v-else>
+                      <span class="fa-stack fa-5x">
+                        <i class="fa fa-file-picture-o fa-stack-2x" />
+                        <i class="fa fa-question fa-stack-1x text-orange-400" />
+                      </span>
+                    </template>
 
-                  <div class="product-name">{{ part.name }}</div>
-                  <div class="product-description">
-                    {{ part.description }}
+                    <div class="product-name">{{ part.name }}</div>
+                    <div class="product-description">
+                      {{ part.description }}
+                    </div>
+                    <div class="product-button">
+                      <PvButton @click.prevent="viewPartModal(part)" label="View details"></PvButton>
+                    </div>
                   </div>
-                  <div class="product-button">
-                    <PvButton @click.prevent="viewPartModal(part)" label="View details"></PvButton>
-                  </div>
-                </div>
-              </div>
+                </template>
+              </Card>
             </div>
           </div>
         </TabPanel>
@@ -1074,14 +1077,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card {
-  background: #ffffff;
-  padding: 2rem;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-  margin-bottom: 2rem;
-}
-
 .product-name {
   font-size: 1.5rem;
   font-weight: 700;
