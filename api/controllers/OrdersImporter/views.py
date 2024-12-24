@@ -335,7 +335,7 @@ class LcscCsvImporter(views.APIView):
             order_number=f"LCSC-{datetime.datetime.now().timestamp()}",
             status="Lossy CSV Import",
             vendor="LCSC",
-            import_state=1,
+            import_state=0,
         )
         order.save()
 
@@ -354,7 +354,7 @@ class LcscCsvImporter(views.APIView):
             )
 
         # Update order and save
-        order.import_state = 2  # imported
+        order.import_state = 1  # fetched
         order.save()
 
         return Response(status=200)
