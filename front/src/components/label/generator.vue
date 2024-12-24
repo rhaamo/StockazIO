@@ -131,7 +131,8 @@ export default {
         };
         if (this.kind === "storage") {
           console.log(cb);
-          inputsValues.name = cb.full_path.join(" / ");
+          inputsValues.description = cb.full_path.slice(0, -1).join(" / ");
+          inputsValues.name = cb.full_path.at(-1);
         }
         inputs.push(inputsValues);
       });
