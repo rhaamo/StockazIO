@@ -744,6 +744,7 @@ export default {
               style: {
                 width: "70vw",
               },
+              dismissableMask: true,
             },
             templates: {
               header: () => {
