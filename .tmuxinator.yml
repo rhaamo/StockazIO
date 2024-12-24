@@ -11,6 +11,7 @@ windows:
       panes:
         - backend:
             - export DJANGO_SETTINGS_MODULE=config.settings.local
+            - export DEBUG_TOOLBAR_ENABLED=False
             - source venv/bin/activate.fish
             - cd api
             - python3 manage.py runserver 0.0.0.0:8000
