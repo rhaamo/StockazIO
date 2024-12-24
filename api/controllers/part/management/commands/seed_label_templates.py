@@ -16,7 +16,7 @@ class Command(BaseCommand):
         templates = [
             {
                 "name": "Brother 12mm",
-                "width": 90,
+                "width": 60,
                 "height": 12,
                 "text_template": """{category_name}
 {description}""",
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Brother 90x38",
-                "width": 60,
+                "width": 90,
                 "height": 38,
                 "text_template": """{description}""",
                 "template": """{
