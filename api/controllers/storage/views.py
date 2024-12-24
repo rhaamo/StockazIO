@@ -40,6 +40,7 @@ class StorageViewSet(ModelViewSet):
                 "uuid": item.uuid,
                 "description": item.description,
                 "parent": parent_id,
+                "full_path": item.full_path(),
                 "children": [serialize(child, item.id) for child in children[item]],
             }
             if item.picture:

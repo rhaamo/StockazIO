@@ -123,12 +123,17 @@ export default {
       };
       let inputs = [];
       this.items.forEach((cb) => {
-        inputs.push({
+        const inputsValues = {
           qrcode: this.qrCodeUri(cb),
           name: cb.name ? cb.name : "Unnamed item :(",
-          category: cb.category ? cb.category_path.join(" / ") : "No category",
+          category: cb.category ? cb.category_path.join(" / ") : "",
           description: this.doSubstitutions(cb),
-        });
+        };
+        if (this.kind === "storage") {
+          console.log(cb);
+          inputsValues.name = cb.full_path.join(" / ");
+        }
+        inputs.push(inputsValues);
       });
       const plugins = {
         "QR Code": barcodes.qrcode,
