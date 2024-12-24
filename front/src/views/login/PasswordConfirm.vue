@@ -1,60 +1,57 @@
 <template>
   <div>
     <div class="mt-4 grid align-items-center justify-content-center">
-      <div class="surface-card p-4 shadow-2 border-round col-4">
-        <div class="text-center mb-5">
-          <div class="text-900 text-3xl font-medium mb-3">Password Reset</div>
-        </div>
+      <Card class="p-4">
+        <template #title>Password Reset</template>
+        <template #content>
+          <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+            <div>
+              <div class="field">
+                <small v-if="v$.form.token.$invalid || v$.form.token.$pending.$response" class="p-error">Token invalid or expired.</small>
+              </div>
 
-        <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
-          <div>
-            <div class="field">
-              <small v-if="v$.form.token.$invalid || v$.form.token.$pending.$response" class="p-error">Token invalid or expired.</small>
+              <div class="field">
+                <Password
+                  id="password"
+                  type="password"
+                  v-model="form.password"
+                  :class="{
+                    'p-invalid': v$.form.password.$invalid && submitted,
+                  }"
+                  toggleMask
+                  :feedback="false"
+                  placeholder="Enter password"
+                />
+                <small v-if="(v$.form.password.$invalid && submitted) || v$.form.password.$pending.$response" class="p-error"
+                  ><br />{{ v$.form.password.required.$message }}</small
+                >
+              </div>
+
+              <div class="field">
+                <Password
+                  id="password_confirm"
+                  type="password"
+                  v-model="form.password_confirm"
+                  :class="{
+                    'p-invalid': v$.form.password_confirm.$invalid && submitted,
+                  }"
+                  toggleMask
+                  :feedback="false"
+                  placeholder="And confirm it again"
+                />
+                <small v-if="(v$.form.password_confirm.$invalid && submitted) || v$.form.password_confirm.$pending.$response" class="p-error"
+                  ><br />
+                  {{ v$.form.password_confirm.required.$message }}
+                  <template v-if="v$.form.password_confirm.required && v$.form.password_confirm.sameAs"><br /></template>
+                  {{ v$.form.password_confirm.sameAs.$message }}
+                </small>
+              </div>
+
+              <PvButton label="Change password" icon="pi pi-user" type="submit"></PvButton>
             </div>
-
-            <div class="field">
-              <Password
-                id="password"
-                type="password"
-                v-model="form.password"
-                :class="{
-                  'p-invalid': v$.form.password.$invalid && submitted,
-                  'w-7': true,
-                }"
-                toggleMask
-                :feedback="false"
-                placeholder="Enter password"
-              />
-              <small v-if="(v$.form.password.$invalid && submitted) || v$.form.password.$pending.$response" class="p-error"
-                ><br />{{ v$.form.password.required.$message }}</small
-              >
-            </div>
-
-            <div class="field">
-              <Password
-                id="password_confirm"
-                type="password"
-                v-model="form.password_confirm"
-                :class="{
-                  'p-invalid': v$.form.password_confirm.$invalid && submitted,
-                  'w-7': true,
-                }"
-                toggleMask
-                :feedback="false"
-                placeholder="And confirm it again"
-              />
-              <small v-if="(v$.form.password_confirm.$invalid && submitted) || v$.form.password_confirm.$pending.$response" class="p-error"
-                ><br />
-                {{ v$.form.password_confirm.required.$message }}
-                <template v-if="v$.form.password_confirm.required && v$.form.password_confirm.sameAs"><br /></template>
-                {{ v$.form.password_confirm.sameAs.$message }}
-              </small>
-            </div>
-
-            <PvButton label="Change password" icon="pi pi-user" class="w-7" type="submit"></PvButton>
-          </div>
-        </form>
-      </div>
+          </form>
+        </template>
+      </Card>
     </div>
   </div>
 </template>

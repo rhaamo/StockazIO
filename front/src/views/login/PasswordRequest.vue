@@ -1,35 +1,33 @@
 <template>
   <div>
     <div class="mt-4 grid align-items-center justify-content-center">
-      <div class="surface-card p-4 shadow-2 border-round col-3">
-        <div class="text-center mb-5">
-          <div class="text-900 text-3xl font-medium mb-3">Password Reset</div>
-        </div>
+      <Card class="p-2">
+        <template #title>Password Reset</template>
+        <template #content>
+          <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+            <div>
+              <div class="field">
+                <InputText
+                  id="email"
+                  v-model="email"
+                  :class="{
+                    'p-invalid': v$.email.$invalid && submitted,
+                  }"
+                  placeholder="Enter your email"
+                />
+                <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error"
+                  ><br />
+                  {{ v$.email.required.$message }}
+                  <template v-if="v$.email.required && v$.email.email"><br /></template>
+                  {{ v$.email.email.$message }}
+                </small>
+              </div>
 
-        <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
-          <div>
-            <div class="field">
-              <InputText
-                id="email"
-                v-model="email"
-                :class="{
-                  'p-invalid': v$.email.$invalid && submitted,
-                  'w-11': true,
-                }"
-                placeholder="Enter your email"
-              />
-              <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error"
-                ><br />
-                {{ v$.email.required.$message }}
-                <template v-if="v$.email.required && v$.email.email"><br /></template>
-                {{ v$.email.email.$message }}
-              </small>
+              <PvButton label="Request reset link" icon="pi pi-user" type="submit"></PvButton>
             </div>
-
-            <PvButton label="Request reset link" icon="pi pi-user" class="w-7" type="submit"></PvButton>
-          </div>
-        </form>
-      </div>
+          </form>
+        </template>
+      </Card>
     </div>
   </div>
 </template>

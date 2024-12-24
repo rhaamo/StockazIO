@@ -1,46 +1,45 @@
 <template>
   <div>
     <div class="mt-4 grid align-items-center justify-content-center">
-      <div class="surface-card p-4 shadow-2 border-round col-1.5">
-        <div class="text-center mb-5">
-          <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-        </div>
+      <Card class="p-4">
+        <template #title>Welcome back</template>
+        <template #content>
+          <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+            <div>
+              <div class="field">
+                <InputText id="username" v-model="user.username" :invalid="v$.user.username.$invalid && submitted" placeholder="Username" fluid />
+                <small v-if="(v$.user.username.$invalid && submitted) || v$.user.username.$pending.$response" class="p-error"
+                  ><br />{{ v$.user.username.required.$message }}</small
+                >
+              </div>
 
-        <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
-          <div>
-            <div class="field">
-              <InputText id="username" v-model="user.username" :invalid="v$.user.username.$invalid && submitted" placeholder="Username" fluid />
-              <small v-if="(v$.user.username.$invalid && submitted) || v$.user.username.$pending.$response" class="p-error"
-                ><br />{{ v$.user.username.required.$message }}</small
-              >
+              <div class="field">
+                <Password
+                  id="password"
+                  type="password"
+                  v-model="user.password"
+                  :invalid="v$.user.password.$invalid && submitted"
+                  toggleMask
+                  placeholder="Password"
+                  :feedback="false"
+                  fluid
+                />
+                <small v-if="(v$.user.password.$invalid && submitted) || v$.user.password.$pending.$response" class="p-error"
+                  ><br />{{ v$.user.password.required.$message }}</small
+                >
+              </div>
+
+              <PvButton label="Login" icon="pi pi-user" class="" type="submit"></PvButton>
+
+              <div class="mb-5 mt-5">
+                <router-link class="font-medium no-underline text-blue-500 text-center cursor-pointer" :to="{ name: 'password-reset-request' }"
+                  >Forgot password ?</router-link
+                >
+              </div>
             </div>
-
-            <div class="field">
-              <Password
-                id="password"
-                type="password"
-                v-model="user.password"
-                :invalid="v$.user.password.$invalid && submitted"
-                toggleMask
-                placeholder="Password"
-                :feedback="false"
-                fluid
-              />
-              <small v-if="(v$.user.password.$invalid && submitted) || v$.user.password.$pending.$response" class="p-error"
-                ><br />{{ v$.user.password.required.$message }}</small
-              >
-            </div>
-
-            <PvButton label="Login" icon="pi pi-user" class="w-4" type="submit"></PvButton>
-
-            <div class="mb-5 mt-5">
-              <router-link class="font-medium no-underline text-blue-500 text-center cursor-pointer" :to="{ name: 'password-reset-request' }"
-                >Forgot password ?</router-link
-              >
-            </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </template>
+      </Card>
     </div>
   </div>
 </template>
