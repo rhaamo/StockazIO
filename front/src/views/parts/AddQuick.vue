@@ -549,7 +549,8 @@ export default {
         storage: this.form.storage_location ? Object.keys(this.form.storage_location)[0] : null,
         footprint: this.form.footprint,
       };
-      if (datas.category === 0 || datas.category === "0") {
+      console.log(datas);
+      if (datas.category === 0 || datas.category === "0" || datas.category === "null") {
         datas.category = null;
       }
 

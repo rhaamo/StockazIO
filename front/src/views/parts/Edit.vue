@@ -677,6 +677,9 @@ export default {
         }),
         part_parameters_value: this.form.part_parameters_value,
       };
+      if (datas.category === 0 || datas.category === "0" || datas.category === "null") {
+        datas.category = null;
+      }
 
       logger.default.info("submitting part", datas);
 
@@ -690,11 +693,13 @@ export default {
             life: 5000,
           });
 
-          if (Object.keys(this.origCategory)[0] != Object.keys(newCategoryId)[0]) {
-            logger.default.info("old category: ", Object.keys(this.origCategory)[0], " new: ", Object.keys(newCategoryId)[0]);
-            this.preloadsStore.decrementCategoryPartsCount(Object.keys(this.origCategory)[0]);
-            this.preloadsStore.incrementCategoryPartsCount(Object.keys(newCategoryId)[0]);
-            this.origCategory = { [Object.keys(newCategoryId)[0]]: true };
+          if (this.origCategory && newCategoryId) {
+            if (Object.keys(this.origCategory)[0] != Object.keys(newCategoryId)[0]) {
+              logger.default.info("old category: ", Object.keys(this.origCategory)[0], " new: ", Object.keys(newCategoryId)[0]);
+              this.preloadsStore.decrementCategoryPartsCount(Object.keys(this.origCategory)[0]);
+              this.preloadsStore.incrementCategoryPartsCount(Object.keys(newCategoryId)[0]);
+              this.origCategory = { [Object.keys(newCategoryId)[0]]: true };
+            }
           }
         })
         .catch((error) => {

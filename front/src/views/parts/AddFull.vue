@@ -648,6 +648,9 @@ export default {
         }),
         part_parameters_value: this.form.part_parameters_value,
       };
+      if (datas.category === 0 || datas.category === "0" || datas.category === "null") {
+        datas.category = null;
+      }
 
       logger.default.info("submitting part", datas);
 
