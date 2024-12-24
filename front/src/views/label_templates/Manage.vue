@@ -173,19 +173,15 @@
         You can add other fixed elements if wanted.<br /><br /><br />
         The following substitutions for the Description Template is available, depending if it's a Storage Location or Part:
         <ul>
-          <li>
-            <code>{name}</code> Name of the element
-            <small>(storage, part)</small>
-          </li>
-          <li>
-            <code>{description}</code> Description of the element
-            <small>(storage, part)</small>
-          </li>
-          <li>
-            <code>{qrcode}</code> QrCode of the element
-            <small>(storage, part)</small>
-          </li>
-          <li><code>{category_name}</code> Name of the parent category (if any) of the element <small>(storage)</small></li>
+          <li>Both Part and Storage:</li>
+          <li><code>{name}</code> Name of the element</li>
+          <li><code>{description}</code> Description of the element</li>
+          <li><code>{qrcode}</code> QrCode of the element</li>
+          <li class="mt-4">For Parts only:</li>
+          <li><code>{category_name}</code> Name of the category (if any) of the item</li>
+          <li><code>{category_path}</code> Full path of the category (if any) of the item</li>
+          <li><code>{storage_name}</code> Name of the storage (if any) of the item</li>
+          <li><code>{storage_path}</code> Full path of the storage (if any) of the item</li>
         </ul>
       </div>
     </div>

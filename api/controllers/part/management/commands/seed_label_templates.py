@@ -32,10 +32,49 @@ class Command(BaseCommand):
                 "height": 38,
                 "text_template": """{description}""",
                 "template": """{
-"qrcode": { "type": "qrcode", "position": { "x": 1, "y": 1 }, "width": 36, "height": 36 },
-"name": { "type": "text", "position": { "x": 39.39, "y": 1 }, "width": 44.61, "height": 34, "alignment": "left", "fontSize": 12, "dynamicFontSize": {"min": 1, "max": 12, "fit": "horizontal"}, "characterSpacing": 0, "lineHeight": 1 },
-"category": { "type": "text", "position": { "x": 39.39, "y": 7}, "width": 44.61, "height": 34, "alignment": "left", "fontSize": 9, "dynamicFontSize": {"min": 1, "max": 9, "fit": "horizontal"}, "characterSpacing": 0, "lineHeight": 1 },
-"description": { "type": "text", "position": { "x": 39.39, "y": 12}, "width": 44.61, "height": 34, "alignment": "left", "fontSize": 9, "dynamicFontSize": {"min": 1, "max": 9, "fit": "vertical"}, "characterSpacing": 0, "lineHeight": 1 }
+  "qrcode": {
+    "type": "qrcode",
+    "position": {          "x": 1,          "y": 1        },
+    "width": 36,
+    "height": 36
+  },
+  "name": {
+        "type": "text",
+        "position": {          "x": 39,          "y": 1        },
+        "width": 50,
+        "height": 6,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "fontSize": 13,
+        "lineHeight": 1,
+        "characterSpacing": 0,
+        "dynamicFontSize": {          "min": 1,          "max": 20,          "fit": "horizontal"        }
+  },
+  "category": {
+        "type": "text",
+        "position": {          "x": 39,          "y": 8        },
+        "width": 50,
+        "height": 6,
+        "rotate": 0,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "fontSize": 13,
+        "lineHeight": 1,
+        "characterSpacing": 0,
+        "dynamicFontSize": {          "min": 1,          "max": 20,          "fit": "vertical"        }
+  },
+  "description": {
+        "type": "text",
+        "position": {          "x": 39,          "y": 15        },
+        "width": 50,
+        "height": 22,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "fontSize": 13,
+        "lineHeight": 1,
+        "characterSpacing": 0,
+        "dynamicFontSize": {          "min": 1,          "max": 10,          "fit": "vertical"     }
+  }
 }""",
             },
         ]

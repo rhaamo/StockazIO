@@ -217,6 +217,9 @@ Format changed but both URLs are handled by the search.
 - StorageLocation: `web+stockazio:storageLocation,{uuid}` (old format: `stockazio://storageLocation/{uuid}`)
 - Part: `web+stockazio:part,{uuid}` (old format: `stockazio://part/{uuid}`)
 
+# Label templates
+The two builtin label templates are also available in the `docs` folder to use with https://pdfme.com/template-design
+
 # Changelog of breaking changes
 - Part file attachments split into file and picture, if you had uploads prior to that split, use that command to migrate them: `python3 manage.py migrations_move_from_one_to_two_part_file_fields`
 ## 1.4

@@ -98,9 +98,12 @@ export default {
     doSubstitutions(item) {
       let text = this.template.text_template;
       text = item && item.name ? text.replace("{name}", item.name) : text;
-      text = item && item.description ? text.replace("{description}", item.description) : text.replace("{description}", ""); // description is optional
+      text = item && item.description ? text.replace("{description}", item.description) : text.replace("{description}", "");
       text = item && item.uuid ? text.replace("{qrcode}", this.qrCodeUri(item)) : text;
-      text = item && item.category_name ? text.replace("{category_name}", item.category_name) : text.replace("{category_name}", ""); // category_name is optional
+      text = item && item.category_name ? text.replace("{category_name}", item.category_name) : text.replace("{category_name}", "");
+      text = item && item.category_name ? text.replace("{category_path}", item.category_path.join(" / ")) : text.replace("{category_path}", "");
+      text = item && item.storage ? text.replace("{storage_name}", item.storage) : text.replace("{storage_name}", "");
+      text = item && item.storage_path ? text.replace("{storage_path}", item.storage_path.join(" / ")) : text.replace("{storage_path}", "");
       return text;
     },
     qrCodeUri(item) {
@@ -122,7 +125,7 @@ export default {
         inputs.push({
           qrcode: this.qrCodeUri(cb),
           name: cb.name ? cb.name : "Unnamed item :(",
-          category: cb.category ? cb.category.name : "No category",
+          category: cb.category ? cb.category_path.join(" / ") : "No category",
           description: this.doSubstitutions(cb),
         });
       });
