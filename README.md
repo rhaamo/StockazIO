@@ -2,6 +2,14 @@
 
 Manage your inventory of electronic stuff
 
+# Notes
+
+This is very opinionated and made from my workflow.
+
+The frontend is also a bit finicky and sometimes just crap itself, it would really benefits a real rework by someone that knows what they are doing.
+
+Except that, everything is working okay-ish. Anyway it's API first, so you can build any frontend you want for it too.
+
 # Features
 
 - API first! Everything is done through the backend API, auth via oauth2.
@@ -19,7 +27,7 @@ Manage your inventory of electronic stuff
 - Add item image from webcam
 
 # Requirements
-- Python 3.8 (minimum !)
+- Python 3.x (latest ideally !)
 - A pretty decent NodeJS + Yarn
 - Nginx
 - PostgreSQL
@@ -45,7 +53,7 @@ useradd -m -s /bin/bash stockazio
 sudo su - stockazio
 git clone https://github.com/rhaamo/StockazIO/ stockazio
 cd stockazio
-python3.8 -m virtualenv -p python3.8 venv
+python3 -m virtualenv venv
 source venv/bin/activate
 pip install --requirement api/requirements.txt
 # For production environment
@@ -173,7 +181,7 @@ Examples:
 # /etc/cron.d/stockazio
 # Choose only one
 # System
-0 0 * * * root /opt/stockazio/venv/bin/python /opt/stockazio/stockazio/api/manage.py import_orders
+0 0 * * * root /home/stockazio/venv/bin/python /home/stockazio/stockazio/api/manage.py import_orders
 # Docker
 0 0 * * * root docker exec -it stockazio /venv/bin/python manage.py import_orders
 # Docker Compose
