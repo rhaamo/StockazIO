@@ -8,159 +8,161 @@
       </div>
 
       <div class="col-6">
-        <div>
-          <label
-            for="name"
-            :class="{
-              block: true,
-              'p-error': v$.form.name.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Name</label
-          >
-          <InputText
-            autofocus
-            v-focus
-            ref="name"
-            inputId="name"
-            type="text"
-            v-model="form.name"
-            placeholder="Brother 69x42mm"
-            :class="{
-              'p-invalid': v$.form.name.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.form.name.required.$message }}
-            <template v-if="v$.form.name.required && v$.form.name.maxLength"><br /></template>
-            {{ v$.form.name.maxLength.$message }}
-          </small>
-        </div>
-
-        <div class="grid mt-2">
-          <div class="col-5">
+        <form @submit.prevent="submit(!v$.$invalid)">
+          <div>
             <label
-              for="width"
+              for="name"
               :class="{
                 block: true,
-                'p-error': v$.form.width.$invalid && submitted,
+                'p-error': v$.form.name.$invalid && submitted,
                 'w-full': true,
               }"
-              >Width</label
+              >Name</label
             >
-            <InputNumber
-              inputId="width"
-              mode="decimal"
-              showButtons
-              :min="0"
-              placeholder="69"
+            <InputText
+              autofocus
+              v-focus
+              ref="name"
+              inputId="name"
+              type="text"
+              v-model="form.name"
+              placeholder="Brother 69x42mm"
               :class="{
-                'p-invalid': v$.form.width.$invalid && submitted,
+                'p-invalid': v$.form.name.$invalid && submitted,
                 'w-full': true,
               }"
-              v-model="form.width"
             />
-            <small v-if="(v$.form.width.$invalid && submitted) || v$.form.width.$pending.$response" class="p-error"
+            <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
               ><br />
-              {{ v$.form.width.required.$message }}
-              <template v-if="v$.form.width.required && v$.form.width.minValue"><br /></template>
-              {{ v$.form.width.minValue.$message }}
+              {{ v$.form.name.required.$message }}
+              <template v-if="v$.form.name.required && v$.form.name.maxLength"><br /></template>
+              {{ v$.form.name.maxLength.$message }}
             </small>
           </div>
 
-          <div class="col-5 col-offset-1">
+          <div class="grid mt-2">
+            <div class="col-5">
+              <label
+                for="width"
+                :class="{
+                  block: true,
+                  'p-error': v$.form.width.$invalid && submitted,
+                  'w-full': true,
+                }"
+                >Width</label
+              >
+              <InputNumber
+                inputId="width"
+                mode="decimal"
+                showButtons
+                :min="0"
+                placeholder="69"
+                :class="{
+                  'p-invalid': v$.form.width.$invalid && submitted,
+                  'w-full': true,
+                }"
+                v-model="form.width"
+              />
+              <small v-if="(v$.form.width.$invalid && submitted) || v$.form.width.$pending.$response" class="p-error"
+                ><br />
+                {{ v$.form.width.required.$message }}
+                <template v-if="v$.form.width.required && v$.form.width.minValue"><br /></template>
+                {{ v$.form.width.minValue.$message }}
+              </small>
+            </div>
+
+            <div class="col-5 col-offset-1">
+              <label
+                for="height"
+                :class="{
+                  block: true,
+                  'p-error': v$.form.height.$invalid && submitted,
+                  'w-full': true,
+                }"
+                >Height</label
+              >
+              <InputNumber
+                inputId="height"
+                mode="decimal"
+                showButtons
+                :min="0"
+                placeholder="42"
+                :class="{
+                  'p-invalid': v$.form.height.$invalid && submitted,
+                  'w-full': true,
+                }"
+                v-model="form.height"
+              />
+              <small v-if="(v$.form.height.$invalid && submitted) || v$.form.height.$pending.$response" class="p-error"
+                ><br />
+                {{ v$.form.height.required.$message }}
+                <template v-if="v$.form.height.required && v$.form.height.minValue"><br /></template>
+                {{ v$.form.height.minValue.$message }}
+              </small>
+            </div>
+          </div>
+
+          <div class="mt-2">
             <label
-              for="height"
+              for="template"
               :class="{
                 block: true,
-                'p-error': v$.form.height.$invalid && submitted,
+                'p-error': v$.form.template.$invalid && submitted,
                 'w-full': true,
               }"
-              >Height</label
+              >Template</label
             >
-            <InputNumber
-              inputId="height"
-              mode="decimal"
-              showButtons
-              :min="0"
-              placeholder="42"
+            <PvTextarea
+              ref="template"
+              inputId="template"
+              type="text"
+              v-model="form.template"
               :class="{
-                'p-invalid': v$.form.height.$invalid && submitted,
+                'p-invalid': v$.form.template.$invalid && submitted,
                 'w-full': true,
               }"
-              v-model="form.height"
+              rows="10"
             />
-            <small v-if="(v$.form.height.$invalid && submitted) || v$.form.height.$pending.$response" class="p-error"
+            <small v-if="(v$.form.template.$invalid && submitted) || v$.form.template.$pending.$response" class="p-error"
               ><br />
-              {{ v$.form.height.required.$message }}
-              <template v-if="v$.form.height.required && v$.form.height.minValue"><br /></template>
-              {{ v$.form.height.minValue.$message }}
+              {{ v$.form.template.required.$message }}
             </small>
           </div>
-        </div>
 
-        <div class="mt-2">
-          <label
-            for="template"
-            :class="{
-              block: true,
-              'p-error': v$.form.template.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Template</label
-          >
-          <PvTextarea
-            ref="template"
-            inputId="template"
-            type="text"
-            v-model="form.template"
-            :class="{
-              'p-invalid': v$.form.template.$invalid && submitted,
-              'w-full': true,
-            }"
-            rows="10"
-          />
-          <small v-if="(v$.form.template.$invalid && submitted) || v$.form.template.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.form.template.required.$message }}
-          </small>
-        </div>
+          <div class="mt-2">
+            <label
+              for="text_template"
+              :class="{
+                block: true,
+                'p-error': v$.form.text_template.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Description Template</label
+            >
+            <PvTextarea
+              ref="text_template"
+              inputId="text_template"
+              type="text"
+              v-model="form.text_template"
+              :class="{
+                'p-invalid': v$.form.text_template.$invalid && submitted,
+                'w-full': true,
+              }"
+              rows="5"
+            />
+            <small v-if="(v$.form.text_template.$invalid && submitted) || v$.form.text_template.$pending.$response" class="p-error"
+              ><br />
+              {{ v$.form.text_template.required.$message }}
+            </small>
+          </div>
 
-        <div class="mt-2">
-          <label
-            for="text_template"
-            :class="{
-              block: true,
-              'p-error': v$.form.text_template.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Description Template</label
-          >
-          <PvTextarea
-            ref="text_template"
-            inputId="text_template"
-            type="text"
-            v-model="form.text_template"
-            :class="{
-              'p-invalid': v$.form.text_template.$invalid && submitted,
-              'w-full': true,
-            }"
-            rows="5"
-          />
-          <small v-if="(v$.form.text_template.$invalid && submitted) || v$.form.text_template.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.form.text_template.required.$message }}
-          </small>
-        </div>
-
-        <div class="mt-2">
-          <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
-          <template v-if="this.selectedTemplate && 'id' in this.selectedTemplate && this.selectedTemplate.id != 0">
-            <PvButton label="Delete" class="p-button-danger ml-2" @click.prevent="deleteItem" />
-          </template>
-        </div>
+          <div class="mt-2">
+            <PvButton type="submit" label="Save" @click.prevent="submit(!v$.$invalid)" />
+            <template v-if="this.selectedTemplate && 'id' in this.selectedTemplate && this.selectedTemplate.id != 0">
+              <PvButton label="Delete" class="p-button-danger ml-2" @click.prevent="deleteItem" />
+            </template>
+          </div>
+        </form>
       </div>
 
       <div class="col-4">

@@ -1,108 +1,110 @@
 <template>
   <div>
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="name"
-            :class="{
-              block: true,
-              'p-error': v$.item.name.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Name*</label
-          >
-          <InputText
-            autofocus
-            v-focus
-            ref="name"
-            inputId="name"
-            type="text"
-            v-model="item.name"
-            placeholder="Ampere"
-            :class="{
-              'p-invalid': v$.item.name.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
-            {{ v$.item.name.maxLength.$message }}
-          </small>
+    <form @submit.prevent="submit(!v$.$invalid)">
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="name"
+              :class="{
+                block: true,
+                'p-error': v$.item.name.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Name*</label
+            >
+            <InputText
+              autofocus
+              v-focus
+              ref="name"
+              inputId="name"
+              type="text"
+              v-model="item.name"
+              placeholder="Ampere"
+              :class="{
+                'p-invalid': v$.item.name.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
+              ><br />
+              {{ v$.item.name.required.$message }}
+              <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
+              {{ v$.item.name.maxLength.$message }}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="symbol"
-            :class="{
-              block: true,
-              'p-error': v$.item.symbol.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Symbol</label
-          >
-          <InputText
-            ref="symbol"
-            inputId="symbol"
-            type="text"
-            v-model="item.symbol"
-            placeholder="A"
-            :class="{
-              'p-invalid': v$.item.symbol.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.symbol.$invalid && submitted) || v$.item.symbol.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.item.symbol.maxLength.$message }}
-          </small>
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="symbol"
+              :class="{
+                block: true,
+                'p-error': v$.item.symbol.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Symbol</label
+            >
+            <InputText
+              ref="symbol"
+              inputId="symbol"
+              type="text"
+              v-model="item.symbol"
+              placeholder="A"
+              :class="{
+                'p-invalid': v$.item.symbol.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.symbol.$invalid && submitted) || v$.item.symbol.$pending.$response" class="p-error"
+              ><br />
+              {{ v$.item.symbol.maxLength.$message }}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="description"
-            :class="{
-              block: true,
-              'p-error': v$.item.description.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Description</label
-          >
-          <InputText
-            ref="description"
-            inputId="description"
-            type="text"
-            v-model="item.description"
-            :class="{
-              'p-invalid': v$.item.description.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.item.description.maxLength.$message }}
-          </small>
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="description"
+              :class="{
+                block: true,
+                'p-error': v$.item.description.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Description</label
+            >
+            <InputText
+              ref="description"
+              inputId="description"
+              type="text"
+              v-model="item.description"
+              :class="{
+                'p-invalid': v$.item.description.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error"
+              ><br />
+              {{ v$.item.description.maxLength.$message }}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <PvButton type="submit" label="Save" @click.prevent="submit(!v$.$invalid)" />
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 

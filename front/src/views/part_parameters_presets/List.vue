@@ -16,7 +16,7 @@
         <template #header>
           <div class="grid">
             <div class="col-2">
-              <PvButton label="Add a parameter unit" @click.prevent="showAddParametersUnitsModal" />
+              <PvButton label="Add a part parameter preset" @click.prevent="showAddParametersUnitsModal" />
             </div>
 
             <div class="col-2 col-offset-7">

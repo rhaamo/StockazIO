@@ -3,39 +3,41 @@
     <div class="flex justify-content-center">
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field w-10">
-          <label
-            for="name"
-            :class="{
-              block: true,
-              'p-error': v$.item.name.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Name</label
-          >
-          <InputText
-            autofocus
-            v-focus
-            ref="name"
-            inputId="name"
-            type="text"
-            v-model="item.name"
-            :class="{
-              'p-invalid': v$.item.name.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
-            {{ v$.item.name.maxLength.$message }}
-          </small>
+          <form @submit.prevent="submit(!v$.$invalid)">
+            <label
+              for="name"
+              :class="{
+                block: true,
+                'p-error': v$.item.name.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Name</label
+            >
+            <InputText
+              autofocus
+              v-focus
+              ref="name"
+              inputId="name"
+              type="text"
+              v-model="item.name"
+              :class="{
+                'p-invalid': v$.item.name.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
+              ><br />
+              {{ v$.item.name.required.$message }}
+              <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
+              {{ v$.item.name.maxLength.$message }}
+            </small>
 
-          <div class="mt-4" v-if="parent">Parent category: {{ parent.name }}.</div>
+            <div class="mt-4" v-if="parent">Parent category: {{ parent.name }}.</div>
 
-          <div class="mt-4">
-            <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
-          </div>
+            <div class="mt-4">
+              <PvButton type="submit" label="Save" @click.prevent="submit(!v$.$invalid)" />
+            </div>
+          </form>
         </div>
       </div>
     </div>

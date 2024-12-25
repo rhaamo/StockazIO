@@ -4,7 +4,7 @@
     <Card class="mt-2">
       <template #title>Basic parts informations</template>
       <template #content>
-        <form>
+        <form @submit.prevent="submit(!v$.$invalid, 'add_new')">
           <div class="grid">
             <div class="col-6">
               <div class="field">
@@ -370,7 +370,12 @@
               <div class="field">
                 <!-- save and save add another-->
                 <PvButton label="Save and view" class="p-button-primary" @click.prevent="submit(!v$.$invalid, 'continue')" />
-                <PvButton label="Save and add another" class="ml-2 p-button-secondary" @click.prevent="submit(!v$.$invalid, 'add_new')" />
+                <PvButton
+                  type="submit"
+                  label="Save and add another"
+                  class="ml-2 p-button-secondary"
+                  @click.prevent="submit(!v$.$invalid, 'add_new')"
+                />
               </div>
             </div>
             <div class="col-6">

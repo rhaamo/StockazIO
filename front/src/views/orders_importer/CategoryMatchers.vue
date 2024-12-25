@@ -10,19 +10,21 @@
         <div class="col-3">Category</div>
       </div>
 
-      <div v-for="(_, i) in matchers" :key="i">
-        <CategoryMatcherEntry
-          v-model:item="matchers[i]"
-          v-model:categories="choicesCategory"
-          :submitted="submitted"
-          @deleteItem="deleteCategoryMatcher($event, i)"
-        />
-      </div>
+      <form @submit.prevent="submit(!v$.$invalid)">
+        <div v-for="(_, i) in matchers" :key="i">
+          <CategoryMatcherEntry
+            v-model:item="matchers[i]"
+            v-model:categories="choicesCategory"
+            :submitted="submitted"
+            @deleteItem="deleteCategoryMatcher($event, i)"
+          />
+        </div>
 
-      <Divider />
+        <Divider />
 
-      <PvButton label="add matcher" @click.prevent="addCategoryMatcher"></PvButton>
-      <PvButton label="save matchers" class="p-button-success ml-2" @click.prevent="submit(!v$.$invalid)"></PvButton>
+        <PvButton label="add matcher" @click.prevent="addCategoryMatcher"></PvButton>
+        <PvButton type="submit" label="save matchers" class="p-button-success ml-2" @click.prevent="submit(!v$.$invalid)"></PvButton>
+      </form>
     </div>
   </div>
 </template>

@@ -1,207 +1,209 @@
 <template>
   <div>
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="name"
-            :class="{
-              block: true,
-              'p-error': v$.item.name.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Name*</label
-          >
-          <InputText
-            autofocus
-            v-focus
-            ref="name"
-            inputId="name"
-            type="text"
-            v-model="item.name"
-            placeholder="My cool project"
-            :class="{
-              'p-invalid': v$.item.name.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
-            ><br />
-            {{ v$.item.name.required.$message }}
-            <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
-            {{ v$.item.name.maxLength.$message }}
-          </small>
+    <form @submit.prevent="submit(!v$.$invalid)">
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="name"
+              :class="{
+                block: true,
+                'p-error': v$.item.name.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Name*</label
+            >
+            <InputText
+              autofocus
+              v-focus
+              ref="name"
+              inputId="name"
+              type="text"
+              v-model="item.name"
+              placeholder="My cool project"
+              :class="{
+                'p-invalid': v$.item.name.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
+              ><br />
+              {{ v$.item.name.required.$message }}
+              <template v-if="v$.item.name.required && v$.item.name.maxLength"><br /></template>
+              {{ v$.item.name.maxLength.$message }}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="description"
-            :class="{
-              block: true,
-              'p-error': v$.item.description.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Description</label
-          >
-          <InputText
-            ref="description"
-            inputId="description"
-            type="text"
-            v-model="item.description"
-            placeholder="What does it do ?"
-            :class="{
-              'p-invalid': v$.item.description.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="description"
+              :class="{
+                block: true,
+                'p-error': v$.item.description.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Description</label
+            >
+            <InputText
+              ref="description"
+              inputId="description"
+              type="text"
+              v-model="item.description"
+              placeholder="What does it do ?"
+              :class="{
+                'p-invalid': v$.item.description.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="notes"
-            :class="{
-              block: true,
-              'p-error': v$.item.notes.$invalid && submitted,
-              'w-full': true,
-            }"
-            >Notes</label
-          >
-          <InputText
-            ref="notes"
-            inputId="notes"
-            type="text"
-            v-model="item.notes"
-            placeholder="AAAAAAAAaaaaaaaaa"
-            :class="{
-              'p-invalid': v$.item.notes.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="notes"
+              :class="{
+                block: true,
+                'p-error': v$.item.notes.$invalid && submitted,
+                'w-full': true,
+              }"
+              >Notes</label
+            >
+            <InputText
+              ref="notes"
+              inputId="notes"
+              type="text"
+              v-model="item.notes"
+              placeholder="AAAAAAAAaaaaaaaaa"
+              :class="{
+                'p-invalid': v$.item.notes.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="bom_url"
-            :class="{
-              block: true,
-              'p-error': v$.item.ibom_url.$invalid && submitted,
-              'w-full': true,
-            }"
-            >BOM Url</label
-          >
-          <InputText
-            ref="bom_url"
-            inputId="bom_url"
-            type="text"
-            v-model="item.ibom_url"
-            :class="{
-              'p-invalid': v$.item.ibom_url.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.ibom_url.$invalid && submitted) || v$.item.ibom_url.$pending.$response" class="p-error">
-            {{ v$.item.ibom_url.maxLength.$message }}
-          </small>
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="bom_url"
+              :class="{
+                block: true,
+                'p-error': v$.item.ibom_url.$invalid && submitted,
+                'w-full': true,
+              }"
+              >BOM Url</label
+            >
+            <InputText
+              ref="bom_url"
+              inputId="bom_url"
+              type="text"
+              v-model="item.ibom_url"
+              :class="{
+                'p-invalid': v$.item.ibom_url.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.ibom_url.$invalid && submitted) || v$.item.ibom_url.$pending.$response" class="p-error">
+              {{ v$.item.ibom_url.maxLength.$message }}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label for="state" class="block">State</label>
-          <Dropdown
-            inputId="state"
-            v-model="item.state"
-            class="w-full"
-            :options="choicesStates"
-            optionLabel="text"
-            optionValue="value"
-            :filter="false"
-          />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label for="state" class="block">State</label>
+            <Dropdown
+              inputId="state"
+              v-model="item.state"
+              class="w-full"
+              :options="choicesStates"
+              optionLabel="text"
+              optionValue="value"
+              :filter="false"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <label
-            for="state_notes"
-            :class="{
-              block: true,
-              'p-error': v$.item.state_notes.$invalid && submitted,
-              'w-full': true,
-            }"
-            >State notes</label
-          >
-          <InputText
-            ref="state_notes"
-            inputId="state_notes"
-            type="text"
-            v-model="item.state_notes"
-            placeholder="blocked by X, waiting for Y"
-            :class="{
-              'p-invalid': v$.item.state_notes.$invalid && submitted,
-              'w-full': true,
-            }"
-          />
-          <small v-if="(v$.item.state_notes.$invalid && submitted) || v$.item.state_notes.$pending.$response" class="p-error">
-            {{ v$.item.state_notes.maxLength.$message }}
-          </small>
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <label
+              for="state_notes"
+              :class="{
+                block: true,
+                'p-error': v$.item.state_notes.$invalid && submitted,
+                'w-full': true,
+              }"
+              >State notes</label
+            >
+            <InputText
+              ref="state_notes"
+              inputId="state_notes"
+              type="text"
+              v-model="item.state_notes"
+              placeholder="blocked by X, waiting for Y"
+              :class="{
+                'p-invalid': v$.item.state_notes.$invalid && submitted,
+                'w-full': true,
+              }"
+            />
+            <small v-if="(v$.item.state_notes.$invalid && submitted) || v$.item.state_notes.$pending.$response" class="p-error">
+              {{ v$.item.state_notes.maxLength.$message }}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field-checkbox w-10">
-          <Checkbox
-            :class="{
-              'p-invalid': v$.item.public.$invalid && submitted,
-            }"
-            inputId="public"
-            v-model="item.public"
-            :binary="true"
-          />
-          <label
-            for="public"
-            :class="{
-              'p-error': v$.item.public.$invalid && submitted,
-            }"
-            >Public project</label
-          >
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field-checkbox w-10">
+            <Checkbox
+              :class="{
+                'p-invalid': v$.item.public.$invalid && submitted,
+              }"
+              inputId="public"
+              v-model="item.public"
+              :binary="true"
+            />
+            <label
+              for="public"
+              :class="{
+                'p-error': v$.item.public.$invalid && submitted,
+              }"
+              >Public project</label
+            >
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <p>You will be able to add attachments and parts after saving the project.</p>
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <p>You will be able to add attachments and parts after saving the project.</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-content-center">
-      <div class="flex flex-grow-1 align-items-center justify-content-center">
-        <div class="field w-10">
-          <PvButton label="Save" @click.prevent="submit(!v$.$invalid)" />
+      <div class="flex justify-content-center">
+        <div class="flex flex-grow-1 align-items-center justify-content-center">
+          <div class="field w-10">
+            <PvButton type="submit" label="Save" @click.prevent="submit(!v$.$invalid)" />
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 

@@ -321,15 +321,11 @@ const getManufacturers = () => {
 };
 
 const createManufacturer = (data) => {
-  return Axios.post(MANUFACTURERS_CREATE, data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return Axios.post(MANUFACTURERS_CREATE, data, { headers: { "Content-Type": "multipart/form-data" } });
 };
 
 const updateManufacturer = (id, data) => {
-  return Axios.put(MANUFACTURERS_UPDATE(id), data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return Axios.put(MANUFACTURERS_UPDATE(id), data, { headers: { "Content-Type": "multipart/form-data" } });
 };
 
 const deleteManufacturer = (id) => {
@@ -343,11 +339,11 @@ const getDistributors = () => {
 };
 
 const createDistributor = (data) => {
-  return Axios.post(DISTRIBUTORS_CREATE, data);
+  return Axios.post(DISTRIBUTORS_CREATE, data, { headers: { "Content-Type": "multipart/form-data" } });
 };
 
 const updateDistributor = (id, data) => {
-  return Axios.put(DISTRIBUTORS_UPDATE(id), data);
+  return Axios.put(DISTRIBUTORS_UPDATE(id), data, { headers: { "Content-Type": "multipart/form-data" } });
 };
 
 const deleteDistributor = (id) => {
