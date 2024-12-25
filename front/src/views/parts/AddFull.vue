@@ -357,7 +357,22 @@
               </div>
 
               <div class="field">
-                <label for="footprint" class="block">Footprint</label>
+                <label for="footprint" class="block"
+                  ><PvButton
+                    raised
+                    rounded
+                    size="small"
+                    severity="info"
+                    variant="text"
+                    icon="pi pi-refresh"
+                    v-tooltip.top="`Try auto-match from description`"
+                    @click.prevent="autoDetectFootprint()"
+                  />
+                  Footprint&nbsp;
+                  <template v-if="this.form.footprint"
+                    ><small>(selected: {{ getFootprintNameFromId(this.form.footprint) }})</small></template
+                  >
+                </label>
                 <Listbox
                   inputId="footprint"
                   v-model="form.footprint"
@@ -472,6 +487,7 @@ import PartParametersEntry from "@/components/parts/PartParametersEntry.vue";
 import PartViewModal from "@/components/parts/view.vue";
 import { h } from "vue";
 import Button from "primevue/button";
+import { fuzzyMatch } from "fuzzbunny";
 
 export default {
   components: {
@@ -572,6 +588,14 @@ export default {
           return { value: x, text: x.name };
         });
       },
+      flattenedChoicesFootprints: (store) =>
+        store.footprints
+          .map((x) => {
+            return x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            });
+          })
+          .flat(),
     }),
     breadcrumb() {
       return {
@@ -867,6 +891,28 @@ export default {
           this.expandCategoryNode(child);
         }
       }
+    },
+    autoDetectFootprint() {
+      if (!this.form.description) {
+        return;
+      }
+      for (const i of this.flattenedChoicesFootprints) {
+        const match = fuzzyMatch(this.form.description, i.name);
+        if (match) {
+          console.log("Matched description", this.form.description, "with footprint", i.name);
+          this.form.footprint = i.id;
+          return;
+        }
+      }
+      console.log("Could not match description", this.form.description, "with any footprint");
+    },
+    getFootprintNameFromId(id) {
+      for (let fp of this.flattenedChoicesFootprints) {
+        if (fp.id === id) {
+          return fp.name;
+        }
+      }
+      return "none";
     },
   },
 };
