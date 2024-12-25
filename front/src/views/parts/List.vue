@@ -303,43 +303,45 @@
 
           <div class="grid">
             <div class="col-4" v-for="part in parts" :key="part.id">
-              <Panel class="product-grid-item">
-                <div class="product-grid-item-top">
-                  <div>
-                    <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
-                  </div>
-                  <span
-                    >qty:
-                    <template v-if="part.stock_qty >= part.stock_qty_min"
-                      ><span>{{ part.stock_qty }}</span></template
-                    >
-                    <template v-else>
-                      <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
-                        >{{ part.stock_qty }} <i class="fa fa-circle"></i
-                      ></span>
-                    </template>
-                  </span>
-                </div>
-                <div class="product-grid-item-content mt-3">
-                  <template v-if="partGetDefaultAttachment(part.part_attachments)">
-                    <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
-                  </template>
-                  <template v-else>
-                    <span class="fa-stack fa-5x">
-                      <i class="fa fa-file-picture-o fa-stack-2x" />
-                      <i class="fa fa-question fa-stack-1x text-orange-400" />
+              <Card class="product-grid-item">
+                <template #content>
+                  <div class="product-grid-item-top">
+                    <div>
+                      <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
+                    </div>
+                    <span
+                      >qty:
+                      <template v-if="part.stock_qty >= part.stock_qty_min"
+                        ><span>{{ part.stock_qty }}</span></template
+                      >
+                      <template v-else>
+                        <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
+                          >{{ part.stock_qty }} <i class="fa fa-circle"></i
+                        ></span>
+                      </template>
                     </span>
-                  </template>
+                  </div>
+                  <div class="product-grid-item-content mt-3">
+                    <template v-if="partGetDefaultAttachment(part.part_attachments)">
+                      <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
+                    </template>
+                    <template v-else>
+                      <span class="fa-stack fa-5x">
+                        <i class="fa fa-file-picture-o fa-stack-2x" />
+                        <i class="fa fa-question fa-stack-1x text-orange-400" />
+                      </span>
+                    </template>
 
-                  <div class="product-name">{{ part.name }}</div>
-                  <div class="product-description">
-                    {{ part.description }}
+                    <div class="product-name">{{ part.name }}</div>
+                    <div class="product-description">
+                      {{ part.description }}
+                    </div>
+                    <div class="product-button">
+                      <PvButton @click.prevent="viewPartModal(part)" label="View details"></PvButton>
+                    </div>
                   </div>
-                  <div class="product-button">
-                    <PvButton @click.prevent="viewPartModal(part)" label="View details"></PvButton>
-                  </div>
-                </div>
-              </Panel>
+                </template>
+              </Card>
             </div>
           </div>
         </TabPanel>
