@@ -4,7 +4,7 @@
     <Card class="mt-2" v-if="part">
       <template #title>Basic parts informations</template>
       <template #content>
-        <form>
+        <form @submit.prevent="submit(!v$.$invalid)">
           <div class="grid">
             <div class="col-6">
               <div class="mb-3">
@@ -366,7 +366,7 @@
               </div>
 
               <div class="mb-3">
-                <PvButton label="Update" class="p-button-primary" @click.prevent="submit(!v$.$invalid)" />
+                <PvButton type="submit" label="Update" class="p-button-primary" @click.prevent="submit(!v$.$invalid)" />
               </div>
             </div>
             <div class="col-6">
