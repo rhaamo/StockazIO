@@ -46,6 +46,8 @@ import Textarea from "primevue/textarea";
 import Listbox from "primevue/listbox";
 import DataView from "primevue/dataview";
 import Message from "primevue/message";
+import InputGroup from "primevue/inputgroup";
+import InputGroupAddon from "primevue/inputgroupaddon";
 
 import router from "@/router";
 
@@ -123,6 +125,8 @@ app.component("DataView", DataView);
 app.component("Message", Message);
 app.component("IconField", IconField);
 app.component("InputIcon", InputIcon);
+app.component("InputGroup", InputGroup);
+app.component("InputGroupAddon", InputGroupAddon);
 
 app.directive("tooltip", Tooltip);
 

@@ -181,7 +181,7 @@
               field="stock_qty"
               dataType="numeric"
               :filterMatchModeOptions="matchModes.qty"
-              headerStyle="width: 15em"
+              headerStyle="width: 10rem"
             >
               <template #body="slotProps">
                 <Inplace :ref="`inplace_qty_${slotProps.data.id}`" :closable="true">
@@ -194,20 +194,24 @@
                     ></span>
                   </template>
                   <template #content>
-                    <InputNumber
-                      :inputId="`qty_${slotProps.data.id}`"
-                      mode="decimal"
-                      showButtons
-                      :min="0"
-                      v-model="slotProps.data.stock_qty"
-                      class="w-3"
-                    />
-                    <br />
-                    <PvButton
-                      class="mt-1 mr-1"
-                      label="update"
-                      @click.prevent="updateInplaceQty($event, slotProps.data, slotProps.data.stock_qty)"
-                    ></PvButton>
+                    <InputGroup>
+                      <InputNumber
+                        size="small"
+                        :inputId="`qty_${slotProps.data.id}`"
+                        mode="decimal"
+                        showButtons
+                        :min="0"
+                        v-model="slotProps.data.stock_qty"
+                        class="w-2rem"
+                      />
+                      <InputGroupAddon>
+                        <PvButton
+                          size="small"
+                          icon="pi pi-check"
+                          @click.prevent="updateInplaceQty($event, slotProps.data, slotProps.data.stock_qty)"
+                        ></PvButton>
+                      </InputGroupAddon>
+                    </InputGroup>
                   </template>
                 </Inplace>
               </template>
@@ -221,27 +225,31 @@
                 />
               </template>
             </Column>
-            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric"
+            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric" headerStyle="width: 10rem"
               ><template #body="slotProps">
                 <Inplace :ref="`inplace_qty_min_${slotProps.data.id}`" :closable="true">
                   <template #display
                     ><span>{{ slotProps.data.stock_qty_min }}</span></template
                   >
                   <template #content>
-                    <InputNumber
-                      :inputId="`qty_${slotProps.data.id}`"
-                      mode="decimal"
-                      showButtons
-                      :min="0"
-                      v-model="slotProps.data.stock_qty_min"
-                      class="w-3"
-                    />
-                    <br />
-                    <PvButton
-                      class="mt-1 mr-1"
-                      label="update"
-                      @click.prevent="updateInplaceQtyMin($event, slotProps.data, slotProps.data.stock_qty_min)"
-                    ></PvButton>
+                    <InputGroup>
+                      <InputNumber
+                        size="small"
+                        :inputId="`qty_${slotProps.data.id}`"
+                        mode="decimal"
+                        showButtons
+                        :min="0"
+                        v-model="slotProps.data.stock_qty_min"
+                        class="w-2rem"
+                      />
+                      <InputGroupAddon>
+                        <PvButton
+                          size="small"
+                          icon="pi pi-check"
+                          @click.prevent="updateInplaceQtyMin($event, slotProps.data, slotProps.data.stock_qty_min)"
+                        ></PvButton>
+                      </InputGroupAddon>
+                    </InputGroup>
                   </template>
                 </Inplace> </template
             ></Column>
