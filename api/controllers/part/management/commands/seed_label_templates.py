@@ -18,19 +18,61 @@ class Command(BaseCommand):
                 "name": "Brother 12mm",
                 "width": 60,
                 "height": 12,
-                "text_template": """{category_name}
+                "text_template": """{storage_path}
 {description}""",
                 "template": """{
-"qrcode": { "type": "qrcode", "position": { "x": 1, "y": 1 }, "width": 10, "height": 10 },
-"name": { "type": "text", "position": { "x": 12, "y": 1 }, "width": 44.61, "height": 10, "alignment": "left", "fontSize": 12, "dynamicFontSize": {"min": 1, "max": 12, "fit": "horizontal"}, "characterSpacing": 0, "lineHeight": 1 },
-"description": { "type": "text", "position": { "x": 12, "y": 5}, "width": 44.61, "height": 10, "alignment": "left", "fontSize": 9, "dynamicFontSize": {"min": 0.1, "max": 5, "fit": "vertical"}, "characterSpacing": 0, "lineHeight": 1 }
+  "qrcode": {
+    "type": "qrcode",
+    "position": {          "x": 1,          "y": 1        },
+    "width": 10,
+    "height": 10
+  },
+  "name": {
+        "type": "text",
+        "position": {          "x": 12,          "y": 1        },
+        "width": 47,
+        "height": 3,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "fontSize": 13,
+        "lineHeight": 1,
+        "characterSpacing": 0,
+        "dynamicFontSize": {          "min": 1,          "max": 20,          "fit": "horizontal"        }
+  },
+  "category": {
+        "type": "text",
+        "position": {          "x": 12,          "y": 4       },
+        "width": 47,
+        "height": 3,
+        "rotate": 0,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "fontSize": 13,
+        "lineHeight": 1,
+        "characterSpacing": 0,
+        "dynamicFontSize": {          "min": 1,          "max": 20,          "fit": "vertical"        }
+  },
+  "description": {
+        "type": "text",
+        "position": {          "x": 12,          "y": 7        },
+        "width": 47,
+        "height": 4.5,
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "fontSize": 13,
+        "lineHeight": 1,
+        "characterSpacing": 0,
+        "dynamicFontSize": {          "min": 1,          "max": 10,          "fit": "vertical"     }
+  }
 }""",
             },
             {
                 "name": "Brother 90x38",
                 "width": 90,
                 "height": 38,
-                "text_template": """{description}""",
+                "text_template": """{storage_path}
+
+{description}""",
                 "template": """{
   "qrcode": {
     "type": "qrcode",
@@ -41,7 +83,7 @@ class Command(BaseCommand):
   "name": {
         "type": "text",
         "position": {          "x": 39,          "y": 1        },
-        "width": 50,
+        "width": 45,
         "height": 6,
         "alignment": "left",
         "verticalAlignment": "middle",
@@ -53,7 +95,7 @@ class Command(BaseCommand):
   "category": {
         "type": "text",
         "position": {          "x": 39,          "y": 8        },
-        "width": 50,
+        "width": 45,
         "height": 6,
         "rotate": 0,
         "alignment": "left",
@@ -66,7 +108,7 @@ class Command(BaseCommand):
   "description": {
         "type": "text",
         "position": {          "x": 39,          "y": 15        },
-        "width": 50,
+        "width": 45,
         "height": 22,
         "alignment": "left",
         "verticalAlignment": "middle",
