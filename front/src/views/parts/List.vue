@@ -83,6 +83,8 @@
                   <PvButton label="Save" class="ml-1" @click="bulkChangeStorageLocation($event)"></PvButton>
                 </OverlayPanel>
 
+                <PvButton label="Generate labels" class="p-button-normal ml-2" @click="showBulkLabelGenerator()" />
+
                 <PvButton label="Delete" class="p-button-danger ml-2" @click="deletePartMultiple($event)" />
               </template>
 
@@ -1071,6 +1073,26 @@ export default {
         return { name: x.name.value, matchMode: x.mode.value, value: x.value };
       });
       this.loadLazyData();
+    },
+    showBulkLabelGenerator() {
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+          dismissableMask: true,
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+          },
+        },
+        data: {
+          items: this.selectedParts,
+          kind: "part",
+        },
+      });
     },
   },
 };
