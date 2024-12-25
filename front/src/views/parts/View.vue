@@ -2,22 +2,22 @@
   <div v-if="part">
     <div class="grid">
       <div class="col-6">
-        <span style="float: left" class="pt-2" @click="showLabelGenerator(part)">
-          <vue-qrcode
-            :id="qrcodeId(part.id)"
-            v-tooltip="'click to show label generator'"
-            :value="qrCodePart(part.uuid)"
-            :options="{ scale: 1 }"
-            :data-uuid="part.uuid"
-            :data-name="part.name"
-            class="mr-3"
-          />
-        </span>
+        <h1>
+          <span style="float: left" @click="showLabelGenerator(part)">
+            <vue-qrcode
+              :id="qrcodeId(part.id)"
+              v-tooltip="'click to show label generator'"
+              :value="qrCodePart(part.uuid)"
+              :options="{ scale: 1 }"
+              :data-uuid="part.uuid"
+              :data-name="part.name"
+              class="mr-3"
+            />
+          </span>
 
-        <h3>
-          <i v-if="part.private" class="fa icon-private fa-lock mr-2" />
+          <i v-if="part.private" class="fa icon-private fa-lock mr-1" />
           {{ part.name }}
-        </h3>
+        </h1>
       </div>
       <div class="col-1 col-offset-5">
         <router-link
@@ -41,7 +41,7 @@
 
     <div class="grid">
       <div class="col-6">
-        <div class="grid">
+        <div class="grid quantities">
           <div class="col-3">
             <template v-if="part.stock_qty >= part.stock_qty_min"
               ><b>Qty:</b><span class="ml-1">{{ part.stock_qty }}</span></template
@@ -57,7 +57,7 @@
           <div class="col-6"><b>Unit: </b> {{ partUnit || "None defined" }}</div>
         </div>
 
-        <div class="mt-2 mb-2 surface-50 p-2">
+        <div class="mt-2 mb-2 surface-50 p-2 description">
           {{ part.description || "No description" }}
         </div>
 
@@ -590,3 +590,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.quantities {
+  font-size: 1.5rem;
+}
+
+.description {
+  font-size: 1.2rem;
+}
+</style>

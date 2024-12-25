@@ -750,13 +750,14 @@ export default {
                 width: "70vw",
               },
               dismissableMask: true,
+              draggable: false,
             },
             templates: {
               header: () => {
                 if (part.private) {
-                  return [h("h3", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
+                  return [h("h1", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
                 } else {
-                  return [h("h3", part.name)];
+                  return [h("h1", part.name)];
                 }
               },
               footer: () => {

@@ -2,7 +2,7 @@
   <div>
     <div class="grid">
       <div class="col-6">
-        <div class="grid">
+        <div class="grid quantities">
           <div class="col-3">
             <template v-if="part.stock_qty >= part.stock_qty_min"
               ><b>Qty:</b><span class="ml-1">{{ part.stock_qty }}</span></template
@@ -18,7 +18,7 @@
           <div class="col-6"><b>Unit: </b> {{ partUnit || "None defined" }}</div>
         </div>
 
-        <div class="mt-2 mb-2 surface-50 p-2">
+        <div class="mt-2 mb-2 surface-50 p-2 description">
           {{ part.description || "No description" }}
         </div>
 
@@ -215,3 +215,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.quantities {
+  font-size: 1.5rem;
+}
+
+.description {
+  font-size: 1.2rem;
+}
+</style>
