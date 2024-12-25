@@ -103,12 +103,13 @@
               </div>
 
               <div class="grid">
-                <div class="field col-6">
+                <div class="field col-5">
                   <label
                     for="qty"
                     :class="{
                       'p-error': v$.form.qty.$invalid && submitted,
                       'pr-3': true,
+                      block: true,
                     }"
                     >Stock Qty*</label
                   >
@@ -116,11 +117,9 @@
                     inputId="qty"
                     mode="decimal"
                     showButtons
+                    buttonLayout="horizontal"
                     :min="0"
-                    :class="{
-                      'p-invalid': v$.form.qty.$invalid && submitted,
-                    }"
-                    style="max-width: 50%"
+                    :invalid="v$.form.qty.$invalid && submitted"
                     v-model="form.qty"
                   />
                   <small v-if="(v$.form.qty.$invalid && submitted) || v$.form.qty.$pending.$response" class="p-error"
@@ -129,13 +128,25 @@
                     <template v-if="v$.form.qty.required && v$.form.qty.minValue"><br /></template>
                     {{ v$.form.qty.minValue.$message }}
                   </small>
+
+                  <InputGroup class="mt-3">
+                    <PvButton label="-10" severity="success" size="small" @click.prevent="updateQty(-10)" />
+                    <PvButton label="-50" severity="info" size="small" @click.prevent="updateQty(-50)" />
+                    <PvButton label="-100" severity="help" size="small" @click.prevent="updateQty(-100)" />
+                    <PvButton disabled severity="secondary" size="small" />
+                    <PvButton label="+100" severity="help" size="small" @click.prevent="updateQty(+100)" />
+                    <PvButton label="+50" severity="info" size="small" @click.prevent="updateQty(+50)" />
+                    <PvButton label="+10" severity="success" size="small" @click.prevent="updateQty(+10)" />
+                  </InputGroup>
                 </div>
-                <div class="field col-6">
+
+                <div class="field col-5">
                   <label
                     for="qty_min"
                     :class="{
                       'p-error': v$.form.qty_min.$invalid && submitted,
                       'pr-3': true,
+                      block: true,
                     }"
                     >Stock Qty Min*</label
                   >
@@ -144,11 +155,9 @@
                     mode="decimal"
                     showButtons
                     :min="0"
-                    :class="{
-                      'p-invalid': v$.form.qty_min.$invalid && submitted,
-                    }"
-                    style="max-width: 50%"
+                    :invalid="v$.form.qty_min.$invalid && submitted"
                     v-model="form.qty_min"
+                    buttonLayout="horizontal"
                   />
                   <small v-if="(v$.form.qty_min.$invalid && submitted) || v$.form.qty_min.$pending.$response" class="p-error"
                     ><br />
@@ -774,6 +783,13 @@ export default {
         }
       }
       return "none";
+    },
+    updateQty(quantity) {
+      if (this.form.qty + quantity < 0) {
+        this.form.qty = 0;
+        return;
+      }
+      this.form.qty += quantity;
     },
   },
 };
