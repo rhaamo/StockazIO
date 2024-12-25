@@ -1093,7 +1093,7 @@ export default {
 
 ::v-deep(.product-grid-item) {
   margin: 0.5rem;
-  border: 1px solid var(--surface-border);
+  border: 1px solid black;
 
   .product-grid-item-top,
   .product-grid-item-bottom {
