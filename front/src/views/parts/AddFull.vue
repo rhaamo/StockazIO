@@ -323,6 +323,7 @@
                   optionLabel="text"
                   optionValue="value"
                   checkmark
+                  striped
                 />
               </div>
 
