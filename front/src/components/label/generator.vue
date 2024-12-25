@@ -24,23 +24,25 @@
           </template>
         </div>
 
-        <div class="mt-5">
-          Template:<br />
-          <Dropdown
-            v-model="template"
-            class="p-column-filter mt-1"
-            placeholder="Please select a template"
-            :options="choicesTemplates"
-            optionLabel="name"
-            optionValue="tpl"
-            :filter="true"
-          />
-        </div>
-
-        <div class="mt-5 text-sm">
-          <p>You can use the PDF on the right to print corresponding labels.</p>
-          <p>Do not hesitate to download the PDF and open it natively if the print preview is showing a bad layout.</p>
-          <p>When printing, make sure to select the right template for the used label paper.</p>
+        <div class="grid">
+          <div class="col-7">
+            Template:<br />
+            <Listbox
+              v-model="template"
+              class="p-column-filter mt-1"
+              placeholder="Please select a template"
+              :options="choicesTemplates"
+              optionLabel="name"
+              optionValue="tpl"
+              :filter="true"
+              fluid
+            />
+          </div>
+          <div class="col-5 text-sm">
+            <p>You can use the PDF on the right to print corresponding labels.</p>
+            <p>Do not hesitate to download the PDF and open it natively if the print preview is showing a bad layout.</p>
+            <p>When printing, make sure to select the right template for the used label paper.</p>
+          </div>
         </div>
       </div>
 
