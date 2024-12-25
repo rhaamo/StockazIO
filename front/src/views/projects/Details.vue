@@ -192,10 +192,8 @@
                       type="text"
                       v-model="formAddAttachment.description"
                       placeholder="File description"
-                      :class="{
-                        'p-invalid': v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted,
-                        'w-12': true,
-                      }"
+                      :invalid="v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted"
+                      fluid
                     />
                     <small
                       v-if="
@@ -217,10 +215,8 @@
                       type="file"
                       v-model="formAddAttachment.file"
                       @change="attachmentFileChanged($event.target.files)"
-                      :class="{
-                        'p-invalid': v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted,
-                        'w-12': true,
-                      }"
+                      :invalid="v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted"
+                      fluid
                       :accept="allowedUploadTypes"
                     />
                     <small
