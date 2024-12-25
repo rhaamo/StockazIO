@@ -17,20 +17,23 @@
                   }"
                   >Name*</label
                 >
-                <InputText
-                  autofocus
-                  v-focus
-                  ref="name"
-                  inputId="name"
-                  type="text"
-                  v-model="form.name"
-                  placeholder="PIC42ACHU"
-                  :class="{
-                    'p-invalid': v$.form.name.$invalid && submitted,
-                    'w-10': true,
-                  }"
-                  @blur="checkIfPartExists"
-                />
+                <IconField>
+                  <InputIcon :class="partNameAutofinder"></InputIcon>
+                  <InputText
+                    autofocus
+                    v-focus
+                    ref="name"
+                    inputId="name"
+                    type="text"
+                    v-model="form.name"
+                    placeholder="PIC42ACHU"
+                    :class="{
+                      'p-invalid': v$.form.name.$invalid && submitted,
+                      'w-10': true,
+                    }"
+                    @blur="checkIfPartExists"
+                  />
+                </IconField>
                 <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.name.required.$message }}
@@ -504,6 +507,7 @@ export default {
     part_parameters_preset: null,
     expandedStorageKeys: {},
     expandedCategoryKeys: {},
+    partNameAutofinder: "pi pi-ellipsis-h",
   }),
   setup: () => ({
     v$: useVuelidate(),
@@ -715,10 +719,12 @@ export default {
         .partsAutocompleteQuick(this.form.name)
         .then((res) => {
           this.partsExists = res.data;
+          this.partNameAutofinder = "pi pi-times";
         })
         .catch((err) => {
           if (err.response.status === 404) {
             logger.default.info("Autocompleter said part not found");
+            this.partNameAutofinder = "pi pi-check";
           } else {
             logger.default.error("Got an error from the autocompleter", err.message);
           }
