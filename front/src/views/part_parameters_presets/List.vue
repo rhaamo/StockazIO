@@ -90,28 +90,6 @@ import { useConfirm } from "primevue/useconfirm";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Parts",
-          command: () => {
-            this.$router.push({ name: "parts-list" });
-          },
-        },
-        {
-          label: "Parameters Presets",
-          command: () => {
-            this.$router.push({ name: "parameters-presets-list" });
-          },
-        },
-      ],
-    },
     filters: {
       global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     },
@@ -130,6 +108,30 @@ export default {
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.PART_PARAMETERS_PRESETS || 10,
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Parts",
+            command: () => {
+              this.$router.push({ name: "parts-list" });
+            },
+          },
+          {
+            label: "Parameters Presets",
+            command: () => {
+              this.$router.push({ name: "parameters-presets-list" });
+            },
+          },
+        ],
+      };
+    },
   },
   methods: {
     fetchPartParameterPresets() {

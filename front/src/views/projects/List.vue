@@ -116,22 +116,6 @@ import { useConfirm } from "primevue/useconfirm";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Projects",
-          command: () => {
-            this.$router.push({ name: "projects-list" });
-          },
-        },
-      ],
-    },
     matchModes: {
       name: [
         { label: "Starts with", value: FilterMatchMode.STARTS_WITH },
@@ -173,6 +157,24 @@ export default {
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.PROJECTS || 20,
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Projects",
+            command: () => {
+              this.$router.push({ name: "projects-list" });
+            },
+          },
+        ],
+      };
+    },
   },
   mounted() {
     this.lazyParams = {

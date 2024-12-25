@@ -44,28 +44,6 @@ export default {
     CategoryMatcherEntry,
   },
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Orders importer",
-          command: () => {
-            this.$router.push({ name: "orders-importer" });
-          },
-        },
-        {
-          label: "Category Matchers",
-          command: () => {
-            this.$router.push({ name: "orders-importer-category-matcher" });
-          },
-        },
-      ],
-    },
     matchers: [],
     deleted: [],
     submitted: false,
@@ -93,6 +71,30 @@ export default {
         return [store.categories].map(cb);
       },
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Orders importer",
+            command: () => {
+              this.$router.push({ name: "orders-importer" });
+            },
+          },
+          {
+            label: "Category matchers",
+            command: () => {
+              this.$router.push({ name: "orders-importer-category-matcher" });
+            },
+          },
+        ],
+      };
+    },
   },
   validations: {
     matchers: {},

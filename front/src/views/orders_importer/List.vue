@@ -98,22 +98,6 @@ import ImportLCSCorderModal from "@/components/orders/LcscCsv.vue";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Orders importer",
-          command: () => {
-            this.$router.push({ name: "orders-importer" });
-          },
-        },
-      ],
-    },
     orders: [],
     totalRecords: 0,
     loading: true,
@@ -128,6 +112,24 @@ export default {
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.ORDERS_IMPORTER || 20,
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Orders importer",
+            command: () => {
+              this.$router.push({ name: "orders-importer" });
+            },
+          },
+        ],
+      };
+    },
   },
   mounted() {
     this.lazyParams = {

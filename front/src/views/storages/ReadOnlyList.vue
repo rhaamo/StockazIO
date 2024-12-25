@@ -27,24 +27,7 @@ export default {
   components: {
     ListItem,
   },
-  data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Storages management",
-          command: () => {
-            this.$router.push({ name: "view-storage-tree" });
-          },
-        },
-      ],
-    },
-  }),
+  data: () => ({}),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
   }),
@@ -54,6 +37,24 @@ export default {
         return store.storages;
       },
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Storages list",
+            command: () => {
+              this.$router.push({ name: "view-storage-tree" });
+            },
+          },
+        ],
+      };
+    },
   },
   methods: {
     showBulkLabelGenerator() {

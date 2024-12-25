@@ -101,22 +101,6 @@ import { useConfirm } from "primevue/useconfirm";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Distributors",
-          command: () => {
-            this.$router.push({ name: "distributors-list" });
-          },
-        },
-      ],
-    },
     filters: {
       global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     },
@@ -135,6 +119,24 @@ export default {
     ...mapState(useServerStore, {
       perPage: (store) => store.settings.pagination.DISTRIBUTORS || 10,
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Distributors",
+            command: () => {
+              this.$router.push({ name: "distributors-list" });
+            },
+          },
+        ],
+      };
+    },
   },
   methods: {
     fetchDistributors() {

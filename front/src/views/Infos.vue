@@ -26,26 +26,30 @@ import apiService from "@/services/api/api.service";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Informations",
-          command: () => {
-            this.$router.push({ name: "view-infos" });
-          },
-        },
-      ],
-    },
     parts_count: 0,
     categories_count: 0,
     version: "0.0",
   }),
+  computed: {
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Informations",
+            command: () => {
+              this.$router.push({ name: "view-infos" });
+            },
+          },
+        ],
+      };
+    },
+  },
   created() {
     apiService.getInformations().then((data) => {
       this.parts_count = data.data.parts_count;

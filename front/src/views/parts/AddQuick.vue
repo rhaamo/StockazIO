@@ -401,15 +401,6 @@ import Button from "primevue/button";
 export default {
   data: () => ({
     submitted: false,
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [{ label: "Quick add new part" }],
-    },
     form: {
       name: "",
       description: "",
@@ -488,6 +479,21 @@ export default {
           };
         }),
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Quick add new part",
+          },
+        ],
+      };
+    },
   },
   validations: {
     form: {

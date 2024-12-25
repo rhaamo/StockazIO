@@ -206,22 +206,6 @@ import { required, maxLength, minValue } from "@vuelidate/validators";
 
 export default {
   data: () => ({
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [
-        {
-          label: "Label Templates",
-          command: () => {
-            this.$router.push({ name: "label-templates-list" });
-          },
-        },
-      ],
-    },
     submitted: false,
     selectedTemplate: null,
     form: {
@@ -265,6 +249,24 @@ export default {
     }),
     choicesTemplates() {
       return [{ id: 0, name: "Add new" }].concat(this.labelTemplates);
+    },
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Label Templates",
+            command: () => {
+              this.$router.push({ name: "label-templates-list" });
+            },
+          },
+        ],
+      };
     },
   },
   methods: {

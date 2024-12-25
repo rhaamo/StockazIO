@@ -474,15 +474,6 @@ export default {
   },
   data: () => ({
     submitted: false,
-    breadcrumb: {
-      home: {
-        icon: "pi pi-home",
-        command: () => {
-          this.$router.push({ name: "home" });
-        },
-      },
-      items: [{ label: "Add new part" }],
-    },
     form: {
       name: "",
       description: "",
@@ -570,6 +561,21 @@ export default {
         });
       },
     }),
+    breadcrumb() {
+      return {
+        home: {
+          icon: "pi pi-home",
+          command: () => {
+            this.$router.push({ name: "home" });
+          },
+        },
+        items: [
+          {
+            label: "Add new part",
+          },
+        ],
+      };
+    },
   },
   validations: {
     form: {
