@@ -312,13 +312,14 @@
 
               <div class="field">
                 <label for="part_unit" class="block">Part unit</label>
-                <Dropdown
+                <Listbox
                   v-model="form.part_unit"
                   placeholder="Centimeters ? Pieces ?"
                   class="w-10"
                   :options="choicesPartUnit"
                   optionLabel="text"
                   optionValue="value"
+                  checkmark
                 />
               </div>
 
@@ -328,6 +329,7 @@
                   inputId="category"
                   placeholder="Film resistors ? MCUs ?"
                   v-model="form.category"
+                  v-model:expandedKeys="expandedCategoryKeys"
                   :options="choicesCategory"
                   selectionMode="single"
                   class="w-10"
@@ -345,6 +347,7 @@
                   placeholder="A box under the bench or some drawer ?"
                   class="w-10"
                   v-model="form.storage_location"
+                  v-model:expandedKeys="expandedStorageKeys"
                   :options="choicesStorageLocation"
                   selectionMode="single"
                 />
@@ -352,7 +355,7 @@
 
               <div class="field">
                 <label for="footprint" class="block">Footprint</label>
-                <Dropdown
+                <Listbox
                   inputId="footprint"
                   v-model="form.footprint"
                   placeholder="PDIP, BGA, SOIC, who knows"
@@ -364,6 +367,7 @@
                   optionGroupChildren="footprints"
                   :filter="true"
                   autoFilterFocus
+                  checkmark
                 />
               </div>
 
@@ -498,6 +502,8 @@ export default {
     partsExists: [],
     partDetails: null,
     part_parameters_preset: null,
+    expandedStorageKeys: {},
+    expandedCategoryKeys: {},
   }),
   setup: () => ({
     v$: useVuelidate(),
@@ -508,6 +514,8 @@ export default {
     if (this.currentCategory) {
       this.form.category = { [this.currentCategory.id]: true };
     }
+    this.expandAllStorageChoices();
+    this.expandAllCategoryChoices();
   },
   computed: {
     ...mapState(usePreloadsStore, {
@@ -823,6 +831,34 @@ export default {
             unit: item.unit ? item.unit.id : null,
           });
         });
+      }
+    },
+    expandAllStorageChoices() {
+      for (let node of this.choicesStorageLocation) {
+        this.expandStorageNode(node);
+      }
+      this.expandedStorageKeys = { ...this.expandedStorageKeys };
+    },
+    expandStorageNode(node) {
+      if (node.children && node.children.length) {
+        this.expandedStorageKeys[node.key] = true;
+        for (let child of node.children) {
+          this.expandStorageNode(child);
+        }
+      }
+    },
+    expandAllCategoryChoices() {
+      for (let node of this.choicesCategory) {
+        this.expandCategoryNode(node);
+      }
+      this.expandedCategoryKeys = { ...this.expandedCategoryKeys };
+    },
+    expandCategoryNode(node) {
+      if (node.children && node.children.length) {
+        this.expandedCategoryKeys[node.key] = true;
+        for (let child of node.children) {
+          this.expandCategoryNode(child);
+        }
       }
     },
   },
