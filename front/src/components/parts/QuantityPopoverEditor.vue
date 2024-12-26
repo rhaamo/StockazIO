@@ -81,9 +81,7 @@ export default {
   setup: () => ({
     toast: useToast(),
   }),
-  mounted() {
-    console.log("Instancing QtyPopoverEditor for", this.kind);
-  },
+  mounted() {},
   methods: {
     showPartQtyEditorModal(event) {
       this.$refs.poQty.hide();
