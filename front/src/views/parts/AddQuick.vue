@@ -429,7 +429,7 @@ export default {
       name: "",
       description: "",
       comment: "",
-      qty: 1,
+      qty: 0,
       qty_min: 0,
       sheet_status: "",
       condition: "",
@@ -657,7 +657,7 @@ export default {
       this.form.name = "";
       this.form.description = "";
       this.form.comment = "";
-      this.form.qty = 1;
+      this.form.qty = 0;
       this.form.qty_min = 0;
       this.form.sheet_status = "";
       this.form.condition = "";
