@@ -4,7 +4,7 @@
 
     <div class="grid mt-2">
       <div class="col-2">
-        <Menu :model="templatesList" @blur.stop="null" />
+        <PvMenu :model="templatesList" @blur.stop="null" />
       </div>
 
       <div class="col-6">
@@ -42,13 +42,12 @@
           </div>
 
           <div class="grid mt-2">
-            <div class="col-5">
+            <div class="col-3">
               <label
                 for="width"
                 :class="{
                   block: true,
                   'p-error': v$.form.width.$invalid && submitted,
-                  'w-full': true,
                 }"
                 >Width</label
               >
@@ -59,10 +58,7 @@
                 show-buttons
                 :min="0"
                 placeholder="69"
-                :class="{
-                  'p-invalid': v$.form.width.$invalid && submitted,
-                  'w-full': true,
-                }" />
+                :invalid="v$.form.width.$invalid && submitted" />
               <small v-if="(v$.form.width.$invalid && submitted) || v$.form.width.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.width.required.$message }}
@@ -71,13 +67,12 @@
               </small>
             </div>
 
-            <div class="col-5 col-offset-1">
+            <div class="col-3">
               <label
                 for="height"
                 :class="{
                   block: true,
                   'p-error': v$.form.height.$invalid && submitted,
-                  'w-full': true,
                 }"
                 >Height</label
               >
@@ -88,16 +83,24 @@
                 show-buttons
                 :min="0"
                 placeholder="42"
-                :class="{
-                  'p-invalid': v$.form.height.$invalid && submitted,
-                  'w-full': true,
-                }" />
+                :invalid="v$.form.height.$invalid && submitted" />
               <small v-if="(v$.form.height.$invalid && submitted) || v$.form.height.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.height.required.$message }}
                 <template v-if="v$.form.height.required && v$.form.height.minValue"><br /></template>
                 {{ v$.form.height.minValue.$message }}
               </small>
+            </div>
+            <div class="col-3">
+              <label
+                for="height"
+                :class="{
+                  block: true,
+                  'p-error': v$.form.height.$invalid && submitted,
+                }"
+                >Set as default</label
+              >
+              <ToggleSwitch class="mt-1" v-model="form.default" />
             </div>
           </div>
 
@@ -214,6 +217,7 @@ export default {
     form: {
       id: null,
       name: "",
+      default: false,
       height: 42,
       width: 69,
       template: "",
@@ -226,6 +230,7 @@ export default {
   validations: {
     form: {
       name: { required, maxLength: maxLength(255) },
+      default: { required },
       height: {
         required,
         minValue: minValue(0),
@@ -260,7 +265,7 @@ export default {
         ...this.labelTemplates.map((x) => {
           return {
             label: x.name,
-            icon: "pi pi-receipt",
+            icon: `pi ${x.default ? "pi-check" : "pi-receipt"}`,
             command: () => {
               this.form = x;
               this.selectedTemplate = x;
@@ -322,6 +327,7 @@ export default {
       this.form = {
         id: null,
         name: "",
+        default: false,
         height: 42,
         width: 69,
         template: "",
@@ -347,6 +353,7 @@ export default {
     save() {
       let lt = {
         name: this.form.name,
+        default: this.form.default,
         width: this.form.width,
         height: this.form.height,
         template: this.form.template,
@@ -378,6 +385,7 @@ export default {
     edit() {
       let lt = {
         name: this.form.name,
+        default: this.form.default,
         width: this.form.width,
         height: this.form.height,
         template: this.form.template,

@@ -16,6 +16,7 @@ class Command(BaseCommand):
         templates = [
             {
                 "name": "Brother 12mm",
+                "default": False,
                 "width": 60,
                 "height": 12,
                 "text_template": """{storage_path}
@@ -68,6 +69,7 @@ class Command(BaseCommand):
             },
             {
                 "name": "Brother 90x38",
+                "default": True,
                 "width": 90,
                 "height": 38,
                 "text_template": """{storage_path}
@@ -128,6 +130,7 @@ class Command(BaseCommand):
                     height=item["height"],
                     text_template=item["text_template"],
                     template=item["template"],
+                    default=item["default"],
                 )
             except LabelTemplate.DoesNotExist:
                 tpl = LabelTemplate(
@@ -136,6 +139,7 @@ class Command(BaseCommand):
                     height=item["height"],
                     text_template=item["text_template"],
                     template=item["template"],
+                    default=item["default"],
                 )
                 tpl.save()
             except LabelTemplate.MultipleObjectsReturned:

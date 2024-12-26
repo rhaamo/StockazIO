@@ -50,6 +50,7 @@ import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import Popover from "primevue/popover";
 import Menu from "primevue/menu";
+import ToggleSwitch from "primevue/toggleswitch";
 
 import router from "@/router";
 
@@ -130,7 +131,8 @@ app.component("InputIcon", InputIcon);
 app.component("InputGroup", InputGroup);
 app.component("InputGroupAddon", InputGroupAddon);
 app.component("Popover", Popover);
-app.component("Menu", Menu);
+app.component("PvMenu", Menu);
+app.component("ToggleSwitch", ToggleSwitch);
 
 app.directive("tooltip", Tooltip);
 

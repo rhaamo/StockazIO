@@ -5,7 +5,7 @@ from .models import LabelTemplate
 
 
 class LabelTemplateAdmin(CommonAdmin):
-    list_display = ("name", "template", "width", "height")
+    list_display = ("name", "default", "template", "width", "height")
     readonly_fields = ("base_pdf",)
     search_fields = ("name",)
 

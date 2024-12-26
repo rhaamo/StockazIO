@@ -86,9 +86,13 @@ export default {
   created() {
     this.kind = this.dialogRef.data.kind || "part";
     this.items = this.dialogRef.data.items;
-    if (this.choicesTemplates && this.choicesTemplates.length) {
-      this.template = this.choicesTemplates[0].tpl;
-    }
+    // then select the default template
+    this.choicesTemplates.forEach((el) => {
+      if (el.tpl.default) {
+        this.template = el.tpl;
+        return;
+      }
+    });
   },
   computed: {
     ...mapState(usePreloadsStore, {

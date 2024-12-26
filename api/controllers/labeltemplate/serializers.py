@@ -6,4 +6,4 @@ from .models import LabelTemplate
 class LabelTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = LabelTemplate
-        fields = ["id", "name", "height", "width", "base_pdf", "template", "text_template"]
+        fields = ["id", "name", "default", "height", "width", "base_pdf", "template", "text_template"]
