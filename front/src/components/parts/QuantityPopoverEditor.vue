@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     showPartQtyEditorModal(event) {
-      console.log("PopOver", this.kind);
       this.$refs.poQty.hide();
 
       this.part.oldQty = this.part.stock_qty;
@@ -100,14 +99,12 @@ export default {
     },
     updateSelectedPartQty(quantity) {
       if (this.kind === "qty") {
-        console.log("updating", this.kind);
         if (this.part.stock_qty + quantity < 0) {
           this.part.stock_qty = 0;
           return;
         }
         this.part.stock_qty += quantity;
       } else {
-        console.log("updating", this.kind);
         if (this.part.stock_qty_min + quantity < 0) {
           this.part.stock_qty_min = 0;
           return;
