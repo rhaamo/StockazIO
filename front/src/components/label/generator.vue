@@ -51,6 +51,7 @@
           <PvButton severity="secondary" class="ml-2" label="Download PDF" @click.prevent="downloadPdf"> </PvButton>
           <VuePdfEmbed ref="pdfViewer" class="mt-2" :source="pdf" />
         </div>
+        <div v-else>No template selected.</div>
       </div>
     </div>
   </div>
@@ -75,6 +76,9 @@ export default {
   }),
   watch: {
     template: function () {
+      if (!this.template) {
+        return;
+      }
       this.pdf = null;
       this.generatePdf();
     },
