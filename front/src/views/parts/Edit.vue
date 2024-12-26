@@ -315,38 +315,49 @@
               <div class="mb-3">
                 <label for="category" class="block">Category</label>
                 <TreeSelect
+                  ref="categoryTree"
                   v-model="form.category"
+                  v-model:expandedKeys="expandedCategoryKeys"
                   input-id="category"
                   placeholder="Film resistors ? MCUs ?"
                   :options="choicesCategory"
                   selection-mode="single"
-                  class="w-10" />
+                  class="w-10"
+                  :filter="true"
+                  :fluid="true"
+                  :show-clear="true"
+                  auto-filter-focus />
               </div>
 
               <div class="mb-3">
-                <label for="storage_location" class="block">Storage Location</label>
-                <TreeSelect
-                  v-model="form.storage_location"
-                  input-id="storage_location"
-                  placeholder="A box under the bench or some drawer ?"
-                  class="w-10"
-                  :options="choicesStorageLocation"
-                  selection-mode="single" />
-              </div>
-
-              <div class="mb-3">
-                <label for="footprint" class="block">Footprint</label>
-                <Dropdown
-                  v-model="form.footprint"
-                  input-id="footprint"
-                  placeholder="PDIP, BGA, SOIC, who knows"
-                  class="w-10"
-                  :options="choicesFootprint"
-                  option-label="name"
-                  option-value="id"
-                  option-group-label="category"
-                  option-group-children="footprints"
-                  :filter="true" />
+                <div class="grid">
+                  <div class="col-5">
+                    <label for="storage_location" class="block">Storage Location</label>
+                    <TreeSelect
+                      v-model="form.storage_location"
+                      input-id="storage_location"
+                      placeholder="A box under the bench or some drawer ?"
+                      :options="choicesStorageLocation"
+                      selection-mode="single"
+                      fluid />
+                  </div>
+                  <div class="col-4 col-offset-1">
+                    <label for="footprint" class="block">Footprint</label>
+                    <Listbox
+                      v-model="form.footprint"
+                      input-id="footprint"
+                      placeholder="PDIP, BGA, SOIC, who knows"
+                      :options="choicesFootprint"
+                      option-label="name"
+                      option-value="id"
+                      option-group-label="category"
+                      option-group-children="footprints"
+                      :filter="true"
+                      auto-filter-focus
+                      checkmark
+                      fluid />
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3">
@@ -479,9 +490,15 @@ export default {
     partDetails: null,
     part_parameters_preset: null,
     origCategory: null,
+    expandedStorageKeys: {},
+    expandedCategoryKeys: {},
   }),
   created() {
     this.fetchPart();
+  },
+  mounted() {
+    this.expandAllStorageChoices();
+    this.expandAllCategoryChoices();
   },
   computed: {
     ...mapState(usePreloadsStore, {
@@ -890,6 +907,34 @@ export default {
           });
           logger.default.error("Error with fetching part", err.message);
         });
+    },
+    expandAllStorageChoices() {
+      for (let node of this.choicesStorageLocation) {
+        this.expandStorageNode(node);
+      }
+      this.expandedStorageKeys = { ...this.expandedStorageKeys };
+    },
+    expandStorageNode(node) {
+      if (node.children && node.children.length) {
+        this.expandedStorageKeys[node.key] = true;
+        for (let child of node.children) {
+          this.expandStorageNode(child);
+        }
+      }
+    },
+    expandAllCategoryChoices() {
+      for (let node of this.choicesCategory) {
+        this.expandCategoryNode(node);
+      }
+      this.expandedCategoryKeys = { ...this.expandedCategoryKeys };
+    },
+    expandCategoryNode(node) {
+      if (node.children && node.children.length) {
+        this.expandedCategoryKeys[node.key] = true;
+        for (let child of node.children) {
+          this.expandCategoryNode(child);
+        }
+      }
     },
   },
 };
