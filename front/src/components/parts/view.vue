@@ -3,18 +3,8 @@
     <div class="grid">
       <div class="col-6">
         <div class="grid quantities">
-          <div class="col-3">
-            <template v-if="part.stock_qty >= part.stock_qty_min"
-              ><b>Qty:</b><span class="ml-1">{{ part.stock_qty }}</span></template
-            >
-            <template v-else>
-              <b>Qty:</b>
-              <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" class="text-red-500 ml-1"
-                >{{ part.stock_qty }} <i class="fa fa-circle"></i
-              ></span>
-            </template>
-          </div>
-          <div class="col-3"><b>Qty min:</b> {{ part.stock_qty_min }}</div>
+          <div class="col-3"><b class="mr-1">Qty:</b><QuantityPopoverEditor :part="part" kind="qty" size="large" /></div>
+          <div class="col-3"><b class="mr-1">Qty min:</b><QuantityPopoverEditor :part="part" kind="qty_min" size="large" /></div>
           <div class="col-6"><b>Unit: </b> {{ partUnit || "None defined" }}</div>
         </div>
 
@@ -142,9 +132,13 @@
 import { format as dateFnsFormat } from "date-fns/format";
 import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import utils from "@/utils.js";
+import QuantityPopoverEditor from "@/components/parts/QuantityPopoverEditor.vue";
 
 export default {
   inject: ["dialogRef"],
+  components: {
+    QuantityPopoverEditor,
+  },
   data: () => ({
     part: null,
   }),
