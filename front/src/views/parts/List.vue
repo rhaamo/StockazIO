@@ -184,21 +184,7 @@
               headerStyle="width: 10rem"
             >
               <template #body="slotProps">
-                <PvButton
-                  v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
-                  @click.prevent="showPartQtyEditorModal($event, slotProps.data, 'qty')"
-                  variant="text"
-                  severity="secondary"
-                  >{{ slotProps.data.stock_qty }}</PvButton
-                >
-                <PvButton
-                  v-else
-                  severity="warn"
-                  variant="text"
-                  @click.prevent="showPartQtyEditorModal($event, slotProps.data, 'qty')"
-                  v-tooltip.top="`Current stock is below minimum ${slotProps.data.stock_qty_min} stock quantity or exhausted`"
-                  >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
-                ></PvButton>
+                <QuantityPopoverEditor :part="slotProps.data" kind="qty" size="" />
               </template>
               <template #filter="{ filterModel, filterCallback }">
                 <InputNumber
@@ -212,9 +198,7 @@
             </Column>
             <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric" headerStyle="width: 10rem">
               <template #body="slotProps">
-                <PvButton @click.prevent="showPartQtyEditorModal($event, slotProps.data, 'qty_min')" variant="text" severity="secondary">
-                  {{ slotProps.data.stock_qty_min }}
-                </PvButton>
+                <QuantityPopoverEditor :part="slotProps.data" kind="qty_min" size="" />
               </template>
             </Column>
             <Column header="Unit" :sortable="true" field="part_unit.name">
@@ -368,11 +352,12 @@ import LabelGeneratorModal from "@/components/label/generator.vue";
 import ParameterFilter from "@/components/parts/ParameterFilter.vue";
 import { h } from "vue";
 import Button from "primevue/button";
-import { Popover } from "primevue";
+import QuantityPopoverEditor from "@/components/parts/QuantityPopoverEditor.vue";
 
 export default {
   components: {
     ParameterFilter,
+    QuantityPopoverEditor,
   },
   data: () => ({
     loading: true,
@@ -437,8 +422,6 @@ export default {
     show_parameters_filter: false,
     parameters_filter_names: [],
     parameters_filters: [],
-    selectedPart: null,
-    selectedPartMode: null,
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -1016,32 +999,6 @@ export default {
           this.loadLazyData();
         });
     },
-    updateInplaceBothQty(event) {
-      logger.default.info("update inplace qtys", this.selectedPart.id, this.selectedPart.stock_qty, this.selectedPart.stock_qty_min);
-      apiService
-        .updatePartialPart(this.selectedPart.id, { stock_qty: this.selectedPart.stock_qty, stock_qty_min: this.selectedPart.stock_qty_min })
-        .then(() => {
-          this.toast.add({
-            severity: "success",
-            summary: `Updating part quantities`,
-            detail: "Success",
-            life: 5000,
-          });
-        })
-        .catch((err) => {
-          this.toast.add({
-            severity: "error",
-            summary: `Updating part quantities`,
-            detail: "An error occured, please try again later",
-            life: 5000,
-          });
-          logger.default.error("Error with quantity part update", err);
-        });
-      // hide popover and reset the selected part
-      this.$refs.poQty.hide();
-      this.selectedPart = null;
-      this.selectedPartMode = null;
-    },
     addPartParameterFilter(event) {
       this.parameters_filters.push({
         name: "",
@@ -1078,34 +1035,6 @@ export default {
           kind: "part",
         },
       });
-    },
-    showPartQtyEditorModal(event, item, kind) {
-      console.log("PopOver Qty");
-      this.$refs.poQty.hide();
-
-      this.selectedPart = item;
-      this.selectedPart.oldQty = item.stock_qty;
-      this.selectedPart.oldQtyMin = item.stock_qty_min;
-      this.selectedPartMode = kind;
-
-      this.$nextTick(() => {
-        this.$refs.poQty.show(event);
-      });
-    },
-    updateSelectedPartQty(quantity) {
-      if (this.selectedPartMode === "qty") {
-        if (this.selectedPart.stock_qty + quantity < 0) {
-          this.selectedPart.stock_qty = 0;
-          return;
-        }
-        this.selectedPart.stock_qty += quantity;
-      } else {
-        if (this.selectedPart.stock_qty_min + quantity < 0) {
-          this.selectedPart.stock_qty_min = 0;
-          return;
-        }
-        this.selectedPart.stock_qty_min += quantity;
-      }
     },
   },
 };
