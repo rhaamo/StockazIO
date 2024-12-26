@@ -785,6 +785,17 @@ export default {
               footer: () => {
                 return [
                   h(Button, {
+                    label: "Show full details",
+                    onClick: () => {
+                      let route = this.$router.resolve({
+                        name: "parts-details",
+                        params: { partId: part.id },
+                      });
+                      window.open(route.href, "_blank");
+                    },
+                    class: "p-button-outlined",
+                  }),
+                  h(Button, {
                     label: "Close",
                     onClick: () => viewPartRef.close(),
                     class: "p-button-success",
