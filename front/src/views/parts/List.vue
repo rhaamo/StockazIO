@@ -176,7 +176,7 @@
               </template>
             </Column>
             <Column
-              header="Stock"
+              header="In stock"
               :sortable="true"
               field="stock_qty"
               dataType="numeric"
@@ -184,36 +184,21 @@
               headerStyle="width: 10rem"
             >
               <template #body="slotProps">
-                <Inplace :ref="`inplace_qty_${slotProps.data.id}`" :closable="true">
-                  <template #display v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
-                    ><span>{{ slotProps.data.stock_qty }}</span></template
-                  >
-                  <template #display v-else>
-                    <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
-                      >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
-                    ></span>
-                  </template>
-                  <template #content>
-                    <InputGroup>
-                      <InputNumber
-                        size="small"
-                        :inputId="`qty_${slotProps.data.id}`"
-                        mode="decimal"
-                        showButtons
-                        :min="0"
-                        v-model="slotProps.data.stock_qty"
-                        class="w-2rem"
-                      />
-                      <InputGroupAddon>
-                        <PvButton
-                          size="small"
-                          icon="pi pi-check"
-                          @click.prevent="updateInplaceQty($event, slotProps.data, slotProps.data.stock_qty)"
-                        ></PvButton>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </template>
-                </Inplace>
+                <PvButton
+                  v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
+                  @click.prevent="showPartQtyEditorModal($event, slotProps.data, 'qty')"
+                  variant="text"
+                  severity="secondary"
+                  >{{ slotProps.data.stock_qty }}</PvButton
+                >
+                <PvButton
+                  v-else
+                  severity="warn"
+                  variant="text"
+                  @click.prevent="showPartQtyEditorModal($event, slotProps.data, 'qty')"
+                  v-tooltip.top="`Current stock is below minimum ${slotProps.data.stock_qty_min} stock quantity or exhausted`"
+                  >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
+                ></PvButton>
               </template>
               <template #filter="{ filterModel, filterCallback }">
                 <InputNumber
@@ -225,34 +210,13 @@
                 />
               </template>
             </Column>
-            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric" headerStyle="width: 10rem"
-              ><template #body="slotProps">
-                <Inplace :ref="`inplace_qty_min_${slotProps.data.id}`" :closable="true">
-                  <template #display
-                    ><span>{{ slotProps.data.stock_qty_min }}</span></template
-                  >
-                  <template #content>
-                    <InputGroup>
-                      <InputNumber
-                        size="small"
-                        :inputId="`qty_${slotProps.data.id}`"
-                        mode="decimal"
-                        showButtons
-                        :min="0"
-                        v-model="slotProps.data.stock_qty_min"
-                        class="w-2rem"
-                      />
-                      <InputGroupAddon>
-                        <PvButton
-                          size="small"
-                          icon="pi pi-check"
-                          @click.prevent="updateInplaceQtyMin($event, slotProps.data, slotProps.data.stock_qty_min)"
-                        ></PvButton>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </template>
-                </Inplace> </template
-            ></Column>
+            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric" headerStyle="width: 10rem">
+              <template #body="slotProps">
+                <PvButton @click.prevent="showPartQtyEditorModal($event, slotProps.data, 'qty_min')" variant="text" severity="secondary">
+                  {{ slotProps.data.stock_qty_min }}
+                </PvButton>
+              </template>
+            </Column>
             <Column header="Unit" :sortable="true" field="part_unit.name">
               <template #body="slotProps">{{
                 slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
@@ -306,6 +270,35 @@
               </template>
             </Column>
           </DataTable>
+
+          <Popover ref="poQty">
+            <label
+              for="qty"
+              :class="{
+                'pb-3': true,
+                block: true,
+              }"
+              >Change quantity from {{ selectedPartMode === "qty" ? selectedPart.oldQty : selectedPart.oldQtyMin }} to:</label
+            >
+            <div class="flex gap-2" v-if="selectedPartMode === 'qty'">
+              <InputNumber v-model="selectedPart.stock_qty" inputId="qty" mode="decimal" showButtons buttonLayout="horizontal" :min="0" />
+              <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
+            </div>
+            <div class="flex gap-2" v-else>
+              <InputNumber v-model="selectedPart.stock_qty_min" inputId="qty" mode="decimal" showButtons buttonLayout="horizontal" :min="0" />
+              <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
+            </div>
+
+            <InputGroup class="mt-3">
+              <PvButton label="-10" severity="success" size="small" @click.prevent="updateSelectedPartQty(-10)" />
+              <PvButton label="-50" severity="info" size="small" @click.prevent="updateSelectedPartQty(-50)" />
+              <PvButton label="-100" severity="help" size="small" @click.prevent="updateSelectedPartQty(-100)" />
+              <PvButton disabled severity="secondary" size="small" />
+              <PvButton label="+100" severity="help" size="small" @click.prevent="updateSelectedPartQty(+100)" />
+              <PvButton label="+50" severity="info" size="small" @click.prevent="updateSelectedPartQty(+50)" />
+              <PvButton label="+10" severity="success" size="small" @click.prevent="updateSelectedPartQty(+10)" />
+            </InputGroup>
+          </Popover>
         </TabPanel>
 
         <TabPanel>
@@ -375,6 +368,7 @@ import LabelGeneratorModal from "@/components/label/generator.vue";
 import ParameterFilter from "@/components/parts/ParameterFilter.vue";
 import { h } from "vue";
 import Button from "primevue/button";
+import { Popover } from "primevue";
 
 export default {
   components: {
@@ -443,6 +437,8 @@ export default {
     show_parameters_filter: false,
     parameters_filter_names: [],
     parameters_filters: [],
+    selectedPart: null,
+    selectedPartMode: null,
   }),
   computed: {
     ...mapState(usePreloadsStore, {
@@ -1020,14 +1016,14 @@ export default {
           this.loadLazyData();
         });
     },
-    updateInplaceQty(event, part, qty) {
-      logger.default.info("update inplace qty", part.id, qty);
+    updateInplaceBothQty(event) {
+      logger.default.info("update inplace qtys", this.selectedPart.id, this.selectedPart.stock_qty, this.selectedPart.stock_qty_min);
       apiService
-        .updatePartialPart(part.id, { stock_qty: qty })
+        .updatePartialPart(this.selectedPart.id, { stock_qty: this.selectedPart.stock_qty, stock_qty_min: this.selectedPart.stock_qty_min })
         .then(() => {
           this.toast.add({
             severity: "success",
-            summary: `Updating part quantity`,
+            summary: `Updating part quantities`,
             detail: "Success",
             life: 5000,
           });
@@ -1035,36 +1031,16 @@ export default {
         .catch((err) => {
           this.toast.add({
             severity: "error",
-            summary: `Updating part quantity`,
+            summary: `Updating part quantities`,
             detail: "An error occured, please try again later",
             life: 5000,
           });
           logger.default.error("Error with quantity part update", err);
         });
-      this.$refs[`inplace_qty_${part.id}`].close();
-    },
-    updateInplaceQtyMin(event, part, qty) {
-      logger.default.info("update inplace qty min", part.id, qty);
-      apiService
-        .updatePartialPart(part.id, { stock_qty_min: qty })
-        .then(() => {
-          this.toast.add({
-            severity: "success",
-            summary: `Updating min part quantity`,
-            detail: "Success",
-            life: 5000,
-          });
-        })
-        .catch((err) => {
-          this.toast.add({
-            severity: "error",
-            summary: `Updating min part quantity`,
-            detail: "An error occured, please try again later",
-            life: 5000,
-          });
-          logger.default.error("Error with min quantity part update", err);
-        });
-      this.$refs[`inplace_qty_min_${part.id}`].close();
+      // hide popover and reset the selected part
+      this.$refs.poQty.hide();
+      this.selectedPart = null;
+      this.selectedPartMode = null;
     },
     addPartParameterFilter(event) {
       this.parameters_filters.push({
@@ -1102,6 +1078,34 @@ export default {
           kind: "part",
         },
       });
+    },
+    showPartQtyEditorModal(event, item, kind) {
+      console.log("PopOver Qty");
+      this.$refs.poQty.hide();
+
+      this.selectedPart = item;
+      this.selectedPart.oldQty = item.stock_qty;
+      this.selectedPart.oldQtyMin = item.stock_qty_min;
+      this.selectedPartMode = kind;
+
+      this.$nextTick(() => {
+        this.$refs.poQty.show(event);
+      });
+    },
+    updateSelectedPartQty(quantity) {
+      if (this.selectedPartMode === "qty") {
+        if (this.selectedPart.stock_qty + quantity < 0) {
+          this.selectedPart.stock_qty = 0;
+          return;
+        }
+        this.selectedPart.stock_qty += quantity;
+      } else {
+        if (this.selectedPart.stock_qty_min + quantity < 0) {
+          this.selectedPart.stock_qty_min = 0;
+          return;
+        }
+        this.selectedPart.stock_qty_min += quantity;
+      }
     },
   },
 };
