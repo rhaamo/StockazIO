@@ -4,10 +4,12 @@
 
     <div class="grid mt-2">
       <div class="col-2">
-        <Listbox v-model="selectedTemplate" :options="choicesTemplates" option-label="name" :multiple="false" @change="templateChanged($event)" />
+        <Menu :model="templatesList" @blur.stop="null" />
       </div>
 
       <div class="col-6">
+        <h1 v-if="!form.id">Add new label template</h1>
+        <h1 v-else>{{ form.name }}</h1>
         <form @submit.prevent="submit(!v$.$invalid)">
           <div>
             <label
@@ -219,7 +221,7 @@ export default {
     },
   }),
   created() {
-    this.selectedTemplate = this.choicesTemplates[0];
+    this.selectedTemplate = null;
   },
   validations: {
     form: {
@@ -242,8 +244,30 @@ export default {
         return store.label_templates;
       },
     }),
-    choicesTemplates() {
-      return [{ id: 0, name: "Add new" }].concat(this.labelTemplates);
+    templatesList() {
+      return [
+        {
+          label: "Add new",
+          icon: "pi pi-plus",
+          command: () => {
+            this.resetForm();
+            this.selectedTemplate = null;
+          },
+        },
+        {
+          separator: true,
+        },
+        ...this.labelTemplates.map((x) => {
+          return {
+            label: x.name,
+            icon: "pi pi-receipt",
+            command: () => {
+              this.form = x;
+              this.selectedTemplate = x;
+            },
+          };
+        }),
+      ];
     },
     breadcrumb() {
       return {
@@ -398,7 +422,7 @@ export default {
                 life: 5000,
               });
               this.fetchLabelTemplates();
-              this.selectedTemplate = this.choicesTemplates[0];
+              this.selectedTemplate = null;
               this.resetForm();
             })
             .catch((err) => {
@@ -410,7 +434,7 @@ export default {
               });
               logger.default.error("Error with label template deletion", err);
               this.fetchLabelTemplates();
-              this.selectedTemplate = this.choicesTemplates[0];
+              this.selectedTemplate = null;
               this.resetForm();
             });
         },
