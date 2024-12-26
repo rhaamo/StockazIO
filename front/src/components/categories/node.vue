@@ -9,8 +9,7 @@
             categoryId: node.id,
           },
         }"
-        :title="node.name"
-      >
+        :title="node.name">
         <b
           >{{ node.name }} <small>({{ node.parts_count }})</small></b
         >
@@ -25,8 +24,7 @@
             categoryId: node.id,
           },
         }"
-        :title="node.name"
-      >
+        :title="node.name">
         {{ node.name }} <small>({{ node.parts_count }})</small>
       </router-link>
     </template>

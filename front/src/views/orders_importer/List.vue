@@ -3,21 +3,20 @@
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
     <div class="mt-2">
       <DataTable
+        ref="dt"
         :value="orders"
         :lazy="true"
         :paginator="true"
         :rows="perPage"
-        ref="dt"
-        dataKey="id"
-        :totalRecords="totalRecords"
+        data-key="id"
+        :total-records="totalRecords"
         :loading="loading"
-        @page="onPage($event)"
-        @sort="onSort($event)"
-        responsiveLayout="scroll"
-        stripedRows
+        responsive-layout="scroll"
+        striped-rows
         class="p-datatable-sm"
-        removableSort
-      >
+        removable-sort
+        @page="onPage($event)"
+        @sort="onSort($event)">
         <template #empty> No orders found. </template>
 
         <template #header>
@@ -26,7 +25,7 @@
           <PvButton class="ml-2" severity="info" label="Import a LCSC .csv order" @click.prevent="showImportLCSCcsv" />
         </template>
 
-        <Column header="Date" :sortable="true" field="date" headerStyle="width: 12em">
+        <Column header="Date" :sortable="true" field="date" header-style="width: 12em">
           <template #body="slotProps">
             <router-link
               class="no-underline"
@@ -52,9 +51,9 @@
           </template>
         </Column>
 
-        <Column header="Items Qty" :sortable="true" field="items_count" headerStyle="width: 8em"> </Column>
+        <Column header="Items Qty" :sortable="true" field="items_count" header-style="width: 8em"> </Column>
 
-        <Column header="Status (vendor)" :sortable="false" field="status" headerStyle="width: 8em"> </Column>
+        <Column header="Status (vendor)" :sortable="false" field="status" header-style="width: 8em"> </Column>
 
         <Column header="Vendor" :sortable="true" field="vendor_db">
           <template #body="slotProps">
@@ -62,20 +61,19 @@
           </template>
         </Column>
 
-        <Column header="Import state" :sortable="false" field="import_state" headerStyle="width: 8em">
+        <Column header="Import state" :sortable="false" field="import_state" header-style="width: 8em">
           <template #body="slotProps">{{ importStateText(slotProps.data.import_state) }}</template>
         </Column>
 
-        <Column headerStyle="width: 6em">
+        <Column header-style="width: 6em">
           <template #body="slotProps">
             <PvButton
+              v-tooltip="'import'"
               type="button"
               class="p-button-primary"
-              v-tooltip="'import'"
               label="import"
-              @click.prevent="importOrder($event, slotProps.data)"
               :disabled="slotProps.data.import_state === 2 || slotProps.data.import_state === 99"
-            ></PvButton>
+              @click.prevent="importOrder($event, slotProps.data)"></PvButton>
           </template>
         </Column>
       </DataTable>
@@ -97,16 +95,16 @@ import { h } from "vue";
 import ImportLCSCorderModal from "@/components/orders/LcscCsv.vue";
 
 export default {
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+    toast: useToast(),
+    confirm: useConfirm(),
+  }),
   data: () => ({
     orders: [],
     totalRecords: 0,
     loading: true,
     lazyParams: {},
-  }),
-  setup: () => ({
-    preloadsStore: usePreloadsStore(),
-    toast: useToast(),
-    confirm: useConfirm(),
   }),
   computed: {
     ...mapState(useServerStore, {

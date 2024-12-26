@@ -20,19 +20,18 @@
                 <IconField>
                   <InputIcon :class="partNameAutofinder"></InputIcon>
                   <InputText
-                    autofocus
-                    v-focus
                     ref="name"
-                    inputId="name"
-                    type="text"
                     v-model="form.name"
+                    v-focus
+                    autofocus
+                    input-id="name"
+                    type="text"
                     placeholder="PIC42ACHU"
                     :class="{
                       'p-invalid': v$.form.name.$invalid && submitted,
                       'w-10': true,
                     }"
-                    @blur="checkIfPartExists"
-                  />
+                    @blur="checkIfPartExists" />
                 </IconField>
                 <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
                   ><br />
@@ -60,16 +59,15 @@
                   >Description</label
                 >
                 <InputText
-                  inputId="description"
+                  v-model="form.description"
+                  input-id="description"
                   type="text"
                   placeholder="A cute little mcu"
                   :class="{
                     'p-invalid': v$.form.description.$invalid && submitted,
                     'w-10': true,
                   }"
-                  v-model="form.description"
-                  @blur="autoDetectFootprint"
-                />
+                  @blur="autoDetectFootprint" />
                 <small v-if="(v$.form.description.$invalid && submitted) || v$.form.description.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.description.maxLength.$message }}
@@ -87,15 +85,14 @@
                   >Comment</label
                 >
                 <InputText
-                  inputId="comment"
+                  v-model="form.comment"
+                  input-id="comment"
                   type="text"
                   placeholder="Any comment about this part ?"
-                  v-model="form.comment"
                   :class="{
                     'p-invalid': v$.form.description.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.form.comment.$invalid && submitted) || v$.form.comment.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.comment.maxLength.$message }}
@@ -114,14 +111,13 @@
                     >Stock Qty*</label
                   >
                   <InputNumber
-                    inputId="qty"
-                    mode="decimal"
-                    showButtons
-                    buttonLayout="horizontal"
-                    :min="0"
-                    :invalid="v$.form.qty.$invalid && submitted"
                     v-model="form.qty"
-                  />
+                    input-id="qty"
+                    mode="decimal"
+                    show-buttons
+                    button-layout="horizontal"
+                    :min="0"
+                    :invalid="v$.form.qty.$invalid && submitted" />
                   <small v-if="(v$.form.qty.$invalid && submitted) || v$.form.qty.$pending.$response" class="p-error"
                     ><br />
                     {{ v$.form.qty.required.$message }}
@@ -151,14 +147,13 @@
                     >Stock Qty Min*</label
                   >
                   <InputNumber
-                    inputId="qty_min"
+                    v-model="form.qty_min"
+                    input-id="qty_min"
                     mode="decimal"
-                    showButtons
+                    show-buttons
                     :min="0"
                     :invalid="v$.form.qty_min.$invalid && submitted"
-                    v-model="form.qty_min"
-                    buttonLayout="horizontal"
-                  />
+                    button-layout="horizontal" />
                   <small v-if="(v$.form.qty_min.$invalid && submitted) || v$.form.qty_min.$pending.$response" class="p-error"
                     ><br />
                     {{ v$.form.qty_min.required.$message }}
@@ -179,14 +174,13 @@
                   >Sheet status</label
                 >
                 <InputText
-                  inputId="sheet_status"
+                  v-model="form.sheet_status"
+                  input-id="sheet_status"
                   type="text"
                   :class="{
                     'p-invalid': v$.form.sheet_status.$invalid && submitted,
                     'w-10': true,
-                  }"
-                  v-model="form.sheet_status"
-                />
+                  }" />
                 <small v-if="(v$.form.sheet_status.$invalid && submitted) || v$.form.sheet_status.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.sheet_status.maxLength.$message }}
@@ -204,15 +198,14 @@
                   >Part Condition</label
                 >
                 <InputText
-                  type="text"
-                  inputId="condition"
                   v-model="form.condition"
+                  type="text"
+                  input-id="condition"
                   placeholder="Condition of the part"
                   :class="{
                     'p-invalid': v$.form.condition.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.form.condition.$invalid && submitted) || v$.form.condition.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.condition.maxLength.$message }}
@@ -230,14 +223,13 @@
                   >Production Remarks</label
                 >
                 <InputText
-                  inputId="production_remarks"
                   v-model="form.production_remarks"
+                  input-id="production_remarks"
                   type="text"
                   :class="{
                     'p-invalid': v$.form.production_remarks.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.form.production_remarks.$invalid && submitted) || v$.form.production_remarks.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.production_remarks.maxLength.$message }}
@@ -255,14 +247,13 @@
                   >Internal Part Number</label
                 >
                 <InputText
-                  inputId="internal_pn"
                   v-model="form.internal_pn"
+                  input-id="internal_pn"
                   type="text"
                   :class="{
                     'p-invalid': v$.form.internal_pn.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.form.internal_pn.$invalid && submitted) || v$.form.internal_pn.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.internal_pn.maxLength.$message }}
@@ -271,13 +262,12 @@
 
               <div class="field-checkbox">
                 <Checkbox
+                  v-model="form.needs_review"
                   :class="{
                     'p-invalid': v$.form.needs_review.$invalid && submitted,
                   }"
-                  inputId="needs_review"
-                  v-model="form.needs_review"
-                  :binary="true"
-                />
+                  input-id="needs_review"
+                  :binary="true" />
                 <label
                   for="needs_review"
                   :class="{
@@ -288,13 +278,12 @@
               </div>
               <div class="field-checkbox">
                 <Checkbox
+                  v-model="form.can_be_sold"
                   :class="{
                     'p-invalid': v$.form.can_be_sold.$invalid && submitted,
                   }"
-                  inputId="can_be_sold"
-                  :binary="true"
-                  v-model="form.can_be_sold"
-                />
+                  input-id="can_be_sold"
+                  :binary="true" />
                 <label
                   :class="{
                     'p-error': v$.form.can_be_sold.$invalid && submitted,
@@ -305,13 +294,12 @@
               </div>
               <div class="field-checkbox">
                 <Checkbox
+                  v-model="form.private"
                   :class="{
                     'p-invalid': v$.form.private.$invalid && submitted,
                   }"
-                  inputId="private"
-                  :binary="true"
-                  v-model="form.private"
-                />
+                  input-id="private"
+                  :binary="true" />
                 <label
                   :class="{
                     'p-error': v$.form.private.$invalid && submitted,
@@ -330,78 +318,73 @@
                   placeholder="Centimeters ? Pieces ?"
                   class="w-7"
                   :options="choicesPartUnit"
-                  optionLabel="text"
-                  optionValue="value"
+                  option-label="text"
+                  option-value="value"
                   checkmark
-                  striped
-                />
+                  striped />
               </div>
 
               <div class="field">
                 <label for="category" class="block">Category</label>
                 <TreeSelect
                   ref="categoryTree"
-                  inputId="category"
-                  placeholder="Film resistors ? MCUs ?"
                   v-model="form.category"
                   v-model:expandedKeys="expandedCategoryKeys"
+                  input-id="category"
+                  placeholder="Film resistors ? MCUs ?"
                   :options="choicesCategory"
-                  selectionMode="single"
+                  selection-mode="single"
                   class="w-7"
                   :filter="true"
                   :fluid="true"
-                  :showClear="true"
-                  autoFilterFocus
-                />
+                  :show-clear="true"
+                  auto-filter-focus />
               </div>
 
               <div class="field">
                 <label for="storage_location" class="block">Storage Location</label>
                 <TreeSelect
-                  inputId="storage_location"
-                  placeholder="A box under the bench or some drawer ?"
-                  class="w-7"
                   v-model="form.storage_location"
                   v-model:expandedKeys="expandedStorageKeys"
+                  input-id="storage_location"
+                  placeholder="A box under the bench or some drawer ?"
+                  class="w-7"
                   :options="choicesStorageLocation"
-                  selectionMode="single"
-                  autoFilterFocus
-                  filter
-                />
+                  selection-mode="single"
+                  auto-filter-focus
+                  filter />
               </div>
 
               <div class="field">
                 <label for="footprint" class="block"
                   ><PvButton
+                    v-tooltip.top="`Try auto-match from description`"
                     raised
                     rounded
                     size="small"
                     severity="info"
                     variant="text"
                     icon="pi pi-refresh"
-                    v-tooltip.top="`Try auto-match from description`"
-                    @click.prevent="autoDetectFootprint()"
-                  />
+                    @click.prevent="autoDetectFootprint()" />
                   Footprint&nbsp;
-                  <template v-if="this.form.footprint"
-                    ><small>(selected: {{ getFootprintNameFromId(this.form.footprint) }})</small></template
+                  <template v-if="form.footprint"
+                    ><small>(selected: {{ getFootprintNameFromId(form.footprint) }})</small></template
                   >
                 </label>
 
                 <Listbox
-                  inputId="footprint"
                   v-model="form.footprint"
+                  input-id="footprint"
                   placeholder="PDIP, BGA, SOIC, who knows"
                   class="w-7"
                   :options="choicesFootprint"
-                  optionLabel="name"
-                  optionValue="id"
-                  optionGroupLabel="category"
-                  optionGroupChildren="footprints"
+                  option-label="name"
+                  option-value="id"
+                  option-group-label="category"
+                  option-group-children="footprints"
                   :filter="true"
-                  autoFilterFocus
-                  checkmark
-                />
+                  auto-filter-focus
+                  checkmark />
               </div>
 
               <div class="field">
@@ -411,8 +394,7 @@
                   type="submit"
                   label="Save and add another"
                   class="ml-2 p-button-secondary"
-                  @click.prevent="submit(!v$.$invalid, 'add_new')"
-                />
+                  @click.prevent="submit(!v$.$invalid, 'add_new')" />
               </div>
             </div>
           </div>
@@ -436,6 +418,11 @@ import Button from "primevue/button";
 import { fuzzyMatch } from "fuzzbunny";
 
 export default {
+  setup: () => ({
+    v$: useVuelidate(),
+    preloadsStore: usePreloadsStore(),
+    toast: useToast(),
+  }),
   data: () => ({
     submitted: false,
     form: {
@@ -461,11 +448,6 @@ export default {
     expandedStorageKeys: {},
     expandedCategoryKeys: {},
     partNameAutofinder: "pi pi-ellipsis-h",
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    preloadsStore: usePreloadsStore(),
-    toast: useToast(),
   }),
   mounted() {
     if (this.currentCategory) {

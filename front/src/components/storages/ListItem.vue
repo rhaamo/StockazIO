@@ -8,36 +8,35 @@
           &nbsp;
           <i
             :id="item.uuid"
+            v-tooltip="`Click to show picture`"
             class="fa fa-file-image-o"
             aria-hidden="true"
-            v-tooltip="`Click to show picture`"
-            @click.prevent="$refs.storage_picture.toggle($event)"
-          />
-          <OverlayPanel ref="storage_picture" appendTo="body" :showCloseIcon="true" id="storage_picture">
+            @click.prevent="$refs.storage_picture.toggle($event)" />
+          <OverlayPanel id="storage_picture" ref="storage_picture" append-to="body" :show-close-icon="true">
             <PvImage preview width="250" :src="item.picture_medium"></PvImage>
           </OverlayPanel>
         </template>
 
         &nbsp;&nbsp;
 
-        <router-link to="#" v-tooltip="`QrCode label generator`" @click.prevent="showLabelGeneratorModal(item)" class="no-underline">
+        <router-link v-tooltip="`QrCode label generator`" to="#" class="no-underline" @click.prevent="showLabelGeneratorModal(item)">
           <i class="fa fa-qrcode" aria-hidden="true" />
         </router-link>
 
         <template v-if="!readonly">
           &nbsp;&nbsp;
 
-          <router-link to="#" v-tooltip="`Edit Element`" @click.prevent="editElementModal(item)" class="no-underline">
+          <router-link v-tooltip="`Edit Element`" to="#" class="no-underline" @click.prevent="editElementModal(item)">
             <i class="fa fa-pencil-square-o" aria-hidden="true" />
           </router-link>
           &nbsp;
-          <router-link to="#" v-tooltip="`Delete Element`" @click.prevent="deleteElementModal(item)" class="no-underline">
+          <router-link v-tooltip="`Delete Element`" to="#" class="no-underline" @click.prevent="deleteElementModal(item)">
             <i class="fa fa-trash-o" aria-hidden="true" />
           </router-link>
 
           &nbsp;&nbsp;
 
-          <router-link to="#" v-tooltip="`${addElementTitle(item.name)}`" @click.prevent="addElementModal(item.id)" class="no-underline">
+          <router-link v-tooltip="`${addElementTitle(item.name)}`" to="#" class="no-underline" @click.prevent="addElementModal(item.id)">
             <i class="fa fa-plus-square-o" aria-hidden="true" />
           </router-link>
         </template>

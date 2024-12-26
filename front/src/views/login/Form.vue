@@ -4,7 +4,7 @@
       <Card class="p-4">
         <template #title>Welcome back</template>
         <template #content>
-          <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+          <form class="text-center" @submit.prevent="submit(!v$.$invalid)">
             <div>
               <div class="field">
                 <InputText id="username" v-model="user.username" :invalid="v$.user.username.$invalid && submitted" placeholder="Username" fluid />
@@ -16,14 +16,13 @@
               <div class="field">
                 <Password
                   id="password"
-                  type="password"
                   v-model="user.password"
+                  type="password"
                   :invalid="v$.user.password.$invalid && submitted"
-                  toggleMask
+                  toggle-mask
                   placeholder="Password"
                   :feedback="false"
-                  fluid
-                />
+                  fluid />
                 <small v-if="(v$.user.password.$invalid && submitted) || v$.user.password.$pending.$response" class="p-error"
                   ><br />{{ v$.user.password.required.$message }}</small
                 >
@@ -54,19 +53,19 @@ import { usePreloadsStore } from "@/stores/preloads";
 import { useToast } from "primevue/usetoast";
 
 export default {
-  data: () => ({
-    user: {
-      username: "",
-      password: "",
-    },
-    submitted: false,
-  }),
   setup: () => ({
     v$: useVuelidate(),
     oauthStore: useOauthStore(),
     userStore: useUserStore(),
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
+  }),
+  data: () => ({
+    user: {
+      username: "",
+      password: "",
+    },
+    submitted: false,
   }),
   validations: {
     user: {

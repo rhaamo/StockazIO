@@ -3,7 +3,7 @@
     <div class="grid">
       <div class="col-4">
         <label for="name" class="block">Name</label>
-        <Dropdown inputId="name" v-model="item.name" class="w-full" :options="choicesNames" optionLabel="text" :filter="true" />
+        <Dropdown v-model="item.name" input-id="name" class="w-full" :options="choicesNames" option-label="text" :filter="true" />
         <small v-if="v$.item.name.$invalid || v$.item.name.$pending.$response" class="p-error">
           {{ v$.item.name.required.$message }}
         </small>
@@ -11,7 +11,7 @@
 
       <div class="col-2">
         <label for="mode" class="block">Mode</label>
-        <Dropdown inputId="mode" v-model="item.mode" class="w-full" :options="choicesModes" optionLabel="text" />
+        <Dropdown v-model="item.mode" input-id="mode" class="w-full" :options="choicesModes" option-label="text" />
         <small v-if="v$.item.mode.$invalid || v$.item.mode.$pending.$response" class="p-error">
           {{ v$.item.mode.required.$message }}
         </small>
@@ -29,15 +29,14 @@
         >
         <InputText
           ref="value"
-          inputId="value"
-          type="text"
           v-model="item.value"
+          input-id="value"
+          type="text"
           placeholder="value"
           :class="{
             'p-invalid': v$.item.value.$invalid,
             'w-full': true,
-          }"
-        />
+          }" />
         <small v-if="v$.item.value.$invalid || v$.item.value.$pending.$response" class="p-error">
           {{ v$.item.value.required.$message }}
         </small>
@@ -53,8 +52,7 @@
           btn-main-text-disabled="Confirm ?"
           btn-ok-text="Yes"
           btn-cancel-text="No"
-          @action-confirmed="$emit('deleteItem', $event)"
-        />
+          @action-confirmed="$emit('deleteItem', $event)" />
       </div>
     </div>
   </div>
@@ -65,18 +63,18 @@ import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
 export default {
-  props: {
-    item: { type: Object, required: true },
-    names: { type: Array, required: true },
-  },
-  data: () => ({}),
-  setup: () => ({
-    v$: useVuelidate(),
-  }),
   model: {
     prop: "item",
     event: "change",
   },
+  props: {
+    item: { type: Object, required: true },
+    names: { type: Array, required: true },
+  },
+  setup: () => ({
+    v$: useVuelidate(),
+  }),
+  data: () => ({}),
   computed: {
     choicesModes() {
       return [

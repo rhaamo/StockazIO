@@ -5,7 +5,7 @@
     <p>They are regexp, you need to escape <code>(, ), [ etc.</code>.</p>
 
     <div class="mt-2">
-      <div class="grid" v-if="matchers.length">
+      <div v-if="matchers.length" class="grid">
         <div class="col-5">Regexp</div>
         <div class="col-3">Category</div>
       </div>
@@ -16,8 +16,7 @@
             v-model:item="matchers[i]"
             v-model:categories="choicesCategory"
             :submitted="submitted"
-            @deleteItem="deleteCategoryMatcher($event, i)"
-          />
+            @deleteItem="deleteCategoryMatcher($event, i)" />
         </div>
 
         <Divider />
@@ -43,16 +42,16 @@ export default {
   components: {
     CategoryMatcherEntry,
   },
-  data: () => ({
-    matchers: [],
-    deleted: [],
-    submitted: false,
-  }),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
     confirm: useConfirm(),
     v$: useVuelidate(),
+  }),
+  data: () => ({
+    matchers: [],
+    deleted: [],
+    submitted: false,
   }),
   computed: {
     ...mapState(usePreloadsStore, {

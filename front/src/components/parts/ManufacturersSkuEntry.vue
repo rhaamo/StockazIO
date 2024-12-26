@@ -13,16 +13,15 @@
         >
         <InputText
           ref="sku"
-          inputId="sku"
-          type="text"
           v-model="item.sku"
+          input-id="sku"
+          type="text"
           placeholder="SKU_ID"
           :class="{
             'p-invalid': v$.item.sku.$invalid && submitted,
             'w-10': true,
           }"
-          @input="updateDatasheetUrl"
-        />
+          @input="updateDatasheetUrl" />
         <small v-if="(v$.item.sku.$invalid && submitted) || v$.item.sku.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.sku.required.$message }}
@@ -34,14 +33,13 @@
       <div class="col-6">
         <label for="manufacturer" class="block">Manufacturer</label>
         <Dropdown
-          inputId="manufacturer"
           v-model="item.manufacturer"
+          input-id="manufacturer"
           class="w-10"
           :options="choicesManufacturers"
-          optionLabel="text"
+          option-label="text"
           :filter="true"
-          @change="updateDatasheetUrl"
-        />
+          @change="updateDatasheetUrl" />
       </div>
     </div>
 
@@ -57,15 +55,14 @@
       >
       <InputText
         ref="datasheet_url"
-        inputId="datasheet_url"
-        type="text"
         v-model="item.datasheet_url"
+        input-id="datasheet_url"
+        type="text"
         placeholder="http://somewhere/"
         :class="{
           'p-invalid': v$.item.datasheet_url.$invalid && submitted,
           'w-11': true,
-        }"
-      />
+        }" />
       <small v-if="(v$.item.datasheet_url.$invalid && submitted) || v$.item.datasheet_url.$pending.$response" class="p-error">
         {{ v$.item.datasheet_url.url.$message }}
       </small>
@@ -81,8 +78,7 @@
         btn-main-text-disabled="Confirm ?"
         btn-ok-text="Yes"
         btn-cancel-text="No"
-        @action-confirmed="$emit('deleteItem', $event)"
-      />
+        @action-confirmed="$emit('deleteItem', $event)" />
     </div>
   </div>
 </template>
@@ -94,19 +90,19 @@ import { mapState } from "pinia";
 import { usePreloadsStore } from "@/stores/preloads";
 
 export default {
-  props: {
-    item: { type: Object, required: true },
-    submitted: { type: Boolean, required: true },
-  },
-  data: () => ({}),
-  setup: () => ({
-    v$: useVuelidate(),
-    preloadsStore: usePreloadsStore(),
-  }),
   model: {
     prop: "item",
     event: "change",
   },
+  props: {
+    item: { type: Object, required: true },
+    submitted: { type: Boolean, required: true },
+  },
+  setup: () => ({
+    v$: useVuelidate(),
+    preloadsStore: usePreloadsStore(),
+  }),
+  data: () => ({}),
   computed: {
     ...mapState(usePreloadsStore, {
       choicesManufacturers: (store) =>

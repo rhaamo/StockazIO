@@ -9,7 +9,7 @@
             >
             <template v-else>
               <b>Qty:</b>
-              <span class="text-red-500 ml-1" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
+              <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" class="text-red-500 ml-1"
                 >{{ part.stock_qty }} <i class="fa fa-circle"></i
               ></span>
             </template>
@@ -23,7 +23,7 @@
         </div>
 
         <div>
-          <DataTable :value="mainTableItems" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+          <DataTable :value="mainTableItems" class="p-datatable-sm" striped-rows responsive-layout="scroll">
             <Column field="item" header="Item"></Column>
             <Column field="value" header="Value"></Column>
           </DataTable>
@@ -32,7 +32,7 @@
 
       <div class="col-6">
         <div class="mb-3">
-          <Galleria :value="pictureAttachments" containerStyle="max-width: 640px">
+          <Galleria :value="pictureAttachments" container-style="max-width: 640px">
             <template #item="slotProps">
               <PvImage preview height="100" :src="slotProps.item.picture" :alt="slotProps.item.description" />
             </template>
@@ -47,7 +47,7 @@
             <template #header>
               <span>Parameters</span>
             </template>
-            <DataTable :value="part.part_parameters_value" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.part_parameters_value" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="name" header="Name"></Column>
               <Column field="description" header="Description"></Column>
               <Column header="Value">
@@ -62,7 +62,7 @@
             <template #header>
               <span>Distributors</span>
             </template>
-            <DataTable :value="part.distributors_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.distributors_sku" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Distributor">
                 <template #body="slotProps">{{ slotProps.data.distributor ? slotProps.data.distributor.name : "No name" }}</template>
@@ -83,7 +83,7 @@
             <template #header>
               <span>Manufacturers</span>
             </template>
-            <DataTable :value="part.manufacturers_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.manufacturers_sku" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Manufacturer">
                 <template #body="slotProps">{{ slotProps.data.manufacturer ? slotProps.data.manufacturer.name : "No name" }}</template>
@@ -104,7 +104,7 @@
             <template #header>
               <span>Files</span>
             </template>
-            <DataTable :value="part.part_attachments" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.part_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column header="Link"
                 ><template #body="slotProps">
                   <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
@@ -125,7 +125,7 @@
             <template #header>
               <span>Stock history</span>
             </template>
-            <DataTable :value="part.part_stock_history" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.part_stock_history" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="created_at" header="Date"
                 ><template #body="slotProps">{{ formatDate(slotProps.data.created_at) }}</template></Column
               >
@@ -148,9 +148,6 @@ export default {
   data: () => ({
     part: null,
   }),
-  created() {
-    this.part = this.dialogRef.data.part;
-  },
   computed: {
     partUnit() {
       if (this.part && this.part.part_unit) {
@@ -204,6 +201,9 @@ export default {
         }) || []
       );
     },
+  },
+  created() {
+    this.part = this.dialogRef.data.part;
   },
   methods: {
     formatDate(date) {

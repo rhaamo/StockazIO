@@ -14,18 +14,17 @@
               >Name*</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="name"
-              inputId="name"
-              type="text"
               v-model="item.name"
+              v-focus
+              autofocus
+              input-id="name"
+              type="text"
               placeholder="Ampere"
               :class="{
                 'p-invalid': v$.item.name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.name.required.$message }}
@@ -50,15 +49,14 @@
             >
             <InputText
               ref="symbol"
-              inputId="symbol"
-              type="text"
               v-model="item.symbol"
+              input-id="symbol"
+              type="text"
               placeholder="A"
               :class="{
                 'p-invalid': v$.item.symbol.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.symbol.$invalid && submitted) || v$.item.symbol.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.symbol.maxLength.$message }}
@@ -81,14 +79,13 @@
             >
             <InputText
               ref="description"
-              inputId="description"
-              type="text"
               v-model="item.description"
+              input-id="description"
+              type="text"
               :class="{
                 'p-invalid': v$.item.description.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.description.maxLength.$message }}
@@ -117,6 +114,10 @@ import logger from "@/logging";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -125,10 +126,6 @@ export default {
       description: "",
     },
     submitted: false,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit

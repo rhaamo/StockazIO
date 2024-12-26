@@ -14,17 +14,16 @@
               >Name</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="name"
-              inputId="name"
-              type="text"
               v-model="item.name"
+              v-focus
+              autofocus
+              input-id="name"
+              type="text"
               :class="{
                 'p-invalid': v$.item.name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.name.required.$message }}
@@ -32,7 +31,7 @@
               {{ v$.item.name.maxLength.$message }}
             </small>
 
-            <div class="mt-4" v-if="parent">Parent category: {{ parent.name }}.</div>
+            <div v-if="parent" class="mt-4">Parent category: {{ parent.name }}.</div>
 
             <div class="mt-4">
               <PvButton type="submit" label="Save" @click.prevent="submit(!v$.$invalid)" />
@@ -53,6 +52,10 @@ import logger from "@/logging";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -60,10 +63,6 @@ export default {
       parent: null,
     },
     submitted: false,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit

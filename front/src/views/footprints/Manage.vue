@@ -6,12 +6,11 @@
       <div class="col-2">
         <Listbox
           v-model="selectedCategory"
-          scrollHeight="38rem"
+          scroll-height="38rem"
           :options="footprintsCategories"
-          optionLabel="name"
+          option-label="name"
           :multiple="false"
-          @change="categoryChanged($event)"
-        />
+          @change="categoryChanged($event)" />
       </div>
 
       <div class="col-8 col-offset-1">
@@ -33,13 +32,12 @@
           <DataTable
             :value="footprints"
             class="p-datatable-sm"
-            stripedRows
-            responsiveLayout="scroll"
-            dataKey="id"
-            removableSort
+            striped-rows
+            responsive-layout="scroll"
+            data-key="id"
+            removable-sort
             :paginator="true"
-            :rows="20"
-          >
+            :rows="20">
             <Column header="Picture">
               <template #body="slotProps">
                 <PvImage preview :src="slotProps.data.picture_mini" :alt="slotProps.data.picture" class="product-image" />
@@ -49,23 +47,21 @@
             <Column field="name" header="Name" :sortable="true"></Column>
             <Column field="description" header="Description"></Column>
 
-            <Column headerStyle="width: 6.3em">
+            <Column header-style="width: 6.3em">
               <template #body="slotProps">
                 <span class="p-buttonset">
                   <PvButton
+                    v-tooltip="'edit'"
                     type="button"
                     icon="fa fa-edit"
                     class="p-button-primary"
-                    v-tooltip="'edit'"
-                    @click.prevent="showEditFootprint($event, slotProps.data)"
-                  ></PvButton>
+                    @click.prevent="showEditFootprint($event, slotProps.data)"></PvButton>
                   <PvButton
+                    v-tooltip="'delete'"
                     type="button"
                     icon="fa fa-trash-o"
                     class="p-button-danger ml-1"
-                    v-tooltip="'delete'"
-                    @click="deleteItem($event, slotProps.data)"
-                  ></PvButton>
+                    @click="deleteItem($event, slotProps.data)"></PvButton>
                 </span>
               </template>
             </Column>
@@ -87,19 +83,16 @@ import ManageCategoryModal from "@/components/footprints/CategoryForm.vue";
 import { h } from "vue";
 
 export default {
-  data: () => ({
-    footprintsCategories: [],
-    footprints: [],
-    selectedCategory: null,
-  }),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
     confirm: useConfirm(),
   }),
-  created() {
-    this.fetchFootprintsCategories();
-  },
+  data: () => ({
+    footprintsCategories: [],
+    footprints: [],
+    selectedCategory: null,
+  }),
   computed: {
     breadcrumb() {
       let footprint = {};
@@ -132,6 +125,9 @@ export default {
         ],
       };
     },
+  },
+  created() {
+    this.fetchFootprintsCategories();
   },
   methods: {
     fetchFootprintsCategories() {

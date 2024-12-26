@@ -5,7 +5,7 @@
     <DynamicDialog />
 
     <template v-if="isLoaded && !cannotLoad">
-      <Menubar :model="menuItemsLoggedIn" v-if="isLoggedIn">
+      <Menubar v-if="isLoggedIn" :model="menuItemsLoggedIn">
         <template #start><router-link :to="{ name: 'home' }" class="no-underline">StockazIO</router-link></template>
         <template #end>
           <form role="search" @submit.prevent="doSearch">
@@ -16,7 +16,7 @@
           </form>
         </template>
       </Menubar>
-      <Menubar :model="menuItemsLoggedOut" v-else>
+      <Menubar v-else :model="menuItemsLoggedOut">
         <template #start><router-link :to="{ name: 'home' }" class="no-underline">StockazIO</router-link></template>
         <template #end> </template>
       </Menubar>
@@ -63,6 +63,9 @@ import { useToast } from "primevue/usetoast";
 import CategoryTree from "@/components/categories/tree.vue";
 
 export default {
+  components: {
+    CategoryTree,
+  },
   setup: () => ({
     oauthStore: useOauthStore(),
     userStore: useUserStore(),
@@ -71,72 +74,6 @@ export default {
     confirm: useConfirm(),
     toast: useToast(),
   }),
-  components: {
-    CategoryTree,
-  },
-  created() {
-    logger.default.info("Doing preliminary app initialization...");
-    let defaultServerUrl = process.env.VUE_APP_SERVER_URL || this.serverStore.defaultUrl;
-    logger.default.info("Detected server url:", defaultServerUrl);
-    this.serverStore.setServerUrl(defaultServerUrl);
-
-    this.serverStore
-      .fetchSettings()
-      .then(() => {
-        Promise.allSettled([
-          // Check token and try to log user if found
-          this.userStore.checkOauthToken(),
-          // Try to get or create oauth2 app and token thingy
-          this.oauthStore.getOrCreateApp(this.oauthStore.getClientId, this.oauthStore.getClientSecret),
-        ])
-          .then(() => {
-            logger.default.info("Initialization done.");
-
-            if (this.oauthStore.loggedIn) {
-              Promise.allSettled([
-                this.preloadsStore.preloadSidebar(),
-                this.preloadsStore.preloadFootprints(),
-                this.preloadsStore.preloadStorages(),
-                this.preloadsStore.preloadParametersUnits(),
-                this.preloadsStore.preloadPartUnits(),
-                this.preloadsStore.preloadManufacturers(),
-                this.preloadsStore.preloadDistributors(),
-                this.preloadsStore.preloadLabelTemplates(),
-                this.preloadsStore.preloadPartParametersPresets(),
-              ])
-                .then(() => {
-                  logger.default.info("authenticated preloading finished");
-                  this.isLoaded = true;
-                  logger.default.info("Initialization finished.");
-                })
-                .catch(() => {
-                  logger.default.error("Cannot preload stuff");
-                });
-            } else {
-              // Only preload stuff needed for unauthenticated views
-              Promise.allSettled([
-                this.preloadsStore.preloadSidebar(),
-                this.preloadsStore.preloadFootprints(),
-                this.preloadsStore.preloadStorages(),
-              ]).then(() => {
-                logger.default.info("unauthenticated preloading finished");
-                this.isLoaded = true;
-                logger.default.info("Initialization finished.");
-              });
-            }
-          })
-          .catch(function (error) {
-            logger.default.error("Error while doing initialization", error);
-          });
-      })
-      .catch((err) => {
-        logger.default.error("Cannot load settings.");
-        this.isLoaded = false;
-        this.cannotLoad = true;
-        return;
-      });
-  },
-  mounted() {},
   data() {
     return {
       isLoaded: false,
@@ -338,6 +275,69 @@ export default {
       ],
     };
   },
+  created() {
+    logger.default.info("Doing preliminary app initialization...");
+    let defaultServerUrl = process.env.VUE_APP_SERVER_URL || this.serverStore.defaultUrl;
+    logger.default.info("Detected server url:", defaultServerUrl);
+    this.serverStore.setServerUrl(defaultServerUrl);
+
+    this.serverStore
+      .fetchSettings()
+      .then(() => {
+        Promise.allSettled([
+          // Check token and try to log user if found
+          this.userStore.checkOauthToken(),
+          // Try to get or create oauth2 app and token thingy
+          this.oauthStore.getOrCreateApp(this.oauthStore.getClientId, this.oauthStore.getClientSecret),
+        ])
+          .then(() => {
+            logger.default.info("Initialization done.");
+
+            if (this.oauthStore.loggedIn) {
+              Promise.allSettled([
+                this.preloadsStore.preloadSidebar(),
+                this.preloadsStore.preloadFootprints(),
+                this.preloadsStore.preloadStorages(),
+                this.preloadsStore.preloadParametersUnits(),
+                this.preloadsStore.preloadPartUnits(),
+                this.preloadsStore.preloadManufacturers(),
+                this.preloadsStore.preloadDistributors(),
+                this.preloadsStore.preloadLabelTemplates(),
+                this.preloadsStore.preloadPartParametersPresets(),
+              ])
+                .then(() => {
+                  logger.default.info("authenticated preloading finished");
+                  this.isLoaded = true;
+                  logger.default.info("Initialization finished.");
+                })
+                .catch(() => {
+                  logger.default.error("Cannot preload stuff");
+                });
+            } else {
+              // Only preload stuff needed for unauthenticated views
+              Promise.allSettled([
+                this.preloadsStore.preloadSidebar(),
+                this.preloadsStore.preloadFootprints(),
+                this.preloadsStore.preloadStorages(),
+              ]).then(() => {
+                logger.default.info("unauthenticated preloading finished");
+                this.isLoaded = true;
+                logger.default.info("Initialization finished.");
+              });
+            }
+          })
+          .catch(function (error) {
+            logger.default.error("Error while doing initialization", error);
+          });
+      })
+      .catch((err) => {
+        logger.default.error("Cannot load settings.");
+        this.isLoaded = false;
+        this.cannotLoad = true;
+        return;
+      });
+  },
+  mounted() {},
   computed: {
     ...mapState(useServerStore, {
       backendVersion: (store) => store.settings.backendVersion,

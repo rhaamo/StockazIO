@@ -14,18 +14,17 @@
               >Name*</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="name"
-              inputId="name"
-              type="text"
               v-model="item.name"
+              v-focus
+              autofocus
+              input-id="name"
+              type="text"
               placeholder="That one box"
               :class="{
                 'p-invalid': v$.item.name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.name.required.$message }}
@@ -50,15 +49,14 @@
             >
             <InputText
               ref="description"
-              inputId="description"
-              type="text"
               v-model="item.description"
+              input-id="description"
+              type="text"
               placeholder="Full of emptyness"
               :class="{
                 'p-invalid': v$.item.description.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.description.maxLength.$message }}
@@ -72,7 +70,7 @@
           <div class="flex flex-grow-1 align-items-center justify-content-center">
             <div class="field w-10">
               <label for="parent_category" class="block mt-1">Storage place</label>
-              <TreeSelect inputId="parent_category" class="w-full" v-model="item.parent_id" :options="choicesCategories" selectionMode="single" />
+              <TreeSelect v-model="item.parent_id" input-id="parent_category" class="w-full" :options="choicesCategories" selection-mode="single" />
             </div>
           </div>
         </div>
@@ -92,16 +90,15 @@
             >
             <InputText
               ref="picture"
-              inputId="picture"
-              type="file"
               v-model="item.picture"
-              @change="pictureFileChanged($event.target.files)"
+              input-id="picture"
+              type="file"
               :class="{
                 'p-invalid': v$.item.picture.$invalid && submitted,
                 'w-full': true,
               }"
               :accept="allowedUploadTypes"
-            />
+              @change="pictureFileChanged($event.target.files)" />
             <small v-if="(v$.item.picture.$invalid && submitted) || v$.item.picture.$pending.$response" class="p-error">
               {{ v$.item.picture.required.$message }}
             </small>
@@ -137,16 +134,16 @@ import { useServerStore } from "@/stores/server";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     submitted: false,
     item: {
       name: "",
       parent_id: null,
     },
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode;

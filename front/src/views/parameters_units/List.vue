@@ -3,16 +3,15 @@
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
     <div class="mt-2">
       <DataTable
+        v-model:filters="filters"
         :value="parameters_units"
         class="p-datatable-sm"
-        stripedRows
-        responsiveLayout="scroll"
+        striped-rows
+        responsive-layout="scroll"
         :paginator="true"
         :rows="perPage"
-        removableSort
-        :globalFilterFields="['name', 'symbol']"
-        v-model:filters="filters"
-      >
+        removable-sort
+        :global-filter-fields="['name', 'symbol']">
         <template #header>
           <div class="grid">
             <div class="col-2">
@@ -34,23 +33,21 @@
         <Column field="symbol" header="Symbol" :sortable="true"></Column>
         <Column field="description" header="Description"></Column>
 
-        <Column headerStyle="width: 6.3em">
+        <Column header-style="width: 6.3em">
           <template #body="slotProps">
             <span class="p-buttonset">
               <PvButton
+                v-tooltip="'edit'"
                 type="button"
                 icon="fa fa-edit"
                 class="p-button-primary"
-                v-tooltip="'edit'"
-                @click.prevent="editItem($event, slotProps.data)"
-              ></PvButton>
+                @click.prevent="editItem($event, slotProps.data)"></PvButton>
               <PvButton
+                v-tooltip="'delete'"
                 type="button"
                 icon="fa fa-trash-o"
                 class="p-button-danger ml-1"
-                v-tooltip="'delete'"
-                @click="deleteItem($event, slotProps.data)"
-              ></PvButton>
+                @click="deleteItem($event, slotProps.data)"></PvButton>
             </span>
           </template>
         </Column>
@@ -72,15 +69,15 @@ import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
 
 export default {
-  data: () => ({
-    filters: {
-      global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    },
-  }),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
     confirm: useConfirm(),
+  }),
+  data: () => ({
+    filters: {
+      global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    },
   }),
   computed: {
     ...mapState(usePreloadsStore, {

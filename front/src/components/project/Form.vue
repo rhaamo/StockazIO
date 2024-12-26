@@ -14,18 +14,17 @@
               >Name*</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="name"
-              inputId="name"
-              type="text"
               v-model="item.name"
+              v-focus
+              autofocus
+              input-id="name"
+              type="text"
               placeholder="My cool project"
               :class="{
                 'p-invalid': v$.item.name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.name.required.$message }}
@@ -50,15 +49,14 @@
             >
             <InputText
               ref="description"
-              inputId="description"
-              type="text"
               v-model="item.description"
+              input-id="description"
+              type="text"
               placeholder="What does it do ?"
               :class="{
                 'p-invalid': v$.item.description.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
           </div>
         </div>
       </div>
@@ -77,15 +75,14 @@
             >
             <InputText
               ref="notes"
-              inputId="notes"
-              type="text"
               v-model="item.notes"
+              input-id="notes"
+              type="text"
               placeholder="AAAAAAAAaaaaaaaaa"
               :class="{
                 'p-invalid': v$.item.notes.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
           </div>
         </div>
       </div>
@@ -104,14 +101,13 @@
             >
             <InputText
               ref="bom_url"
-              inputId="bom_url"
-              type="text"
               v-model="item.ibom_url"
+              input-id="bom_url"
+              type="text"
               :class="{
                 'p-invalid': v$.item.ibom_url.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.ibom_url.$invalid && submitted) || v$.item.ibom_url.$pending.$response" class="p-error">
               {{ v$.item.ibom_url.maxLength.$message }}
             </small>
@@ -124,14 +120,13 @@
           <div class="field w-10">
             <label for="state" class="block">State</label>
             <Dropdown
-              inputId="state"
               v-model="item.state"
+              input-id="state"
               class="w-full"
               :options="choicesStates"
-              optionLabel="text"
-              optionValue="value"
-              :filter="false"
-            />
+              option-label="text"
+              option-value="value"
+              :filter="false" />
           </div>
         </div>
       </div>
@@ -150,15 +145,14 @@
             >
             <InputText
               ref="state_notes"
-              inputId="state_notes"
-              type="text"
               v-model="item.state_notes"
+              input-id="state_notes"
+              type="text"
               placeholder="blocked by X, waiting for Y"
               :class="{
                 'p-invalid': v$.item.state_notes.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.state_notes.$invalid && submitted) || v$.item.state_notes.$pending.$response" class="p-error">
               {{ v$.item.state_notes.maxLength.$message }}
             </small>
@@ -170,13 +164,12 @@
         <div class="flex flex-grow-1 align-items-center justify-content-center">
           <div class="field-checkbox w-10">
             <Checkbox
+              v-model="item.public"
               :class="{
                 'p-invalid': v$.item.public.$invalid && submitted,
               }"
-              inputId="public"
-              v-model="item.public"
-              :binary="true"
-            />
+              input-id="public"
+              :binary="true" />
             <label
               for="public"
               :class="{
@@ -216,6 +209,10 @@ import logger from "@/logging";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -236,10 +233,6 @@ export default {
       { value: 5, text: "Abandonned" },
       { value: 99, text: "Unknown" },
     ],
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit

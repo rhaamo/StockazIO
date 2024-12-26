@@ -1,7 +1,7 @@
 <template>
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
-    <div class="mt-2" v-if="project">
+    <div v-if="project" class="mt-2">
       <div class="grid">
         <div class="col-6">
           <h3>
@@ -55,19 +55,24 @@
               <div class="mt-1">
                 <label for="boards_count" class="block">Boards:</label>
                 <InputNumber
-                  inputId="boards_count"
                   v-model="boards_count"
-                  showButtons
-                  buttonLayout="horizontal"
+                  input-id="boards_count"
+                  show-buttons
+                  button-layout="horizontal"
                   :step="1"
                   :min="1"
-                  class="w-4"
-                ></InputNumber>
+                  class="w-4"></InputNumber>
               </div>
 
               <Divider />
 
-              <DataTable :value="project.project_parts" class="p-datatable-sm" stripedRows responsiveLayout="scroll" :paginator="false" removableSort>
+              <DataTable
+                :value="project.project_parts"
+                class="p-datatable-sm"
+                striped-rows
+                responsive-layout="scroll"
+                :paginator="false"
+                removable-sort>
                 <Column header="Name" :sortable="false">
                   <template #body="slotProps">
                     <span v-if="slotProps.data.part">{{ slotProps.data.part.name }}</span>
@@ -81,18 +86,17 @@
 
                 <Column header="Notes" field="notes" :sortable="false"> </Column>
 
-                <Column header="Stock" :sortable="false" headerStyle="width: 6em">
+                <Column header="Stock" :sortable="false" header-style="width: 6em">
                   <template #body="slotProps">
                     <template v-if="slotProps.data.part">
                       <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
                         >{{ slotProps.data.part.stock_qty }}
                         <i
-                          class="fa fa-circle"
-                          aria-hidden="true"
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.qty),
                           }"
-                        />
+                          class="fa fa-circle"
+                          aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.part.stock_qty }}</span>
                     </template>
@@ -100,18 +104,17 @@
                   </template>
                 </Column>
 
-                <Column header="Quantity x1" :sortable="false" headerStyle="width: 6em">
+                <Column header="Quantity x1" :sortable="false" header-style="width: 6em">
                   <template #body="slotProps">
                     <template v-if="slotProps.data.part">
                       <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
                         >{{ slotProps.data.qty }}
                         <i
-                          class="fa fa-circle"
-                          aria-hidden="true"
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
                           }"
-                        />
+                          class="fa fa-circle"
+                          aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.qty }}</span>
                     </template>
@@ -119,18 +122,17 @@
                   </template>
                 </Column>
 
-                <Column header="Quantity total" :sortable="false" headerStyle="width: 6em">
+                <Column header="Quantity total" :sortable="false" header-style="width: 6em">
                   <template #body="slotProps">
                     <template v-if="slotProps.data.part">
                       <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty * boards_count" class="qtyMinWarning"
                         >{{ slotProps.data.qty * boards_count }}
                         <i
-                          class="fa fa-circle"
-                          aria-hidden="true"
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
                           }"
-                        />
+                          class="fa fa-circle"
+                          aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.qty * boards_count }}</span>
                     </template>
@@ -138,7 +140,7 @@
                   </template>
                 </Column>
 
-                <Column header="Sourced" field="sourced" :sortable="true" headerStyle="width: 6em">
+                <Column header="Sourced" field="sourced" :sortable="true" header-style="width: 6em">
                   <template #body="slotProps">
                     <i v-if="slotProps.data.sourced" style="color: green" class="fa fa-check" aria-hidden="true" />
                     <i v-else class="fa fa-close" style="color: red" aria-hidden="true" />
@@ -148,7 +150,7 @@
             </TabPanel>
 
             <TabPanel header="Files attachments">
-              <DataTable :value="project.project_attachments" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+              <DataTable :value="project.project_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
                 <Column header="Link"
                   ><template #body="slotProps">
                     <i class="fa fa-code-o"></i>
@@ -175,6 +177,9 @@ import Button from "primevue/button";
 import PartViewModal from "@/components/parts/view.vue";
 
 export default {
+  setup: () => ({
+    toast: useToast(),
+  }),
   data: () => ({
     project: null,
     projectStates: [
@@ -187,9 +192,6 @@ export default {
       { value: null, text: "Filter by state" },
     ],
     boards_count: 1,
-  }),
-  setup: () => ({
-    toast: useToast(),
   }),
   computed: {
     projectId() {

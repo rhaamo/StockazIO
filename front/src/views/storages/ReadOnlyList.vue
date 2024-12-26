@@ -4,7 +4,7 @@
     <div>
       <ul class="list-none">
         <li>
-          <router-link to="#" title="Bulk-generate labels" @click.prevent="showBulkLabelGenerator()" class="no-underline">
+          <router-link to="#" title="Bulk-generate labels" class="no-underline" @click.prevent="showBulkLabelGenerator()">
             <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
           </router-link>
         </li>
@@ -27,10 +27,10 @@ export default {
   components: {
     ListItem,
   },
-  data: () => ({}),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
   }),
+  data: () => ({}),
   computed: {
     ...mapState(usePreloadsStore, {
       storages: (store) => {

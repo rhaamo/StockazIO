@@ -4,7 +4,7 @@
       <Card class="p-2">
         <template #title>Password Reset</template>
         <template #content>
-          <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+          <form class="text-center" @submit.prevent="submit(!v$.$invalid)">
             <div>
               <div class="field">
                 <InputText
@@ -13,8 +13,7 @@
                   :class="{
                     'p-invalid': v$.email.$invalid && submitted,
                   }"
-                  placeholder="Enter your email"
-                />
+                  placeholder="Enter your email" />
                 <small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.email.required.$message }}
@@ -43,16 +42,16 @@ import { useToast } from "primevue/usetoast";
 import apiService from "@/services/api/api.service";
 
 export default {
-  data: () => ({
-    email: null,
-    submitted: false,
-  }),
   setup: () => ({
     v$: useVuelidate(),
     oauthStore: useOauthStore(),
     userStore: useUserStore(),
     preloadsStore: usePreloadsStore(),
     toast: useToast(),
+  }),
+  data: () => ({
+    email: null,
+    submitted: false,
   }),
   validations: {
     email: { required, email },

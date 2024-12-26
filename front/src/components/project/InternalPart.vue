@@ -14,16 +14,15 @@
           >
           <InputNumber
             ref="qty"
-            inputId="qty"
-            type="text"
             v-model="item.qty"
-            showButtons
+            input-id="qty"
+            type="text"
+            show-buttons
             :min="0"
             :class="{
               'p-invalid': v$.item.qty.$invalid && submitted,
               'w-10': true,
-            }"
-          />
+            }" />
           <small v-if="(v$.item.qty.$invalid && submitted) || v$.item.qty.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.qty.required.$message }}
@@ -44,14 +43,13 @@
           >
           <InputText
             ref="notes"
-            inputId="notes"
-            type="text"
             v-model="item.notes"
+            input-id="notes"
+            type="text"
             :class="{
               'p-invalid': v$.item.notes.$invalid && submitted,
               'w-10': true,
-            }"
-          />
+            }" />
           <small v-if="(v$.item.notes.$invalid && submitted) || v$.item.notes.$pending.$response" class="p-error"
             ><br />
             {{ v$.item.notes.maxLength.$message }}
@@ -64,13 +62,12 @@
       <div class="flex flex-grow-1 align-items-center justify-content-center">
         <div class="field-checkbox w-10">
           <Checkbox
+            v-model="item.sourced"
             :class="{
               'p-invalid': v$.item.sourced.$invalid && submitted,
             }"
-            inputId="sourced"
-            v-model="item.sourced"
-            :binary="true"
-          />
+            input-id="sourced"
+            :binary="true" />
           <label
             for="sourced"
             :class="{
@@ -92,34 +89,33 @@
           </template>
 
           <DataTable
+            ref="dt"
+            v-model:filters="filters"
             :value="parts"
             :lazy="true"
             :paginator="true"
             :rows="perPage"
-            v-model:filters="filters"
-            ref="dt"
-            dataKey="id"
-            :totalRecords="totalRecords"
+            data-key="id"
+            :total-records="totalRecords"
             :loading="loading"
+            filter-display="menu"
+            responsive-layout="scroll"
+            striped-rows
+            v-model:selection="item.part"
+            class="p-datatable-sm"
+            removable-sort
             @page="onPage($event)"
             @sort="onSort($event)"
-            @filter="onFilter($event)"
-            filterDisplay="menu"
-            responsiveLayout="scroll"
-            stripedRows
-            class="p-datatable-sm"
-            removableSort
-            v-model:selection="item.part"
-          >
+            @filter="onFilter($event)">
             <template #empty> No parts found. </template>
 
-            <template #footer v-if="(v$.item.part.$invalid && submitted) || v$.item.part.$pending.$response">
+            <template v-if="(v$.item.part.$invalid && submitted) || v$.item.part.$pending.$response" #footer>
               {{ v$.item.part.required.$message }}
             </template>
 
-            <Column selectionMode="single" headerStyle="width: 3em"></Column>
+            <Column selection-mode="single" header-style="width: 3em"></Column>
 
-            <Column header="Name" :sortable="true" field="name" :filterMatchModeOptions="matchModes.name">
+            <Column header="Name" :sortable="true" field="name" :filter-match-mode-options="matchModes.name">
               <template #body="slotProps">
                 <div>
                   {{ slotProps.data.name }}
@@ -133,10 +129,10 @@
                 </div>
               </template>
               <template #filter="{ filterModel }">
-                <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name" />
+                <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />
               </template>
             </Column>
-            <Column header="Storage" :sortable="true" field="storage_id" :filterMatchModeOptions="matchModes.storage">
+            <Column header="Storage" :sortable="true" field="storage_id" :filter-match-mode-options="matchModes.storage">
               <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
               <template #filter="{ filterModel }">
                 <TreeSelect
@@ -144,17 +140,16 @@
                   class="p-column-filter"
                   placeholder="Search by storage"
                   :options="choicesStorageLocationWithNo"
-                  selectionMode="single"
-                />
+                  selection-mode="single" />
               </template>
             </Column>
-            <Column header="Stock" :sortable="true" field="stock_qty" dataType="numeric" :filterMatchModeOptions="matchModes.qty">
+            <Column header="Stock" :sortable="true" field="stock_qty" data-type="numeric" :filter-match-mode-options="matchModes.qty">
               <template #body="slotProps">
                 <template v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
                   ><span>{{ slotProps.data.stock_qty }}</span></template
                 >
                 <template v-else>
-                  <span class="text-red-500" v-tooltip="'Current stock is below minimum stock quantity or exhausted'"
+                  <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" class="text-red-500"
                     >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
                   ></span>
                 </template>
@@ -163,7 +158,7 @@
                 <InputNumber v-model="filterModel.value" class="p-column-filter" placeholder="qty" />
               </template>
             </Column>
-            <Column header="Min" :sortable="true" field="stock_qty_min" dataType="numeric">
+            <Column header="Min" :sortable="true" field="stock_qty_min" data-type="numeric">
               <template #body="slotProps">
                 <span>{{ slotProps.data.stock_qty_min }}</span>
               </template></Column
@@ -173,14 +168,13 @@
                 slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
               }}</template>
             </Column>
-            <Column header="Footprint" :sortable="true" field="footprint_id" :filterMatchModeOptions="matchModes.footprint">
+            <Column header="Footprint" :sortable="true" field="footprint_id" :filter-match-mode-options="matchModes.footprint">
               <template #body="slotProps">
                 <span
                   v-tooltip="{
                     value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
                     disabled: false,
-                  }"
-                >
+                  }">
                   {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
                 </span>
               </template>
@@ -190,12 +184,11 @@
                   class="p-column-filter"
                   placeholder="Search by footprint"
                   :options="choicesFootprintWithNo"
-                  optionLabel="name"
-                  optionValue="id"
-                  optionGroupLabel="category"
-                  optionGroupChildren="footprints"
-                  :filter="true"
-                />
+                  option-label="name"
+                  option-value="id"
+                  option-group-label="category"
+                  option-group-children="footprints"
+                  :filter="true" />
               </template>
             </Column>
           </DataTable>
@@ -226,6 +219,11 @@ import { mapState } from "pinia";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+    serverStore: useServerStore(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -279,11 +277,6 @@ export default {
       footprint_id: { value: null, matchMode: FilterMatchMode.EQUALS },
     },
     selectedPart: null,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
-    serverStore: useServerStore(),
   }),
   mounted() {
     this.mode = this.dialogRef.data.mode; // add / edit

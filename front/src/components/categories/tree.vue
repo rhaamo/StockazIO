@@ -7,8 +7,7 @@
           name: categoriesRouteName,
           params: { categoryId: 0 },
         }"
-        title="Uncategorized parts"
-      >
+        title="Uncategorized parts">
         Uncategorized parts
         <small>({{ parts_uncategorized_count }})</small>
       </router-link>

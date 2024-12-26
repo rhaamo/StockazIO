@@ -11,8 +11,7 @@
               :options="{ scale: 1 }"
               :data-uuid="part.uuid"
               :data-name="part.name"
-              class="mr-3"
-            />
+              class="mr-3" />
           </span>
 
           <i v-if="part.private" class="fa icon-private fa-lock mr-1" />
@@ -24,18 +23,16 @@
           :to="{
             name: 'parts-edit',
             params: { partId: part.id },
-          }"
-        >
-          <PvButton type="button" icon="fa fa-edit" class="p-button-primary" v-tooltip.left="'edit'"></PvButton>
+          }">
+          <PvButton v-tooltip.left="'edit'" type="button" icon="fa fa-edit" class="p-button-primary"></PvButton>
         </router-link>
 
         <PvButton
+          v-tooltip.left="'delete'"
           type="button"
           icon="fa fa-trash-o"
           class="p-button-danger ml-2"
-          v-tooltip.left="'delete'"
-          @click="deletePart($event, part)"
-        ></PvButton>
+          @click="deletePart($event, part)"></PvButton>
       </div>
     </div>
 
@@ -52,7 +49,7 @@
         </div>
 
         <div>
-          <DataTable :value="mainTableItems" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+          <DataTable :value="mainTableItems" class="p-datatable-sm" striped-rows responsive-layout="scroll">
             <Column field="item" header="Item"></Column>
             <Column field="value" header="Value"></Column>
           </DataTable>
@@ -61,7 +58,7 @@
 
       <div class="col-6">
         <div class="mb-3">
-          <Galleria :value="pictureAttachments" containerStyle="max-width: 640px">
+          <Galleria :value="pictureAttachments" container-style="max-width: 640px">
             <template #item="slotProps">
               <PvImage preview height="100" :src="slotProps.item.picture" :alt="slotProps.item.description" />
             </template>
@@ -76,7 +73,7 @@
             <template #header>
               <span>Parameters</span>
             </template>
-            <DataTable :value="part.part_parameters_value" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.part_parameters_value" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="name" header="Name"></Column>
               <Column field="description" header="Description"></Column>
               <Column header="Value">
@@ -91,7 +88,7 @@
             <template #header>
               <span>Distributors</span>
             </template>
-            <DataTable :value="part.distributors_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.distributors_sku" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Distributor">
                 <template #body="slotProps">{{ slotProps.data.distributor ? slotProps.data.distributor.name : "No name" }}</template>
@@ -112,7 +109,7 @@
             <template #header>
               <span>Manufacturers</span>
             </template>
-            <DataTable :value="part.manufacturers_sku" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.manufacturers_sku" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="sku" header="SKU"></Column>
               <Column header="Manufacturer">
                 <template #body="slotProps">{{ slotProps.data.manufacturer ? slotProps.data.manufacturer.name : "No name" }}</template>
@@ -139,21 +136,19 @@
                 <div class="col-6">
                   <InputText
                     ref="description"
-                    inputId="description"
-                    type="text"
                     v-model="formAddAttachment.description"
+                    input-id="description"
+                    type="text"
                     placeholder="File description"
                     :class="{
                       'p-invalid': v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted,
                       'w-12': true,
-                    }"
-                  />
+                    }" />
                   <small
                     v-if="
                       (v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.description.$pending.$response
                     "
-                    class="p-error"
-                  >
+                    class="p-error">
                     {{ v$.formAddAttachment.description.required.$message }}
                     <template v-if="v$.formAddAttachment.description.required && v$.formAddAttachment.description.maxLength"><br /></template>
                     {{ v$.formAddAttachment.description.maxLength.$message }}
@@ -162,22 +157,20 @@
 
                 <div class="col-6">
                   <InputText
-                    ref="file"
-                    inputId="file"
-                    type="file"
-                    v-model="formAddAttachment.file"
-                    @change="attachmentFileChanged($event.target.files)"
                     v-if="!formAddAttachment.fromWebcam"
+                    ref="file"
+                    v-model="formAddAttachment.file"
+                    input-id="file"
+                    type="file"
                     :class="{
                       'p-invalid': v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted,
                       'w-12': true,
                     }"
                     :accept="allowedUploadTypes"
-                  />
+                    @change="attachmentFileChanged($event.target.files)" />
                   <small
                     v-if="(v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.file.$pending.$response"
-                    class="p-error"
-                  >
+                    class="p-error">
                     {{ v$.formAddAttachment.file.required.$message }}
                   </small>
                   <div v-if="formAddAttachment.fromWebcam">
@@ -195,7 +188,7 @@
             </form>
 
             <Divider />
-            <DataTable :value="part.part_attachments" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.part_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column header="Link"
                 ><template #body="slotProps">
                   <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
@@ -218,8 +211,7 @@
                       class="fa fa-square-o"
                       aria-hidden="true"
                       title="Set as default picture"
-                      @click.prevent="setAttachmentAsDefault(part.id, slotProps.data.id)"
-                    />
+                      @click.prevent="setAttachmentAsDefault(part.id, slotProps.data.id)" />
                     &nbsp;&nbsp;
                   </template>
                   <router-link to="#" @click.prevent="deleteAttachment(slotProps.data)">
@@ -234,7 +226,7 @@
             <template #header>
               <span>Stock history</span>
             </template>
-            <DataTable :value="part.part_stock_history" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+            <DataTable :value="part.part_stock_history" class="p-datatable-sm" striped-rows responsive-layout="scroll">
               <Column field="created_at" header="Date"
                 ><template #body="slotProps">{{ formatDate(slotProps.data.created_at) }}</template></Column
               >
@@ -262,7 +254,7 @@ import { required, maxLength } from "@vuelidate/validators";
 import { mapState } from "pinia";
 import { usePreloadsStore } from "@/stores/preloads";
 import { useServerStore } from "@/stores/server";
-import CameraSnapshotter from "@/components/parts/CameraSnapshotter.vue";
+// import CameraSnapshotter from "@/components/parts/CameraSnapshotter.vue";
 import QuantityPopoverEditor from "@/components/parts/QuantityPopoverEditor.vue";
 
 export default {
@@ -272,6 +264,13 @@ export default {
   props: {
     node: Number,
   },
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+    confirm: useConfirm(),
+    preloadsStore: usePreloadsStore(),
+    serverStore: useServerStore(),
+  }),
   data: () => ({
     part: null,
     formAddAttachmentSubmitted: false,
@@ -280,13 +279,6 @@ export default {
       file: null,
       fromWebcam: false,
     },
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
-    confirm: useConfirm(),
-    preloadsStore: usePreloadsStore(),
-    serverStore: useServerStore(),
   }),
   created() {
     this.fetchPart();
@@ -554,33 +546,33 @@ export default {
         },
       });
     },
-    takeAPicture() {
-      const takeApictureRef = this.$dialog.open(CameraSnapshotter, {
-        props: {
-          header: "Take a picture",
-          modal: true,
-          closable: false,
-        },
-        onClose: async (options) => {
-          const data = options.data;
-          if (data) {
-            if (data.error) {
-              this.toast.add({
-                severity: "error",
-                summary: "Camera",
-                detail: "An error occured, please try again later",
-                life: 5000,
-              });
-              logger.default.error("Error with getting part details", data.error);
-            } else {
-              this.formAddAttachment.fromWebcam = true;
-              this.formAddAttachment.file = "C:\\fakepath\\webcam.jpg";
-              this.formAddAttachment.realFile = utils.dataUrlToFile(data.picture, "webcam.jpg");
-            }
-          }
-        },
-      });
-    },
+    // takeAPicture() {
+    //   const takeApictureRef = this.$dialog.open(CameraSnapshotter, {
+    //     props: {
+    //       header: "Take a picture",
+    //       modal: true,
+    //       closable: false,
+    //     },
+    //     onClose: async (options) => {
+    //       const data = options.data;
+    //       if (data) {
+    //         if (data.error) {
+    //           this.toast.add({
+    //             severity: "error",
+    //             summary: "Camera",
+    //             detail: "An error occured, please try again later",
+    //             life: 5000,
+    //           });
+    //           logger.default.error("Error with getting part details", data.error);
+    //         } else {
+    //           this.formAddAttachment.fromWebcam = true;
+    //           this.formAddAttachment.file = "C:\\fakepath\\webcam.jpg";
+    //           this.formAddAttachment.realFile = utils.dataUrlToFile(data.picture, "webcam.jpg");
+    //         }
+    //       }
+    //     },
+    //   });
+    // },
   },
 };
 </script>

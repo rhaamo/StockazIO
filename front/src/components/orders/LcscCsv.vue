@@ -14,16 +14,15 @@
           >
           <InputText
             ref="file"
-            inputId="file"
-            type="file"
             v-model="item.file"
-            @change="importFileChanged($event.target.files)"
+            input-id="file"
+            type="file"
             :class="{
               'p-invalid': v$.item.file.$invalid && submitted,
               'w-10': true,
             }"
             :accept="allowedUploadTypes"
-          />
+            @change="importFileChanged($event.target.files)" />
           <small v-if="(v$.item.file.$invalid && submitted) || v$.item.file.$pending.$response" class="p-error">
             {{ v$.item.file.required.$message }}
           </small>
@@ -52,15 +51,15 @@ import { useServerStore } from "@/stores/server";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     submitted: false,
     item: {
       file: null,
     },
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {},
   validations: {

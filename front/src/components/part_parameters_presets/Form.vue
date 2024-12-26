@@ -14,18 +14,17 @@
               >Name*</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="name"
-              inputId="name"
-              type="text"
               v-model="item.name"
+              v-focus
+              autofocus
+              input-id="name"
+              type="text"
               placeholder="Capacitor XXX"
               :class="{
                 'p-invalid': v$.item.name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.name.required.$message }}
@@ -44,8 +43,7 @@
               <PartParametersPresetEntry
                 v-model:item="item.part_parameters_presets[i]"
                 :submitted="submitted"
-                @deleteItem="deletePartParameter($event, i)"
-              />
+                @deleteItem="deletePartParameter($event, i)" />
               <Divider />
             </div>
           </div>
@@ -55,7 +53,7 @@
       <div class="flex justify-content-center">
         <div class="flex flex-grow-1 align-items-center justify-content-center">
           <div class="field w-10">
-            <PvButton @click.prevent="addPartParameter($event)" class="p-button-help" label="add item" />
+            <PvButton class="p-button-help" label="add item" @click.prevent="addPartParameter($event)" />
           </div>
         </div>
       </div>
@@ -80,10 +78,14 @@ import logger from "@/logging";
 import PartParametersPresetEntry from "@/components/parts/PartParametersPresetEntry.vue";
 
 export default {
-  inject: ["dialogRef"],
   components: {
     PartParametersPresetEntry,
   },
+  inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -91,10 +93,6 @@ export default {
       part_parameters_presets: [],
     },
     submitted: false,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit

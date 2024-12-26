@@ -7,14 +7,13 @@
             <InputIcon>/</InputIcon>
             <InputText
               ref="regexp"
-              inputId="regexp"
-              type="text"
               v-model="item.regexp"
+              input-id="regexp"
+              type="text"
               :class="{
                 'p-invalid': v$.item.regexp.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <InputIcon>/i</InputIcon>
           </IconField>
         </div>
@@ -29,16 +28,15 @@
 
       <div class="col-3">
         <TreeSelect
-          inputId="category"
-          placeholder="Film resistors ? MCUs ?"
           v-model="item.category"
+          input-id="category"
+          placeholder="Film resistors ? MCUs ?"
           :options="categories"
-          selectionMode="single"
+          selection-mode="single"
           class="w-full"
           :filter="true"
           :fluid="true"
-          :showClear="true"
-        />
+          :show-clear="true" />
         <small v-if="(v$.item.category.$invalid && submitted) || v$.item.category.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.category.required.$message }}
@@ -55,8 +53,7 @@
           btn-main-text-disabled="Confirm ?"
           btn-ok-text="Yes"
           btn-cancel-text="No"
-          @action-confirmed="$emit('deleteItem', $event)"
-        />
+          @action-confirmed="$emit('deleteItem', $event)" />
       </div>
     </div>
   </div>
@@ -67,14 +64,14 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
 
 export default {
+  model: {
+    prop: "item",
+    event: "change",
+  },
   props: {
     item: { type: Object, required: true },
     submitted: { type: Boolean, required: true },
     categories: { type: Array, required: true },
-  },
-  model: {
-    prop: "item",
-    event: "change",
   },
   setup: () => ({
     v$: useVuelidate(),

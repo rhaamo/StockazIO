@@ -4,7 +4,7 @@
 
     <div class="grid mt-2">
       <div class="col-2">
-        <Listbox v-model="selectedTemplate" :options="choicesTemplates" optionLabel="name" :multiple="false" @change="templateChanged($event)" />
+        <Listbox v-model="selectedTemplate" :options="choicesTemplates" option-label="name" :multiple="false" @change="templateChanged($event)" />
       </div>
 
       <div class="col-6">
@@ -20,18 +20,17 @@
               >Name</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="name"
-              inputId="name"
-              type="text"
               v-model="form.name"
+              v-focus
+              autofocus
+              input-id="name"
+              type="text"
               placeholder="Brother 69x42mm"
               :class="{
                 'p-invalid': v$.form.name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.form.name.$invalid && submitted) || v$.form.name.$pending.$response" class="p-error"
               ><br />
               {{ v$.form.name.required.$message }}
@@ -52,17 +51,16 @@
                 >Width</label
               >
               <InputNumber
-                inputId="width"
+                v-model="form.width"
+                input-id="width"
                 mode="decimal"
-                showButtons
+                show-buttons
                 :min="0"
                 placeholder="69"
                 :class="{
                   'p-invalid': v$.form.width.$invalid && submitted,
                   'w-full': true,
-                }"
-                v-model="form.width"
-              />
+                }" />
               <small v-if="(v$.form.width.$invalid && submitted) || v$.form.width.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.width.required.$message }}
@@ -82,17 +80,16 @@
                 >Height</label
               >
               <InputNumber
-                inputId="height"
+                v-model="form.height"
+                input-id="height"
                 mode="decimal"
-                showButtons
+                show-buttons
                 :min="0"
                 placeholder="42"
                 :class="{
                   'p-invalid': v$.form.height.$invalid && submitted,
                   'w-full': true,
-                }"
-                v-model="form.height"
-              />
+                }" />
               <small v-if="(v$.form.height.$invalid && submitted) || v$.form.height.$pending.$response" class="p-error"
                 ><br />
                 {{ v$.form.height.required.$message }}
@@ -114,15 +111,14 @@
             >
             <PvTextarea
               ref="template"
-              inputId="template"
-              type="text"
               v-model="form.template"
+              input-id="template"
+              type="text"
               :class="{
                 'p-invalid': v$.form.template.$invalid && submitted,
                 'w-full': true,
               }"
-              rows="10"
-            />
+              rows="10" />
             <small v-if="(v$.form.template.$invalid && submitted) || v$.form.template.$pending.$response" class="p-error"
               ><br />
               {{ v$.form.template.required.$message }}
@@ -141,15 +137,14 @@
             >
             <PvTextarea
               ref="text_template"
-              inputId="text_template"
-              type="text"
               v-model="form.text_template"
+              input-id="text_template"
+              type="text"
               :class="{
                 'p-invalid': v$.form.text_template.$invalid && submitted,
                 'w-full': true,
               }"
-              rows="5"
-            />
+              rows="5" />
             <small v-if="(v$.form.text_template.$invalid && submitted) || v$.form.text_template.$pending.$response" class="p-error"
               ><br />
               {{ v$.form.text_template.required.$message }}
@@ -158,7 +153,7 @@
 
           <div class="mt-2">
             <PvButton type="submit" label="Save" @click.prevent="submit(!v$.$invalid)" />
-            <template v-if="this.selectedTemplate && 'id' in this.selectedTemplate && this.selectedTemplate.id != 0">
+            <template v-if="selectedTemplate && 'id' in selectedTemplate && selectedTemplate.id != 0">
               <PvButton label="Delete" class="p-button-danger ml-2" @click.prevent="deleteItem" />
             </template>
           </div>
@@ -205,6 +200,12 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, maxLength, minValue } from "@vuelidate/validators";
 
 export default {
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+    toast: useToast(),
+    confirm: useConfirm(),
+    v$: useVuelidate(),
+  }),
   data: () => ({
     submitted: false,
     selectedTemplate: null,
@@ -216,12 +217,6 @@ export default {
       template: "",
       text_template: "",
     },
-  }),
-  setup: () => ({
-    preloadsStore: usePreloadsStore(),
-    toast: useToast(),
-    confirm: useConfirm(),
-    v$: useVuelidate(),
   }),
   created() {
     this.selectedTemplate = this.choicesTemplates[0];

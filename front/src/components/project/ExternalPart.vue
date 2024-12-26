@@ -14,18 +14,17 @@
               >Name*</label
             >
             <InputText
-              autofocus
-              v-focus
               ref="part_name"
-              inputId="part_name"
-              type="text"
               v-model="item.part_name"
+              v-focus
+              autofocus
+              input-id="part_name"
+              type="text"
               placeholder="PIC42ACHU"
               :class="{
                 'p-invalid': v$.item.part_name.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.part_name.$invalid && submitted) || v$.item.part_name.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.part_name.required.$message }}
@@ -50,15 +49,14 @@
             >
             <InputNumber
               ref="qty"
-              inputId="qty"
-              type="text"
               v-model="item.qty"
-              showButtons
+              input-id="qty"
+              type="text"
+              show-buttons
               :class="{
                 'p-invalid': v$.item.qty.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.qty.$invalid && submitted) || v$.item.qty.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.qty.required.$message }}
@@ -83,14 +81,13 @@
             >
             <InputText
               ref="notes"
-              inputId="notes"
-              type="text"
               v-model="item.notes"
+              input-id="notes"
+              type="text"
               :class="{
                 'p-invalid': v$.item.notes.$invalid && submitted,
                 'w-full': true,
-              }"
-            />
+              }" />
             <small v-if="(v$.item.notes.$invalid && submitted) || v$.item.notes.$pending.$response" class="p-error"
               ><br />
               {{ v$.item.notes.maxLength.$message }}
@@ -103,13 +100,12 @@
         <div class="flex flex-grow-1 align-items-center justify-content-center">
           <div class="field-checkbox w-10">
             <Checkbox
+              v-model="item.sourced"
               :class="{
                 'p-invalid': v$.item.sourced.$invalid && submitted,
               }"
-              inputId="sourced"
-              v-model="item.sourced"
-              :binary="true"
-            />
+              input-id="sourced"
+              :binary="true" />
             <label
               for="sourced"
               :class="{
@@ -141,6 +137,10 @@ import logger from "@/logging";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -151,10 +151,6 @@ export default {
     },
     project: null,
     submitted: false,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit

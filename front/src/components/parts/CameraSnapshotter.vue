@@ -1,19 +1,19 @@
 <template>
   <div class="camera">
     <div class="wrapper">
-      <PvButton label="Close" @click.prevent="closeDialog()" class="mb-2 p-button-danger" />
-      <PvButton v-if="isPlaying" label="Snap!" @click.prevent="takePhoto()" class="mb-2 ml-2" />
-      <PvButton label="save" @click.prevent="saveAndClose()" class="mb-2 ml-2 p-button-success" v-if="isPhotoTaken" />
+      <PvButton label="Close" class="mb-2 p-button-danger" @click.prevent="closeDialog()" />
+      <PvButton v-if="isPlaying" label="Snap!" class="mb-2 ml-2" @click.prevent="takePhoto()" />
+      <PvButton v-if="isPhotoTaken" label="save" class="mb-2 ml-2 p-button-success" @click.prevent="saveAndClose()" />
 
       <div class="grid">
         <div class="col-6">
           <div v-if="!isPlaying">Please wait while the camera initialize...</div>
           <video id="camera" ref="camera" autoplay playsinline></video>
-          <canvas id="photoTaken" v-show="isPhotoTaken" class="ml-2" ref="canvas"> </canvas>
+          <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" class="ml-2"> </canvas>
         </div>
 
         <div class="col-6">
-          <img class="vertical-align-middle" id="photo" ref="photo" />
+          <img id="photo" ref="photo" class="vertical-align-middle" />
         </div>
       </div>
     </div>
@@ -23,13 +23,13 @@
 <script>
 export default {
   inject: ["dialogRef"],
+  setup: () => ({}),
   data: () => ({
     isPhotoTaken: false,
     isPlaying: false,
     width: 320,
     height: 0,
   }),
-  setup: () => ({}),
   computed: {},
   created() {
     this.createCameraElement();

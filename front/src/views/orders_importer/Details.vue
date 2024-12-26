@@ -13,16 +13,15 @@
 
     <div class="mt-2">
       <DataTable
+        ref="dt"
         :value="order.items"
         :lazy="true"
         :paginator="false"
-        ref="dt"
-        dataKey="id"
+        data-key="id"
         :loading="loading"
-        responsiveLayout="scroll"
-        stripedRows
-        class="p-datatable-sm"
-      >
+        responsive-layout="scroll"
+        striped-rows
+        class="p-datatable-sm">
         <template #empty> No orders found. </template>
 
         <template #header>
@@ -42,19 +41,18 @@
               <b>Import state:</b> {{ importStateText(order.import_state) }}<br />
               <b>From:</b> {{ order.vendor }}<br />
               <Dropdown
-                inputId="distributor"
                 v-model="order.vendor_db"
+                input-id="distributor"
                 class="w-full"
                 :options="choicesDistributors"
-                optionLabel="text"
+                option-label="text"
                 :filter="true"
-                placeholder="match known one"
-              />
+                placeholder="match known one" />
             </div>
           </div>
         </template>
 
-        <Column header="Manufacturer PN" :sortable="false" field="mfr_part_number" headerStyle="width: 15em">
+        <Column header="Manufacturer PN" :sortable="false" field="mfr_part_number" header-style="width: 15em">
           <template #body="slotProps">
             <span class="text-sm">{{ slotProps.data.mfr_part_number }}</span>
           </template>
@@ -66,41 +64,39 @@
           </template>
         </Column>
 
-        <Column header="Footprint" :sortable="false" field="footprint_db" headerStyle="width: 20em">
+        <Column header="Footprint" :sortable="false" field="footprint_db" header-style="width: 20em">
           <template #body="slotProps">
             <Dropdown
-              inputId="footprint"
               v-model="slotProps.data.footprint_db"
+              input-id="footprint"
               placeholder="match known one"
               :options="choicesFootprints"
-              optionLabel="name"
-              optionValue="id"
-              optionGroupLabel="category"
-              optionGroupChildren="footprints"
+              option-label="name"
+              option-value="id"
+              option-group-label="category"
+              option-group-children="footprints"
               :filter="true"
-              autoFilterFocus
-              showClear
-            />
+              auto-filter-focus
+              show-clear />
           </template>
         </Column>
 
-        <Column header="Manufacturer" :sortable="false" field="manufacturer_db" headerStyle="width: 20em">
+        <Column header="Manufacturer" :sortable="false" field="manufacturer_db" header-style="width: 20em">
           <template #body="slotProps">
             {{ slotProps.data.manufacturer }}<br />
             <Dropdown
-              inputId="manufacturer"
               v-model="slotProps.data.manufacturer_db"
+              input-id="manufacturer"
               class="w-full"
               :options="choicesManufacturers"
-              optionLabel="text"
+              option-label="text"
               :filter="true"
               placeholder="match known one"
-              :showClear="true"
-            />
+              :show-clear="true" />
           </template>
         </Column>
 
-        <Column header="Quantity" :sortable="false" field="quantity" headerStyle="width: 5em" bodyClass="text-center" headerClass="text-center">
+        <Column header="Quantity" :sortable="false" field="quantity" header-style="width: 5em" body-class="text-center" header-class="text-center">
         </Column>
 
         <Column header="Vendor PN" :sortable="false" field="vendor_part_number">
@@ -109,23 +105,22 @@
           </template>
         </Column>
 
-        <Column header="Category" :sortable="false" field="category" headerStyle="width: 25em">
+        <Column header="Category" :sortable="false" field="category" header-style="width: 25em">
           <template #body="slotProps">
             <TreeSelect
-              inputId="category"
-              placeholder="category to import in"
               v-model="slotProps.data.category"
+              input-id="category"
+              placeholder="category to import in"
               :options="choicesCategory"
-              selectionMode="single"
+              selection-mode="single"
               class="w-full"
               :filter="true"
               :fluid="true"
-              :showClear="true"
-            />
+              :show-clear="true" />
           </template>
         </Column>
 
-        <Column header="do not import" field="ignore" headerStyle="width: 6em" bodyClass="text-center" headerClass="text-center">
+        <Column header="do not import" field="ignore" header-style="width: 6em" body-class="text-center" header-class="text-center">
           <template #body="slotProps">
             <Checkbox v-model="slotProps.data.ignore" :binary="true" />
           </template>
@@ -149,6 +144,11 @@ import Fuse from "fuse.js";
 import { fuzzyMatch } from "fuzzbunny";
 
 export default {
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+    toast: useToast(),
+    confirm: useConfirm(),
+  }),
   data: () => ({
     order: {},
     loading: true,
@@ -158,11 +158,6 @@ export default {
     },
     manufacturers_matched: false,
     footprints_matched: false,
-  }),
-  setup: () => ({
-    preloadsStore: usePreloadsStore(),
-    toast: useToast(),
-    confirm: useConfirm(),
   }),
   computed: {
     ...mapState(useServerStore, {

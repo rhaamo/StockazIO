@@ -20,10 +20,10 @@ export default {
   components: {
     CategoriesNodeEditable,
   },
-  data: () => ({}),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
   }),
+  data: () => ({}),
   computed: {
     ...mapState(usePreloadsStore, {
       categories: (store) => store.categories,

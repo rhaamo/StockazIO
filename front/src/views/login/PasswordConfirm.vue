@@ -4,7 +4,7 @@
       <Card class="p-4">
         <template #title>Password Reset</template>
         <template #content>
-          <form @submit.prevent="submit(!v$.$invalid)" class="text-center">
+          <form class="text-center" @submit.prevent="submit(!v$.$invalid)">
             <div>
               <div class="field">
                 <small v-if="v$.form.token.$invalid || v$.form.token.$pending.$response" class="p-error">Token invalid or expired.</small>
@@ -13,15 +13,14 @@
               <div class="field">
                 <Password
                   id="password"
-                  type="password"
                   v-model="form.password"
+                  type="password"
                   :class="{
                     'p-invalid': v$.form.password.$invalid && submitted,
                   }"
-                  toggleMask
+                  toggle-mask
                   :feedback="false"
-                  placeholder="Enter password"
-                />
+                  placeholder="Enter password" />
                 <small v-if="(v$.form.password.$invalid && submitted) || v$.form.password.$pending.$response" class="p-error"
                   ><br />{{ v$.form.password.required.$message }}</small
                 >
@@ -30,15 +29,14 @@
               <div class="field">
                 <Password
                   id="password_confirm"
-                  type="password"
                   v-model="form.password_confirm"
+                  type="password"
                   :class="{
                     'p-invalid': v$.form.password_confirm.$invalid && submitted,
                   }"
-                  toggleMask
+                  toggle-mask
                   :feedback="false"
-                  placeholder="And confirm it again"
-                />
+                  placeholder="And confirm it again" />
                 <small v-if="(v$.form.password_confirm.$invalid && submitted) || v$.form.password_confirm.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.form.password_confirm.required.$message }}
@@ -67,6 +65,13 @@ import { useToast } from "primevue/usetoast";
 import apiService from "@/services/api/api.service";
 
 export default {
+  setup: () => ({
+    v$: useVuelidate(),
+    oauthStore: useOauthStore(),
+    userStore: useUserStore(),
+    preloadsStore: usePreloadsStore(),
+    toast: useToast(),
+  }),
   data: () => ({
     form: {
       token: "",
@@ -74,13 +79,6 @@ export default {
       password_confirm: "",
     },
     submitted: false,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    oauthStore: useOauthStore(),
-    userStore: useUserStore(),
-    preloadsStore: usePreloadsStore(),
-    toast: useToast(),
   }),
   validations() {
     return {

@@ -2,19 +2,19 @@
   <div class="inline">
     <PvButton
       v-if="part.stock_qty >= part.stock_qty_min || kind !== 'qty'"
-      @click.prevent="showPartQtyEditorModal($event)"
       variant="text"
       severity="secondary"
       :size="size"
+      @click.prevent="showPartQtyEditorModal($event)"
       >{{ kind === "qty" ? part.stock_qty : part.stock_qty_min }}</PvButton
     >
     <PvButton
       v-else
+      v-tooltip.top="`Current stock is below minimum ${part.stock_qty_min} stock quantity or exhausted`"
       severity="warn"
       variant="text"
       :size="size"
       @click.prevent="showPartQtyEditorModal($event)"
-      v-tooltip.top="`Current stock is below minimum ${part.stock_qty_min} stock quantity or exhausted`"
       >{{ kind === "qty" ? part.stock_qty : part.stock_qty_min }} <i class="fa fa-circle"></i
     ></PvButton>
 
@@ -27,28 +27,26 @@
         }"
         >Change quantity from {{ kind === "qty" ? part.oldQty : part.oldQtyMin }} to:</label
       >
-      <div class="flex gap-2" v-if="kind === 'qty'">
+      <div v-if="kind === 'qty'" class="flex gap-2">
         <InputNumber
           v-model="part.stock_qty"
-          inputId="qty"
+          input-id="qty"
           mode="decimal"
-          showButtons
-          buttonLayout="horizontal"
+          show-buttons
+          button-layout="horizontal"
           :min="0"
-          @keyup.enter.prevent="updateInplaceBothQty($event)"
-        />
+          @keyup.enter.prevent="updateInplaceBothQty($event)" />
         <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
       </div>
-      <div class="flex gap-2" v-else>
+      <div v-else class="flex gap-2">
         <InputNumber
           v-model="part.stock_qty_min"
-          inputId="qty"
+          input-id="qty"
           mode="decimal"
-          showButtons
-          buttonLayout="horizontal"
+          show-buttons
+          button-layout="horizontal"
           :min="0"
-          @keyup.enter.prevent="updateInplaceBothQty($event)"
-        />
+          @keyup.enter.prevent="updateInplaceBothQty($event)" />
         <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
       </div>
 

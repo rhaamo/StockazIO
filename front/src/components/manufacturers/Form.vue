@@ -16,17 +16,16 @@
                   >Name*</label
                 >
                 <InputText
-                  autofocus
-                  v-focus
                   ref="name"
-                  inputId="name"
-                  type="text"
                   v-model="item.name"
+                  v-focus
+                  autofocus
+                  input-id="name"
+                  type="text"
                   :class="{
                     'p-invalid': v$.item.name.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.item.name.required.$message }}
@@ -47,16 +46,15 @@
                 >
                 <InputText
                   ref="logo"
-                  inputId="logo"
-                  type="file"
                   v-model="item.logo"
-                  @change="logoFileChanged($event.target.files)"
+                  input-id="logo"
+                  type="file"
                   :class="{
                     'p-invalid': v$.item.logo.$invalid && submitted,
                     'w-10': true,
                   }"
                   :accept="allowedUploadTypes"
-                />
+                  @change="logoFileChanged($event.target.files)" />
                 <small v-if="(v$.item.logo.$invalid && submitted) || v$.item.logo.$pending.$response" class="p-error">
                   {{ v$.item.logo.required.$message }}
                 </small>
@@ -79,16 +77,15 @@
                   >Address</label
                 >
                 <PvTextarea
-                  v-focus
                   ref="address"
-                  inputId="address"
-                  type="text"
                   v-model="item.address"
+                  v-focus
+                  input-id="address"
+                  type="text"
                   :class="{
                     'p-invalid': v$.item.address.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
               </div>
 
               <div class="col-6">
@@ -103,16 +100,15 @@
                   >Comment</label
                 >
                 <PvTextarea
-                  v-focus
                   ref="comment"
-                  inputId="comment"
-                  type="text"
                   v-model="item.comment"
+                  v-focus
+                  input-id="comment"
+                  type="text"
                   :class="{
                     'p-invalid': v$.item.comment.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
               </div>
 
               <div class="col-6">
@@ -128,15 +124,14 @@
                 >
                 <InputText
                   ref="url"
-                  inputId="url"
-                  type="url"
                   v-model="item.url"
+                  input-id="url"
+                  type="url"
                   placeholder="http://somewhere/"
                   :class="{
                     'p-invalid': v$.item.url.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.item.url.$invalid && submitted) || v$.item.url.$pending.$response" class="p-error">
                   {{ v$.item.url.url.$message }}
                   <template v-if="v$.item.url.url && v$.item.url.maxLength"><br /></template>
@@ -157,14 +152,13 @@
                 >
                 <InputText
                   ref="phone"
-                  inputId="phone"
-                  type="text"
                   v-model="item.phone"
+                  input-id="phone"
+                  type="text"
                   :class="{
                     'p-invalid': v$.item.phone.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.item.phone.$invalid && submitted) || v$.item.phone.$pending.$response" class="p-error">
                   {{ v$.item.phone.maxLength.$message }}
                 </small>
@@ -183,14 +177,13 @@
                 >
                 <InputText
                   ref="email"
-                  inputId="email"
-                  type="email"
                   v-model="item.email"
+                  input-id="email"
+                  type="email"
                   :class="{
                     'p-invalid': v$.item.email.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.item.email.$invalid && submitted) || v$.item.email.$pending.$response" class="p-error">
                   {{ v$.item.email.email.$message }}
                   <template v-if="v$.item.email.email && v$.item.email.maxLength"><br /></template>
@@ -211,14 +204,13 @@
                 >
                 <InputText
                   ref="fax"
-                  inputId="fax"
-                  type="text"
                   v-model="item.fax"
+                  input-id="fax"
+                  type="text"
                   :class="{
                     'p-invalid': v$.item.fax.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.item.fax.$invalid && submitted) || v$.item.fax.$pending.$response" class="p-error">
                   {{ v$.item.fax.maxLength.$message }}
                 </small>
@@ -237,15 +229,14 @@
                 >
                 <InputText
                   ref="datasheet_url"
-                  inputId="datasheet_url"
-                  type="url"
                   v-model="item.datasheet_url"
+                  input-id="datasheet_url"
+                  type="url"
                   placeholder="http://somewhere/{sku}.pdf"
                   :class="{
                     'p-invalid': v$.item.datasheet_url.$invalid && submitted,
                     'w-10': true,
-                  }"
-                />
+                  }" />
                 <br />
                 You can uses the following template in the datasheet url:<br />
                 {sku}, {sku_lower}, {sku_upper}
@@ -270,15 +261,14 @@
                 >
                 <InputText
                   ref="aliases"
-                  inputId="aliases"
-                  type="text"
                   v-model="item.aliases"
+                  input-id="aliases"
+                  type="text"
                   placeholder="aliases"
                   :class="{
                     'p-invalid': v$.item.aliases.$invalid && submitted,
                     'w-full': true,
-                  }"
-                />
+                  }" />
                 <small v-if="(v$.item.aliases.$invalid && submitted) || v$.item.aliases.$pending.$response" class="p-error"
                   ><br />
                   {{ v$.item.aliases.maxLength.$message }}
@@ -307,6 +297,10 @@ import logger from "@/logging";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    v$: useVuelidate(),
+    toast: useToast(),
+  }),
   data: () => ({
     mode: null,
     item: {
@@ -322,10 +316,6 @@ export default {
       aliases: "",
     },
     submitted: false,
-  }),
-  setup: () => ({
-    v$: useVuelidate(),
-    toast: useToast(),
   }),
   created() {
     this.mode = this.dialogRef.data.mode; // add / edit

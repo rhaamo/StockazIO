@@ -3,13 +3,12 @@
     <PvButton
       :class="(clicked ? 'p-button-secondary' : btnVariantMain) + ' ' + size"
       :disabled="clicked"
-      @click.prevent="btnClicked"
       :label="clicked ? btnMainTextDisabled : btnMainText"
-    >
+      @click.prevent="btnClicked">
     </PvButton>
     <template v-if="clicked">
-      <PvButton :class="'ml-1 ' + btnVariantOk + ' ' + size" @click.prevent="actionConfirmed" :label="btnOkText"> </PvButton>
-      <PvButton :class="'ml-1 ' + btnVariantCancel + ' ' + size" @click.prevent="actionCancelled" :label="btnCancelText"> </PvButton>
+      <PvButton :class="'ml-1 ' + btnVariantOk + ' ' + size" :label="btnOkText" @click.prevent="actionConfirmed"> </PvButton>
+      <PvButton :class="'ml-1 ' + btnVariantCancel + ' ' + size" :label="btnCancelText" @click.prevent="actionCancelled"> </PvButton>
     </template>
   </span>
 </template>

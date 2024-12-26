@@ -32,11 +32,10 @@
               class="p-column-filter mt-1"
               placeholder="Please select a template"
               :options="choicesTemplates"
-              optionLabel="name"
-              optionValue="tpl"
+              option-label="name"
+              option-value="tpl"
               :filter="true"
-              fluid
-            />
+              fluid />
           </div>
           <div class="col-5 text-sm">
             <p>You can use the PDF on the right to print corresponding labels.</p>
@@ -48,9 +47,9 @@
 
       <div class="col-8">
         <div v-if="template && pdf">
-          <PvButton @click.prevent="printPdf" label="Print Labels PDF"> </PvButton>
-          <PvButton severity="secondary" class="ml-2" @click.prevent="downloadPdf" label="Download PDF"> </PvButton>
-          <VuePdfEmbed class="mt-2" ref="pdfViewer" :source="pdf" />
+          <PvButton label="Print Labels PDF" @click.prevent="printPdf"> </PvButton>
+          <PvButton severity="secondary" class="ml-2" label="Download PDF" @click.prevent="downloadPdf"> </PvButton>
+          <VuePdfEmbed ref="pdfViewer" class="mt-2" :source="pdf" />
         </div>
       </div>
     </div>
@@ -65,27 +64,27 @@ import { barcodes, text, image } from "@pdfme/schemas";
 
 export default {
   inject: ["dialogRef"],
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+  }),
   data: () => ({
     items: [],
     template: null,
     pdf: null,
     kind: "part",
   }),
-  setup: () => ({
-    preloadsStore: usePreloadsStore(),
-  }),
+  watch: {
+    template: function () {
+      this.pdf = null;
+      this.generatePdf();
+    },
+  },
   created() {
     this.kind = this.dialogRef.data.kind || "part";
     this.items = this.dialogRef.data.items;
     if (this.choicesTemplates && this.choicesTemplates.length) {
       this.template = this.choicesTemplates[0].tpl;
     }
-  },
-  watch: {
-    template: function () {
-      this.pdf = null;
-      this.generatePdf();
-    },
   },
   computed: {
     ...mapState(usePreloadsStore, {

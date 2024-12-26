@@ -1,21 +1,21 @@
 <template>
   <div>
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
-    <div class="mt-2" v-if="project">
+    <div v-if="project" class="mt-2">
       <div class="grid">
         <div class="col-6">
           <h3>
             <i v-if="!project.public" class="fa icon-private fa-lock mr-2" />
             <router-link v-if="project.public" :to="{ name: 'public-projects-details' }">
-              <i class="fa icon-public fa-globe mr-2" v-tooltip="'public link'" />
+              <i v-tooltip="'public link'" class="fa icon-public fa-globe mr-2" />
             </router-link>
             {{ project.name }}
           </h3>
         </div>
         <div class="col-1 col-offset-5">
-          <PvButton type="button" icon="fa fa-edit" class="p-button-primary" v-tooltip="'edit'" @click.prevent="showEditModal($event)"> </PvButton>
+          <PvButton v-tooltip="'edit'" type="button" icon="fa fa-edit" class="p-button-primary" @click.prevent="showEditModal($event)"> </PvButton>
 
-          <PvButton type="button" icon="fa fa-trash-o" class="p-button-danger ml-2" v-tooltip="'delete'" @click="deleteItem($event)"> </PvButton>
+          <PvButton v-tooltip="'delete'" type="button" icon="fa fa-trash-o" class="p-button-danger ml-2" @click="deleteItem($event)"> </PvButton>
         </div>
       </div>
 
@@ -67,19 +67,24 @@
               <div class="mt-1">
                 <label for="boards_count" class="block">Boards:</label>
                 <InputNumber
-                  inputId="boards_count"
                   v-model="boards_count"
-                  showButtons
-                  buttonLayout="horizontal"
+                  input-id="boards_count"
+                  show-buttons
+                  button-layout="horizontal"
                   :step="1"
                   :min="1"
-                  class="w-4"
-                ></InputNumber>
+                  class="w-4"></InputNumber>
               </div>
 
               <Divider />
 
-              <DataTable :value="project.project_parts" class="p-datatable-sm" stripedRows responsiveLayout="scroll" :paginator="false" removableSort>
+              <DataTable
+                :value="project.project_parts"
+                class="p-datatable-sm"
+                striped-rows
+                responsive-layout="scroll"
+                :paginator="false"
+                removable-sort>
                 <Column header="Name" :sortable="false">
                   <template #body="slotProps">
                     <a v-if="slotProps.data.part" href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data.part)">{{
@@ -95,18 +100,17 @@
 
                 <Column header="Notes" field="notes" :sortable="false"> </Column>
 
-                <Column header="Stock" :sortable="false" headerStyle="width: 6em">
+                <Column header="Stock" :sortable="false" header-style="width: 6em">
                   <template #body="slotProps">
                     <template v-if="slotProps.data.part">
                       <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
                         >{{ slotProps.data.part.stock_qty }}
                         <i
-                          class="fa fa-circle"
-                          aria-hidden="true"
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.qty),
                           }"
-                        />
+                          class="fa fa-circle"
+                          aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.part.stock_qty }}</span>
                     </template>
@@ -114,18 +118,17 @@
                   </template>
                 </Column>
 
-                <Column header="Quantity x1" :sortable="false" headerStyle="width: 6em">
+                <Column header="Quantity x1" :sortable="false" header-style="width: 6em">
                   <template #body="slotProps">
                     <template v-if="slotProps.data.part">
                       <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
                         >{{ slotProps.data.qty }}
                         <i
-                          class="fa fa-circle"
-                          aria-hidden="true"
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
                           }"
-                        />
+                          class="fa fa-circle"
+                          aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.qty }}</span>
                     </template>
@@ -133,18 +136,17 @@
                   </template>
                 </Column>
 
-                <Column header="Quantity total" :sortable="false" headerStyle="width: 6em">
+                <Column header="Quantity total" :sortable="false" header-style="width: 6em">
                   <template #body="slotProps">
                     <template v-if="slotProps.data.part">
                       <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty * boards_count" class="qtyMinWarning"
                         >{{ slotProps.data.qty * boards_count }}
                         <i
-                          class="fa fa-circle"
-                          aria-hidden="true"
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
                           }"
-                        />
+                          class="fa fa-circle"
+                          aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.qty * boards_count }}</span>
                     </template>
@@ -152,30 +154,28 @@
                   </template>
                 </Column>
 
-                <Column header="Sourced" field="sourced" :sortable="true" headerStyle="width: 6em">
+                <Column header="Sourced" field="sourced" :sortable="true" header-style="width: 6em">
                   <template #body="slotProps">
                     <i v-if="slotProps.data.sourced" style="color: green" class="fa fa-check" aria-hidden="true" />
                     <i v-else class="fa fa-close" style="color: red" aria-hidden="true" />
                   </template>
                 </Column>
 
-                <Column headerStyle="width: 6em">
+                <Column header-style="width: 6em">
                   <template #body="slotProps">
                     <span class="p-buttonset">
                       <PvButton
+                        v-tooltip="'edit'"
                         type="button"
                         icon="fa fa-edit"
                         class="p-button-primary"
-                        v-tooltip="'edit'"
-                        @click.prevent="showEditPart($event, slotProps.data)"
-                      ></PvButton>
+                        @click.prevent="showEditPart($event, slotProps.data)"></PvButton>
                       <PvButton
+                        v-tooltip="'delete'"
                         type="button"
                         icon="fa fa-trash-o"
                         class="p-button-danger"
-                        v-tooltip="'delete'"
-                        @click="deletePart($event, slotProps.data)"
-                      ></PvButton>
+                        @click="deletePart($event, slotProps.data)"></PvButton>
                     </span>
                   </template>
                 </Column>
@@ -188,20 +188,18 @@
                   <div class="col-5">
                     <InputText
                       ref="description"
-                      inputId="description"
-                      type="text"
                       v-model="formAddAttachment.description"
+                      input-id="description"
+                      type="text"
                       placeholder="File description"
                       :invalid="v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted"
-                      fluid
-                    />
+                      fluid />
                     <small
                       v-if="
                         (v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted) ||
                         v$.formAddAttachment.description.$pending.$response
                       "
-                      class="p-error"
-                    >
+                      class="p-error">
                       {{ v$.formAddAttachment.description.required.$message }}
                       <template v-if="v$.formAddAttachment.description.required && v$.formAddAttachment.description.maxLength"><br /></template>
                       {{ v$.formAddAttachment.description.maxLength.$message }}
@@ -211,18 +209,16 @@
                   <div class="col-6">
                     <InputText
                       ref="file"
-                      inputId="file"
-                      type="file"
                       v-model="formAddAttachment.file"
-                      @change="attachmentFileChanged($event.target.files)"
+                      input-id="file"
+                      type="file"
                       :invalid="v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted"
                       fluid
                       :accept="allowedUploadTypes"
-                    />
+                      @change="attachmentFileChanged($event.target.files)" />
                     <small
                       v-if="(v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.file.$pending.$response"
-                      class="p-error"
-                    >
+                      class="p-error">
                       {{ v$.formAddAttachment.file.required.$message }}
                     </small>
                   </div>
@@ -234,7 +230,7 @@
               </form>
 
               <Divider />
-              <DataTable :value="project.project_attachments" class="p-datatable-sm" stripedRows responsiveLayout="scroll">
+              <DataTable :value="project.project_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
                 <Column header="Link"
                   ><template #body="slotProps">
                     <i class="fa fa-code-o"></i>
@@ -276,6 +272,12 @@ import Button from "primevue/button";
 import PartViewModal from "@/components/parts/view.vue";
 
 export default {
+  setup: () => ({
+    confirm: useConfirm(),
+    toast: useToast(),
+    serverStore: useServerStore(),
+    v$: useVuelidate(),
+  }),
   data: () => ({
     project: null,
     projectStates: [
@@ -293,12 +295,6 @@ export default {
       file: null,
     },
     boards_count: 1,
-  }),
-  setup: () => ({
-    confirm: useConfirm(),
-    toast: useToast(),
-    serverStore: useServerStore(),
-    v$: useVuelidate(),
   }),
   validations: {
     formAddAttachment: {

@@ -4,13 +4,13 @@
     <div>
       <ul class="list-none">
         <li>
-          <router-link to="#" v-tooltip.top="'Add storage element on root level'" @click.prevent="showAddElementDialog" class="no-underline">
+          <router-link v-tooltip.top="'Add storage element on root level'" to="#" class="no-underline" @click.prevent="showAddElementDialog">
             <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root storage
           </router-link>
 
           &nbsp;&nbsp;&nbsp;
 
-          <router-link to="#" v-tooltip.top="'Bulk-generate labels'" @click.prevent="showBulkLabelGenerator()" class="no-underline">
+          <router-link v-tooltip.top="'Bulk-generate labels'" to="#" class="no-underline" @click.prevent="showBulkLabelGenerator()">
             <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
           </router-link>
         </li>
@@ -36,10 +36,10 @@ export default {
   components: {
     ListItem,
   },
-  data: () => ({}),
   setup: () => ({
     preloadsStore: usePreloadsStore(),
   }),
+  data: () => ({}),
   computed: {
     ...mapState(usePreloadsStore, {
       storages: (store) => {

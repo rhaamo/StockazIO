@@ -3,31 +3,30 @@
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
     <div class="mt-2">
       <DataTable
+        ref="dt"
+        v-model:filters="filters"
         :value="projects"
         :lazy="true"
         :paginator="true"
         :rows="perPage"
-        v-model:filters="filters"
-        ref="dt"
-        dataKey="id"
-        :totalRecords="totalRecords"
+        data-key="id"
+        :total-records="totalRecords"
         :loading="loading"
+        filter-display="row"
+        responsive-layout="scroll"
+        striped-rows
+        class="p-datatable-sm"
+        removable-sort
         @page="onPage($event)"
         @sort="onSort($event)"
-        @filter="onFilter($event)"
-        filterDisplay="row"
-        responsiveLayout="scroll"
-        stripedRows
-        class="p-datatable-sm"
-        removableSort
-      >
+        @filter="onFilter($event)">
         <template #empty> No projects found. </template>
 
         <template #header>
           <PvButton label="Add a project" @click.prevent="showAddProjectModal" />
         </template>
 
-        <Column header="Visibility" :sortable="false" field="visibility" headerStyle="width: 2em">
+        <Column header="Visibility" :sortable="false" field="visibility" header-style="width: 2em">
           <template #body="slotProps">
             <div>
               <i v-if="slotProps.data.public" class="fa fa-globe" aria-hidden="true" />
@@ -36,7 +35,7 @@
           </template>
         </Column>
 
-        <Column header="Name" :sortable="true" field="name" :filterMatchModeOptions="matchModes.name">
+        <Column header="Name" :sortable="true" field="name" :filter-match-mode-options="matchModes.name">
           <template #body="slotProps">
             <div>
               <router-link
@@ -44,14 +43,13 @@
                 :to="{
                   name: 'projects-details',
                   params: { projectId: slotProps.data.id },
-                }"
-              >
+                }">
                 {{ slotProps.data.name }}
               </router-link>
             </div>
           </template>
           <template #filter="{ filterModel }">
-            <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name" />
+            <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />
           </template>
         </Column>
 
@@ -63,7 +61,7 @@
           </template>
         </Column>
 
-        <Column header="State" :sortable="true" field="state" :filterMatchModeOptions="matchModes.state">
+        <Column header="State" :sortable="true" field="state" :filter-match-mode-options="matchModes.state">
           <template #body="slotProps">
             <div>
               <span>{{ projectStateText(slotProps.data.state) }}</span>
@@ -73,27 +71,25 @@
             </div>
           </template>
           <template #filter="{ filterModel }">
-            <Dropdown v-model="filterModel.value" class="w-full" :options="projectStates" optionLabel="text" optionValue="value" :filter="false" />
+            <Dropdown v-model="filterModel.value" class="w-full" :options="projectStates" option-label="text" option-value="value" :filter="false" />
           </template>
         </Column>
 
-        <Column headerStyle="width: 6.3em">
+        <Column header-style="width: 6.3em">
           <template #body="slotProps">
             <span class="p-buttonset">
               <PvButton
+                v-tooltip="'edit'"
                 type="button"
                 icon="fa fa-edit"
                 class="p-button-primary"
-                v-tooltip="'edit'"
-                @click.prevent="editItem($event, slotProps.data)"
-              ></PvButton>
+                @click.prevent="editItem($event, slotProps.data)"></PvButton>
               <PvButton
+                v-tooltip="'delete'"
                 type="button"
                 icon="fa fa-trash-o"
                 class="p-button-danger ml-1"
-                v-tooltip="'delete'"
-                @click="deleteItem($event, slotProps.data)"
-              ></PvButton>
+                @click="deleteItem($event, slotProps.data)"></PvButton>
             </span>
           </template>
         </Column>
@@ -115,6 +111,11 @@ import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
 
 export default {
+  setup: () => ({
+    preloadsStore: usePreloadsStore(),
+    toast: useToast(),
+    confirm: useConfirm(),
+  }),
   data: () => ({
     matchModes: {
       name: [
@@ -147,11 +148,6 @@ export default {
       { value: 99, text: "Unknown" },
       { value: null, text: "Filter by state" },
     ],
-  }),
-  setup: () => ({
-    preloadsStore: usePreloadsStore(),
-    toast: useToast(),
-    confirm: useConfirm(),
   }),
   computed: {
     ...mapState(useServerStore, {

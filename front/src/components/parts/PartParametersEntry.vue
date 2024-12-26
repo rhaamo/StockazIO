@@ -13,15 +13,14 @@
         >
         <InputText
           ref="name"
-          inputId="name"
-          type="text"
           v-model="item.name"
+          input-id="name"
+          type="text"
           placeholder="Value name"
           :class="{
             'p-invalid': v$.item.name.$invalid && submitted,
             'w-10': true,
-          }"
-        />
+          }" />
         <small v-if="(v$.item.name.$invalid && submitted) || v$.item.name.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.name.required.$message }}
@@ -42,15 +41,14 @@
         >
         <InputText
           ref="description"
-          inputId="description"
-          type="text"
           v-model="item.description"
+          input-id="description"
+          type="text"
           placeholder="Description"
           :class="{
             'p-invalid': v$.item.description.$invalid && submitted,
             'w-10': true,
-          }"
-        />
+          }" />
         <small v-if="(v$.item.description.$invalid && submitted) || v$.item.description.$pending.$response" class="p-error">
           {{ v$.item.description.maxLength.$message }}
         </small>
@@ -70,15 +68,14 @@
         >
         <InputText
           ref="value"
-          inputId="value"
-          type="text"
           v-model="item.value"
+          input-id="value"
+          type="text"
           placeholder="42"
           :class="{
             'p-invalid': v$.item.value.$invalid && submitted,
             'w-10': true,
-          }"
-        />
+          }" />
         <small v-if="(v$.item.value.$invalid && submitted) || v$.item.value.$pending.$response" class="p-error"
           ><br />
           {{ v$.item.value.required.$message }}
@@ -89,7 +86,14 @@
 
       <div class="col-6">
         <label for="unit" class="block">Unit</label>
-        <Dropdown inputId="unit" v-model="item.unit" class="w-10" :options="choicesPartUnit" optionLabel="text" optionValue="value" :filter="true" />
+        <Dropdown
+          v-model="item.unit"
+          input-id="unit"
+          class="w-10"
+          :options="choicesPartUnit"
+          option-label="text"
+          option-value="value"
+          :filter="true" />
       </div>
     </div>
 
@@ -103,8 +107,7 @@
         btn-main-text-disabled="Confirm ?"
         btn-ok-text="Yes"
         btn-cancel-text="No"
-        @action-confirmed="$emit('deleteItem', $event)"
-      />
+        @action-confirmed="$emit('deleteItem', $event)" />
     </div>
   </div>
 </template>
@@ -116,19 +119,19 @@ import { mapState } from "pinia";
 import { usePreloadsStore } from "@/stores/preloads";
 
 export default {
-  props: {
-    item: { type: Object, required: true },
-    submitted: { type: Boolean, required: true },
-  },
-  data: () => ({}),
-  setup: () => ({
-    v$: useVuelidate(),
-    preloadsStore: usePreloadsStore(),
-  }),
   model: {
     prop: "item",
     event: "change",
   },
+  props: {
+    item: { type: Object, required: true },
+    submitted: { type: Boolean, required: true },
+  },
+  setup: () => ({
+    v$: useVuelidate(),
+    preloadsStore: usePreloadsStore(),
+  }),
+  data: () => ({}),
   computed: {
     ...mapState(usePreloadsStore, {
       choicesPartUnit: (store) =>
