@@ -386,7 +386,6 @@ export default {
           label: `${e.name} (${e.parts_count})`,
           icon: `pi pi-folder`,
           parts_count: e.parts_count,
-          styleClass: `categoryUnselected`,
         };
         obj["children"] = e.children.map(cb);
         if (e.children.length) {
@@ -398,7 +397,6 @@ export default {
         }
         if (e.id === parseInt(this.currentCategory.id)) {
           obj["icon"] = `pi pi-folder-open`;
-          obj["styleClass"] = `categorySelected`;
           obj["style"] = "color: #a580e1;";
         }
         return obj;
@@ -407,7 +405,6 @@ export default {
         key: 0,
         icon: "pi pi-folder",
         label: `Uncategorized parts (${this.parts_uncategorized_count})`,
-        styleClass: 0 === parseInt(this.currentCategory.id) ? "categorySelected" : "categoryUnselected",
         style: 0 === parseInt(this.currentCategory.id) ? "color: #a580e1;" : "",
         parts_count: this.parts_uncategorized_count,
       };
@@ -519,15 +516,5 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.categoryUnselected {
-  color: grey;
-}
-
-.categorySelected {
-  color: #a580e1;
-}
-</style>
 
 <style lang="scss" src="./App.scss"></style>
