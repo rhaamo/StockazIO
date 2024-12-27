@@ -1,11 +1,16 @@
 from django.urls import reverse
 
 
-def test_anonymous_cannot_get_footprints_tree(api_client, db):
+def test_anonymous_can_get_footprints_tree(api_client, db, factories):
+    footprint1 = factories["footprints.Footprint"]()
+
     url = reverse("api:v1:footprints:FootprintsTree-list")
     response = api_client.get(url)
 
-    assert response.status_code == 401
+    assert response.status_code == 200
+    assert len(response.data) == 1
+    assert response.data[0]["name"] == footprint1.category.name
+    assert response.data[0]["footprint_set"][0]["name"] == footprint1.name
 
 
 def test_logged_in_can_get_footprints_tree(logged_in_api_client, db, factories):
