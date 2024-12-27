@@ -25,7 +25,7 @@ class TreeViewSet(mixins.ListModelMixin, GenericViewSet):
         "destroy": "write",
         "update": "write",
         "partial_update": "write",
-        "list": "read",
+        "list": None,
     }
     serializer_class = FootprintCategoryTreeSerializer
     http_method_names = ["get"]
