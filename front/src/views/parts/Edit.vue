@@ -335,11 +335,14 @@
                     <label for="storage_location" class="block">Storage Location</label>
                     <TreeSelect
                       v-model="form.storage_location"
+                      v-model:expandedKeys="expandedStorageKeys"
                       input-id="storage_location"
                       placeholder="A box under the bench or some drawer ?"
+                      fluid
                       :options="choicesStorageLocation"
                       selection-mode="single"
-                      fluid />
+                      auto-filter-focus
+                      filter />
                   </div>
                   <div class="col-4 col-offset-1">
                     <label for="footprint" class="block">Footprint</label>
