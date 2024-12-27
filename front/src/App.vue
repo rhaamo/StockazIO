@@ -31,7 +31,8 @@
               autoSize
               lazy
               selectionMode="single"
-              @nodeSelect="changeCategory">
+              @nodeSelect="changeCategory"
+              v-model:selectionKeys="selectedCategory">
             </Tree>
           </div>
         </div>
@@ -279,6 +280,7 @@ export default {
         },
       ],
       expandedCategoryKeys: {},
+      selectedCategory: null,
     };
   },
   created() {
@@ -345,6 +347,7 @@ export default {
   },
   mounted() {
     this.expandAllCategoryChoices();
+    this.selectedCategory = { ...this.currentCategory };
   },
   computed: {
     ...mapState(useServerStore, {
@@ -388,14 +391,14 @@ export default {
         if (e.children.length) {
           obj["leaf"] = true;
         }
+        if (e.parts_count > 0) {
+          obj["icon"] = `pi pi-folder-plus`;
+          obj["style"] = "color: #c9bfd9;";
+        }
         if (e.id === parseInt(this.currentCategory.id)) {
           obj["icon"] = `pi pi-folder-open`;
           obj["styleClass"] = `categorySelected`;
           obj["style"] = "color: #a580e1;";
-        }
-        if (e.parts_count > 0) {
-          obj["icon"] = `pi pi-folder-plus`;
-          obj["style"] = "color: #c9bfd9;";
         }
         return obj;
       };
