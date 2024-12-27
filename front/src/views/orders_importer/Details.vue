@@ -30,7 +30,10 @@
               <PvButton label="save" @click.prevent="submit" />
             </div>
             <div class="col-2">
-              <PvButton label="rematch categories" @click.prevent="rematchCategories" />
+              <PvButton label="automatch manufacturers" severity="info" @click.prevent="fuseMatchManufacturers" />
+            </div>
+            <div class="col-2">
+              <PvButton label="automatch categories" severity="info" @click.prevent="rematchCategories" />
             </div>
             <div class="col-3">
               <b>Ordered:</b> {{ formatDate(order.date) }}<br />
@@ -274,7 +277,6 @@ export default {
             }
           }
 
-          this.fuseMatchManufacturers();
           this.fuseMatchFootprints();
           if (!this.order.vendor_db) {
             this.fuseMatchDistributor();
