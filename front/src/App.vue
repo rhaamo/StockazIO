@@ -347,6 +347,7 @@ export default {
   },
   mounted() {
     this.expandAllCategoryChoices();
+    // Duplicate to avoid fucking up the store
     this.selectedCategory = { ...this.currentCategory };
   },
   computed: {
