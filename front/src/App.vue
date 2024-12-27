@@ -467,8 +467,8 @@ export default {
       navigator.registerProtocolHandler("web+stockazio", `${window.location.origin}/urlhandler?q=%s`, "StockazIO handler");
     },
     doSearch() {
-      let search = this.searchTerm;
-      this.searchTerm = "";
+      let search = this.searchTerm.trim();
+      //this.searchTerm = "";
 
       if (search.startsWith("stockazio://storageLocation/")) {
         // old url handler (location)
@@ -490,6 +490,17 @@ export default {
         let str = search.split(",");
         let uuid = str[str.length - 1];
         this.$router.replace({ name: "parts-details", params: { partId: uuid } }).catch(() => {});
+      } else if (search.startsWith("{")) {
+        // might be a LCSC QrCode
+        if (search.endsWith("}")) {
+          // then it probably is
+          let lcscSplitted = search.replace("{", "").replace("}", "").split(",");
+          let pm = lcscSplitted.filter((x) => x.startsWith("pm:"));
+          if (pm.length) {
+            this.searchTerm = pm[0].replace("pm:", "");
+            this.$router.replace({ name: "parts-list", query: { q: pm[0].replace("pm:", "") } }).catch(() => {});
+          }
+        }
       } else {
         // keyword search
         this.$router.replace({ name: "parts-list", query: { q: search } }).catch(() => {});
