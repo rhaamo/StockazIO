@@ -246,8 +246,8 @@
         { "name": "Ribbon Cable" }
       ]
     },
-    { "name": "6 Speakers and Buzzers" },
-    { "name": "7 Programmers and like" },
+    { "name": "6 Speakers,Buzzers, Mics" },
+    { "name": "7 Programmers, lab tools" },
     { "name": "8 PCBs",
       "children": [
         { "name": "Adapters" },
