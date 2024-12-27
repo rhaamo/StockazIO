@@ -24,7 +24,15 @@
       <div v-if="shouldDisplayCategories" class="grid">
         <div v-if="shouldDisplayCategories" class="col-2 sidebar mt-3">
           <div class="sidebar-sticky position-sticky">
-            <CategoryTree :tree-data="categories" />
+            <Tree
+              :value="choicesCategory"
+              filter
+              v-model:expandedKeys="expandedCategoryKeys"
+              autoSize
+              lazy
+              selectionMode="single"
+              @nodeSelect="changeCategory">
+            </Tree>
           </div>
         </div>
 
@@ -60,12 +68,9 @@ import logger from "@/logging";
 import { mapState } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-import CategoryTree from "@/components/categories/tree.vue";
 
 export default {
-  components: {
-    CategoryTree,
-  },
+  components: {},
   setup: () => ({
     oauthStore: useOauthStore(),
     userStore: useUserStore(),
@@ -273,6 +278,7 @@ export default {
           },
         },
       ],
+      expandedCategoryKeys: {},
     };
   },
   created() {
@@ -337,10 +343,13 @@ export default {
         return;
       });
   },
-  mounted() {},
+  mounted() {
+    this.expandAllCategoryChoices();
+  },
   computed: {
     ...mapState(useServerStore, {
       backendVersion: (store) => store.settings.backendVersion,
+      parts_uncategorized_count: (store) => (typeof store.parts_uncategorized_count == "number" ? store.parts_uncategorized_count : "n/a"),
     }),
     ...mapState(useUserStore, {
       currentUser: (store) => store.currentUser,
@@ -351,6 +360,7 @@ export default {
     }),
     ...mapState(usePreloadsStore, {
       categories: (store) => store.categories,
+      currentCategory: (store) => store.currentCategory,
     }),
     shouldDisplayCategories() {
       if (this.currentUser) {
@@ -360,6 +370,45 @@ export default {
         return true;
       }
       return false;
+    },
+    categoriesRouteName() {
+      return this.currentUser ? "parts-category-list" : "public-parts-category-list";
+    },
+    choicesCategory() {
+      const cb = (e) => {
+        // base object
+        let obj = {
+          key: e.id,
+          label: `${e.name} (${e.parts_count})`,
+          icon: `pi pi-folder`,
+          parts_count: e.parts_count,
+          styleClass: `categoryUnselected`,
+        };
+        obj["children"] = e.children.map(cb);
+        if (e.children.length) {
+          obj["leaf"] = true;
+        }
+        if (e.id === parseInt(this.currentCategory.id)) {
+          obj["icon"] = `pi pi-folder-open`;
+          obj["styleClass"] = `categorySelected`;
+          obj["style"] = "color: #a580e1;";
+        }
+        if (e.parts_count > 0) {
+          obj["icon"] = `pi pi-folder-plus`;
+          obj["style"] = "color: #c9bfd9;";
+        }
+        return obj;
+      };
+      let uncategorized = {
+        key: 0,
+        icon: "pi pi-folder",
+        label: `Uncategorized parts (${this.parts_uncategorized_count})`,
+        styleClass: 0 === parseInt(this.currentCategory.id) ? "categorySelected" : "categoryUnselected",
+        style: 0 === parseInt(this.currentCategory.id) ? "color: #a580e1;" : "",
+        parts_count: this.parts_uncategorized_count,
+      };
+
+      return [uncategorized, ...[this.categories].map(cb)];
     },
   },
   methods: {
@@ -440,8 +489,41 @@ export default {
         this.$router.replace({ name: "parts-list", query: { q: search } }).catch(() => {});
       }
     },
+    expandAllCategoryChoices() {
+      for (let node of this.choicesCategory) {
+        this.expandCategoryNode(node);
+      }
+      this.expandedCategoryKeys = { ...this.expandedCategoryKeys };
+    },
+    expandCategoryNode(node) {
+      if (node.children && node.children.length) {
+        this.expandedCategoryKeys[node.key] = true;
+        for (let child of node.children) {
+          this.expandCategoryNode(child);
+        }
+      }
+    },
+    changeCategory(node) {
+      console.log(node);
+      this.$router.push({
+        name: this.categoriesRouteName,
+        params: {
+          categoryId: node.key,
+        },
+      });
+    },
   },
 };
 </script>
+
+<style lang="scss">
+.categoryUnselected {
+  color: grey;
+}
+
+.categorySelected {
+  color: #a580e1;
+}
+</style>
 
 <style lang="scss" src="./App.scss"></style>
