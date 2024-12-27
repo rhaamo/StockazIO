@@ -84,14 +84,19 @@
               </template>
 
               <template v-else>
-                <div class="field-checkbox">
-                  <Checkbox v-model="filter_qty_min" input-id="only_qty_less_min" :binary="true" />
-                  <label for="only_qty_less_min">Only qty &lt; min</label>
-
-                  &nbsp;&nbsp;
-
-                  <Checkbox v-model="show_parameters_filter" input-id="show_parameters_filter" :binary="true" />
-                  <label for="show_parameters_filter">Parameters Filtering</label>
+                <div class="flex items-center gap-4">
+                  <div>
+                    <Checkbox v-model="filter_qty_min" input-id="only_qty_less_min" :binary="true" />
+                    <label for="only_qty_less_min"> Only qty &lt; min</label>
+                  </div>
+                  <div>
+                    <Checkbox v-model="filter_qty_zero" input-id="only_qty_zero" :binary="true" />
+                    <label for="only_qty_zero"> Qty out of stock</label>
+                  </div>
+                  <div>
+                    <Checkbox v-model="show_parameters_filter" input-id="show_parameters_filter" :binary="true" />
+                    <label for="show_parameters_filter"> Parameters Filtering</label>
+                  </div>
                 </div>
               </template>
             </template>
@@ -404,6 +409,7 @@ export default {
     bulkEditStorage: null,
     bulkEditCategory: null,
     filter_qty_min: false,
+    filter_qty_zero: false,
     show_parameters_filter: false,
     parameters_filter_names: [],
     parameters_filters: [],
@@ -559,6 +565,16 @@ export default {
       if (this.filter_qty_min) {
         this.lazyParams.qtyType = "qtyMin";
       } else {
+        delete this.lazyParams.qtyType;
+      }
+      this.loadLazyData();
+    },
+    filter_qty_zero: function () {
+      if (this.filter_qty_zero) {
+        // AAA
+        this.lazyParams.qtyType = "qtyZero";
+      } else {
+        // AAA
         delete this.lazyParams.qtyType;
       }
       this.loadLazyData();

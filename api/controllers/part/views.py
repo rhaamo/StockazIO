@@ -145,6 +145,9 @@ class PartViewSet(ModelViewSet):
         if qty_type == "qtyMin":
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
 
+        if qty_type == "qtyZero":
+            queryset = queryset.filter(stock_qty__lte=0)
+
         # Filtering
         if filters:
             filters = json.loads(filters)
@@ -518,6 +521,9 @@ class PartsPublic(ModelViewSet):
 
         if qty_type == "qtyMin":
             queryset = queryset.filter(stock_qty__lt=F("stock_qty_min"))
+
+        if qty_type == "qtyZero":
+            queryset = queryset.filter(stock_qty__lte=0)
 
         # Filtering
         if filters:
