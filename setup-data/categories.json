@@ -2,56 +2,56 @@
   "name": "Root Category",
   "children": [
     { "name": "0 Free Space" },
-    { "name": "1 Active Components",
+    { "name": "Active Components",
       "children": [
-        { "name": "1 Semiconductors",
+        { "name": "Semiconductors",
           "children": [
-            { "name": "1 Transistors",
+            { "name": "Transistors",
               "children": [
                 { "name": "MOSFET" },
                 { "name": "NPN" },
                 { "name": "PNP" }
               ]
             },
-            { "name": "2 Integrated Circuits",
+            { "name": "Integrated Circuits",
               "children": [
-                { "name": "0 4000 series",
+                { "name": "4000 series",
                   "children": [
                     { "name": "Analog Switches"  }
                   ]
                 },
-                { "name": "1 7400 series",
+                { "name": "7400 series",
                   "children": [
-                    { "name": "1 Counters" },
-                    { "name": "Z Others" }
+                    { "name": "Counters" },
+                    { "name": "Others" }
                   ]
                 },
-                { "name": "2 ADC, DAC" },
-                { "name": "3 Microcontrollers" },
-                { "name": "4 OpAmps" },
-                { "name": "5 Timers" },
-                { "name": "6 EPROM" },
-                { "name": "7 EEPROM" },
-                { "name": "8 Flashs" },
-                { "name": "9 Comparators" },
-                { "name": "A MOSFET Drivers" },
-                { "name": "B Voltage Regulators / Controllers" },
-                { "name": "C FPGA" },
-                { "name": "D CPLD" },
-                { "name": "E PAL" },
-                { "name": "F GAL" },
-                { "name": "G RAM",
+                { "name": "ADC, DAC" },
+                { "name": "Microcontrollers" },
+                { "name": "OpAmps" },
+                { "name": "Timers" },
+                { "name": "EPROM" },
+                { "name": "EEPROM" },
+                { "name": "Flashs" },
+                { "name": "Comparators" },
+                { "name": "MOSFET Drivers" },
+                { "name": "Voltage Regulators / Controllers" },
+                { "name": "FPGA" },
+                { "name": "CPLD" },
+                { "name": "PAL" },
+                { "name": "GAL" },
+                { "name": "RAM",
                   "children": [
                     { "name": "SRAM" },
                     { "name": "DRAM" }
                   ]
                 },
-                { "name": "H Buffer/Line driver" },
-                { "name": "I UART / Serial" },
-                { "name": "Z Others" }
+                { "name": "Buffer/Line driver" },
+                { "name": "UART / Serial" },
+                { "name": "Others" }
               ]
             },
-            { "name": "3 Diodes",
+            { "name": "Diodes",
               "children": [
                 { "name": "Universal" },
                 { "name": "Schottky" },
@@ -59,8 +59,8 @@
                 { "name": "Rectifiers and Rectifier Diodes" }
               ]
             },
-            { "name": "4 Triacs" },
-            { "name": "5 Voltage References" },
+            { "name": "Triacs" },
+            { "name": "Voltage References" },
             { "name": "Thyristor",
               "children": [
                 { "name": "TRIACs" },
@@ -69,16 +69,16 @@
             }
           ]
         },
-        { "name": "2 Optoelectronics",
+        { "name": "Optoelectronics",
           "children": [
-            { "name": "1 LED",
+            { "name": "LED",
               "children": [
                 { "name": "Module" },
                 { "name": "SMD" },
                 { "name": "Standard" }
               ]
             },
-            { "name": "2 Displays",
+            { "name": "Displays",
               "children": [
                 { "name": "Text" },
                 { "name": "Graphics" },
@@ -87,56 +87,56 @@
                 { "name": "VFD" }
               ]
             },
-            { "name": "3 Optocouplers" },
-            { "name": "4 Others" },
-            { "name": "5 Optical Switches" }
+            { "name": "Optocouplers" },
+            { "name": "Others" },
+            { "name": "Optical Switches" }
           ]
         },
-        { "name": "3 Others",
+        { "name": "Others",
           "children": [
             { "name": "Inverter" }
           ]
         }
       ]
     },
-    { "name": "2 Passive Components",
+    { "name": "Passive Components",
       "children": [
         { "name": "Resistors",
           "children": [
-            { "name": "1 THT 1%" },
-            { "name": "2 SMD 1%" },
-            { "name": "3 THT 5%" },
-            { "name": "4 SMD 5%" },
-            { "name": "5 THT Networks 1%" },
-            { "name": "6 SMD Networks 1%" },
-            { "name": "7 THT Networks 5%" },
-            { "name": "8 SMD Networks 5%" },
-            { "name": "9 Power Resistors" },
-            { "name": "A PTC" }
+            { "name": "THT 1%" },
+            { "name": "SMD 1%" },
+            { "name": "THT 5%" },
+            { "name": "SMD 5%" },
+            { "name": "THT Networks 1%" },
+            { "name": "SMD Networks 1%" },
+            { "name": "THT Networks 5%" },
+            { "name": "SMD Networks 5%" },
+            { "name": "Power Resistors" },
+            { "name": "PTC" }
           ]
         },
         { "name": "Capacitors",
           "children": [
-            { "name": "1 THT Ceramic" },
-            { "name": "2 SMD Ceramic" },
-            { "name": "3 Electrolythic" },
-            { "name": "4 THT Film" },
-            { "name": "5 SMD Film" },
-            { "name": "6 Styroflex" },
-            { "name": "7 Tantal" }
+            { "name": "THT Ceramic" },
+            { "name": "SMD Ceramic" },
+            { "name": "Electrolythic" },
+            { "name": "THT Film" },
+            { "name": "SMD Film" },
+            { "name": "Styroflex" },
+            { "name": "Tantal" }
           ]
         },
-        { "name": "3 Crystals, OSC, Filt",
+        { "name": "Crystals, OSC, Filt",
           "children": [
             { "name": "Crystals" },
             { "name": "Oscillators" },
             { "name": "Filters" }
           ]
         },
-        { "name": "4 Potentiometers / Padders",
+        { "name": "Potentiometers / Padders",
           "children": [
-            { "name": "1 Potentiometers" },
-            { "name": "2 Trimmer",
+            { "name": "Potentiometers" },
+            { "name": "Trimmer",
               "children": [
                 { "name": "10/25 turns precision" },
                 { "name": "1 turns" },
@@ -144,24 +144,24 @@
                 { "name": "Precision" }
               ]
             },
-            { "name": "3 Slide Potentiometer" },
-            { "name": "4 Encoders" }
+            { "name": "Slide Potentiometer" },
+            { "name": "Encoders" }
           ]
         },
-        { "name": "8 Photoresistors / LDRs" },
-        { "name": "9 Varistor" },
-        { "name": "10 Ferrites" },
-        { "name": "11 Inductors" }
+        { "name": "Photoresistors / LDRs" },
+        { "name": "Varistor" },
+        { "name": "Ferrites" },
+        { "name": "Inductors" }
       ]
     },
-    { "name": "3 Electromechanical Parts",
+    { "name": "Electromechanical Parts",
       "children": [
-        { "name": "1 Connectors",
+        { "name": "Connectors",
           "children": [
-            { "name": "1 IC Sockets" },
-            { "name": "2 PCB Connectors",
+            { "name": "IC Sockets" },
+            { "name": "PCB Connectors",
               "children": [
-                { "name": "1 Rectangular",
+                { "name": "Rectangular",
                   "children": [
                     { "name": "Wire-to-Board" },
                     { "name": "USB" },
@@ -172,19 +172,19 @@
                     { "name": "Pin Headers" }
                   ]
                 },
-                { "name": "2 Round" },
-                { "name": "3 Audio" },
-                { "name": "4 Others" },
-                { "name": "5 WAGO" },
-                { "name": "6 Faston" },
-                { "name": "7 HF" },
-                { "name": "8 DC Power Jacks" },
-                { "name": "9 Lab Connectors" }
+                { "name": "Round" },
+                { "name": "Audio" },
+                { "name": "Others" },
+                { "name": "WAGO" },
+                { "name": "Faston" },
+                { "name": "HF" },
+                { "name": "DC Power Jacks" },
+                { "name": "Lab Connectors" }
               ]
             }
           ]
         },
-        { "name": "2 Switches and Buttons",
+        { "name": "Switches and Buttons",
           "children": [
             { "name": "Switches" },
             { "name": "Non-contact" },
@@ -194,8 +194,8 @@
             { "name": "Accessories" }
           ]
         },
-        { "name": "3 Relais" },
-        { "name": "4 Fuses",
+        { "name": "Relais" },
+        { "name": "Fuses",
           "children": [
             { "name": "5*20" },
             { "name": "6,3*32" },
@@ -203,9 +203,9 @@
             { "name": "Accessories" }
           ]
         },
-        { "name": "5 Battery Holders" },
-        { "name": "6 Transformers" },
-        { "name": "7 Motors",
+        { "name": "Battery Holders" },
+        { "name": "Transformers" },
+        { "name": "Motors",
           "children": [
             { "name": "DC" },
             { "name": "Stepper" },
@@ -213,8 +213,8 @@
             { "name": "Brushless" }
           ]
         },
-        { "name": "8 Selenoids" },
-        { "name": "9 Probes",
+        { "name": "Selenoids" },
+        { "name": "Probes",
           "children": [
             { "name": "Handheld (scope-like)" },
             { "name": "Clips" }
@@ -222,47 +222,47 @@
         }
       ]
     },
-    { "name": "4 Mechanical Parts",
+    { "name": "Mechanical Parts",
       "children": [
-        { "name": "1 Mica Washers" },
-        { "name": "2 Cooling" },
-        { "name": "3 Screws",
+        { "name": "Mica Washers" },
+        { "name": "Cooling" },
+        { "name": "Screws",
           "children": [
             { "name": "Auto" },
             { "name": "Mx" },
             { "name": "Imperial" }
           ]
         },
-        { "name": "4 Nuts" },
-        { "name": "5 Pulleys" },
-        { "name": "6 Bearings" },
-        { "name": "7 Spacers" },
-        { "name": "8 Sliding things" }
+        { "name": "Nuts" },
+        { "name": "Pulleys" },
+        { "name": "Bearings" },
+        { "name": "Spacers" },
+        { "name": "Sliding things" }
       ]
     },
-    { "name": "5 Cables",
+    { "name": "Cables",
       "children": [
         { "name": "Spools" },
         { "name": "Ribbon Cable" }
       ]
     },
-    { "name": "6 Speakers,Buzzers, Mics" },
-    { "name": "7 Programmers, lab tools" },
-    { "name": "8 PCBs",
+    { "name": "Speakers,Buzzers, Mics" },
+    { "name": "Programmers, lab tools" },
+    { "name": "PCBs",
       "children": [
         { "name": "Adapters" },
         { "name": "Projects" },
         { "name": "Other" }
       ]
     },
-    { "name": "9 Devboards, SBCs, modules" },
-    { "name": "S Enclosures" },
-    { "name": "T Books" },
-    { "name": "U 3D Printing" },
-    { "name": "V Modules" },
-    { "name": "W PC Stuff" },
-    { "name": "X PCB Material" },
-    { "name": "Y Other Stuff" },
-    { "name": "Z Projects" }
+    { "name": "Devboards, SBCs, modules" },
+    { "name": "Enclosures" },
+    { "name": "Books" },
+    { "name": "3D Printing" },
+    { "name": "Modules" },
+    { "name": "PC Stuff" },
+    { "name": "PCB Material" },
+    { "name": "Other Stuff" },
+    { "name": "Projects" }
   ]
 }
