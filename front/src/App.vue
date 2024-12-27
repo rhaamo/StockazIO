@@ -69,6 +69,7 @@ import logger from "@/logging";
 import { mapState } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import { useRoute } from "vue-router";
 
 export default {
   components: {},
@@ -79,6 +80,7 @@ export default {
     preloadsStore: usePreloadsStore(),
     confirm: useConfirm(),
     toast: useToast(),
+    route: useRoute(),
   }),
   data() {
     return {
@@ -349,6 +351,9 @@ export default {
     this.expandAllCategoryChoices();
     // Duplicate to avoid fucking up the store
     this.selectedCategory = { ...this.currentCategory };
+    if (this.route.query.q) {
+      this.searchTerm = this.$route.query.q;
+    }
   },
   computed: {
     ...mapState(useServerStore, {
