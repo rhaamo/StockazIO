@@ -161,6 +161,11 @@ class OrderViewSet(ModelViewSet):
                 part.save()
                 stats["updated"] += 1
 
+                # Also reference the part to the item
+                item.part_db = part
+                item.new_in_stock = False
+                item.save()
+
             else:
                 part = Part(
                     name=item.mfr_part_number,
@@ -181,6 +186,11 @@ class OrderViewSet(ModelViewSet):
 
                 part.save()
                 stats["created"] += 1
+
+                # Also reference the part to the item
+                item.part_db = part
+                item.new_in_stock = True
+                item.save()
 
         # finally, set import_state to 2
         order.import_state = 2

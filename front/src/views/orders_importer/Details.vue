@@ -57,7 +57,35 @@
 
         <Column header="Manufacturer PN" :sortable="false" field="mfr_part_number" header-style="width: 15em">
           <template #body="slotProps">
-            <span class="text-sm">{{ slotProps.data.mfr_part_number }}</span>
+            <template v-if="slotProps.data.new_in_stock && slotProps.data.part_db">
+              <div class="flex items-center gap-2">
+                <div @click="showLabelGenerator(slotProps.data.part_db)">
+                  <vue-qrcode
+                    :id="qrcodeId(slotProps.data.part_db.id)"
+                    v-tooltip="'show label generator'"
+                    :value="qrCodePart(slotProps.data.part_db.uuid)"
+                    :options="{
+                      scale: 1,
+                      color: { dark: '#000000', light: '#FFFFFF' },
+                    }"
+                    :data-uuid="slotProps.data.part_db.uuid"
+                    :data-name="slotProps.data.part_db.name"
+                    data-toggle="modal"
+                    data-target="#modalQrCode" />
+                </div>
+
+                <div>
+                  <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.mfr_part_number }}</a>
+                  <br />
+                  <small><i>This is a new part in stock, you can print a label now</i></small>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              {{ slotProps.data.mfr_part_number }}
+              <br />
+              <small><i>This part was already in stock, qty was incremented</i></small>
+            </template>
           </template>
         </Column>
 
@@ -145,6 +173,10 @@ import { format as dateFnsFormat } from "date-fns/format";
 import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import Fuse from "fuse.js";
 import { fuzzyMatch } from "fuzzbunny";
+import PartViewModal from "@/components/parts/view.vue";
+import { h } from "vue";
+import Button from "primevue/button";
+import LabelGeneratorModal from "@/components/label/generator.vue";
 
 export default {
   setup: () => ({
@@ -405,6 +437,99 @@ export default {
           logger.default.error("Error fetching order", err);
           this.loadLazyData();
         });
+    },
+    viewPartModal(item) {
+      let part = item.part_db;
+      // Get full part object infos
+      apiService
+        .getPart(part.id)
+        .then((val) => {
+          const viewPartRef = this.$dialog.open(PartViewModal, {
+            props: {
+              modal: true,
+              style: {
+                width: "70vw",
+              },
+              dismissableMask: true,
+              draggable: false,
+            },
+            templates: {
+              header: () => {
+                if (part.private) {
+                  return [h("h1", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
+                } else {
+                  return [h("h1", part.name)];
+                }
+              },
+              footer: () => {
+                return [
+                  h(Button, {
+                    label: "Show full details",
+                    onClick: () => {
+                      viewPartRef.close();
+                      this.$router.replace({
+                        name: "parts-details",
+                        params: { partId: part.id },
+                      });
+                    },
+                    class: "p-button-outlined",
+                  }),
+                  h(Button, {
+                    label: "Delete",
+                    onClick: () => {
+                      this.deletePart(null, part);
+                      viewPartRef.close();
+                    },
+                    class: "p-button-danger",
+                  }),
+                  h(Button, {
+                    label: "Close",
+                    onClick: () => viewPartRef.close(),
+                    class: "p-button-success",
+                  }),
+                ];
+              },
+            },
+            data: {
+              part: val.data,
+            },
+          });
+        })
+        .catch((err) => {
+          this.toast.add({
+            severity: "error",
+            summary: "Part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with getting part details", err);
+        });
+    },
+    showLabelGenerator(item) {
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+          dismissableMask: true,
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+          },
+        },
+        data: {
+          items: [item],
+          kind: "part",
+        },
+      });
+    },
+    qrcodeId(id, size) {
+      return size ? `qrcode-${id}-${size}` : `qrcode-${id}`;
+    },
+    qrCodePart(uuid) {
+      return `web+stockazio:part,${uuid}`;
     },
   },
 };

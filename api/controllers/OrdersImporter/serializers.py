@@ -8,12 +8,14 @@ from controllers.distributor.serializers import DistributorsSerializer
 from controllers.footprints.serializers import FootprintSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
 from controllers.OrdersImporter.models import CategoryMatcher, Item, Order
+from controllers.part.serializers import PartSerializer
 
 
 class ItemSerializer(serializers.ModelSerializer):
     category = SingleCategorySerializer(many=False, read_only=False)
     manufacturer_db = ManufacturersSerializer(many=False, read_only=True)
     footprint_db = FootprintSerializer(many=False, read_only=True)
+    part_db = PartSerializer(many=False, read_only=False)
 
     class Meta:
         model = Item
@@ -29,6 +31,8 @@ class ItemSerializer(serializers.ModelSerializer):
             "ignore",
             "manufacturer_db",
             "footprint_db",
+            "part_db",
+            "new_in_stock",
         )
 
 
@@ -46,6 +50,8 @@ class ItemCreateSerializer(serializers.ModelSerializer):
             "ignore",
             "manufacturer_db",
             "footprint_db",
+            "part_db",
+            "new_in_stock",
         )
 
 

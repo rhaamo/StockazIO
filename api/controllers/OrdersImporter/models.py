@@ -4,6 +4,7 @@ from controllers.categories.models import Category
 from controllers.distributor.models import Distributor
 from controllers.footprints.models import Footprint
 from controllers.manufacturer.models import Manufacturer
+from controllers.part.models import Part
 
 
 class Order(models.Model):
@@ -31,6 +32,9 @@ class Item(models.Model):
     quantity = models.IntegerField("quantity", default=0)
     order = models.ForeignKey(Order, blank=False, null=False, on_delete=models.CASCADE, related_name="items")
     footprint_db = models.ForeignKey(Footprint, blank=True, null=True, on_delete=models.SET_NULL)
+
+    part_db = models.ForeignKey(Part, blank=True, null=True, on_delete=models.SET_NULL)
+    new_in_stock = models.BooleanField("new part in stock", default=False)
 
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     ignore = models.BooleanField("ignore import", default=False)
