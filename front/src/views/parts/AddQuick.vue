@@ -496,7 +496,7 @@ export default {
       choicesFootprint: (store) =>
         store.footprints.map((x) => {
           return {
-            category: x.name,
+            category: x.description ? `${x.name} (${x.description})` : x.name,
             footprints: x.footprint_set.map((y) => {
               return { id: y.id, name: y.name };
             }),

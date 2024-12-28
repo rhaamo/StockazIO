@@ -345,7 +345,11 @@
                       filter />
                   </div>
                   <div class="col-4 col-offset-1">
-                    <label for="footprint" class="block">Footprint</label>
+                    <label for="footprint" class="block"
+                      >Footprint&nbsp;<template v-if="form.footprint"
+                        ><small>(selected: {{ getFootprintNameFromId(form.footprint) }})</small></template
+                      ></label
+                    >
                     <Listbox
                       v-model="form.footprint"
                       input-id="footprint"
@@ -542,7 +546,7 @@ export default {
       choicesFootprint: (store) =>
         store.footprints.map((x) => {
           return {
-            category: x.name,
+            category: x.description ? `${x.name} (${x.description})` : x.name,
             footprints: x.footprint_set.map((y) => {
               return { id: y.id, name: y.name };
             }),
@@ -553,6 +557,14 @@ export default {
           return { value: x, text: x.name };
         });
       },
+      flattenedChoicesFootprints: (store) =>
+        store.footprints
+          .map((x) => {
+            return x.footprint_set.map((y) => {
+              return { id: y.id, name: y.name };
+            });
+          })
+          .flat(),
     }),
     partId() {
       return this.$route.params.partId;
@@ -953,6 +965,14 @@ export default {
           this.expandCategoryNode(child);
         }
       }
+    },
+    getFootprintNameFromId(id) {
+      for (let fp of this.flattenedChoicesFootprints) {
+        if (fp.id === id) {
+          return fp.name;
+        }
+      }
+      return "none";
     },
   },
 };
