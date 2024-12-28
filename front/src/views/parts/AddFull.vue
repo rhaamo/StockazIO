@@ -550,7 +550,7 @@ export default {
           // base object
           let obj = {
             key: e.uuid ? e.id : `cat-${e.id}`,
-            label: e.name,
+            label: e.description ? `${e.name} (${e.description})` : e.name,
             icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
           };
           if (e.children) {
