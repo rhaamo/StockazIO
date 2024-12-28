@@ -133,6 +133,7 @@ export default {
           name: item.name,
           parent_id: { [item.parent]: true },
           picture: item.picture,
+          description: item.description,
           mode: "edit",
         },
         onClose: (options) => {
