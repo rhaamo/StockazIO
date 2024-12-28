@@ -35,6 +35,11 @@
             <div class="col-2">
               <PvButton label="automatch categories" severity="info" @click.prevent="rematchCategories" />
             </div>
+            <div class="col-2">
+              <router-link v-tooltip.top="'Bulk-generate labels'" to="#" class="no-underline" @click.prevent="showBulkLabelGenerator()">
+                <PvButton label="bulk label generator" severity="help" />
+              </router-link>
+            </div>
             <div class="col-3">
               <b>Ordered:</b> {{ formatDate(order.date) }}<br />
               <b>Number:</b> {{ order.order_number }}<br />
@@ -530,6 +535,32 @@ export default {
     },
     qrCodePart(uuid) {
       return `web+stockazio:part,${uuid}`;
+    },
+    showBulkLabelGenerator() {
+      // Duplicate the orders list but filtered for new parts with part db associated, then map it to only get the part_db objects
+      let slocs = [...this.order.items.filter((x) => x.part_db && x.new_in_stock)].map((x) => {
+        return x.part_db;
+      });
+      console.log(slocs);
+
+      this.$dialog.open(LabelGeneratorModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "70vw",
+          },
+          dismissableMask: true,
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+          },
+        },
+        data: {
+          items: slocs,
+          kind: "part",
+        },
+      });
     },
   },
 };
