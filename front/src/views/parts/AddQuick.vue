@@ -600,6 +600,9 @@ export default {
       if (datas.category === 0 || datas.category === "0" || datas.category === "null") {
         datas.category = null;
       }
+      if (datas.category && datas.category.undefined && !datas.category.undefined) {
+        datas.category = null;
+      }
 
       logger.default.info("submitting part", datas);
 
