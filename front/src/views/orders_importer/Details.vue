@@ -541,7 +541,6 @@ export default {
       let slocs = [...this.order.items.filter((x) => x.part_db && x.new_in_stock)].map((x) => {
         return x.part_db;
       });
-      console.log(slocs);
 
       this.$dialog.open(LabelGeneratorModal, {
         props: {
