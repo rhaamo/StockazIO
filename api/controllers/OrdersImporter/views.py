@@ -135,6 +135,8 @@ class OrderViewSet(ModelViewSet):
                     part.category = item.category
                 if not part.description:
                     part.description = item.description
+                if not part.storage:
+                    part.storage = item.storage_db
                 part.save()
 
                 try:
@@ -173,6 +175,7 @@ class OrderViewSet(ModelViewSet):
                     description=item.description,
                     category=item.category,
                     footprint=item.footprint_db,
+                    storage=item.storage_db,
                 )
                 part.save()
 

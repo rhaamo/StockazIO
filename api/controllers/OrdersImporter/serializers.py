@@ -9,6 +9,7 @@ from controllers.footprints.serializers import FootprintSerializer
 from controllers.manufacturer.serializers import ManufacturersSerializer
 from controllers.OrdersImporter.models import CategoryMatcher, Item, Order
 from controllers.part.serializers import PartSerializer
+from controllers.storage.serializers import StorageSerializer
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -16,6 +17,7 @@ class ItemSerializer(serializers.ModelSerializer):
     manufacturer_db = ManufacturersSerializer(many=False, read_only=True)
     footprint_db = FootprintSerializer(many=False, read_only=True)
     part_db = PartSerializer(many=False, read_only=False)
+    storage_db = StorageSerializer(many=False, read_only=False)
 
     class Meta:
         model = Item
@@ -33,6 +35,7 @@ class ItemSerializer(serializers.ModelSerializer):
             "footprint_db",
             "part_db",
             "new_in_stock",
+            "storage_db",
         )
 
 
@@ -52,6 +55,7 @@ class ItemCreateSerializer(serializers.ModelSerializer):
             "footprint_db",
             "part_db",
             "new_in_stock",
+            "storage_db",
         )
 
 

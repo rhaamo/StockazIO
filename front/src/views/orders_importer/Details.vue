@@ -100,7 +100,23 @@
           </template>
         </Column>
 
-        <Column header="Footprint" :sortable="false" field="footprint_db" header-style="width: 20em">
+        <Column header="Storage" :sortable="false" field="storage_db" header-style="width: 15em">
+          <template #body="slotProps">
+            <TreeSelect
+              v-model="slotProps.data.storage_db"
+              v-model:expandedKeys="expandedStorageKeys"
+              input-id="storage"
+              placeholder="where to put it?"
+              :options="choicesStorageLocation"
+              selection-mode="single"
+              auto-filter-focus
+              filter
+              fluid
+              show-clear />
+          </template>
+        </Column>
+
+        <Column header="Footprint" :sortable="false" field="footprint_db" header-style="width: 15em">
           <template #body="slotProps">
             <Dropdown
               v-model="slotProps.data.footprint_db"
@@ -113,6 +129,7 @@
               option-group-children="footprints"
               :filter="true"
               auto-filter-focus
+              fluid
               show-clear />
           </template>
         </Column>
@@ -123,12 +140,12 @@
             <Dropdown
               v-model="slotProps.data.manufacturer_db"
               input-id="manufacturer"
-              class="w-full"
               :options="choicesManufacturers"
               option-label="text"
               :filter="true"
               placeholder="match known one"
-              :show-clear="true" />
+              :show-clear="true"
+              fluid />
           </template>
         </Column>
 
@@ -198,6 +215,7 @@ export default {
     },
     manufacturers_matched: false,
     footprints_matched: false,
+    expandedStorageKeys: {},
   }),
   computed: {
     ...mapState(useServerStore, {
@@ -248,6 +266,22 @@ export default {
         };
         return [store.categories].map(cb);
       },
+      choicesStorageLocation: (store) => {
+        const cb = (e) => {
+          // base object
+          let obj = {
+            key: e.uuid ? e.id : `cat-${e.id}`,
+            label: e.description ? `${e.name} (${e.description})` : e.name,
+            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+          };
+          if (e.children) {
+            obj["children"] = e.children.map(cb);
+          }
+          // return obj
+          return obj;
+        };
+        return store.storages.map(cb);
+      },
     }),
     orderId() {
       return this.$route.params.id;
@@ -281,6 +315,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.loadLazyData();
+      this.expandAllStorageChoices();
     });
   },
   methods: {
@@ -292,7 +327,7 @@ export default {
         .then((res) => {
           this.order = res.data;
 
-          // fix category, manufacturer and footprint objects for the dropdown thingy
+          // fix category, manufacturer, footprint, storage objects for the dropdown thingy
           for (const [i] of this.order.items.entries()) {
             if (this.order.items[i].category) {
               this.order.items[i].category = {
@@ -311,6 +346,12 @@ export default {
 
             if (this.order.items[i].footprint_db) {
               this.order.items[i].footprint_db = this.order.items[i].footprint_db.id;
+            }
+
+            if (this.order.items[i].storage_db) {
+              this.order.items[i].storage_db = {
+                [this.order.items[i].storage_db.id]: true,
+              };
             }
           }
 
@@ -415,6 +456,8 @@ export default {
       let datas = this.order;
       datas.vendor_db = datas.vendor_db ? datas.vendor_db.value : null;
       datas.items = datas.items.map((x) => {
+        x.storage_db = x.storage_db ? Object.keys(x.storage_db)[0] : null;
+        x.part_db = x.part_db ? x.part_db.id : null;
         return {
           ...x,
           category: x.category ? parseInt(Object.keys(x.category)[0]) : null,
@@ -560,6 +603,20 @@ export default {
           kind: "part",
         },
       });
+    },
+    expandAllStorageChoices() {
+      for (let node of this.choicesStorageLocation) {
+        this.expandStorageNode(node);
+      }
+      this.expandedStorageKeys = { ...this.expandedStorageKeys };
+    },
+    expandStorageNode(node) {
+      if (node.children && node.children.length) {
+        this.expandedStorageKeys[node.key] = true;
+        for (let child of node.children) {
+          this.expandStorageNode(child);
+        }
+      }
     },
   },
 };
