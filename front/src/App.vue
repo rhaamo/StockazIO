@@ -10,7 +10,7 @@
         <template #end>
           <form role="search" @submit.prevent="doSearch">
             <div class="p-inputgroup">
-              <InputText v-model="searchTerm" placeholder="Keyword" class="mr-2" />
+              <InputText v-model="searchTerm" placeholder="Keyword" class="mr-2" @focus="$event.target.select()" />
               <PvButton type="submit" label="Search" />
             </div>
           </form>
