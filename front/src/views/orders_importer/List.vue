@@ -68,11 +68,11 @@
         <Column header-style="width: 6em">
           <template #body="slotProps">
             <PvButton
-              v-tooltip="'import'"
+              v-tooltip.left="'Import selected items in the inventory'"
               type="button"
               class="p-button-primary"
               label="import"
-              :disabled="slotProps.data.import_state === 2 || slotProps.data.import_state === 99"
+              v-if="slotProps.data.import_state !== 2 && slotProps.data.import_state !== 99"
               @click.prevent="importOrder($event, slotProps.data)"></PvButton>
           </template>
         </Column>
