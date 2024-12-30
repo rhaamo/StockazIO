@@ -168,6 +168,7 @@
                   placeholder="Search by storage"
                   :options="choicesStorageLocationWithNo"
                   selection-mode="single"
+                  fluid
                   @change="filterCallback()" />
               </template>
             </Column>
@@ -221,6 +222,7 @@
                   option-group-label="category"
                   option-group-children="footprints"
                   :filter="true"
+                  fluid
                   @change="filterCallback()" />
               </template>
             </Column>
