@@ -10,7 +10,7 @@
         <template #end>
           <form role="search" @submit.prevent="doSearch">
             <div class="p-inputgroup">
-              <InputText v-model="searchTerm" placeholder="Keyword" class="mr-2" @focus="$event.target.select()" />
+              <InputText ref="searchInput" v-model="searchTerm" placeholder="Keyword" class="mr-2" @focus="$event.target.select()" />
               <PvButton type="submit" label="Search" />
             </div>
           </form>
@@ -468,6 +468,7 @@ export default {
     },
     doSearch() {
       let search = this.searchTerm.trim();
+      this.$refs.searchInput.$el.blur();
       //this.searchTerm = "";
 
       if (search.startsWith("stockazio://storageLocation/")) {
