@@ -54,6 +54,26 @@
             <Column field="value" header="Value"></Column>
           </DataTable>
         </div>
+
+        <div v-if="part && partProjects.length">
+          <h3>Used in projects:</h3>
+          <DataTable :value="partProjects" class="p-datatable-sm" striped-rows responsive-layout="scroll">
+            <Column field="name" header="Name" header-style="width: 20rem">
+              <template #body="slotProps">
+                <router-link
+                  v-tooltip.left="'View project'"
+                  :to="{
+                    name: 'projects-details',
+                    params: { projectId: slotProps.data.id },
+                  }">
+                  {{ slotProps.data.name }}
+                </router-link>
+              </template>
+            </Column>
+            <Column field="qty" header="Quantity (one board)" header-style="width: 15rem"></Column>
+            <Column field="description" header="Description"></Column>
+          </DataTable>
+        </div>
       </div>
 
       <div class="col-6">
@@ -77,9 +97,9 @@
               <Column field="name" header="Name"></Column>
               <Column field="description" header="Description"></Column>
               <Column header="Value">
-                <template #body="slotProps"
-                  >{{ slotProps.data.value }} {{ slotProps.data.unit ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})` : "" }}</template
-                >
+                <template #body="slotProps">
+                  {{ slotProps.data.value }} {{ slotProps.data.unit ? `${slotProps.data.unit.name} (${slotProps.data.unit.symbol})` : "" }}
+                </template>
               </Column>
             </DataTable>
           </TabPanel>
@@ -96,11 +116,9 @@
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
-                    <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
-                    ></template
-                  ></template
-                >
+                    <a :href="slotProps.data.datasheet_url" target="_blank"> <i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }} </a>
+                  </template>
+                </template>
               </Column>
             </DataTable>
           </TabPanel>
@@ -117,11 +135,9 @@
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
-                    <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
-                    ></template
-                  ></template
-                >
+                    <a :href="slotProps.data.datasheet_url" target="_blank"> <i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a>
+                  </template>
+                </template>
               </Column>
             </DataTable>
           </TabPanel>
@@ -199,8 +215,8 @@
                     <i class="fa fa-code-o"></i>
                     <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>
-                </template></Column
-              >
+                </template>
+              </Column>
               <Column field="description" header="Description"> </Column>
               <Column>
                 <template #body="slotProps">
@@ -355,6 +371,11 @@ export default {
           }
         }) || []
       );
+    },
+    partProjects() {
+      return this.part.projectpart_set.map((x) => {
+        return { id: x.project.id, name: x.project.name, description: x.project.description, qty: x.qty };
+      });
     },
   },
   methods: {

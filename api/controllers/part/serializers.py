@@ -18,6 +18,8 @@ from controllers.part.models import (
     PartUnit,
 )
 
+from controllers.project.models import Project, ProjectPart
+
 from controllers.storage.serializers import StorageSerializer
 from controllers.upload_validator import FileTypeValidator
 
@@ -168,6 +170,36 @@ class PartCreateSeralizer(WritableNestedModelSerializer):
         )
 
 
+# The two classes bellow should be in the project controller serializers
+# but im getting circular import and im too lazy to dig to fix it sowwy
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = (
+            "id",
+            "name",
+            "description",
+            "notes",
+            "ibom_url",
+            "state",
+            "state_notes",
+            "public",
+            "created_at",
+            "project_parts",
+            "project_attachments",
+        )
+
+
+class ProjectPartSerializer(serializers.ModelSerializer):
+    project = ProjectSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = ProjectPart
+        fields = ("id", "project", "part", "part_name", "qty", "sourced", "notes")
+
+
 class PartRetrieveSerializer(serializers.ModelSerializer):
     storage = StorageSerializer(many=False, read_only=True)
     category = SingleCategorySerializer(many=False, read_only=True)
@@ -178,6 +210,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
     manufacturers_sku = PartManufacturerSerializer(many=True, read_only=True)
     part_attachments = PartAttachmentSerializer(many=True, read_only=True)
     part_stock_history = PartStockHistory(many=True, read_only=True)
+    projectpart_set = ProjectPartSerializer(many=True, read_only=True)
 
     @extend_schema_field(serializers.CharField())
     def get_category_name(self, obj):
@@ -222,6 +255,7 @@ class PartRetrieveSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "part_stock_history",
+            "projectpart_set",
         )
 
 
