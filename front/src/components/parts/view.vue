@@ -18,6 +18,26 @@
             <Column field="value" header="Value"></Column>
           </DataTable>
         </div>
+
+        <div v-if="part && partProjects.length">
+          <h3>Used in projects:</h3>
+          <DataTable :value="partProjects" class="p-datatable-sm" striped-rows responsive-layout="scroll">
+            <Column field="name" header="Name" header-style="width: 20rem">
+              <template #body="slotProps">
+                <router-link
+                  v-tooltip.left="'View project'"
+                  :to="{
+                    name: 'projects-details',
+                    params: { projectId: slotProps.data.id },
+                  }">
+                  {{ slotProps.data.name }}
+                </router-link>
+              </template>
+            </Column>
+            <Column field="qty" header="Quantity (one board)" header-style="width: 15rem"></Column>
+            <Column field="description" header="Description"></Column>
+          </DataTable>
+        </div>
       </div>
 
       <div class="col-6">
@@ -194,6 +214,11 @@ export default {
           }
         }) || []
       );
+    },
+    partProjects() {
+      return this.part.projectpart_set.map((x) => {
+        return { id: x.project.id, name: x.project.name, description: x.project.description, qty: x.qty };
+      });
     },
   },
   created() {
