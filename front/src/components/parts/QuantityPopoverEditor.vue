@@ -15,7 +15,7 @@
       variant="text"
       :size="size"
       @click.prevent="showPartQtyEditorModal($event)"
-      >{{ kind === "qty" ? part.stock_qty : part.stock_qty_min }} <i class="fa fa-circle"></i
+      >{{ kind === "qty" ? part.stock_qty : part.stock_qty_min }} <i class="pi pi-circle-fill"></i
     ></PvButton>
 
     <Popover ref="poQty">

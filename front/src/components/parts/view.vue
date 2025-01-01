@@ -81,7 +81,7 @@
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
                     <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
+                      ><i class="pi pi-file-pdf"></i> {{ slotProps.data.datasheet_url }}</a
                     ></template
                   ></template
                 >
@@ -102,7 +102,7 @@
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
                     <a :href="slotProps.data.datasheet_url" target="_blank"
-                      ><i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a
+                      ><i class="pi pi-file-pdf"></i> {{ slotProps.data.datasheet_url }}</a
                     ></template
                   ></template
                 >
@@ -118,11 +118,11 @@
               <Column header="Link"
                 ><template #body="slotProps">
                   <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
-                    <i class="fa fa-picture-o"></i>
-                    <a class="no-underline" :href="slotProps.data.picture">{{ stripPathFromFileUrl(slotProps.data.picture) }}</a>
+                    <i class="pi pi-image"></i>
+                    <a class="no-underline ml-2" :href="slotProps.data.picture">{{ stripPathFromFileUrl(slotProps.data.picture) }}</a>
                   </template>
                   <template v-else>
-                    <i class="fa fa-code-o"></i>
+                    <i class="pi pi-file"></i>
                     <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>
                 </template></Column

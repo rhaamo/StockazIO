@@ -150,7 +150,7 @@
                 >
                 <template v-else>
                   <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" class="text-red-500"
-                    >{{ slotProps.data.stock_qty }} <i class="fa fa-circle"></i
+                    >{{ slotProps.data.stock_qty }} <i class="pi pi-circle-fill"></i
                   ></span>
                 </template>
               </template>
