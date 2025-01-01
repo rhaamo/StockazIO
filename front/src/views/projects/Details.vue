@@ -163,20 +163,7 @@
 
                 <Column header-style="width: 6.3em">
                   <template #body="slotProps">
-                    <span class="p-buttonset">
-                      <PvButton
-                        v-tooltip="'edit'"
-                        type="button"
-                        icon="fa fa-edit"
-                        class="p-button-primary"
-                        @click.prevent="showEditPart($event, slotProps.data)"></PvButton>
-                      <PvButton
-                        v-tooltip="'delete'"
-                        type="button"
-                        icon="fa fa-trash-o"
-                        class="p-button-danger ml-1"
-                        @click="deletePart($event, slotProps.data)"></PvButton>
-                    </span>
+                    <ButtonsEditDelete @edit="showEditPart($event, slotProps.data)" @delete="deletePart($event, slotProps.data)" />
                   </template>
                 </Column>
               </DataTable>
@@ -270,6 +257,7 @@ import { mapState } from "pinia";
 import { useServerStore } from "@/stores/server";
 import Button from "primevue/button";
 import PartViewModal from "@/components/parts/view.vue";
+import ButtonsEditDelete from "@/components/btn_edit_delete.vue";
 
 export default {
   setup: () => ({
@@ -278,6 +266,9 @@ export default {
     serverStore: useServerStore(),
     v$: useVuelidate(),
   }),
+  components: {
+    ButtonsEditDelete,
+  },
   data: () => ({
     project: null,
     projectStates: [
@@ -386,6 +377,7 @@ export default {
           style: {
             width: "25vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -409,6 +401,7 @@ export default {
         message: `Are you sure you want to delete the project '${this.project.name}' ?`,
         header: `Deleting '${this.project.name}' ?`,
         icon: "fa fa-exclamation-triangle",
+        dismissableMask: true,
         accept: () => {
           apiService
             .deleteProject(this.project.id)
@@ -442,8 +435,16 @@ export default {
 
       this.confirm.require({
         message: `Are you sure you want to delete the part '${part_name}' ?`,
-        header: `Deleting '${part_name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .projectDeletePart(this.project.id, part.id)
@@ -531,6 +532,14 @@ export default {
         message: `Are you sure you want to delete the attachment '${attachment.description}' ?`,
         header: `Deleting '${attachment.description}' ?`,
         icon: "fa fa-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Save",
+        },
         accept: () => {
           apiService
             .projectAttachmentDelete(this.project.id, attachment.id)
@@ -566,6 +575,7 @@ export default {
           style: {
             width: "25vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -598,6 +608,7 @@ export default {
           style: {
             width: "25vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -624,6 +635,7 @@ export default {
           style: {
             width: "60vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -649,6 +661,7 @@ export default {
           style: {
             width: "60vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -679,6 +692,7 @@ export default {
               style: {
                 width: "70vw",
               },
+              dismissableMask: true,
             },
             templates: {
               header: () => {

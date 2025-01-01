@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ConfirmDialog></ConfirmDialog>
+    <ConfirmPopup></ConfirmPopup>
     <Toast />
     <DynamicDialog />
 
