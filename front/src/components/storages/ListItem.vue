@@ -11,9 +11,9 @@
             class="pi pi-image ml-2"
             aria-hidden="true"
             @click.prevent="$refs.storage_picture.toggle($event)" />
-          <OverlayPanel id="storage_picture" ref="storage_picture" append-to="body" :show-close-icon="true">
+          <Popover id="storage_picture" ref="storage_picture" append-to="body" :show-close-icon="true">
             <PvImage preview width="250" :src="item.picture_medium"></PvImage>
-          </OverlayPanel>
+          </Popover>
         </template>
 
         &nbsp;&nbsp;

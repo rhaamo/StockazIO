@@ -48,9 +48,9 @@
                         class="pi pi-image mr-1"
                         aria-hidden="true"
                         @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
-                      <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
+                      <Popover :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
                         <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
-                      </OverlayPanel>
+                      </Popover>
                     </template>
                     <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
                     <br />

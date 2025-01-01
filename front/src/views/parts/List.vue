@@ -62,7 +62,7 @@
               <template #header>
                 <template v-if="selectedParts && selectedParts.length">
                   <PvButton label="Change category" class="p-button-info" @click="toggleOverlayPanel($event, 'btnChangeCat')" />
-                  <OverlayPanel ref="btnChangeCat">
+                  <Popover ref="btnChangeCat">
                     <TreeSelect
                       v-model="bulkEditCategory"
                       input-id="category"
@@ -70,10 +70,10 @@
                       :options="choicesCategory"
                       selection-mode="single" />
                     <PvButton label="Save" class="ml-1" @click="bulkChangeCategory($event)"></PvButton>
-                  </OverlayPanel>
+                  </Popover>
 
                   <PvButton label="Change location" class="p-button-help ml-2" @click="toggleOverlayPanel($event, 'btnChangeLoc')" />
-                  <OverlayPanel ref="btnChangeLoc">
+                  <Popover ref="btnChangeLoc">
                     <TreeSelect
                       v-model="bulkEditStorage"
                       class="p-column-filter"
@@ -81,7 +81,7 @@
                       :options="choicesStorageLocation"
                       selection-mode="single" />
                     <PvButton label="Save" class="ml-1" @click="bulkChangeStorageLocation($event)"></PvButton>
-                  </OverlayPanel>
+                  </Popover>
 
                   <PvButton label="Generate labels" class="p-button-normal ml-2" @click="showBulkLabelGenerator()" />
 
@@ -135,9 +135,9 @@
                         class="pi pi-image mr-1"
                         aria-hidden="true"
                         @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
-                      <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
+                      <Popover :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
                         <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
-                      </OverlayPanel>
+                      </Popover>
                     </template>
                     <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
                     <br />
