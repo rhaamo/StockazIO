@@ -175,8 +175,16 @@ export default {
     deleteItem(event, item) {
       this.confirm.require({
         message: `Are you sure you want to delete the footprint '${item.name}' ?`,
-        header: `Deleting '${item.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deleteFootprint(item.id)
@@ -208,8 +216,16 @@ export default {
     deleteCategory(event, item) {
       this.confirm.require({
         message: `Are you sure you want to delete the category '${item.name}' ?`,
-        header: `Deleting '${item.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deleteFootprintCategory(item.id)
@@ -245,6 +261,7 @@ export default {
           style: {
             width: "30vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -270,6 +287,7 @@ export default {
           style: {
             width: "30vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -296,6 +314,7 @@ export default {
           style: {
             width: "30vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -321,6 +340,7 @@ export default {
           style: {
             width: "30vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {

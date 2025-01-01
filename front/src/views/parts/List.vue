@@ -854,8 +854,16 @@ export default {
     deletePart(event, part) {
       this.confirm.require({
         message: `Are you sure you want to delete the part '${part.name}' ?`,
-        header: `Deleting '${part.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deletePart(part.id)

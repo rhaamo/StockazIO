@@ -122,6 +122,7 @@ export default {
           style: {
             width: "25vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -147,8 +148,16 @@ export default {
     deleteElementModal(item) {
       this.confirm.require({
         message: `Are you sure you want to delete the element '${item.name}' ?`,
-        header: `Deleting '${item.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deleteStorageLocation(item.id)
@@ -184,6 +193,7 @@ export default {
           style: {
             width: "25vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {

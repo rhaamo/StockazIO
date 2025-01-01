@@ -154,6 +154,7 @@ export default {
           style: {
             width: "35vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -178,6 +179,7 @@ export default {
           style: {
             width: "35vw",
           },
+          dismissableMask: true,
         },
         templates: {
           header: () => {
@@ -199,8 +201,16 @@ export default {
     deleteItem(event, item) {
       this.confirm.require({
         message: `Are you sure you want to delete the part parameters presets '${item.name}' ?`,
-        header: `Deleting '${item.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deletePartParameterPresets(item.id)

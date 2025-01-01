@@ -397,9 +397,16 @@ export default {
     deleteItem(event) {
       this.confirm.require({
         message: `Are you sure you want to delete the project '${this.project.name}' ?`,
-        header: `Deleting '${this.project.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
-        dismissableMask: true,
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deleteProject(this.project.id)

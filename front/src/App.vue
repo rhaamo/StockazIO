@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <ConfirmPopup></ConfirmPopup>
+    <ConfirmDialog group="dialog"></ConfirmDialog>
     <Toast />
     <DynamicDialog />
 
@@ -70,6 +71,7 @@ import { mapState } from "pinia";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
+import { ConfirmDialog } from "primevue";
 
 export default {
   components: {},

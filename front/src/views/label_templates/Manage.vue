@@ -417,8 +417,16 @@ export default {
     deleteItem() {
       this.confirm.require({
         message: `Are you sure you want to delete the template '${this.form.name}' ?`,
-        header: `Deleting '${this.form.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deleteLabelTemplate(this.form.id)
