@@ -161,7 +161,7 @@
                   </template>
                 </Column>
 
-                <Column header-style="width: 6em">
+                <Column header-style="width: 6.3em">
                   <template #body="slotProps">
                     <span class="p-buttonset">
                       <PvButton
@@ -174,7 +174,7 @@
                         v-tooltip="'delete'"
                         type="button"
                         icon="fa fa-trash-o"
-                        class="p-button-danger"
+                        class="p-button-danger ml-1"
                         @click="deletePart($event, slotProps.data)"></PvButton>
                     </span>
                   </template>
