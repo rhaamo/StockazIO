@@ -14,7 +14,7 @@
               class="mr-3" />
           </span>
 
-          <i v-if="part.private" class="fa icon-private fa-lock mr-1" />
+          <i v-if="part.private" class="pi pi-lock mr-1" />
           {{ part.name }}
         </h1>
       </div>
@@ -24,13 +24,13 @@
             name: 'parts-edit',
             params: { partId: part.id },
           }">
-          <PvButton v-tooltip.left="'edit'" type="button" icon="fa fa-edit" class="p-button-primary"></PvButton>
+          <PvButton v-tooltip.left="'edit'" type="button" icon="pi pi-pencil" class="p-button-primary"></PvButton>
         </router-link>
 
         <PvButton
           v-tooltip.left="'delete'"
           type="button"
-          icon="fa fa-trash-o"
+          icon="pi pi-trash"
           class="p-button-danger ml-2"
           @click="deletePart($event, part)"></PvButton>
       </div>

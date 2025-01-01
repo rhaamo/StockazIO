@@ -1,10 +1,10 @@
 <template>
   <li class="list-none">
-    <i class="fa fa-ellipsis-h mr-2" />
+    <i class="pi pi-ellipsis-h mr-2" />
     <span class="text-primary">{{ node.name }}</span>
-    <i v-tooltip="`Edit`" class="fa fa-pencil-square-o ml-2" aria-hidden="true" @click.prevent="showEditCategory($event, node)"></i>
-    <i v-tooltip="`Add child category`" class="fa fa-plus ml-2 text-green-500" aria-hidden="true" @click.prevent="showAddCategory($event, node)"></i>
-    <i v-if="!root" v-tooltip="`Delete`" class="fa fa-times ml-2 text-red-500" aria-hidden="true" @click.prevent="deleteItem($event, node)"></i>
+    <i v-tooltip="`Edit`" class="pi pi-pencil ml-2" aria-hidden="true" @click.prevent="showEditCategory($event, node)"></i>
+    <i v-tooltip="`Add child category`" class="pi pi-plus ml-2 text-green-500" aria-hidden="true" @click.prevent="showAddCategory($event, node)"></i>
+    <i v-if="!root" v-tooltip="`Delete`" class="pi pi-times ml-2 text-red-500" aria-hidden="true" @click.prevent="deleteItem($event, node)"></i>
 
     <ul v-if="node.children && node.children.length" class="children">
       <CategoriesNodeEditable v-for="child in node.children" :key="child.id" :node="child" />

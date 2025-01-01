@@ -5,17 +5,15 @@
       <div class="grid">
         <div class="col-6">
           <h3>
-            <i v-if="!project.public" class="fa icon-private fa-lock mr-2" />
+            <i v-if="!project.public" class="pi pi-lock mr-2" />
             <router-link v-if="project.public" :to="{ name: 'public-projects-details' }">
-              <i v-tooltip="'public link'" class="fa icon-public fa-globe mr-2" />
+              <i v-tooltip.left="'public link'" class="pi pi-globe mr-2" />
             </router-link>
             {{ project.name }}
           </h3>
         </div>
         <div class="col-1 col-offset-5">
-          <PvButton v-tooltip="'edit'" type="button" icon="fa fa-edit" class="p-button-primary" @click.prevent="showEditModal($event)"> </PvButton>
-
-          <PvButton v-tooltip="'delete'" type="button" icon="fa fa-trash-o" class="p-button-danger ml-2" @click="deleteItem($event)"> </PvButton>
+          <ButtonsEditDelete @edit="showEditModal($event)" @delete="deleteItem($event)" />
         </div>
       </div>
 
@@ -109,7 +107,7 @@
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.qty),
                           }"
-                          class="fa fa-circle"
+                          class="pi pi-circle-fill"
                           aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.part.stock_qty }}</span>
@@ -127,7 +125,7 @@
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
                           }"
-                          class="fa fa-circle"
+                          class="pi pi-circle-fill"
                           aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.qty }}</span>
@@ -145,7 +143,7 @@
                           v-tooltip="{
                             value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
                           }"
-                          class="fa fa-circle"
+                          class="pi pi-circle-fill"
                           aria-hidden="true" />
                       </span>
                       <span v-else>{{ slotProps.data.qty * boards_count }}</span>
@@ -156,8 +154,8 @@
 
                 <Column header="Sourced" field="sourced" :sortable="true" header-style="width: 6em">
                   <template #body="slotProps">
-                    <i v-if="slotProps.data.sourced" style="color: green" class="fa fa-check" aria-hidden="true" />
-                    <i v-else class="fa fa-close" style="color: red" aria-hidden="true" />
+                    <i v-if="slotProps.data.sourced" style="color: green" class="pi pi-check" aria-hidden="true" />
+                    <i v-else class="pi pi-times" style="color: red" aria-hidden="true" />
                   </template>
                 </Column>
 
@@ -220,7 +218,7 @@
               <DataTable :value="project.project_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
                 <Column header="Link">
                   <template #body="slotProps">
-                    <i class="fa fa-code-o"></i>
+                    <i class="pi pi-file mr-2"></i>
                     <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>
                 </Column>
@@ -702,7 +700,7 @@ export default {
             templates: {
               header: () => {
                 if (part.private) {
-                  return [h("h3", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
+                  return [h("h3", [h("i", { class: "pi pi-lock mr-1" }), h("span", part.name)])];
                 } else {
                   return [h("h3", part.name)];
                 }

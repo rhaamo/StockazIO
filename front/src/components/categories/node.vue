@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     categoryFolderClass(category) {
-      return category.id === parseInt(this.currentCategory.id) ? "fa fa-folder-open mr-2" : "fa fa-folder-o mr-2";
+      return category.id === parseInt(this.currentCategory.id) ? "pi pi-folder-open mr-2" : "pi pi-folder mr-2";
     },
   },
 };

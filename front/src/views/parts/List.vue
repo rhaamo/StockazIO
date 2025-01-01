@@ -27,7 +27,7 @@
     <div class="mt-4 pl-0 pr-0 pt-0 pb-0">
       <TabView>
         <TabPanel>
-          <template #header> <i class="fa fa-table mr-2"></i><span>Table</span> </template>
+          <template #header> <i class="pi pi-table mr-2"></i><span>Table</span> </template>
           <DataTable
             ref="dt"
             v-model:filters="filters"
@@ -127,7 +127,7 @@
                     <i
                       :id="`p_a_${slotProps.data.id}`"
                       v-tooltip="'Click to show picture'"
-                      class="fa fa-picture-o mr-1"
+                      class="pi pi-image mr-1"
                       aria-hidden="true"
                       @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
                     <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
@@ -264,7 +264,7 @@
         </TabPanel>
 
         <TabPanel>
-          <template #header> <i class="fa fa-image mr-2"></i> <span>Thumbnails</span> </template>
+          <template #header> <i class="pi pi-image mr-2"></i> <span>Thumbnails</span> </template>
 
           <div class="grid">
             <div v-for="part in parts" :key="part.id" class="col-4">
@@ -280,8 +280,8 @@
                         ><span>{{ part.stock_qty }}</span></template
                       >
                       <template v-else>
-                        <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" class="text-red-500"
-                          >{{ part.stock_qty }} <i class="fa fa-circle"></i
+                        <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
+                          >{{ part.stock_qty }} <i class="pi pi-circle-fill"></i
                         ></span>
                       </template>
                     </span>
@@ -291,10 +291,7 @@
                       <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
                     </template>
                     <template v-else>
-                      <span class="fa-stack fa-5x">
-                        <i class="fa fa-file-picture-o fa-stack-2x" />
-                        <i class="fa fa-question fa-stack-1x text-orange-400" />
-                      </span>
+                      <i class="pi pi-microchip mb-5 mt-5" style="font-size: 2.5rem" />
                     </template>
 
                     <div class="product-name">{{ part.name }}</div>
@@ -414,7 +411,7 @@ export default {
           let obj = {
             key: e.uuid ? e.id : `cat-${e.id}`,
             label: e.name,
-            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+            icon: e.uuid ? `pi pi-folder-open` : `pi pi-home`,
           };
           if (e.children) {
             obj["children"] = e.children.map(cb);
@@ -439,7 +436,7 @@ export default {
           let obj = {
             key: e.id,
             label: e.name,
-            icon: `fa fa-folder-o`,
+            icon: `pi pi-folder`,
           };
           obj["selectable"] = true;
           obj["children"] = e.children.map(cb);
@@ -460,7 +457,7 @@ export default {
       ].concat(this.choicesFootprint);
     },
     choicesStorageLocationWithNo() {
-      return [{ key: "0", label: "No Storage Location", icon: "fa fa-close" }].concat(this.choicesStorageLocation);
+      return [{ key: "0", label: "No Storage Location", icon: "pi pi-times" }].concat(this.choicesStorageLocation);
     },
     searchQuery() {
       return this.$route.query.q;
@@ -469,7 +466,7 @@ export default {
       if (this.actualCurrentCategory && this.categoryId && this.categoryId !== "0") {
         return {
           home: {
-            icon: "fa fa-folder-o mr-1",
+            icon: "pi pi-folder mr-1",
             command: () => {
               this.$router.push({ name: "home" });
             },
@@ -492,7 +489,7 @@ export default {
       } else if (this.categoryId && this.categoryId == 0) {
         return {
           home: {
-            icon: "fa fa-folder-o mr-1",
+            icon: "pi pi-folder mr-1",
             command: () => {
               this.$router.push({
                 name: "parts-category-list",
@@ -507,7 +504,7 @@ export default {
       } else {
         return {
           home: {
-            icon: "fa fa-folder-o mr-1",
+            icon: "pi pi-folder mr-1",
             command: () => {
               this.$router.push({ name: "parts-list" });
             },
@@ -733,7 +730,7 @@ export default {
             templates: {
               header: () => {
                 if (part.private) {
-                  return [h("h1", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
+                  return [h("h1", [h("i", { class: "pi pi-lock mr-1" }), h("span", part.name)])];
                 } else {
                   return [h("h1", part.name)];
                 }
@@ -793,7 +790,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {
@@ -1040,7 +1037,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

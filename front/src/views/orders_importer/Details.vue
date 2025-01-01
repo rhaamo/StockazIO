@@ -258,7 +258,7 @@ export default {
           let obj = {
             key: e.id,
             label: e.name,
-            icon: `fa fa-folder-o`,
+            icon: `pi pi-folder`,
           };
           obj["selectable"] = true;
           obj["children"] = e.children.map(cb);
@@ -272,7 +272,7 @@ export default {
           let obj = {
             key: e.uuid ? e.id : `cat-${e.id}`,
             label: e.description ? `${e.name} (${e.description})` : e.name,
-            icon: e.uuid ? `fa fa-folder-open` : `fa fa-home`,
+            icon: e.uuid ? `pi pi-folder-open` : `pi pi-home`,
           };
           if (e.children) {
             obj["children"] = e.children.map(cb);
@@ -504,7 +504,7 @@ export default {
             templates: {
               header: () => {
                 if (part.private) {
-                  return [h("h1", [h("i", { class: "fa fa-lock mr-1" }), h("span", part.name)])];
+                  return [h("h1", [h("i", { class: "pi pi-lock mr-1" }), h("span", part.name)])];
                 } else {
                   return [h("h1", part.name)];
                 }
@@ -564,7 +564,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {
@@ -595,7 +595,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

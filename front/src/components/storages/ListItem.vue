@@ -2,14 +2,13 @@
   <div>
     <ul class="list-none mt-1">
       <li class="mt-1 list-none">
-        <i class="fa fa-ellipsis-h" aria-hidden="true" /> {{ item.name }}
+        <i class="pi pi-ellipsis-h" aria-hidden="true" /><span class="ml-2">{{ item.name }}</span>
 
         <template v-if="item.picture">
-          &nbsp;
           <i
             :id="item.uuid"
-            v-tooltip="`Click to show picture`"
-            class="fa fa-file-image-o"
+            v-tooltip.bottom="`Click to show picture`"
+            class="pi pi-image ml-2"
             aria-hidden="true"
             @click.prevent="$refs.storage_picture.toggle($event)" />
           <OverlayPanel id="storage_picture" ref="storage_picture" append-to="body" :show-close-icon="true">
@@ -19,29 +18,31 @@
 
         &nbsp;&nbsp;
 
-        <router-link v-tooltip="`QrCode label generator`" to="#" class="no-underline" @click.prevent="showLabelGeneratorModal(item)">
-          <i class="fa fa-qrcode" aria-hidden="true" />
+        <router-link v-tooltip.bottom="`QrCode label generator`" to="#" class="no-underline" @click.prevent="showLabelGeneratorModal(item)">
+          <i class="pi pi-qrcode" aria-hidden="true" />
         </router-link>
 
         <template v-if="!readonly">
           &nbsp;&nbsp;
 
-          <router-link v-tooltip="`Edit Element`" to="#" class="no-underline" @click.prevent="editElementModal(item)">
-            <i class="fa fa-pencil-square-o" aria-hidden="true" />
+          <router-link v-tooltip.bottom="`Edit Element`" to="#" class="no-underline" @click.prevent="editElementModal(item)">
+            <i class="pi pi-pencil" aria-hidden="true" />
           </router-link>
           &nbsp;
-          <router-link v-tooltip="`Delete Element`" to="#" class="no-underline" @click.prevent="deleteElementModal(item)">
-            <i class="fa fa-trash-o" aria-hidden="true" />
+          <router-link v-tooltip.bottom="`Delete Element`" to="#" class="no-underline" @click.prevent="deleteElementModal(item)">
+            <i class="pi pi-trash" aria-hidden="true" />
           </router-link>
 
           &nbsp;&nbsp;
 
-          <router-link v-tooltip="`${addElementTitle(item.name)}`" to="#" class="no-underline" @click.prevent="addElementModal(item.id)">
-            <i class="fa fa-plus-square-o" aria-hidden="true" />
+          <router-link v-tooltip.bottom="`${addElementTitle(item.name)}`" to="#" class="no-underline" @click.prevent="addElementModal(item.id)">
+            <i class="pi pi-plus" aria-hidden="true" />
           </router-link>
         </template>
         <br />
-        <template v-if="item.description"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&raquo; {{ item.description }} </template>
+        <template v-if="item.description"
+          ><span class="pi pi-comment ml-4" v-tooltip.left="'Storage description'"></span> {{ item.description }}
+        </template>
       </li>
       <ListItem v-for="category in item.children" :key="category.uuid" :item="category" :level="level + 1" :readonly="readonly" />
     </ul>
@@ -106,7 +107,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

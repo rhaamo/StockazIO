@@ -29,8 +29,8 @@
         <Column header="Visibility" :sortable="false" field="visibility" header-style="width: 2em">
           <template #body="slotProps">
             <div>
-              <i v-if="slotProps.data.public" class="fa fa-globe" aria-hidden="true" />
-              <i v-else class="fa fa-lock" aria-hidden="true" />
+              <i v-if="slotProps.data.public" class="pi pi-globe" aria-hidden="true" />
+              <i v-else class="pi pi-lock" aria-hidden="true" />
             </div>
           </template>
         </Column>

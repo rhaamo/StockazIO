@@ -93,67 +93,67 @@ export default {
         { separator: true },
         {
           label: "Edit",
-          icon: "fa fa-cogs fa-fw",
+          icon: "pi pi-cog",
           items: [
             {
               label: "Footprints",
-              icon: "fa fa-paw fa-fw",
+              icon: "pi pi-microchip",
               command: () => {
                 this.$router.push({ name: "footprints-list" });
               },
             },
             {
               label: "Manufacturers",
-              icon: "fa fa-home fa-fw",
+              icon: "pi pi-building",
               command: () => {
                 this.$router.push({ name: "manufacturers-list" });
               },
             },
             {
               label: "Distributors",
-              icon: "fa fa-car fa-fw",
+              icon: "pi pi-truck",
               command: () => {
                 this.$router.push({ name: "distributors-list" });
               },
             },
             {
               label: "Storage",
-              icon: "fa fa-archive fa-fw",
+              icon: "pi pi-box",
               command: () => {
                 this.$router.push({ name: "storages-list" });
               },
             },
             {
               label: "Parts units",
-              icon: "fa fa-cogs fa-fw",
+              icon: "pi pi-cog",
               command: () => {
                 this.$router.push({ name: "part-units-list" });
               },
             },
             {
               label: "Parameters Units",
-              icon: "fa fa-cogs fa-fw",
+              icon: "pi pi-cog",
               command: () => {
                 this.$router.push({ name: "parameters-units-list" });
               },
             },
             {
               label: "Part Parameters Presets",
-              icon: "fa fa-list fa-fw",
+              icon: "pi pi-list",
               command: () => {
                 this.$router.push({ name: "parameters-presets-list" });
               },
             },
             {
               label: "Label Templates",
-              icon: "fa fa-file-text fa-fw",
+              icon: "pi pi-tags",
               command: () => {
                 this.$router.push({ name: "label-templates-list" });
               },
             },
             {
               label: "Categories",
-              icon: "fa fa-tree fa-fw",
+              icon: "pi pi-sitemap",
               command: () => {
                 this.$router.push({ name: "categories-list" });
               },
@@ -162,25 +162,25 @@ export default {
         },
         {
           label: "View",
-          icon: "fa fa-list fa-fw",
+          icon: "pi pi-list",
           items: [
             {
               label: "Informations",
-              icon: "fa fa-cogs fa-fw",
+              icon: "pi pi-question",
               command: () => {
                 this.$router.push({ name: "view-infos" });
               },
             },
             {
               label: "Storage tree",
-              icon: "fa fa-list-alt fa-fw",
+              icon: "pi pi-list",
               command: () => {
                 this.$router.push({ name: "view-storage-tree" });
               },
             },
             {
               label: "Public parts",
-              icon: "fa fa-list-alt fa-fw",
+              icon: "pi pi-list",
               command: () => {
                 this.$router.push({ name: "public-parts" });
               },
@@ -189,18 +189,18 @@ export default {
         },
         {
           label: "Tools",
-          icon: "fa fa-tasks fa-fw",
+          icon: "pi pi-hammer",
           items: [
             {
               label: "Orders importer",
-              icon: "fa fa-shopping-cart fa-fw",
+              icon: "pi pi-shopping-cart",
               command: () => {
                 this.$router.push({ name: "orders-importer" });
               },
             },
             {
               label: "Projects",
-              icon: "fa fa-list-ul fa-fw",
+              icon: "pi pi-list",
               command: () => {
                 this.$router.push({ name: "projects-list" });
               },
@@ -210,14 +210,14 @@ export default {
         { separator: true },
         {
           label: "Add part",
-          icon: "fa fa-plus fa-fw",
+          icon: "pi pi-plus",
           command: () => {
             this.$router.push({ name: "parts-new" });
           },
         },
         {
           label: "Quick add part",
-          icon: "fa fa-fast-forward fa-fw",
+          icon: "pi pi-fast-forward",
           command: () => {
             this.$router.push({ name: "parts-quick-new" });
           },
@@ -226,25 +226,25 @@ export default {
         {
           // somehow that won't change in the UI...
           label: this.currentUsername,
-          icon: "fa fa-user fa-fw",
+          icon: "pi pi-user",
           items: [
             {
               label: "Change password",
-              icon: "fa fa-key fa-fw",
+              icon: "pi pi-key",
               command: () => {
                 this.$router.push({ name: "password-reset-request" });
               },
             },
             {
               label: "Force reload datas",
-              icon: "fa fa-refresh",
+              icon: "pi pi-refresh",
               command: (event) => {
                 this.forceReloadDatas();
               },
             },
             {
               label: "Register URL Handler",
-              icon: "fa fa-link",
+              icon: "pi pi-link",
               command: (event) => {
                 this.registerUrlHandler();
               },
@@ -252,7 +252,7 @@ export default {
             { separator: true },
             {
               label: "Logout",
-              icon: "fa fa-sign-out fa-fw",
+              icon: "pi pi-sign-out",
               command: (event) => {
                 this.userStore.logout().then(() => {
                   this.$router.replace({ name: "login_form" });

@@ -5,7 +5,7 @@
       <ul class="list-none">
         <li>
           <router-link to="#" title="Bulk-generate labels" class="no-underline" @click.prevent="showBulkLabelGenerator()">
-            <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
+            <i class="pi pi-qrcode" aria-hidden="true" /> Bulk-generate labels
           </router-link>
         </li>
       </ul>
@@ -75,7 +75,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

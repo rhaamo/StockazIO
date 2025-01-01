@@ -61,7 +61,7 @@ export default {
           let obj = {
             key: e.id,
             label: e.name,
-            icon: `fa fa-folder-o`,
+            icon: `pi pi-folder`,
           };
           obj["selectable"] = true;
           obj["children"] = e.children.map(cb);

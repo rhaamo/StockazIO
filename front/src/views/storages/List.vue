@@ -5,13 +5,13 @@
       <ul class="list-none">
         <li>
           <router-link v-tooltip.top="'Add storage element on root level'" to="#" class="no-underline" @click.prevent="showAddElementDialog">
-            <i class="fa fa-plus-square-o" aria-hidden="true" /> Add root storage
+            <i class="pi pi-plus" aria-hidden="true" /> Add root storage
           </router-link>
 
           &nbsp;&nbsp;&nbsp;
 
           <router-link v-tooltip.top="'Bulk-generate labels'" to="#" class="no-underline" @click.prevent="showBulkLabelGenerator()">
-            <i class="fa fa-qrcode" aria-hidden="true" /> Bulk-generate labels
+            <i class="pi pi-qrcode" aria-hidden="true" /> Bulk-generate labels
           </router-link>
         </li>
       </ul>
@@ -84,7 +84,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode mr-1" }), h("span", "Label Generator")])];
           },
         },
         data: {

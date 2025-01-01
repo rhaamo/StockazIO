@@ -170,7 +170,7 @@ export default {
           let obj = {
             key: e.id,
             label: e.name,
-            icon: "fa fa-ellipsis-h",
+            icon: "pi pi-ellipsis-h",
             children: e.children && e.children.length ? e.children.map(cb) : [],
           };
           // return obj
