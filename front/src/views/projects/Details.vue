@@ -218,8 +218,8 @@
 
               <Divider />
               <DataTable :value="project.project_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
-                <Column header="Link"
-                  ><template #body="slotProps">
+                <Column header="Link">
+                  <template #body="slotProps">
                     <i class="fa fa-code-o"></i>
                     <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>

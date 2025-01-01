@@ -77,20 +77,7 @@
 
         <Column header-style="width: 6.3em">
           <template #body="slotProps">
-            <span class="p-buttonset">
-              <PvButton
-                v-tooltip="'edit'"
-                type="button"
-                icon="fa fa-edit"
-                class="p-button-primary"
-                @click.prevent="editItem($event, slotProps.data)"></PvButton>
-              <PvButton
-                v-tooltip="'delete'"
-                type="button"
-                icon="fa fa-trash-o"
-                class="p-button-danger ml-1"
-                @click="deleteItem($event, slotProps.data)"></PvButton>
-            </span>
+            <ButtonsEditDelete @edit="editItem($event, slotProps.data)" @delete="deleteItem($event, slotProps.data)" />
           </template>
         </Column>
       </DataTable>
@@ -109,6 +96,7 @@ import apiService from "@/services/api/api.service";
 import { useToast } from "primevue/usetoast";
 import logger from "@/logging";
 import { useConfirm } from "primevue/useconfirm";
+import ButtonsEditDelete from "@/components/btn_edit_delete.vue";
 
 export default {
   setup: () => ({
@@ -116,6 +104,9 @@ export default {
     toast: useToast(),
     confirm: useConfirm(),
   }),
+  components: {
+    ButtonsEditDelete,
+  },
   data: () => ({
     matchModes: {
       name: [

@@ -228,21 +228,7 @@
             </Column>
             <Column :sortable="false" header-style="min-width: 6.3em">
               <template #body="slotProps">
-                <span class="p-buttonset">
-                  <router-link
-                    :to="{
-                      name: 'parts-edit',
-                      params: { partId: slotProps.data.id },
-                    }">
-                    <PvButton v-tooltip="'edit'" type="button" icon="fa fa-edit" class="p-button-primary"></PvButton>
-                  </router-link>
-                  <PvButton
-                    v-tooltip="'delete'"
-                    type="button"
-                    icon="fa fa-trash-o"
-                    class="p-button-danger ml-1"
-                    @click="deletePart($event, slotProps.data)"></PvButton>
-                </span>
+                <ButtonsEditDelete @edit="editPart($event, slotProps.data)" @delete="deletePart($event, slotProps.data)" />
               </template>
             </Column>
           </DataTable>
@@ -345,11 +331,13 @@ import ParameterFilter from "@/components/parts/ParameterFilter.vue";
 import { h } from "vue";
 import Button from "primevue/button";
 import QuantityPopoverEditor from "@/components/parts/QuantityPopoverEditor.vue";
+import ButtonsEditDelete from "@/components/btn_edit_delete.vue";
 
 export default {
   components: {
     ParameterFilter,
     QuantityPopoverEditor,
+    ButtonsEditDelete,
   },
   data: () => ({
     loading: true,
@@ -850,6 +838,12 @@ export default {
     },
     onRowUnselect() {
       this.selectAll = false;
+    },
+    editPart(event, part) {
+      this.$router.push({
+        name: "parts-edit",
+        params: { partId: part.id },
+      });
     },
     deletePart(event, part) {
       this.confirm.require({
