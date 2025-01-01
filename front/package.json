@@ -19,7 +19,6 @@
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
-    "fork-awesome": "^1.2.0",
     "fuse.js": "^7.0.0",
     "fuzzbunny": "^1.0.1",
     "js-file-download": "0.4.12",
