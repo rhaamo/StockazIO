@@ -3,183 +3,188 @@
     <Breadcrumb :home="breadcrumb.home" :model="breadcrumb.items" />
 
     <div class="mt-4 pt-0 pl-0 pr-0">
-      <TabView>
-        <TabPanel>
-          <template #header> <i class="pi pi-table mr-2"></i><span>Table</span> </template>
-          <DataTable
-            ref="dt"
-            v-model:filters="filters"
-            :value="parts"
-            :lazy="true"
-            :paginator="true"
-            :rows="perPage"
-            data-key="id"
-            :total-records="totalRecords"
-            :loading="loading"
-            filter-display="row"
-            responsive-layout="scroll"
-            striped-rows
-            class="p-datatable-sm"
-            removable-sort
-            @page="onPage($event)"
-            @sort="onSort($event)"
-            @filter="onFilter($event)">
-            <template #empty> No parts found. </template>
+      <Tabs value="0" scrollable>
+        <TabList>
+          <Tab value="0"><i class="pi pi-table mr-2"></i><span>Table</span></Tab>
+          <Tab value="1"><i class="pi pi-image mr-2"></i> <span>Thumbnails</span></Tab>
+        </TabList>
+        <TabPanels>
+          <!-- Table -->
+          <TabPanel value="0">
+            <DataTable
+              ref="dt"
+              v-model:filters="filters"
+              :value="parts"
+              :lazy="true"
+              :paginator="true"
+              :rows="perPage"
+              data-key="id"
+              :total-records="totalRecords"
+              :loading="loading"
+              filter-display="row"
+              responsive-layout="scroll"
+              striped-rows
+              class="p-datatable-sm"
+              removable-sort
+              @page="onPage($event)"
+              @sort="onSort($event)"
+              @filter="onFilter($event)">
+              <template #empty> No parts found. </template>
 
-            <template #header>
-              <div class="field-checkbox">
-                <Checkbox v-model="lazyParams.sellable" input-id="only_sellable" :binary="true" />
-                <label for="only_sellable">Only show sellable parts</label>
-              </div>
-            </template>
-
-            <Column header="Name" :sortable="true" field="name" :filter-match-mode-options="matchModes.name">
-              <template #body="slotProps">
-                <div>
-                  <template v-if="partGetDefaultAttachment(slotProps.data.part_attachments)">
-                    <i
-                      :id="`p_a_${slotProps.data.id}`"
-                      v-tooltip="'Click to show picture'"
-                      class="pi pi-image mr-1"
-                      aria-hidden="true"
-                      @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
-                    <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
-                      <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
-                    </OverlayPanel>
-                  </template>
-                  <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
-                  <br />
-                  <template v-if="slotProps.data.description">
-                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
-                  </template>
-                  <template v-else>
-                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
-                  </template>
+              <template #header>
+                <div class="field-checkbox">
+                  <Checkbox v-model="lazyParams.sellable" input-id="only_sellable" :binary="true" />
+                  <label for="only_sellable">Only show sellable parts</label>
                 </div>
               </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  v-tooltip.top.focus="'Hit enter key to filter'"
-                  type="text"
-                  class="p-column-filter"
-                  placeholder="Search by name"
-                  @keydown.enter="filterCallback()" />
-              </template>
-            </Column>
-            <Column header="Storage" :sortable="true" field="storage_id" :filter-match-mode-options="matchModes.storage">
-              <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
-              <template #filter="{ filterModel, filterCallback }">
-                <TreeSelect
-                  v-model="filterModel.value"
-                  class="p-column-filter"
-                  placeholder="Search by storage"
-                  :options="choicesStorageLocationWithNo"
-                  selection-mode="single"
-                  @change="filterCallback()" />
-              </template>
-            </Column>
-            <Column header="Stock" :sortable="true" field="stock_qty" data-type="numeric" :filter-match-mode-options="matchModes.qty">
-              <template #body="slotProps">
-                <template v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
-                  ><span>{{ slotProps.data.stock_qty }}</span></template
-                >
-                <template v-else>
-                  <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
-                    >{{ slotProps.data.stock_qty }} <i class="pi pi-circle-fill"></i
-                  ></span>
-                </template>
-              </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <InputNumber
-                  v-model="filterModel.value"
-                  v-tooltip.top.focus="'Hit enter key to filter'"
-                  class="p-column-filter"
-                  placeholder="qty"
-                  @keydown.enter="filterCallback()" />
-              </template>
-            </Column>
-            <Column header="Min" :sortable="true" field="stock_qty_min" data-type="numeric">
-              <template #body="slotProps">
-                <span>{{ slotProps.data.stock_qty_min }}</span>
-              </template></Column
-            >
-            <Column header="Unit" :sortable="true" field="part_unit.name">
-              <template #body="slotProps">{{
-                slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
-              }}</template>
-            </Column>
-            <Column header="Footprint" :sortable="true" field="footprint_id" :filter-match-mode-options="matchModes.footprint">
-              <template #body="slotProps">
-                <span
-                  v-tooltip="{
-                    value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
-                    disabled: false,
-                  }">
-                  {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
-                </span>
-              </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <Dropdown
-                  v-model="filterModel.value"
-                  class="p-column-filter"
-                  placeholder="Search by footprint"
-                  :options="choicesFootprintWithNo"
-                  option-label="name"
-                  option-value="id"
-                  option-group-label="category"
-                  option-group-children="footprints"
-                  :filter="true"
-                  @change="filterCallback()" />
-              </template>
-            </Column>
-          </DataTable>
-        </TabPanel>
-        <TabPanel>
-          <template #header> <i class="pi pi-image mr-2"></i> <span>Thumbnails</span> </template>
 
-          <div class="grid">
-            <div v-for="part in parts" :key="part.id" class="col-4">
-              <Card class="product-grid-item">
-                <template #content>
-                  <div class="product-grid-item-top">
-                    <div>
-                      <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
-                    </div>
-                    <span
-                      >qty:
-                      <template v-if="part.stock_qty >= part.stock_qty_min"
-                        ><span>{{ part.stock_qty }}</span></template
-                      >
-                      <template v-else>
-                        <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
-                          >{{ part.stock_qty }} <i class="pi pi-circle-fill"></i
-                        ></span>
-                      </template>
-                    </span>
-                  </div>
-                  <div class="product-grid-item-content mt-3">
-                    <template v-if="partGetDefaultAttachment(part.part_attachments)">
-                      <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
+              <Column header="Name" :sortable="true" field="name" :filter-match-mode-options="matchModes.name">
+                <template #body="slotProps">
+                  <div>
+                    <template v-if="partGetDefaultAttachment(slotProps.data.part_attachments)">
+                      <i
+                        :id="`p_a_${slotProps.data.id}`"
+                        v-tooltip="'Click to show picture'"
+                        class="pi pi-image mr-1"
+                        aria-hidden="true"
+                        @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
+                      <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
+                        <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
+                      </OverlayPanel>
+                    </template>
+                    <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
+                    <br />
+                    <template v-if="slotProps.data.description">
+                      {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
                     </template>
                     <template v-else>
-                      <i class="pi pi-microchip mb-5 mt-5" style="font-size: 2.5rem" />
+                      {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
                     </template>
-
-                    <div class="product-name">{{ part.name }}</div>
-                    <div class="product-description">
-                      {{ part.description }}
-                    </div>
-                    <div class="product-button">
-                      <PvButton label="View details" @click.prevent="viewPartModal(part)"></PvButton>
-                    </div>
                   </div>
                 </template>
-              </Card>
+                <template #filter="{ filterModel, filterCallback }">
+                  <InputText
+                    v-model="filterModel.value"
+                    v-tooltip.top.focus="'Hit enter key to filter'"
+                    type="text"
+                    class="p-column-filter"
+                    placeholder="Search by name"
+                    @keydown.enter="filterCallback()" />
+                </template>
+              </Column>
+              <Column header="Storage" :sortable="true" field="storage_id" :filter-match-mode-options="matchModes.storage">
+                <template #body="slotProps">{{ slotProps.data.storage && slotProps.data.storage.name ? slotProps.data.storage.name : "-" }}</template>
+                <template #filter="{ filterModel, filterCallback }">
+                  <TreeSelect
+                    v-model="filterModel.value"
+                    class="p-column-filter"
+                    placeholder="Search by storage"
+                    :options="choicesStorageLocationWithNo"
+                    selection-mode="single"
+                    @change="filterCallback()" />
+                </template>
+              </Column>
+              <Column header="Stock" :sortable="true" field="stock_qty" data-type="numeric" :filter-match-mode-options="matchModes.qty">
+                <template #body="slotProps">
+                  <template v-if="slotProps.data.stock_qty >= slotProps.data.stock_qty_min"
+                    ><span>{{ slotProps.data.stock_qty }}</span></template
+                  >
+                  <template v-else>
+                    <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
+                      >{{ slotProps.data.stock_qty }} <i class="pi pi-circle-fill"></i
+                    ></span>
+                  </template>
+                </template>
+                <template #filter="{ filterModel, filterCallback }">
+                  <InputNumber
+                    v-model="filterModel.value"
+                    v-tooltip.top.focus="'Hit enter key to filter'"
+                    class="p-column-filter"
+                    placeholder="qty"
+                    @keydown.enter="filterCallback()" />
+                </template>
+              </Column>
+              <Column header="Min" :sortable="true" field="stock_qty_min" data-type="numeric">
+                <template #body="slotProps">
+                  <span>{{ slotProps.data.stock_qty_min }}</span>
+                </template></Column
+              >
+              <Column header="Unit" :sortable="true" field="part_unit.name">
+                <template #body="slotProps">{{
+                  slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
+                }}</template>
+              </Column>
+              <Column header="Footprint" :sortable="true" field="footprint_id" :filter-match-mode-options="matchModes.footprint">
+                <template #body="slotProps">
+                  <span
+                    v-tooltip="{
+                      value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
+                      disabled: false,
+                    }">
+                    {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
+                  </span>
+                </template>
+                <template #filter="{ filterModel, filterCallback }">
+                  <Dropdown
+                    v-model="filterModel.value"
+                    class="p-column-filter"
+                    placeholder="Search by footprint"
+                    :options="choicesFootprintWithNo"
+                    option-label="name"
+                    option-value="id"
+                    option-group-label="category"
+                    option-group-children="footprints"
+                    :filter="true"
+                    @change="filterCallback()" />
+                </template>
+              </Column>
+            </DataTable>
+          </TabPanel>
+          <!-- Thumbnails -->
+          <TabPanel value="1">
+            <div class="grid">
+              <div v-for="part in parts" :key="part.id" class="col-4">
+                <Card class="product-grid-item">
+                  <template #content>
+                    <div class="product-grid-item-top">
+                      <div>
+                        <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
+                      </div>
+                      <span
+                        >qty:
+                        <template v-if="part.stock_qty >= part.stock_qty_min"
+                          ><span>{{ part.stock_qty }}</span></template
+                        >
+                        <template v-else>
+                          <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
+                            >{{ part.stock_qty }} <i class="pi pi-circle-fill"></i
+                          ></span>
+                        </template>
+                      </span>
+                    </div>
+                    <div class="product-grid-item-content mt-3">
+                      <template v-if="partGetDefaultAttachment(part.part_attachments)">
+                        <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
+                      </template>
+                      <template v-else>
+                        <i class="pi pi-microchip mb-5 mt-5" style="font-size: 2.5rem" />
+                      </template>
+
+                      <div class="product-name">{{ part.name }}</div>
+                      <div class="product-description">
+                        {{ part.description }}
+                      </div>
+                      <div class="product-button">
+                        <PvButton label="View details" @click.prevent="viewPartModal(part)"></PvButton>
+                      </div>
+                    </div>
+                  </template>
+                </Card>
+              </div>
             </div>
-          </div>
-        </TabPanel>
-      </TabView>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>

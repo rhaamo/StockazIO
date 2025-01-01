@@ -372,66 +372,78 @@
               </div>
             </div>
             <div class="col-6">
-              <TabView>
-                <TabPanel header="Parameters">
-                  <div v-for="(_, i) in form.part_parameters_value" :key="i">
-                    <PartParametersEntry
-                      v-model:item="form.part_parameters_value[i]"
-                      :submitted="submitted"
-                      @deleteItem="deletePartParameter($event, i)" />
-                  </div>
-
-                  <Divider />
-                  <div class="grid">
-                    <div class="col-3">
-                      <PvButton class="p-button-help" label="add item" @click.prevent="addPartParameter($event)" />
+              <Tabs value="0" scrollable>
+                <TabList>
+                  <Tab value="0">Parameters</Tab>
+                  <Tab value="1">Manufacturers</Tab>
+                  <Tab value="2">Distributors</Tab>
+                </TabList>
+                <TabPanels>
+                  <!-- Parameters -->
+                  <TabPanel value="0">
+                    <div v-for="(_, i) in form.part_parameters_value" :key="i">
+                      <PartParametersEntry
+                        v-model:item="form.part_parameters_value[i]"
+                        :submitted="submitted"
+                        @deleteItem="deletePartParameter($event, i)" />
                     </div>
-                    <div class="col-9">
-                      <Dropdown
-                        v-model="part_parameters_preset"
-                        input-id="preset"
-                        class="w-7 mr-1"
-                        :options="choicesPartParametersPreset"
-                        option-label="text"
-                        option-value="value"
-                        :filter="true"
-                        placeholder="Preset to apply" />
-                      <ButtonDeleteInline
-                        size="p-button-sm"
-                        btn-variant-main="p-button-info"
-                        btn-variant-ok="p-button-success"
-                        btn-variant-cancel="p-button-info"
-                        btn-main-text="apply"
-                        btn-main-text-disabled="Confirm ?"
-                        btn-ok-text="Yes"
-                        btn-cancel-text="No"
-                        @action-confirmed="applyPartParametersPreset" />
+
+                    <Divider />
+                    <div class="grid">
+                      <div class="col-3">
+                        <PvButton class="p-button-help" label="add item" @click.prevent="addPartParameter($event)" />
+                      </div>
+                      <div class="col-9">
+                        <Dropdown
+                          v-model="part_parameters_preset"
+                          input-id="preset"
+                          class="w-7 mr-1"
+                          :options="choicesPartParametersPreset"
+                          option-label="text"
+                          option-value="value"
+                          :filter="true"
+                          placeholder="Preset to apply" />
+                        <ButtonDeleteInline
+                          size="p-button-sm"
+                          btn-variant-main="p-button-info"
+                          btn-variant-ok="p-button-success"
+                          btn-variant-cancel="p-button-info"
+                          btn-main-text="apply"
+                          btn-main-text-disabled="Confirm ?"
+                          btn-ok-text="Yes"
+                          btn-cancel-text="No"
+                          @action-confirmed="applyPartParametersPreset" />
+                      </div>
                     </div>
-                  </div>
-                </TabPanel>
-                <TabPanel header="Manufacturers">
-                  <div v-for="(_, i) in form.manufacturers_sku" :key="i">
-                    <ManufacturersSkuEntry
-                      v-model:item="form.manufacturers_sku[i]"
-                      :submitted="submitted"
-                      @deleteItem="deleteManufacturer($event, i)" />
-                  </div>
+                  </TabPanel>
+                  <!-- Manufacturers -->
+                  <TabPanel value="1">
+                    <div v-for="(_, i) in form.manufacturers_sku" :key="i">
+                      <ManufacturersSkuEntry
+                        v-model:item="form.manufacturers_sku[i]"
+                        :submitted="submitted"
+                        @deleteItem="deleteManufacturer($event, i)" />
+                    </div>
 
-                  <Divider />
-                  <div>
-                    <PvButton class="p-button-help" label="add item" @click.prevent="addManufacturer($event)" />
-                  </div>
-                </TabPanel>
+                    <Divider />
+                    <div>
+                      <PvButton class="p-button-help" label="add item" @click.prevent="addManufacturer($event)" />
+                    </div>
+                  </TabPanel>
+                  <!-- Distributors -->
+                  <TabPanel value="2">
+                    <div v-for="(_, i) in form.distributors_sku" :key="i">
+                      <DistributorsSkuEntry
+                        v-model:item="form.distributors_sku[i]"
+                        :submitted="submitted"
+                        @deleteItem="deleteDistributor($event, i)" />
+                    </div>
 
-                <TabPanel header="Distributors">
-                  <div v-for="(_, i) in form.distributors_sku" :key="i">
-                    <DistributorsSkuEntry v-model:item="form.distributors_sku[i]" :submitted="submitted" @deleteItem="deleteDistributor($event, i)" />
-                  </div>
-
-                  <Divider />
-                  <PvButton class="p-button-help" label="add item" @click.prevent="addDistributor($event)" />
-                </TabPanel>
-              </TabView>
+                    <Divider />
+                    <PvButton class="p-button-help" label="add item" @click.prevent="addDistributor($event)" />
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             </div>
           </div>
         </form>

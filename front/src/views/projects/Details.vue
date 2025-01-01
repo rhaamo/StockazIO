@@ -55,182 +55,189 @@
         </div>
 
         <div class="col-8">
-          <TabView>
-            <TabPanel header="Parts">
-              <div>
-                <PvButton label="Add part from inventory" @click.prevent="showAddInternalPart($event)" />
-                <PvButton class="p-button-info ml-2" label="Add external part" @click.prevent="showAddExternalPart($event)" />
-              </div>
+          <Tabs value="0" scrollable>
+            <TabList>
+              <Tab value="0">Parts</Tab>
+              <Tab value="1">Files attachments</Tab>
+            </TabList>
+            <TabPanels>
+              <!-- PArts -->
+              <TabPanel value="0">
+                <div>
+                  <PvButton label="Add part from inventory" @click.prevent="showAddInternalPart($event)" />
+                  <PvButton class="p-button-info ml-2" label="Add external part" @click.prevent="showAddExternalPart($event)" />
+                </div>
 
-              <div class="mt-1">
-                <label for="boards_count" class="block">Boards:</label>
-                <InputNumber
-                  v-model="boards_count"
-                  input-id="boards_count"
-                  show-buttons
-                  button-layout="horizontal"
-                  :step="1"
-                  :min="1"
-                  class="w-4"></InputNumber>
-              </div>
+                <div class="mt-1">
+                  <label for="boards_count" class="block">Boards:</label>
+                  <InputNumber
+                    v-model="boards_count"
+                    input-id="boards_count"
+                    show-buttons
+                    button-layout="horizontal"
+                    :step="1"
+                    :min="1"
+                    class="w-4"></InputNumber>
+                </div>
 
-              <Divider />
+                <Divider />
 
-              <DataTable
-                :value="project.project_parts"
-                class="p-datatable-sm"
-                striped-rows
-                responsive-layout="scroll"
-                :paginator="false"
-                removable-sort>
-                <Column header="Name" :sortable="false">
-                  <template #body="slotProps">
-                    <a v-if="slotProps.data.part" href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data.part)">{{
-                      slotProps.data.part.name
-                    }}</a>
-                    <span v-else>{{ slotProps.data.part_name }}</span>
-                    <template v-if="slotProps.data.part && slotProps.data.part.description">
-                      <br />
-                      {{ slotProps.data.part.description }}
+                <DataTable
+                  :value="project.project_parts"
+                  class="p-datatable-sm"
+                  striped-rows
+                  responsive-layout="scroll"
+                  :paginator="false"
+                  removable-sort>
+                  <Column header="Name" :sortable="false">
+                    <template #body="slotProps">
+                      <a v-if="slotProps.data.part" href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data.part)">{{
+                        slotProps.data.part.name
+                      }}</a>
+                      <span v-else>{{ slotProps.data.part_name }}</span>
+                      <template v-if="slotProps.data.part && slotProps.data.part.description">
+                        <br />
+                        {{ slotProps.data.part.description }}
+                      </template>
                     </template>
-                  </template>
-                </Column>
+                  </Column>
 
-                <Column header="Notes" field="notes" :sortable="false"> </Column>
+                  <Column header="Notes" field="notes" :sortable="false"> </Column>
 
-                <Column header="Stock" :sortable="false" header-style="width: 6em">
-                  <template #body="slotProps">
-                    <template v-if="slotProps.data.part">
-                      <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
-                        >{{ slotProps.data.part.stock_qty }}
-                        <i
-                          v-tooltip="{
-                            value: currentStockQuantityWarning(slotProps.data.qty),
-                          }"
-                          class="pi pi-circle-fill"
-                          aria-hidden="true" />
-                      </span>
-                      <span v-else>{{ slotProps.data.part.stock_qty }}</span>
+                  <Column header="Stock" :sortable="false" header-style="width: 6em">
+                    <template #body="slotProps">
+                      <template v-if="slotProps.data.part">
+                        <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
+                          >{{ slotProps.data.part.stock_qty }}
+                          <i
+                            v-tooltip="{
+                              value: currentStockQuantityWarning(slotProps.data.qty),
+                            }"
+                            class="pi pi-circle-fill"
+                            aria-hidden="true" />
+                        </span>
+                        <span v-else>{{ slotProps.data.part.stock_qty }}</span>
+                      </template>
+                      <span v-else>-</span>
                     </template>
-                    <span v-else>-</span>
-                  </template>
-                </Column>
+                  </Column>
 
-                <Column header="Quantity x1" :sortable="false" header-style="width: 6em">
-                  <template #body="slotProps">
-                    <template v-if="slotProps.data.part">
-                      <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
-                        >{{ slotProps.data.qty }}
-                        <i
-                          v-tooltip="{
-                            value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
-                          }"
-                          class="pi pi-circle-fill"
-                          aria-hidden="true" />
-                      </span>
+                  <Column header="Quantity x1" :sortable="false" header-style="width: 6em">
+                    <template #body="slotProps">
+                      <template v-if="slotProps.data.part">
+                        <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty" class="qtyMinWarning"
+                          >{{ slotProps.data.qty }}
+                          <i
+                            v-tooltip="{
+                              value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
+                            }"
+                            class="pi pi-circle-fill"
+                            aria-hidden="true" />
+                        </span>
+                        <span v-else>{{ slotProps.data.qty }}</span>
+                      </template>
                       <span v-else>{{ slotProps.data.qty }}</span>
                     </template>
-                    <span v-else>{{ slotProps.data.qty }}</span>
-                  </template>
-                </Column>
+                  </Column>
 
-                <Column header="Quantity total" :sortable="false" header-style="width: 6em">
-                  <template #body="slotProps">
-                    <template v-if="slotProps.data.part">
-                      <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty * boards_count" class="qtyMinWarning"
-                        >{{ slotProps.data.qty * boards_count }}
-                        <i
-                          v-tooltip="{
-                            value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
-                          }"
-                          class="pi pi-circle-fill"
-                          aria-hidden="true" />
-                      </span>
+                  <Column header="Quantity total" :sortable="false" header-style="width: 6em">
+                    <template #body="slotProps">
+                      <template v-if="slotProps.data.part">
+                        <span v-if="slotProps.data.part.stock_qty < slotProps.data.qty * boards_count" class="qtyMinWarning"
+                          >{{ slotProps.data.qty * boards_count }}
+                          <i
+                            v-tooltip="{
+                              value: currentStockQuantityWarning(slotProps.data.part.stock_qty),
+                            }"
+                            class="pi pi-circle-fill"
+                            aria-hidden="true" />
+                        </span>
+                        <span v-else>{{ slotProps.data.qty * boards_count }}</span>
+                      </template>
                       <span v-else>{{ slotProps.data.qty * boards_count }}</span>
                     </template>
-                    <span v-else>{{ slotProps.data.qty * boards_count }}</span>
-                  </template>
-                </Column>
+                  </Column>
 
-                <Column header="Sourced" field="sourced" :sortable="true" header-style="width: 6em">
-                  <template #body="slotProps">
-                    <i v-if="slotProps.data.sourced" style="color: green" class="pi pi-check" aria-hidden="true" />
-                    <i v-else class="pi pi-times" style="color: red" aria-hidden="true" />
-                  </template>
-                </Column>
+                  <Column header="Sourced" field="sourced" :sortable="true" header-style="width: 6em">
+                    <template #body="slotProps">
+                      <i v-if="slotProps.data.sourced" style="color: green" class="pi pi-check" aria-hidden="true" />
+                      <i v-else class="pi pi-times" style="color: red" aria-hidden="true" />
+                    </template>
+                  </Column>
 
-                <Column header-style="width: 6.3em">
-                  <template #body="slotProps">
-                    <ButtonsEditDelete @edit="showEditPart($event, slotProps.data)" @delete="deletePart($event, slotProps.data)" />
-                  </template>
-                </Column>
-              </DataTable>
-            </TabPanel>
+                  <Column header-style="width: 6.3em">
+                    <template #body="slotProps">
+                      <ButtonsEditDelete @edit="showEditPart($event, slotProps.data)" @delete="deletePart($event, slotProps.data)" />
+                    </template>
+                  </Column>
+                </DataTable>
+              </TabPanel>
+              <!-- Files attachments -->
+              <TabPanel value="1">
+                <form enctype="multipart/form-data" @submit.prevent="addAttachment(!v$.$invalid)">
+                  <div class="grid">
+                    <div class="col-5">
+                      <InputText
+                        ref="description"
+                        v-model="formAddAttachment.description"
+                        input-id="description"
+                        type="text"
+                        placeholder="File description"
+                        :invalid="v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted"
+                        fluid />
+                      <small
+                        v-if="
+                          (v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted) ||
+                          v$.formAddAttachment.description.$pending.$response
+                        "
+                        class="p-error">
+                        {{ v$.formAddAttachment.description.required.$message }}
+                        <template v-if="v$.formAddAttachment.description.required && v$.formAddAttachment.description.maxLength"><br /></template>
+                        {{ v$.formAddAttachment.description.maxLength.$message }}
+                      </small>
+                    </div>
 
-            <TabPanel header="Files attachments">
-              <form enctype="multipart/form-data" @submit.prevent="addAttachment(!v$.$invalid)">
-                <div class="grid">
-                  <div class="col-5">
-                    <InputText
-                      ref="description"
-                      v-model="formAddAttachment.description"
-                      input-id="description"
-                      type="text"
-                      placeholder="File description"
-                      :invalid="v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted"
-                      fluid />
-                    <small
-                      v-if="
-                        (v$.formAddAttachment.description.$invalid && formAddAttachmentSubmitted) ||
-                        v$.formAddAttachment.description.$pending.$response
-                      "
-                      class="p-error">
-                      {{ v$.formAddAttachment.description.required.$message }}
-                      <template v-if="v$.formAddAttachment.description.required && v$.formAddAttachment.description.maxLength"><br /></template>
-                      {{ v$.formAddAttachment.description.maxLength.$message }}
-                    </small>
+                    <div class="col-6">
+                      <InputText
+                        ref="file"
+                        v-model="formAddAttachment.file"
+                        input-id="file"
+                        type="file"
+                        :invalid="v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted"
+                        fluid
+                        :accept="allowedUploadTypes"
+                        @change="attachmentFileChanged($event.target.files)" />
+                      <small
+                        v-if="(v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.file.$pending.$response"
+                        class="p-error">
+                        {{ v$.formAddAttachment.file.required.$message }}
+                      </small>
+                    </div>
+
+                    <div class="col-1">
+                      <PvButton label="add" type="submit" />
+                    </div>
                   </div>
+                </form>
 
-                  <div class="col-6">
-                    <InputText
-                      ref="file"
-                      v-model="formAddAttachment.file"
-                      input-id="file"
-                      type="file"
-                      :invalid="v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted"
-                      fluid
-                      :accept="allowedUploadTypes"
-                      @change="attachmentFileChanged($event.target.files)" />
-                    <small
-                      v-if="(v$.formAddAttachment.file.$invalid && formAddAttachmentSubmitted) || v$.formAddAttachment.file.$pending.$response"
-                      class="p-error">
-                      {{ v$.formAddAttachment.file.required.$message }}
-                    </small>
-                  </div>
-
-                  <div class="col-1">
-                    <PvButton label="add" type="submit" />
-                  </div>
-                </div>
-              </form>
-
-              <Divider />
-              <DataTable :value="project.project_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
-                <Column header="Link">
-                  <template #body="slotProps">
-                    <i class="pi pi-file mr-2"></i>
-                    <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
-                  </template>
-                </Column>
-                <Column field="description" header="Description"> </Column>
-                <Column>
-                  <template #body="slotProps">
-                    <PvButton severity="danger" icon="pi pi-trash" @click.prevent="deleteAttachment(slotProps.data)"></PvButton>
-                  </template>
-                </Column>
-              </DataTable>
-            </TabPanel>
-          </TabView>
+                <Divider />
+                <DataTable :value="project.project_attachments" class="p-datatable-sm" striped-rows responsive-layout="scroll">
+                  <Column header="Link">
+                    <template #body="slotProps">
+                      <i class="pi pi-file mr-2"></i>
+                      <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
+                    </template>
+                  </Column>
+                  <Column field="description" header="Description"> </Column>
+                  <Column>
+                    <template #body="slotProps">
+                      <PvButton severity="danger" icon="pi pi-trash" @click.prevent="deleteAttachment(slotProps.data)"></PvButton>
+                    </template>
+                  </Column>
+                </DataTable>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </div>
       </div>
     </div>
@@ -450,7 +457,7 @@ export default {
         },
         accept: () => {
           apiService
-            .projectDeletePart(this.project.id, part.id)
+            .projectDeletepPart(this.project.id, part.id)
             .then((val) => {
               this.toast.add({
                 severity: "success",

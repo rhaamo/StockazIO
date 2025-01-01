@@ -25,289 +25,293 @@
     </Card>
 
     <div class="mt-4 pl-0 pr-0 pt-0 pb-0">
-      <TabView>
-        <TabPanel>
-          <template #header> <i class="pi pi-table mr-2"></i><span>Table</span> </template>
-          <DataTable
-            ref="dt"
-            v-model:filters="filters"
-            :value="parts"
-            :lazy="true"
-            :paginator="true"
-            :rows="perPage"
-            v-model:selection="selectedParts"
-            data-key="id"
-            :total-records="totalRecords"
-            :loading="loading"
-            filter-display="row"
-            responsive-layout="scroll"
-            :select-all="selectAll"
-            striped-rows
-            class="p-datatable-sm"
-            removable-sort
-            :show-filter-operator="false"
-            @page="onPage($event)"
-            @sort="onSort($event)"
-            @filter="onFilter($event)"
-            @select-all-change="onSelectAllChange"
-            @row-select="onRowSelect"
-            @row-unselect="onRowUnselect">
-            <template #empty> No parts found. </template>
+      <Tabs value="0" scrollable>
+        <TabList>
+          <Tab value="0"><i class="pi pi-table mr-2"></i><span>Table</span></Tab>
+          <Tab value="1"><i class="pi pi-image mr-2"></i> <span>Thumbnails</span></Tab>
+        </TabList>
+        <TabPanels>
+          <!-- Table -->
+          <TabPanel value="0">
+            <DataTable
+              ref="dt"
+              v-model:filters="filters"
+              :value="parts"
+              :lazy="true"
+              :paginator="true"
+              :rows="perPage"
+              v-model:selection="selectedParts"
+              data-key="id"
+              :total-records="totalRecords"
+              :loading="loading"
+              filter-display="row"
+              responsive-layout="scroll"
+              :select-all="selectAll"
+              striped-rows
+              class="p-datatable-sm"
+              removable-sort
+              :show-filter-operator="false"
+              @page="onPage($event)"
+              @sort="onSort($event)"
+              @filter="onFilter($event)"
+              @select-all-change="onSelectAllChange"
+              @row-select="onRowSelect"
+              @row-unselect="onRowUnselect">
+              <template #empty> No parts found. </template>
 
-            <template #header>
-              <template v-if="selectedParts && selectedParts.length">
-                <PvButton label="Change category" class="p-button-info" @click="toggleOverlayPanel($event, 'btnChangeCat')" />
-                <OverlayPanel ref="btnChangeCat">
-                  <TreeSelect
-                    v-model="bulkEditCategory"
-                    input-id="category"
-                    placeholder="Film resistors ? MCUs ?"
-                    :options="choicesCategory"
-                    selection-mode="single" />
-                  <PvButton label="Save" class="ml-1" @click="bulkChangeCategory($event)"></PvButton>
-                </OverlayPanel>
+              <template #header>
+                <template v-if="selectedParts && selectedParts.length">
+                  <PvButton label="Change category" class="p-button-info" @click="toggleOverlayPanel($event, 'btnChangeCat')" />
+                  <OverlayPanel ref="btnChangeCat">
+                    <TreeSelect
+                      v-model="bulkEditCategory"
+                      input-id="category"
+                      placeholder="Film resistors ? MCUs ?"
+                      :options="choicesCategory"
+                      selection-mode="single" />
+                    <PvButton label="Save" class="ml-1" @click="bulkChangeCategory($event)"></PvButton>
+                  </OverlayPanel>
 
-                <PvButton label="Change location" class="p-button-help ml-2" @click="toggleOverlayPanel($event, 'btnChangeLoc')" />
-                <OverlayPanel ref="btnChangeLoc">
-                  <TreeSelect
-                    v-model="bulkEditStorage"
-                    class="p-column-filter"
-                    placeholder="Select storage"
-                    :options="choicesStorageLocation"
-                    selection-mode="single" />
-                  <PvButton label="Save" class="ml-1" @click="bulkChangeStorageLocation($event)"></PvButton>
-                </OverlayPanel>
+                  <PvButton label="Change location" class="p-button-help ml-2" @click="toggleOverlayPanel($event, 'btnChangeLoc')" />
+                  <OverlayPanel ref="btnChangeLoc">
+                    <TreeSelect
+                      v-model="bulkEditStorage"
+                      class="p-column-filter"
+                      placeholder="Select storage"
+                      :options="choicesStorageLocation"
+                      selection-mode="single" />
+                    <PvButton label="Save" class="ml-1" @click="bulkChangeStorageLocation($event)"></PvButton>
+                  </OverlayPanel>
 
-                <PvButton label="Generate labels" class="p-button-normal ml-2" @click="showBulkLabelGenerator()" />
+                  <PvButton label="Generate labels" class="p-button-normal ml-2" @click="showBulkLabelGenerator()" />
 
-                <PvButton label="Delete" class="p-button-danger ml-2" @click="deletePartMultiple($event)" />
-              </template>
-
-              <template v-else>
-                <div class="flex items-center gap-4">
-                  <div>
-                    <Checkbox v-model="filter_qty_min" input-id="only_qty_less_min" :binary="true" />
-                    <label for="only_qty_less_min"> Only qty &lt; min</label>
-                  </div>
-                  <div>
-                    <Checkbox v-model="filter_qty_zero" input-id="only_qty_zero" :binary="true" />
-                    <label for="only_qty_zero"> Qty out of stock</label>
-                  </div>
-                  <div>
-                    <Checkbox v-model="show_parameters_filter" input-id="show_parameters_filter" :binary="true" />
-                    <label for="show_parameters_filter"> Parameters Filtering</label>
-                  </div>
-                </div>
-              </template>
-            </template>
-
-            <Column selection-mode="multiple" header-style="width: 3em"></Column>
-            <Column :sortable="false">
-              <template #body="slotProps">
-                <div @click="showLabelGenerator(slotProps.data)">
-                  <vue-qrcode
-                    :id="qrcodeId(slotProps.data.id)"
-                    v-tooltip="'show label generator'"
-                    :value="qrCodePart(slotProps.data.uuid)"
-                    :options="{
-                      scale: 1,
-                      color: { dark: '#000000', light: '#FFFFFF' },
-                    }"
-                    :data-uuid="slotProps.data.uuid"
-                    :data-name="slotProps.data.name"
-                    data-toggle="modal"
-                    data-target="#modalQrCode" />
-                </div>
-              </template>
-            </Column>
-            <Column header="Name" :sortable="true" field="name" :filter-match-mode-options="matchModes.name">
-              <template #body="slotProps">
-                <div>
-                  <template v-if="partGetDefaultAttachment(slotProps.data.part_attachments)">
-                    <i
-                      :id="`p_a_${slotProps.data.id}`"
-                      v-tooltip="'Click to show picture'"
-                      class="pi pi-image mr-1"
-                      aria-hidden="true"
-                      @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
-                    <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
-                      <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
-                    </OverlayPanel>
-                  </template>
-                  <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
-                  <br />
-                  <template v-if="slotProps.data.description">
-                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
-                  </template>
-                  <template v-else>
-                    {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
-                  </template>
-                </div>
-              </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  v-tooltip.top.focus="'Hit enter key to filter'"
-                  type="text"
-                  class="p-column-filter"
-                  placeholder="Search by name"
-                  @keydown.enter="filterCallback()" />
-              </template>
-            </Column>
-            <Column header="Storage" :sortable="true" field="storage_id" :filter-match-mode-options="matchModes.storage">
-              <template #body="slotProps">
-                <template v-if="slotProps.data.storage && slotProps.data.storage.name">
-                  {{ slotProps.data.storage_path.join(" / ") }}
+                  <PvButton label="Delete" class="p-button-danger ml-2" @click="deletePartMultiple($event)" />
                 </template>
-                <template v-else>-</template>
-              </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <TreeSelect
-                  v-model="filterModel.value"
-                  class="p-column-filter"
-                  placeholder="Search by storage"
-                  :options="choicesStorageLocationWithNo"
-                  selection-mode="single"
-                  fluid
-                  @change="filterCallback()" />
-              </template>
-            </Column>
-            <Column
-              header="In stock"
-              :sortable="true"
-              field="stock_qty"
-              data-type="numeric"
-              :filter-match-mode-options="matchModes.qty"
-              header-style="width: 10rem">
-              <template #body="slotProps">
-                <QuantityPopoverEditor :part="slotProps.data" kind="qty" size="" />
-              </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <InputNumber
-                  v-model="filterModel.value"
-                  v-tooltip.top.focus="'Hit enter key to filter'"
-                  class="p-column-filter"
-                  placeholder="qty"
-                  @keydown.enter="filterCallback()" />
-              </template>
-            </Column>
-            <Column header="Min" :sortable="true" field="stock_qty_min" data-type="numeric" header-style="width: 10rem">
-              <template #body="slotProps">
-                <QuantityPopoverEditor :part="slotProps.data" kind="qty_min" size="" />
-              </template>
-            </Column>
-            <Column header="Unit" :sortable="true" field="part_unit.name">
-              <template #body="slotProps">{{
-                slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
-              }}</template>
-            </Column>
-            <Column header="Footprint" :sortable="true" field="footprint_id" :filter-match-mode-options="matchModes.footprint">
-              <template #body="slotProps">
-                <span
-                  v-tooltip="{
-                    value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
-                    disabled: false,
-                  }">
-                  {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
-                </span>
-              </template>
-              <template #filter="{ filterModel, filterCallback }">
-                <Dropdown
-                  v-model="filterModel.value"
-                  class="p-column-filter"
-                  placeholder="Search by footprint"
-                  :options="choicesFootprintWithNo"
-                  option-label="name"
-                  option-value="id"
-                  option-group-label="category"
-                  option-group-children="footprints"
-                  :filter="true"
-                  fluid
-                  @change="filterCallback()" />
-              </template>
-            </Column>
-            <Column :sortable="false" header-style="min-width: 6.3em">
-              <template #body="slotProps">
-                <ButtonsEditDelete @edit="editPart($event, slotProps.data)" @delete="deletePart($event, slotProps.data)" />
-              </template>
-            </Column>
-          </DataTable>
 
-          <Popover ref="poQty">
-            <label
-              for="qty"
-              :class="{
-                'pb-3': true,
-                block: true,
-              }"
-              >Change quantity from {{ selectedPartMode === "qty" ? selectedPart.oldQty : selectedPart.oldQtyMin }} to:</label
-            >
-            <div v-if="selectedPartMode === 'qty'" class="flex gap-2">
-              <InputNumber v-model="selectedPart.stock_qty" input-id="qty" mode="decimal" show-buttons button-layout="horizontal" :min="0" />
-              <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
-            </div>
-            <div v-else class="flex gap-2">
-              <InputNumber v-model="selectedPart.stock_qty_min" input-id="qty" mode="decimal" show-buttons button-layout="horizontal" :min="0" />
-              <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
-            </div>
-
-            <InputGroup class="mt-3">
-              <PvButton label="-10" severity="success" size="small" @click.prevent="updateSelectedPartQty(-10)" />
-              <PvButton label="-50" severity="info" size="small" @click.prevent="updateSelectedPartQty(-50)" />
-              <PvButton label="-100" severity="help" size="small" @click.prevent="updateSelectedPartQty(-100)" />
-              <PvButton disabled severity="secondary" size="small" />
-              <PvButton label="+100" severity="help" size="small" @click.prevent="updateSelectedPartQty(+100)" />
-              <PvButton label="+50" severity="info" size="small" @click.prevent="updateSelectedPartQty(+50)" />
-              <PvButton label="+10" severity="success" size="small" @click.prevent="updateSelectedPartQty(+10)" />
-            </InputGroup>
-          </Popover>
-        </TabPanel>
-
-        <TabPanel>
-          <template #header> <i class="pi pi-image mr-2"></i> <span>Thumbnails</span> </template>
-
-          <div class="grid">
-            <div v-for="part in parts" :key="part.id" class="col-4">
-              <Card class="product-grid-item">
-                <template #content>
-                  <div class="product-grid-item-top">
+                <template v-else>
+                  <div class="flex items-center gap-4">
                     <div>
-                      <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
+                      <Checkbox v-model="filter_qty_min" input-id="only_qty_less_min" :binary="true" />
+                      <label for="only_qty_less_min"> Only qty &lt; min</label>
                     </div>
-                    <span
-                      >qty:
-                      <template v-if="part.stock_qty >= part.stock_qty_min"
-                        ><span>{{ part.stock_qty }}</span></template
-                      >
-                      <template v-else>
-                        <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
-                          >{{ part.stock_qty }} <i class="pi pi-circle-fill"></i
-                        ></span>
-                      </template>
-                    </span>
+                    <div>
+                      <Checkbox v-model="filter_qty_zero" input-id="only_qty_zero" :binary="true" />
+                      <label for="only_qty_zero"> Qty out of stock</label>
+                    </div>
+                    <div>
+                      <Checkbox v-model="show_parameters_filter" input-id="show_parameters_filter" :binary="true" />
+                      <label for="show_parameters_filter"> Parameters Filtering</label>
+                    </div>
                   </div>
-                  <div class="product-grid-item-content mt-3">
-                    <template v-if="partGetDefaultAttachment(part.part_attachments)">
-                      <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
+                </template>
+              </template>
+
+              <Column selection-mode="multiple" header-style="width: 3em"></Column>
+              <Column :sortable="false">
+                <template #body="slotProps">
+                  <div @click="showLabelGenerator(slotProps.data)">
+                    <vue-qrcode
+                      :id="qrcodeId(slotProps.data.id)"
+                      v-tooltip="'show label generator'"
+                      :value="qrCodePart(slotProps.data.uuid)"
+                      :options="{
+                        scale: 1,
+                        color: { dark: '#000000', light: '#FFFFFF' },
+                      }"
+                      :data-uuid="slotProps.data.uuid"
+                      :data-name="slotProps.data.name"
+                      data-toggle="modal"
+                      data-target="#modalQrCode" />
+                  </div>
+                </template>
+              </Column>
+              <Column header="Name" :sortable="true" field="name" :filter-match-mode-options="matchModes.name">
+                <template #body="slotProps">
+                  <div>
+                    <template v-if="partGetDefaultAttachment(slotProps.data.part_attachments)">
+                      <i
+                        :id="`p_a_${slotProps.data.id}`"
+                        v-tooltip="'Click to show picture'"
+                        class="pi pi-image mr-1"
+                        aria-hidden="true"
+                        @click="toggleOverlayPanel($event, `p_a_${slotProps.data.id}`)" />
+                      <OverlayPanel :id="`p_a_${slotProps.data.id}`" :ref="`p_a_${slotProps.data.id}`" append-to="body" :show-close-icon="true">
+                        <PvImage preview width="250" :src="partGetDefaultAttachment(slotProps.data.part_attachments).picture_medium"></PvImage>
+                      </OverlayPanel>
+                    </template>
+                    <a href="#" class="no-underline" @click.prevent="viewPartModal(slotProps.data)">{{ slotProps.data.name }}</a>
+                    <br />
+                    <template v-if="slotProps.data.description">
+                      {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}: {{ slotProps.data.description }}
                     </template>
                     <template v-else>
-                      <i class="pi pi-microchip mb-5 mt-5" style="font-size: 2.5rem" />
+                      {{ slotProps.data.category ? slotProps.data.category.name : "No category" }}
                     </template>
-
-                    <div class="product-name">{{ part.name }}</div>
-                    <div class="product-description">
-                      {{ part.description }}
-                    </div>
-                    <div class="product-button">
-                      <PvButton label="View details" @click.prevent="viewPartModal(part)"></PvButton>
-                    </div>
                   </div>
                 </template>
-              </Card>
+                <template #filter="{ filterModel, filterCallback }">
+                  <InputText
+                    v-model="filterModel.value"
+                    v-tooltip.top.focus="'Hit enter key to filter'"
+                    type="text"
+                    class="p-column-filter"
+                    placeholder="Search by name"
+                    @keydown.enter="filterCallback()" />
+                </template>
+              </Column>
+              <Column header="Storage" :sortable="true" field="storage_id" :filter-match-mode-options="matchModes.storage">
+                <template #body="slotProps">
+                  <template v-if="slotProps.data.storage && slotProps.data.storage.name">
+                    {{ slotProps.data.storage_path.join(" / ") }}
+                  </template>
+                  <template v-else>-</template>
+                </template>
+                <template #filter="{ filterModel, filterCallback }">
+                  <TreeSelect
+                    v-model="filterModel.value"
+                    class="p-column-filter"
+                    placeholder="Search by storage"
+                    :options="choicesStorageLocationWithNo"
+                    selection-mode="single"
+                    fluid
+                    @change="filterCallback()" />
+                </template>
+              </Column>
+              <Column
+                header="In stock"
+                :sortable="true"
+                field="stock_qty"
+                data-type="numeric"
+                :filter-match-mode-options="matchModes.qty"
+                header-style="width: 10rem">
+                <template #body="slotProps">
+                  <QuantityPopoverEditor :part="slotProps.data" kind="qty" size="" />
+                </template>
+                <template #filter="{ filterModel, filterCallback }">
+                  <InputNumber
+                    v-model="filterModel.value"
+                    v-tooltip.top.focus="'Hit enter key to filter'"
+                    class="p-column-filter"
+                    placeholder="qty"
+                    @keydown.enter="filterCallback()" />
+                </template>
+              </Column>
+              <Column header="Min" :sortable="true" field="stock_qty_min" data-type="numeric" header-style="width: 10rem">
+                <template #body="slotProps">
+                  <QuantityPopoverEditor :part="slotProps.data" kind="qty_min" size="" />
+                </template>
+              </Column>
+              <Column header="Unit" :sortable="true" field="part_unit.name">
+                <template #body="slotProps">{{
+                  slotProps.data.part_unit && slotProps.data.part_unit.name ? slotProps.data.part_unit.name : "-"
+                }}</template>
+              </Column>
+              <Column header="Footprint" :sortable="true" field="footprint_id" :filter-match-mode-options="matchModes.footprint">
+                <template #body="slotProps">
+                  <span
+                    v-tooltip="{
+                      value: slotProps.data.footprint ? slotProps.data.footprint.description : '',
+                      disabled: false,
+                    }">
+                    {{ slotProps.data.footprint ? slotProps.data.footprint.name : "-" }}
+                  </span>
+                </template>
+                <template #filter="{ filterModel, filterCallback }">
+                  <Dropdown
+                    v-model="filterModel.value"
+                    class="p-column-filter"
+                    placeholder="Search by footprint"
+                    :options="choicesFootprintWithNo"
+                    option-label="name"
+                    option-value="id"
+                    option-group-label="category"
+                    option-group-children="footprints"
+                    :filter="true"
+                    fluid
+                    @change="filterCallback()" />
+                </template>
+              </Column>
+              <Column :sortable="false" header-style="min-width: 6.3em">
+                <template #body="slotProps">
+                  <ButtonsEditDelete @edit="editPart($event, slotProps.data)" @delete="deletePart($event, slotProps.data)" />
+                </template>
+              </Column>
+            </DataTable>
+
+            <Popover ref="poQty">
+              <label
+                for="qty"
+                :class="{
+                  'pb-3': true,
+                  block: true,
+                }"
+                >Change quantity from {{ selectedPartMode === "qty" ? selectedPart.oldQty : selectedPart.oldQtyMin }} to:</label
+              >
+              <div v-if="selectedPartMode === 'qty'" class="flex gap-2">
+                <InputNumber v-model="selectedPart.stock_qty" input-id="qty" mode="decimal" show-buttons button-layout="horizontal" :min="0" />
+                <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
+              </div>
+              <div v-else class="flex gap-2">
+                <InputNumber v-model="selectedPart.stock_qty_min" input-id="qty" mode="decimal" show-buttons button-layout="horizontal" :min="0" />
+                <PvButton label="save" severity="success" @click.prevent="updateInplaceBothQty($event)" />
+              </div>
+
+              <InputGroup class="mt-3">
+                <PvButton label="-10" severity="success" size="small" @click.prevent="updateSelectedPartQty(-10)" />
+                <PvButton label="-50" severity="info" size="small" @click.prevent="updateSelectedPartQty(-50)" />
+                <PvButton label="-100" severity="help" size="small" @click.prevent="updateSelectedPartQty(-100)" />
+                <PvButton disabled severity="secondary" size="small" />
+                <PvButton label="+100" severity="help" size="small" @click.prevent="updateSelectedPartQty(+100)" />
+                <PvButton label="+50" severity="info" size="small" @click.prevent="updateSelectedPartQty(+50)" />
+                <PvButton label="+10" severity="success" size="small" @click.prevent="updateSelectedPartQty(+10)" />
+              </InputGroup>
+            </Popover>
+          </TabPanel>
+          <!-- Thumbnails -->
+          <TabPanel value="1">
+            <div class="grid">
+              <div v-for="part in parts" :key="part.id" class="col-4">
+                <Card class="product-grid-item">
+                  <template #content>
+                    <div class="product-grid-item-top">
+                      <div>
+                        <span class="product-category">{{ part.category ? part.category.name : "Uncategorized" }}</span>
+                      </div>
+                      <span
+                        >qty:
+                        <template v-if="part.stock_qty >= part.stock_qty_min"
+                          ><span>{{ part.stock_qty }}</span></template
+                        >
+                        <template v-else>
+                          <span v-tooltip="'Current stock is below minimum stock quantity or exhausted'" style="color: orange"
+                            >{{ part.stock_qty }} <i class="pi pi-circle-fill"></i
+                          ></span>
+                        </template>
+                      </span>
+                    </div>
+                    <div class="product-grid-item-content mt-3">
+                      <template v-if="partGetDefaultAttachment(part.part_attachments)">
+                        <PvImage preview :src="partGetDefaultAttachment(part.part_attachments).picture_medium" :alt="part.name" width="250" />
+                      </template>
+                      <template v-else>
+                        <i class="pi pi-microchip mb-5 mt-5" style="font-size: 2.5rem" />
+                      </template>
+
+                      <div class="product-name">{{ part.name }}</div>
+                      <div class="product-description">
+                        {{ part.description }}
+                      </div>
+                      <div class="product-button">
+                        <PvButton label="View details" @click.prevent="viewPartModal(part)"></PvButton>
+                      </div>
+                    </div>
+                  </template>
+                </Card>
+              </div>
             </div>
-          </div>
-        </TabPanel>
-      </TabView>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>
