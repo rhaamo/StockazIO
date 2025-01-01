@@ -202,8 +202,16 @@ export default {
     importOrder(event, order) {
       this.confirm.require({
         message: `Don't forget to edit it for categories and other fields.`,
-        header: `Importing order '${order.order_number}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "danger",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Import",
+          severity: "primary",
+        },
         accept: () => {
           apiService
             .importOrderToInventory(order.id)

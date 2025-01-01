@@ -116,7 +116,7 @@
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
-                    <a :href="slotProps.data.datasheet_url" target="_blank"> <i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }} </a>
+                    <a :href="slotProps.data.datasheet_url" target="_blank"> <i class="pi pi-file-pdf"></i> {{ slotProps.data.datasheet_url }} </a>
                   </template>
                 </template>
               </Column>
@@ -135,7 +135,7 @@
               <Column header="Datasheet">
                 <template #body="slotProps">
                   <template v-if="slotProps.data.datasheet_url">
-                    <a :href="slotProps.data.datasheet_url" target="_blank"> <i class="fa fa-file-pdf-o"></i> {{ slotProps.data.datasheet_url }}</a>
+                    <a :href="slotProps.data.datasheet_url" target="_blank"> <i class="pi pi-file-pdf"></i> {{ slotProps.data.datasheet_url }}</a>
                   </template>
                 </template>
               </Column>
@@ -208,11 +208,11 @@
               <Column header="Link"
                 ><template #body="slotProps">
                   <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
-                    <i class="fa fa-picture-o mr-1"></i>
+                    <i class="pi pi-image mr-1"></i>
                     <a :href="slotProps.data.picture">{{ stripPathFromFileUrl(slotProps.data.picture) }}</a>
                   </template>
                   <template v-else>
-                    <i class="fa fa-code-o"></i>
+                    <i class="pi pi-file"></i>
                     <a class="no-underline" :href="slotProps.data.file">{{ stripPathFromFileUrl(slotProps.data.file) }}</a>
                   </template>
                 </template>
@@ -221,17 +221,17 @@
               <Column>
                 <template #body="slotProps">
                   <template v-if="slotProps.data.picture && slotProps.data.picture_medium">
-                    <i v-if="slotProps.data.picture_default" class="fa fa-check-square-o" title="Default picture" aria-hidden="true" />
+                    <i v-if="slotProps.data.picture_default" class="pi pi-check-square" v-tooltip.left="'Default picture'" aria-hidden="true" />
                     <i
                       v-else
-                      class="fa fa-square-o"
+                      class="pi pi-plus-circle"
                       aria-hidden="true"
-                      title="Set as default picture"
+                      v-tooltip.left="'Set as default picture'"
                       @click.prevent="setAttachmentAsDefault(part.id, slotProps.data.id)" />
                     &nbsp;&nbsp;
                   </template>
                   <router-link to="#" @click.prevent="deleteAttachment(slotProps.data)">
-                    <i class="fa fa-trash-o" aria-hidden="true" />
+                    <i class="pi pi-trash" aria-hidden="true" />
                   </router-link>
                 </template>
               </Column>
@@ -429,7 +429,7 @@ export default {
         },
         templates: {
           header: () => {
-            return [h("h3", [h("i", { class: "fa fa-qrcode mr-1" }), h("span", "Label Generator")])];
+            return [h("h3", [h("i", { class: "pi pi-qrcode" }), h("span", "Label Generator")])];
           },
         },
         data: {
@@ -440,8 +440,16 @@ export default {
     deletePart(event, part) {
       this.confirm.require({
         message: `Are you sure you want to delete the part '${part.name}' ?`,
-        header: `Deleting '${part.name}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .deletePart(part.id)
@@ -537,8 +545,16 @@ export default {
     deleteAttachment(attachment) {
       this.confirm.require({
         message: `Are you sure you want to delete the attachment '${attachment.description}' ?`,
-        header: `Deleting '${attachment.description}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           apiService
             .partAttachmentDelete(this.part.id, attachment.id)

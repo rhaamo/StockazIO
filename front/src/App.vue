@@ -423,8 +423,18 @@ export default {
     forceReloadDatas() {
       this.confirm.require({
         message: "Are you sure you want to force reload of all datas ?",
-        header: "Please confirm",
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        header: "Reload all cached datas",
+        rejectProps: {
+          label: "No",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Yes",
+          severity: "warn",
+        },
+        group: "dialog",
         accept: () => {
           this.isLoaded = false;
 

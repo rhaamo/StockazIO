@@ -890,8 +890,16 @@ export default {
     deletePartMultiple(event) {
       this.confirm.require({
         message: `Are you sure you want to delete all the selected parts ?`,
-        header: `Deleting ${this.selectedParts.length} parts.`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
         accept: () => {
           const _bulkDelete = async (parts) => {
             for (let part of parts) {
