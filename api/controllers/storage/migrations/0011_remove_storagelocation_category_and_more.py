@@ -7,6 +7,9 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("storage", "0010_alter_storage_uuid_alter_storagecategory_uuid"),
+        # We need to depend on, at least, that far into storage to avoid getting the remove storage
+        # migration failing because we removed it here before it can
+        ("part", "0030_remove_part_storage"),
     ]
 
     operations = [
