@@ -19,9 +19,9 @@
           </DataTable>
         </div>
 
-        <div v-if="part && partProjects.length">
+        <div>
           <h3>Used in projects:</h3>
-          <DataTable :value="partProjects" class="p-datatable-sm" striped-rows responsive-layout="scroll">
+          <DataTable v-if="part && partProjects.length" :value="partProjects" class="p-datatable-sm" striped-rows responsive-layout="scroll">
             <Column field="name" header="Name" header-style="width: 20rem">
               <template #body="slotProps">
                 <router-link
@@ -37,6 +37,7 @@
             <Column field="qty" header="Quantity (one board)" header-style="width: 15rem"></Column>
             <Column field="description" header="Description"></Column>
           </DataTable>
+          <div v-else>None.</div>
         </div>
       </div>
 
