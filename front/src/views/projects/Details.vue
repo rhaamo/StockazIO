@@ -227,9 +227,7 @@
                 <Column field="description" header="Description"> </Column>
                 <Column>
                   <template #body="slotProps">
-                    <router-link to="#" @click.prevent="deleteAttachment(slotProps.data)">
-                      <i class="fa fa-trash-o" aria-hidden="true" />
-                    </router-link>
+                    <PvButton severity="danger" icon="pi pi-trash" @click.prevent="deleteAttachment(slotProps.data)"></PvButton>
                   </template>
                 </Column>
               </DataTable>
@@ -530,15 +528,15 @@ export default {
     deleteAttachment(attachment) {
       this.confirm.require({
         message: `Are you sure you want to delete the attachment '${attachment.description}' ?`,
-        header: `Deleting '${attachment.description}' ?`,
-        icon: "fa fa-exclamation-triangle",
+        icon: "pi pi-exclamation-triangle",
         rejectProps: {
           label: "Cancel",
           severity: "secondary",
           outlined: true,
         },
         acceptProps: {
-          label: "Save",
+          label: "Delete",
+          severity: "danger",
         },
         accept: () => {
           apiService
