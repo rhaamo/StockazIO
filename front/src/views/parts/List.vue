@@ -766,6 +766,7 @@ export default {
             },
             data: {
               part: val.data,
+              readonly: false,
             },
           });
         })

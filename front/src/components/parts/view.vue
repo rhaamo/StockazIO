@@ -21,23 +21,49 @@
 
         <div>
           <h3>Used in projects:</h3>
-          <DataTable v-if="part && partProjects.length" :value="partProjects" class="p-datatable-sm" striped-rows responsive-layout="scroll">
+          <PvButton v-if="!readonly" label="Add to project" size="small" severity="primary" @click.prevent="showAddToProject"></PvButton>
+
+          <DataTable v-if="part && partProjects.length" :value="partProjects" class="p-datatable-sm mt-3" striped-rows responsive-layout="scroll">
             <Column field="name" header="Name" header-style="width: 20rem">
               <template #body="slotProps">
                 <router-link
+                  v-if="!readonly"
                   v-tooltip.left="'View project'"
                   :to="{
                     name: 'projects-details',
-                    params: { projectId: slotProps.data.id },
+                    params: { projectId: slotProps.data.project_id },
                   }">
                   {{ slotProps.data.name }}
                 </router-link>
+                <template v-else>{{ slotProps.data.name }}</template>
               </template>
             </Column>
-            <Column field="qty" header="Quantity (one board)" header-style="width: 15rem"></Column>
-            <Column field="description" header="Description"></Column>
+            <Column field="qty" header="Quantity (one board)" header-style="width: 11rem"></Column>
+            <Column field="sourced" header="Sourced" header-style="width: 1rem">
+              <template #body="slotProps">
+                <div v-if="slotProps.data.sourced"><i class="pi pi-check"></i></div>
+                <div v-else><i class="pi pi-times"></i></div>
+              </template>
+            </Column>
+            <Column field="notes" header="Notes" header-style="width: 25rem">
+              <template #body="slotProps">
+                {{ slotProps.data.notes }}
+              </template></Column
+            >
+            <Column v-if="!readonly" :sortable="false" header-style="min-width: 2em">
+              <template #body="slotProps">
+                <span class="p-buttonset">
+                  <PvButton
+                    v-tooltip.right="'Remove from project'"
+                    severity="danger"
+                    @click.prevent="deletePartFromProject($event, slotProps.data)"
+                    icon="pi pi-trash"
+                    class="ml-1" />
+                </span>
+              </template>
+            </Column>
           </DataTable>
-          <div v-else>None.</div>
+          <div v-else class="mt-3">None.</div>
         </div>
       </div>
 
@@ -154,6 +180,10 @@ import { format as dateFnsFormat } from "date-fns/format";
 import { parseISO as dateFnsParseISO } from "date-fns/parseISO";
 import utils from "@/utils.js";
 import QuantityPopoverEditor from "@/components/parts/QuantityPopoverEditor.vue";
+import apiService from "@/services/api/api.service";
+import logger from "@/logging";
+import AddToProjectModal from "@/components/parts/AddToProjectModal.vue";
+import { h } from "vue";
 
 export default {
   inject: ["dialogRef"],
@@ -162,6 +192,7 @@ export default {
   },
   data: () => ({
     part: null,
+    readonly: true,
   }),
   computed: {
     partUnit() {
@@ -218,19 +249,103 @@ export default {
     },
     partProjects() {
       return this.part.projectpart_set.map((x) => {
-        return { id: x.project.id, name: x.project.name, description: x.project.description, qty: x.qty };
+        return { id: x.id, name: x.project.name, notes: x.notes, qty: x.qty, project_id: x.project.id, sourced: x.sourced };
       });
     },
   },
   created() {
     this.part = this.dialogRef.data.part;
+    if (typeof this.dialogRef.data.readonly !== "undefined") {
+      this.readonly = this.dialogRef.data.readonly;
+    }
   },
   methods: {
+    reloadPart() {
+      apiService
+        .getPart(this.part.id)
+        .then((val) => {
+          this.part = val.data;
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Part details",
+            detail: "An error occured, please try again later",
+            life: 5000,
+          });
+          logger.default.error("Error with getting part details", err);
+        });
+    },
     formatDate(date) {
       return dateFnsFormat(dateFnsParseISO(date), "E MMM d yyyy HH:mm");
     },
     stripPathFromFileUrl(url) {
       return utils.baseName(url);
+    },
+    showAddToProject() {
+      this.$dialog.open(AddToProjectModal, {
+        props: {
+          modal: true,
+          style: {
+            width: "25vw",
+          },
+          dismissableMask: true,
+        },
+        templates: {
+          header: () => {
+            return [h("h3", [h("span", "Add to project")])];
+          },
+        },
+        data: {
+          part: this.part,
+        },
+        onClose: (options) => {
+          if (options.data && options.data.finished) {
+            this.reloadPart();
+          }
+        },
+      });
+    },
+    deletePartFromProject(event, item) {
+      this.$confirm.require({
+        message: `Are you sure you want to delete the part '${this.part.name}' from project '${item.name}' ?`,
+        icon: "pi pi-exclamation-triangle",
+        rejectProps: {
+          label: "Cancel",
+          severity: "secondary",
+          outlined: true,
+        },
+        acceptProps: {
+          label: "Delete",
+          severity: "danger",
+        },
+        accept: () => {
+          apiService
+            .projectDeletePart(item.project_id, item.id)
+            .then((val) => {
+              this.$toast.add({
+                severity: "success",
+                summary: "Part",
+                detail: "Deleted",
+                life: 5000,
+              });
+              this.reloadPart();
+            })
+            .catch((err) => {
+              this.toast.add({
+                severity: "error",
+                summary: "Part",
+                detail: "An error occured, please try again later",
+                life: 5000,
+              });
+              logger.default.error("Error with part deletion from project", err);
+              this.reloadPart();
+            });
+        },
+        reject: () => {
+          return;
+        },
+      });
     },
   },
 };
