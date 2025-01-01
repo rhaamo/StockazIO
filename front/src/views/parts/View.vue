@@ -50,7 +50,7 @@
 
         <div>
           <DataTable :value="mainTableItems" class="p-datatable-sm" striped-rows responsive-layout="scroll">
-            <Column field="item" header="Item"></Column>
+            <Column field="item" header="Item" header-style="width: 20rem"></Column>
             <Column field="value" header="Value"></Column>
           </DataTable>
         </div>
