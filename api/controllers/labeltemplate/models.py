@@ -34,7 +34,7 @@ def set_base_pdf(sender, instance, **kwargs):
     )
     fpdf.add_page()
     pdf = fpdf.output(dest="S")  # as byte string
-    instance.base_pdf = f"data:application/pdf;base64,{base64.b64encode(pdf.encode('latin-1')).decode('UTF-8')}"
+    instance.base_pdf = f"data:application/pdf;base64,{base64.b64encode(pdf).decode('UTF-8')}"
 
 
 @receiver(post_save, sender=LabelTemplate)
