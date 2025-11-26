@@ -2,6 +2,10 @@
 
 Manage your inventory of electronic stuff
 
+> [!CAUTION]
+> I don't have the time and motivation to continue working on this project and it will be archived at the end of the year.
+> I have personally moved to Part-DB if you are searching for a close-enough alternative.
+
 # Notes
 
 This is very opinionated and made from my workflow.
